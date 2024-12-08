@@ -1,0 +1,130 @@
+﻿@using FluentWeb.Pages.Assumptions
+@using FluentWeb.Pages.Bennefits
+@using FluentWeb.Pages.Constraints
+@using FluentWeb.Pages.DeliverableRisks
+@using FluentWeb.Pages.Requirements
+@using Shared.Models.Deliverables.Requests
+
+<FluentStack Orientation="Orientation.Vertical" Style="width:100%">
+    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+        <FluentButton Id="addDel" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
+
+        </FluentButton>
+        <FluentTooltip Anchor="addDel" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Deliverable</FluentTooltip>
+
+        <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Deliverables</strong></FluentLabel>
+        <FluentSpacer />
+        <FluentSearch @bind-Value="@nameFilter"
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
+                      Placeholder="Search..." />
+    </FluentStack>
+    @if (CreateResponse != null)
+    {
+        <CreateTemplate @ref=CreateForm TItem="CreateDeliverableRequest" @bind-Model="@CreateResponse"
+                        Cancel="CancelAsync" GetAll="GetAll" Title="Create Deliverable">
+            <Content>
+                <TextArea Label="Name"
+                          @bind-Value=@CreateResponse.Name
+                          Placeholder="Define name"
+                          Validate="CreateForm.ValidateAsync"></TextArea>
+                <ValidationMessage For="() => CreateResponse.Name" style="color:red; font-size:x-small;" />
+            </Content>
+
+        </CreateTemplate>
+
+    }
+
+
+    <FluentAccordion Style="width:100%" ExpandMode="AccordionExpandMode.Multi">
+        @foreach (var row in FilteredItems)
+        {
+            @if (EditResponse != null && EditResponse.Id == row.Id)
+            {
+                <EditTemplate @ref=EditForm TItem="UpdateDeliverableRequest" @bind-Model=@EditResponse Cancel="CancelAsync"
+                              GetAll="GetAll" Title="Edit Deliverable">
+                    <Content>
+                        <TextArea Label="Name"
+                                  @bind-Value=@EditResponse.Name
+                                  Placeholder="Define name"
+                                  Validate="EditForm.ValidateAsync"></TextArea>
+                        <ValidationMessage For="() => EditResponse.Name" style="color:red; font-size:x-small;" />
+                    </Content>
+
+                </EditTemplate>
+
+            }
+            else
+            {
+                <FluentAccordionItem>
+                    <HeadingTemplate>
+                        <FluentStack Orientation=" Orientation.Horizontal">
+                            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+                            <FluentSpacer />
+                            <div>
+                                <FluentButton Id="editDel" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+
+                                </FluentButton>
+                                <FluentTooltip Anchor="editDel" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                                <FluentButton Id="deleteDel" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+
+                                </FluentButton>
+                                <FluentTooltip Anchor="deleteDel" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+
+
+                            </div>
+                        </FluentStack>
+
+                    </HeadingTemplate>
+                    <ChildContent>
+                        <FluentTabs ShowActiveIndicator="true">
+                            <FluentTab Label="Requirements">
+                                <Content>
+                                    <RequirementList GetAll="GetAll" Cancel="CancelAsync" Parent="@row"></RequirementList>
+                                </Content>
+
+                            </FluentTab>
+                            <FluentTab Label="Assumptions">
+                                <Content>
+                                    <AssumptionList GetAll="GetAll" Cancel="CancelAsync" Parent="@row"></AssumptionList>
+                                </Content>
+
+                            </FluentTab>
+                            <FluentTab Label="Risks">
+                                <Content>
+                                    <DeliverableRiskList GetAll="GetAll" Cancel="CancelAsync" Parent="@row"></DeliverableRiskList>
+                                </Content>
+
+                            </FluentTab>
+                            <FluentTab Label="Constrainsts">
+                                <Content>
+                                    <ConstraintList GetAll="GetAll" Cancel="CancelAsync" Parent="@row"></ConstraintList>
+                                </Content>
+
+                            </FluentTab>
+                            <FluentTab Label="Bennefits">
+                                <Content>
+                                    <BennefitList GetAll="GetAll" Cancel="CancelAsync" Parent="@row"></BennefitList>
+                                </Content>
+
+                            </FluentTab>
+
+                        </FluentTabs>
+                    </ChildContent>
+                </FluentAccordionItem>
+            }
+
+        }
+
+    </FluentAccordion>
+
+
+
+
+</FluentStack>
+
+@code {
+
+    CreateTemplate<CreateDeliverableRequest> CreateForm = null!;
+    EditTemplate<UpdateDeliverableRequest> EditForm = null!;
+
+}

@@ -1,0 +1,11 @@
+﻿global using Shared.Commons;
+global using Shared.Enums.ExportFiles;
+global using Shared.Models.Brands.Exports;
+global using Shared.Models.Brands.Records;
+global using Shared.Models.Brands.Reponses;
+global using Shared.Models.Brands.Request;
+global using Shared.Models.FileResults;
+global using Shared.StaticClasses;
+global using Web.Infrastructure.ExtensionMethods;
+global using Web.Infrastructure.Services.Client;
+global using FluentValidation;

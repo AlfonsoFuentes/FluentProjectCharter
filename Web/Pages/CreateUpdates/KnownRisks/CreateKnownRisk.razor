@@ -1,0 +1,28 @@
+﻿<EditForm Model="@Model" OnValidSubmit="SaveAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <Card Title="Create Know risk">
+        <Content>
+            <RadzenRow>
+                <RadzenColumn SizeXS="12" SizeSM="12">
+                    <TextArea Label="Name" width="800px"
+                              Validate="ValidateAsync"
+                              @bind-Value=@Model.Name
+                              PlaceHolder="Define Name"></TextArea>
+                    <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+                </RadzenColumn>
+            </RadzenRow>
+
+        </Content>
+        <Actions>
+            <RadzenButton ButtonStyle="ButtonStyle.Light" ButtonType="ButtonType.Submit" Disabled="@(!Validated)"
+                          MouseEnter="@(args => App.ShowTooltip(args,"Save"))">Save</RadzenButton>
+            <RadzenButton ButtonStyle="ButtonStyle.Light" Click="CancelAsync"
+                          MouseEnter="@(args => App.ShowTooltip(args,"Cancel"))">Cancel</RadzenButton>
+        </Actions>
+    </Card>
+
+</EditForm>
+
+@code {
+
+}

@@ -1,0 +1,44 @@
+﻿@using Web.Pages.CreateUpdates.Cases
+<RadzenStack Orientation="Orientation.Vertical" Style="width:100%" AlignItems="AlignItems.Normal" JustifyContent="JustifyContent.Normal">
+    @if (EditProjectForm == false)
+    {
+        <RadzenRow>
+            <RadzenColumn SizeXS="12" SizeSM="11">
+                <RadzenText TextStyle="TextStyle.Body1"
+                            Style="overflow-wrap: break-word;">
+                    <strong>@Response.Name</strong>
+                </RadzenText>
+            </RadzenColumn>
+            <RadzenColumn SizeXS="12" SizeSM="1">
+                <RadzenButton ButtonStyle="ButtonStyle.Light" Size="ButtonSize.Small"
+                              MouseEnter="@(args => App.ShowTooltip(args,"Edit"))"
+                              Icon="edit" Click="EditProject"></RadzenButton>
+
+                <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="delete" Size="ButtonSize.Small"
+                              MouseEnter="@(args => App.ShowTooltip(args,"Delete"))"
+                              @onclick="@(() => Delete(Response))"></RadzenButton>
+
+
+            </RadzenColumn>
+
+        </RadzenRow>
+        <RadzenRow>
+            <RadzenColumn SizeXS="12" SizeSM="12">
+                <CaseList Parent="Response" GetAll="GetAll"></CaseList>
+            </RadzenColumn>
+        </RadzenRow>
+    }
+    else
+    {
+        <RadzenRow>
+            <RadzenColumn SizeXS="12" SizeSM="12">
+                <UpdateProject Response="@Response" GetAll="GetAll" Cancel="CancelEdit"></UpdateProject>
+            </RadzenColumn>
+        </RadzenRow>
+    }
+</RadzenStack>
+
+
+@code {
+
+}

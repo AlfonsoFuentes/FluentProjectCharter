@@ -1,0 +1,18 @@
+﻿global using MediatR;
+global using Server.Database.Entities;
+global using Server.ExtensionsMethods.ExportsExcel;
+global using Server.Interfaces.Database;
+global using Server.Interfaces.EndPoints;
+global using Server.Repositories;
+global using Shared.Commons;
+global using Shared.Enums.ExportFiles;
+global using Shared.Models.Bennefits.Requests;
+global using Shared.Models.FileResults;
+global using Shared.Models.Projects.Exports;
+global using Shared.Models.Projects.Records;
+global using Shared.Models.Projects.Reponses;
+global using Shared.Models.Projects.Request;
+global using Shared.Models.Projects.Validators;
+global using Shared.StaticClasses;
+global using System.Linq.Expressions;
+global using IResult = Shared.Commons.IResult;

@@ -1,0 +1,57 @@
+﻿<RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Center" Gap="2"
+             Style="width:100%;border: 1px dotted;padding: 4px;">
+    @if (AddItem)
+    {
+        <RadzenRow>
+            <RadzenColumn SizeXS="12" SizeSM="12">
+                <CreateOrganizationStrategy  GetAll="GetAll" Cancel="CancelAsync"></CreateOrganizationStrategy>
+            </RadzenColumn>
+
+        </RadzenRow>
+
+    }
+    else
+    {
+        <RadzenRow>
+            <RadzenColumn SizeXS="12" SizeSM="10">
+                <RadzenButton Click="Add" ButtonStyle="ButtonStyle.Light" Icon="add"
+                              MouseEnter="@(args => App.ShowTooltip(args,"Add New"))"></RadzenButton>
+            </RadzenColumn>
+            <RadzenColumn SizeXS="12" SizeSM="2">
+                <TextBox @bind-Value=@nameFilter Label="Search" PlaceHolder="Search ..."></TextBox>
+            </RadzenColumn>
+        </RadzenRow>
+        @foreach (var row in FilteredItems)
+        {
+            @if (EditResponse == null)
+            {
+                <RadzenRow>
+                    <RadzenColumn SizeXS="12" SizeSM="10">
+                        <RadzenText TextStyle="TextStyle.Body2">@row.Name</RadzenText>
+                    </RadzenColumn>
+                    <RadzenColumn SizeXS="12" SizeSM="2">
+                        <RadzenButton Click="@(()=>Edit(row))" ButtonStyle="ButtonStyle.Light" Icon="edit"
+                                      MouseEnter="@(args => App.ShowTooltip(args,"Edit"))"></RadzenButton>
+
+                        <RadzenButton Click="@(()=>Delete(row))" ButtonStyle="ButtonStyle.Light" Icon="delete"
+                                      MouseEnter="@(args => App.ShowTooltip(args,"Delete"))"></RadzenButton>
+                    </RadzenColumn>
+                </RadzenRow>
+            }
+            else if (EditResponse.Id == row.Id)
+            {
+                <RadzenRow>
+                    <RadzenColumn SizeXS="12" SizeSM="12">
+                        <UpdateOrganizationStrategy Response="@EditResponse" Cancel="CancelAsync" GetAll="GetAll"></UpdateOrganizationStrategy>
+                    </RadzenColumn>
+                </RadzenRow>
+
+            }
+        }
+    }
+</RadzenStack>
+
+@code {
+    string nameFilter = string.Empty;
+
+}

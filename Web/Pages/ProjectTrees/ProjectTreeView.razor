@@ -1,0 +1,57 @@
+﻿@page "/Projects"
+@page "/"
+@using Shared.Models.FileResults.Generics.Reponses
+
+<RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Normal" JustifyContent="JustifyContent.Normal">
+
+
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Normal">
+        <div>
+            <RadzenButton id="addproject" Click="AddNew" ButtonStyle="ButtonStyle.Light" Icon="add" Size="ButtonSize.Small"
+                          MouseEnter="@(args => App.ShowTooltip(args,"Add New"))"></RadzenButton>
+
+
+            <RadzenButton id="exportexcelproject" Click="@(()=>Export(ExportFileType.Excel))" Size="ButtonSize.Small"
+                          MouseEnter="@(args => App.ShowTooltip(args,"Export to excel"))"
+                          ButtonStyle="ButtonStyle.Light" Icon="lists"></RadzenButton>
+
+            <RadzenButton id="exportpdfproject" Click="@(()=>Export(ExportFileType.pdf))" Size="ButtonSize.Small"
+                          MouseEnter="@(args => App.ShowTooltip(args,"Export to pdf"))"
+                          ButtonStyle="ButtonStyle.Light" Icon="picture_as_pdf"></RadzenButton>
+
+
+
+        </div>
+
+        <div>
+            <TextBox @bind-Value=@nameFilter Label="Search" PlaceHolder="Search ..."></TextBox>
+
+
+
+        </div>
+    </RadzenStack>
+    <div>
+        <RadzenTabs TabPosition="TabPosition.Left">
+            <Tabs>
+                @{
+                    int i = 1;
+                    foreach (var row in FilteredItems)
+                    {
+                        <RadzenTabsItem Text="@("Project" + i)">
+                            <ProjectDetailView Response="row"></ProjectDetailView>
+                        </RadzenTabsItem>
+                        i++;
+                    }
+                }
+
+            </Tabs>
+        </RadzenTabs>
+    </div>
+</RadzenStack>
+
+
+
+
+@code {
+
+}

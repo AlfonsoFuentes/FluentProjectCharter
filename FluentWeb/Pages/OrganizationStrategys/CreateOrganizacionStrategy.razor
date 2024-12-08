@@ -1,0 +1,26 @@
+﻿@using Shared.Models.OrganizationStrategies.Requests
+<EditForm Model="@Model" OnValidSubmit="SaveAsync" style="width:100%">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <Card Title="Create Organization Strategy">
+        <Content>
+            <TextArea Label="Name"
+                      @bind-Value=@Model.Name
+                      Placeholder="Define name"
+                      Validate="ValidateAsync"></TextArea>
+            <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+
+        </Content>
+        <Actions>
+
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Disabled="@(!Validated)">Save</FluentButton>
+            <FluentButton OnClick="Cancel" Appearance="Appearance.Outline">Cancel</FluentButton>
+        </Actions>
+    </Card>
+
+</EditForm>
+
+
+
+@code {
+
+}

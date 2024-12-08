@@ -1,0 +1,61 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using BlazorDownloadFile
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+
+@using Microsoft.JSInterop
+@using Web
+@using Web.Authentications
+@using Web.Infrastructures.Identity.Account
+@using Web.Infrastructures.Identity.Authentication
+@using Web.Infrastructures.Identity.Users
+@using Web.Infrastructures.Interceptor
+@using Web.Infrastructures.NotificacionService
+@using Web.Pages.CreateUpdates.Assumptions
+@using Web.Pages.CreateUpdates.Bennefits
+@using Web.Pages.CreateUpdates.Constrainsts
+@using Web.Pages.CreateUpdates.DeliverableRisks
+@using Web.Pages.CreateUpdates.Requirements
+@using Web.Pages.CreateUpdates.Projects
+@using Web.Layout
+@using Microsoft.AspNetCore.Components.Authorization
+@using Web.Pages.Authentication
+@using Web.RegisterServices
+@using Web.SharedComponentes
+@using Web.Templates
+@using Blazored.FluentValidation
+@using Shared.Models.Projects.Reponses
+@using Shared.Enums.ExportFiles
+@using Shared.Models.Projects.Request
+
+@using Radzen
+@using Radzen.Blazor
+
+@using Web.Pages.CreateUpdates.BackGrounds
+@using Web.Pages.CreateUpdates.DecissionCriterias
+@using Web.Pages.CreateUpdates.KnownRisks
+@using Web.Pages.CreateUpdates.Scopes
+@using Web.Pages.CreateUpdates.StakeHolders
+@using Web.Pages.CreateUpdates.SucessfullFactors
+
+@attribute [Authorize]
+@inject IBlazorDownloadFileService blazorDownloadFileService
+@inject IAuthenticationManager _authenticationManager
+@inject IAccountManager _accountManager
+@inject NavigationManager _NavigationManager
+@inject BlazorHeroStateProvider _stateProvider
+@inject IAuthorizationService _authorizationService
+@inject HttpClient _httpClient
+@inject IHttpInterceptorManager _interceptor
+@inject IUserManager _userManager
+@inject ILocalStorageService _localStorage
+@inject IJSRuntime _jsRuntime
+@inject NavigationBack Navigation
+@inject ISnackBar _snackBar
+@inject TooltipService TooltipService
+@inject DialogService DialogService

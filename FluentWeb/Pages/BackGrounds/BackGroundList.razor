@@ -1,0 +1,87 @@
+﻿@using Shared.Models.Backgrounds.Requests
+
+<FluentStack Orientation="Orientation.Vertical" Style="width:100%">
+    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+        <FluentButton Id="addBack" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
+
+        </FluentButton>
+        <FluentTooltip Anchor="addBack" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add BackGround</FluentTooltip>
+
+        <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Backgrounds</strong></FluentLabel>
+        <FluentSpacer />
+        <FluentSearch @bind-Value="@nameFilter"
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
+                      Placeholder="Search..." />
+    </FluentStack>
+    @if (CreateResponse != null)
+    {
+        <CreateTemplate @ref=CreateForm TItem="CreateBackGroundRequest" @bind-Model="@CreateResponse"
+                        Cancel="CancelAsync" GetAll="GetAll" Title="Create Background">
+            <Content>
+                <TextArea Label="Name"
+                          @bind-Value=@CreateResponse.Name
+                          Placeholder="Define name"
+                          Validate="CreateForm.ValidateAsync"></TextArea>
+                <ValidationMessage For="() => CreateResponse.Name" style="color:red; font-size:x-small;" />
+            </Content>
+
+        </CreateTemplate>
+
+    }
+
+
+    @foreach (var row in FilteredItems)
+    {
+        @if (EditResponse != null && EditResponse.Id == row.Id)
+        {
+          
+                <EditTemplate @ref=EditForm TItem="UpdateBackGroundRequest" @bind-Model=@EditResponse Cancel="CancelAsync"
+                              GetAll="GetAll" Title="Edit Background">
+                    <Content>
+                        <TextArea Label="Name"
+                                  @bind-Value=@EditResponse.Name
+                                  Placeholder="Define name"
+                                  Validate="EditForm.ValidateAsync"></TextArea>
+                        <ValidationMessage For="() => EditResponse.Name" style="color:red; font-size:x-small;" />
+                    </Content>
+
+                </EditTemplate>
+        
+        }
+        else
+        {
+
+            <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
+
+                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+                <FluentSpacer />
+                <div>
+                    <FluentButton Id="editBack" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+
+                    </FluentButton>
+                    <FluentTooltip Anchor="editBack" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                    <FluentButton Id="deleteBack" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+
+                    </FluentButton>
+                    <FluentTooltip Anchor="deleteBack" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+
+
+                </div>
+            </FluentStack>
+
+
+        }
+
+    }
+
+
+
+
+</FluentStack>
+
+@code {
+
+    CreateTemplate<CreateBackGroundRequest> CreateForm = null!;
+    EditTemplate<UpdateBackGroundRequest> EditForm = null!;
+
+}

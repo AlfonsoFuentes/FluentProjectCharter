@@ -1,0 +1,51 @@
+﻿
+
+<RadzenFormField Text="@Label" Style="width: 100%;" Variant="Variant.Outlined">
+    <RadzenTextArea @bind-Value="@Value"
+                    Style="width: 100%;"
+                    Placeholder="@PlaceHolder"
+                    Rows="@Rows"
+                    @oninput=@((args) => OnValueChange(args.Value!.ToString()!))
+                    Disabled="@Disable" />
+</RadzenFormField>
+
+@code {
+    [Parameter]
+    public int Rows { get; set; } = 2;
+    [Parameter]
+    public bool Disable { get; set; } = false;
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+    [Parameter]
+    public string PlaceHolder { get; set; } = string.Empty;
+    [Parameter]
+    public string Value { get; set; } = string.Empty;
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+    [Parameter]
+
+    public EventCallback Validate { get; set; }
+
+    [Parameter]
+    public EventCallback<string> Change { get; set; }
+    [Parameter]
+    public string width { get; set; } = "300px";
+
+    string style => $"width:{width}";
+
+    async Task OnChangeEvent(ChangeEventArgs arg)
+    {
+        if (arg.Value is null || arg.Value.ToString() is null) return;
+
+        await OnValueChange(arg.Value.ToString()!);
+    }
+    async Task OnValueChange(string value)
+    {
+        Value = value;
+        await ValueChanged.InvokeAsync(Value);
+
+        if (Change.HasDelegate) await Change.InvokeAsync(Value);
+        if (Validate.HasDelegate) await Validate.InvokeAsync();
+    }
+
+}

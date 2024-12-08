@@ -1,0 +1,86 @@
+﻿@using Shared.Models.DeliverableRisks.Requests
+
+<FluentStack Orientation="Orientation.Vertical" Style="width:100%">
+    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+        <FluentButton Id="adddelr" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
+
+        </FluentButton>
+        <FluentTooltip Anchor="adddelr" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add DeliverableRisk</FluentTooltip>
+
+        <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Deliverable risks</strong></FluentLabel>
+        <FluentSpacer />
+        <FluentSearch @bind-Value="@nameFilter"
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
+                      Placeholder="Search..." />
+    </FluentStack>
+    @if (CreateResponse != null)
+    {
+        <CreateTemplate @ref=CreateForm TItem="CreateDeliverableRiskRequest" @bind-Model="@CreateResponse"
+                        Cancel="CancelAsync" GetAll="GetAll" Title="Create Deliverable risks">
+            <Content>
+                <TextArea Label="Name"
+                          @bind-Value=@CreateResponse.Name
+                          Placeholder="Define name"
+                          Validate="CreateForm.ValidateAsync"></TextArea>
+                <ValidationMessage For="() => CreateResponse.Name" style="color:red; font-size:x-small;" />
+            </Content>
+
+        </CreateTemplate>
+
+    }
+
+
+    @foreach (var row in FilteredItems)
+    {
+        @if (EditResponse != null && EditResponse.Id == row.Id)
+        {
+         
+                <EditTemplate @ref=EditForm TItem="UpdateDeliverableRiskRequest" @bind-Model=@EditResponse Cancel="CancelAsync"
+                          GetAll="GetAll" Title="Edit Deliverable risks">
+                    <Content>
+                        <TextArea Label="Name"
+                                  @bind-Value=@EditResponse.Name
+                                  Placeholder="Define name"
+                                  Validate="EditForm.ValidateAsync"></TextArea>
+                        <ValidationMessage For="() => EditResponse.Name" style="color:red; font-size:x-small;" />
+                    </Content>
+
+                </EditTemplate>
+        
+
+
+        }
+        else
+        {
+            <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
+
+                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+                <FluentSpacer />
+                <div>
+                    <FluentButton Id="editdelr" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+
+                    </FluentButton>
+                    <FluentTooltip Anchor="editdelr" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                    <FluentButton Id="deletedelr" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+
+                    </FluentButton>
+                    <FluentTooltip Anchor="deletedelr" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+
+
+                </div>
+            </FluentStack>
+
+        }
+
+    }
+
+
+
+</FluentStack>
+
+@code {
+
+    CreateTemplate<CreateDeliverableRiskRequest> CreateForm = null!;
+    EditTemplate<UpdateDeliverableRiskRequest> EditForm = null!;
+
+}

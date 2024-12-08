@@ -1,0 +1,65 @@
+﻿@page "/register"
+@layout MainLayout
+@attribute [AllowAnonymous]
+
+<EditForm Model="@_registerUserModel" OnValidSubmit="SubmitAsync">
+
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <Card Title="Register">
+        <Content>
+            <FluentGrid>
+                <FluentGridItem xs="12" sm="12">
+                    <FluentLabel Typo="Typography.H4">
+                        Already have an account? <FluentAnchor Href="login">Sign In here</FluentAnchor>
+                    </FluentLabel>
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12">
+                    <TextBox Validate="ValidateAsync" @bind-Value="_registerUserModel.FirstName" Label="First Name" TextFieldType="TextFieldType.Text" />
+                    <ValidationMessage For="() => _registerUserModel.FirstName" style="color:red; font-size:x-small;" />
+
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12">
+                    <TextBox Validate="ValidateAsync" @bind-Value="_registerUserModel.LastName" Label="Last Name" TextFieldType="TextFieldType.Text" />
+                    <ValidationMessage For="() => _registerUserModel.LastName" style="color:red; font-size:x-small;" />
+
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12">
+                    <TextBox Label="E-mail" @bind-Value="_registerUserModel.Email" Validate="ValidateAsync"
+                             TextFieldType="TextFieldType.Email" />
+                    <ValidationMessage For="() => _registerUserModel.Email" style="color:red; font-size:x-small;" />
+
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12">
+                    <TextBox Label="Phone Number" @bind-Value="_registerUserModel.PhoneNumber" Validate="ValidateAsync"
+                             TextFieldType="TextFieldType.Tel" />
+                    <ValidationMessage For="() => _registerUserModel.PhoneNumber" style="color:red; font-size:x-small;" />
+
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12">
+                    <TextBox Validate="ValidateAsync" @bind-Value="_registerUserModel.Password" Label="Password"
+                             TextFieldType="TextFieldType.Password" />
+                    <ValidationMessage For="() => _registerUserModel.Password" style="color:red; font-size:x-small;" />
+
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12">
+                    <TextBox Validate="ValidateAsync" @bind-Value="_registerUserModel.ConfirmPassword" Label="Confirm Password"
+                             TextFieldType="TextFieldType.Password" />
+                    <ValidationMessage For="() => _registerUserModel.ConfirmPassword" style="color:red; font-size:x-small;" />
+
+                </FluentGridItem>
+            </FluentGrid>
+
+
+        </Content>
+        <Actions>
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Disabled="@(!Validated)">Register</FluentButton>
+
+        </Actions>
+    </Card>
+
+</EditForm>
+
+
+@code {
+
+}

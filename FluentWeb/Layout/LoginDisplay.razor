@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+
+<AuthorizeView>
+    <Authorized>
+        <FluentProfileMenu Initials="@Initials"
+                           Style="padding: 4px;">
+            <StartTemplate>
+                @FullName
+            </StartTemplate>
+            <HeaderTemplate>
+                <FluentLabel Typo="@Typography.Header">Current User</FluentLabel>
+            </HeaderTemplate>
+            <ChildContent>
+                <div style="width: 250px; height: 80px">
+                    <FluentLabel Typo="@Typography.Header" Style="font-weight: bold;">@FullName</FluentLabel>
+                    <FluentLabel>@Email</FluentLabel>
+                </div>
+            </ChildContent>
+            <FooterTemplate>
+                <FluentStack>
+                    <FluentSpacer />
+                    <FluentAnchor Appearance="@Appearance.Hypertext"
+                                  Href="logout"
+                                  >Logout</FluentAnchor>
+                </FluentStack>
+            </FooterTemplate>
+        </FluentProfileMenu>
+      
+       
+
+
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    public void BeginLogOut()
+    {
+        Navigation.NavigateTo("/logout");
+    }
+}

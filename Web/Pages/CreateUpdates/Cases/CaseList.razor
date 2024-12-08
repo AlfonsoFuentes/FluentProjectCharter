@@ -1,0 +1,80 @@
+﻿@using Shared.Models.Cases.Responses
+<DataListTemplate T="CaseResponse" @bind-Selected=@EditResponse OnDelete="Delete">
+    <Create>
+        <CreateCase Parent="Parent" GetAll="GetAll" Cancel="CancelAsync"></CreateCase>
+    </Create>
+    <Update>
+        @if (EditResponse != null)
+        {
+            <UpdateCase Cancel="CancelAsync" GetAll="GetAll" Response="@EditResponse"></UpdateCase>
+        }
+
+    </Update>
+    <DataList>
+        <RadzenDataList AllowVirtualization=@allowVirtualization Style="height:400px;overflow:auto;"
+                        WrapItems=true AllowPaging=false
+                        Data="@FilteredItems" TItem="CaseResponse" PageSize="5" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+            <Template Context="context">
+                <RadzenCard Variant="Variant.Outlined" class="rz-p-0" Style="width: 100%; overflow: hidden;">
+                    <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Normal" JustifyContent="JustifyContent.Normal">
+                        <RadzenRow>
+                            <RadzenColumn SizeXS="12" SizeSM="10">
+                                <RadzenText TextStyle="TextStyle.Body2" TagName="TagName.H5"><strong>@(context.Name)</strong></RadzenText>
+                            </RadzenColumn>
+                            <RadzenColumn SizeXS="12" SizeSM="2">
+                                <RadzenButton MouseEnter="@(args => App.ShowTooltip(args,"Edit"))" ButtonStyle="ButtonStyle.Info" Size="ButtonSize.ExtraSmall"
+                                              Variant="Variant.Flat" Shade="Shade.Lighter" Icon="edit" class="rz-m-1" Click="@(()=>Edit(context))" />
+                                <RadzenButton MouseEnter="@(args => App.ShowTooltip(args,"Delete"))" ButtonStyle="ButtonStyle.Info" Size="ButtonSize.ExtraSmall"
+                                              Variant="Variant.Flat" Shade="Shade.Lighter" Icon="delete" class="rz-m-1" Click="@(()=>Delete(context))" />
+                            </RadzenColumn>
+                        </RadzenRow>
+
+                        <RadzenTabs>
+                            <Tabs>
+
+                                <RadzenTabsItem Text="Background">
+                                    <BackGroundList Parent="context" GetAll="GetAll"></BackGroundList>
+                                </RadzenTabsItem>
+                                <RadzenTabsItem Text="Stakeholder">
+                                    <StakeHolderList Parent="context" GetAll="GetAll"></StakeHolderList>
+                                </RadzenTabsItem>
+                                <RadzenTabsItem Text="Scope">
+                                    <ScopeList Parent="context" GetAll="GetAll"></ScopeList>
+
+                                </RadzenTabsItem>
+                                <RadzenTabsItem Text="Knwon Risk">
+                                    <KnownRiskList Parent="context" GetAll="GetAll"></KnownRiskList>
+
+                                </RadzenTabsItem>
+                                <RadzenTabsItem Text="Succesful factor">
+                                    <SucessfullFactorList Parent="context" GetAll="GetAll"></SucessfullFactorList>
+
+                                </RadzenTabsItem>
+                                <RadzenTabsItem Text="Decision criteria">
+                                    <DecissionCriteriaList Parent="context" GetAll="GetAll"></DecissionCriteriaList>
+
+                                </RadzenTabsItem>
+                            </Tabs>
+                        </RadzenTabs>
+                    </RadzenStack>
+
+                </RadzenCard>
+            </Template>
+        </RadzenDataList>
+
+    </DataList>
+</DataListTemplate>
+@code {
+    string nameFilter = string.Empty;
+    bool allowVirtualization = true;
+
+    bool isLoading = false;
+    async Task ShowLoading()
+    {
+        isLoading = true;
+
+        await Task.Yield();
+
+        isLoading = false;
+    }
+}

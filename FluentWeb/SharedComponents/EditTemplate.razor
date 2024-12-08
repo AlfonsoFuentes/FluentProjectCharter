@@ -1,0 +1,19 @@
+﻿@typeparam TItem
+<EditForm Model="@Model" OnValidSubmit="SaveAsync" style="width:100%">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <Card Title="@Title">
+        <Content>
+            @Content
+
+        </Content>
+        <Actions>
+
+            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Disabled="@(!Validated)">Save</FluentButton>
+            <FluentButton OnClick="Cancel" Appearance="Appearance.Outline">Cancel</FluentButton>
+        </Actions>
+    </Card>
+
+</EditForm>
+@code {
+
+}

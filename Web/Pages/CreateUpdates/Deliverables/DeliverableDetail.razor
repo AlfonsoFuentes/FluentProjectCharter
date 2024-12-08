@@ -1,0 +1,31 @@
+﻿
+<RadzenTabs RenderMode="TabRenderMode.Client" Change=@OnChange @bind-SelectedIndex=@selectedIndex>
+    <Tabs>
+        <RadzenTabsItem Text="Requirements">
+            <RequirementList Parent="Deliverable" GetAll="GetAll"></RequirementList>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Assumptions">
+            <AssumptionList Parent="Deliverable" GetAll="GetAll"></AssumptionList>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Risks">
+            <DeliverableRiskList Parent="Deliverable" GetAll="GetAll"></DeliverableRiskList>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Constraints">
+            <ConstrainstList Parent="Deliverable" GetAll="GetAll"></ConstrainstList>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Bennefits">
+            <BennefitList Parent="Deliverable" GetAll="GetAll"></BennefitList>
+        </RadzenTabsItem>
+
+    </Tabs>
+</RadzenTabs>
+
+
+@code {
+    int selectedIndex = 0;
+    void OnChange(int index)
+    {
+        selectedIndex = index;
+    }
+}
+
