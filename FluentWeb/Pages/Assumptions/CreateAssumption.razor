@@ -1,0 +1,17 @@
+﻿@page "/CreateAssumption/{DeliverableId:guid}/{ProjectId:guid}"
+<CreateTemplate @ref=CreateForm TItem="CreateAssumptionRequest" @bind-Model="@Model"
+                Title="Create Assumption">
+    <Content>
+        <TextArea Label="Name"
+                  @bind-Value=@Model.Name
+                  Placeholder="Define name"
+                  Validate="CreateForm.ValidateAsync"></TextArea>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+    </Content>
+
+</CreateTemplate>
+
+@code {
+    CreateTemplate<CreateAssumptionRequest> CreateForm = null!;
+
+}

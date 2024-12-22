@@ -1,9 +1,8 @@
+using FluentWeb.Layout;
 using Microsoft.AspNetCore.Components;
-using Microsoft.FluentUI.AspNetCore.Components;
 using Shared.Enums.ExportFiles;
 using Shared.Models.Projects.Reponses;
 using Shared.Models.Projects.Request;
-using Shared.StaticClasses;
 using Web.Infrastructure.Managers.Generic;
 using Web.Infrastructure.Managers.Projects;
 
@@ -13,10 +12,10 @@ public partial class Home
 {
     [CascadingParameter]
     public App App { get; set; }
+ 
     [Inject]
     private IProjectService Service { get; set; }
-    [Inject]
-    private IGenericService GenericService { get; set; } = null!;
+
     ProjectResponseList Response { get; set; } = new();
     string nameFilter { get; set; } = string.Empty;
     Func<ProjectResponse, bool> fiterexpresion => x =>
@@ -35,33 +34,25 @@ public partial class Home
         if (result.Succeeded)
         {
             Response = result.Data;
+
             StateHasChanged();
         }
     }
-    CreateProjectRequest CreateResponse = null!;
+
+
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-
-        };
+        Navigation.NavigateTo("/CreateProject");
     }
-    UpdateProjectRequest EditResponse = null!;
+
 
     public void Edit(ProjectResponse Response)
     {
-        EditResponse = new()
-        {
-            Id = Response.Id,
-            Name = Response.Name,
-        };
+        Navigation.NavigateTo($"/UpdateProject/{Response.Id}");
     }
-    void CancelAsync()
-    {
-        EditResponse = null!;
-        CreateResponse = null!;
-        StateHasChanged();
-    }
+   
+   
+
     public async Task Delete(ProjectResponse response)
     {
         var dialog = await DialogService.ShowWarningAsync($"Delete {response.Name}?");
@@ -92,21 +83,26 @@ public partial class Home
         }
 
     }
-    public async Task Export(ExportFileType fileType)
+    public async Task Export(ProjectResponse response)
     {
-        var resultExport = await Service.Export(fileType, FilteredItems.ToList());
+        var resultExport = await Service.ExportPDF(response);
         if (resultExport.Succeeded)
         {
             var downloadresult = await blazorDownloadFileService.DownloadFile(resultExport.Data.ExportFileName,
               resultExport.Data.Data, contentType: resultExport.Data.ContentType);
             if (downloadresult.Succeeded)
             {
-                _snackBar.ShowSuccess($"Table was exported to {fileType} succesfully ");
-
-
-
+                _snackBar.ShowSuccess($"Project Charter for {response.Name} exported succesfully");
 
             }
+            else
+            {
+                _snackBar.ShowError($"Project Charter for {response.Name} not exported succesfully");
+            }
+        }
+        else
+        {
+            _snackBar.ShowError($"Project Charter for {response.Name} not created succesfully");
         }
     }
 

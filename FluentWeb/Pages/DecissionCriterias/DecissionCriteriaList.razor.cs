@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Shared.Models.Assumptions.Responses;
 using Shared.Models.Cases.Responses;
 using Shared.Models.DecissionCriterias.Requests;
 using Shared.Models.DecissionCriterias.Responses;
@@ -16,44 +17,25 @@ public partial class DecissionCriteriaList
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Action Cancel { get; set; }
+
 
     [Inject]
     private IGenericService Service { get; set; } = null!;
     public List<DecissionCriteriaResponse> Items => Parent == null ? new() : Parent.DecissionCriterias;
     string nameFilter;
     public List<DecissionCriteriaResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-    CreateDecissionCriteriaRequest CreateResponse = null!;
+
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-            ProjectId = Parent.ProjectId,
-            CaseId=Parent.Id,
-        };
+        Navigation.NavigateTo($"/CreateDecissionCriteria/{Parent.Id}/{Parent.ProjectId}");
+
     }
 
 
-
-    public void CancelAsync()
-    {
-        CreateResponse = null!;
-        EditResponse = null!;
-        Cancel();
-    }
-
-    public UpdateDecissionCriteriaRequest EditResponse { get; set; } = null!;
 
     void Edit(DecissionCriteriaResponse response)
     {
-        EditResponse = new()
-        {
-            Id = response.Id,
-            ProjectId = Parent.ProjectId,
-            Name = response.Name,
-        };
+        Navigation.NavigateTo($"/UpdateDecissionCriteria/{response.Id}/{Parent.ProjectId}");
     }
     public async Task Delete(DecissionCriteriaResponse response)
     {

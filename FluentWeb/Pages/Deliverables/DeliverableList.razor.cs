@@ -1,12 +1,7 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.FluentUI.AspNetCore.Components;
-using Shared.Models.Backgrounds.Requests;
-using Shared.Models.Backgrounds.Responses;
-using Shared.Models.Cases.Responses;
 using Shared.Models.Deliverables.Requests;
 using Shared.Models.Deliverables.Responses;
 using Shared.Models.Scopes.Responses;
-using Web.Infrastructure.Managers.Generic;
 
 namespace FluentWeb.Pages.Deliverables;
 #nullable disable
@@ -20,44 +15,29 @@ public partial class DeliverableList
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Action Cancel { get; set; }
 
-    [Inject]
-    private IGenericService Service { get; set; } = null!;
+
+ 
     public List<DeliverableResponse> Items => Parent == null ? new() : Parent.Deliverables;
     string nameFilter;
     public List<DeliverableResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-    CreateDeliverableRequest CreateResponse = null!;
+
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-            ProjectId = Parent.ProjectId,
-            ScopeId=Parent.Id,
-        };
+        Navigation.NavigateTo($"/CreateDeliverable/{Parent.Id}/{Parent.ProjectId}");
+
     }
 
 
-
-    public void CancelAsync()
-    {
-        CreateResponse = null!;
-        EditResponse = null!;
-        Cancel();
-    }
-
-    public UpdateDeliverableRequest EditResponse { get; set; } = null!;
 
     void Edit(DeliverableResponse response)
     {
-        EditResponse = new()
-        {
-            Id = response.Id,
-            ProjectId = Parent.ProjectId,
-            Name = response.Name,
-        };
+        Navigation.NavigateTo($"/UpdateDeliverable/{response.Id}/{Parent.ProjectId}");
+    }
+
+    void CancelAsync()
+    {
+
     }
     public async Task Delete(DeliverableResponse response)
     {
@@ -75,7 +55,7 @@ public partial class DeliverableList
                 Name = response.Name,
                 ProjectId = Parent.Id,
             };
-            var resultDelete = await Service.Delete(request);
+            var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)
             {
                 await GetAll.Invoke();

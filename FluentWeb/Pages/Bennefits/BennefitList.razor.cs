@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.Cases.Responses;
+using Shared.Models.Assumptions.Responses;
 using Shared.Models.Bennefits.Requests;
 using Shared.Models.Bennefits.Responses;
-using Web.Infrastructure.Managers.Generic;
-using Shared.Models.Scopes.Responses;
 using Shared.Models.Deliverables.Responses;
 
 namespace FluentWeb.Pages.Bennefits;
@@ -18,44 +16,24 @@ public partial class BennefitList
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Action Cancel { get; set; }
 
-    [Inject]
-    private IGenericService Service { get; set; } = null!;
+
+
     public List<BennefitResponse> Items => Parent == null ? new() : Parent.Bennefits;
     string nameFilter;
     public List<BennefitResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-    CreateBennefitRequest CreateResponse = null!;
+
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-            ProjectId = Parent.ProjectId,
-            DeliverableId=Parent.Id,
-        };
+        Navigation.NavigateTo($"/CreateBennefit/{Parent.Id}/{Parent.ProjectId}");
+
     }
 
 
-
-    public void CancelAsync()
-    {
-        CreateResponse = null!;
-        EditResponse = null!;
-        Cancel();
-    }
-
-    public UpdateBennefitRequest EditResponse { get; set; } = null!;
 
     void Edit(BennefitResponse response)
     {
-        EditResponse = new()
-        {
-            Id = response.Id,
-            ProjectId = Parent.ProjectId,
-            Name = response.Name,
-        };
+        Navigation.NavigateTo($"/UpdateBennefit/{response.Id}/{Parent.ProjectId}");
     }
     public async Task Delete(BennefitResponse response)
     {
@@ -73,7 +51,7 @@ public partial class BennefitList
                 Name = response.Name,
                 ProjectId = Parent.Id,
             };
-            var resultDelete = await Service.Delete(request);
+            var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)
             {
                 await GetAll.Invoke();

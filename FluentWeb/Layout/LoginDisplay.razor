@@ -3,18 +3,18 @@
 
 <AuthorizeView>
     <Authorized>
-        <FluentProfileMenu Initials="@Initials"
+        <FluentProfileMenu Initials="@MainApp.Initials"
                            Style="padding: 4px;">
             <StartTemplate>
-                @FullName
+                @MainApp.FullName
             </StartTemplate>
             <HeaderTemplate>
                 <FluentLabel Typo="@Typography.Header">Current User</FluentLabel>
             </HeaderTemplate>
             <ChildContent>
                 <div style="width: 250px; height: 80px">
-                    <FluentLabel Typo="@Typography.Header" Style="font-weight: bold;">@FullName</FluentLabel>
-                    <FluentLabel>@Email</FluentLabel>
+                    <FluentLabel Typo="@Typography.Header" Style="font-weight: bold;">@MainApp.FullName</FluentLabel>
+                    <FluentLabel>@MainApp.Email</FluentLabel>
                 </div>
             </ChildContent>
             <FooterTemplate>

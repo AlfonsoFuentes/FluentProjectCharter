@@ -13,8 +13,9 @@ namespace Web.Infrastructure.Validators.Cases
         public CreateCaseValidator(IGenericService service)
         {
             Service = service;
-                  RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
 
+            RuleFor(x => x.OrganizationStrategy).NotNull().WithMessage("Must follow a strategy in the organization");
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
                 .When(x => !string.IsNullOrEmpty(x.Name))
@@ -41,8 +42,9 @@ namespace Web.Infrastructure.Validators.Cases
         public UpdateCaseValidator(IGenericService service)
         {
             Service = service;
-                  RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
 
+            RuleFor(x => x.OrganizationStrategy).NotNull().WithMessage("Must follow a strategy in the organization");
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
                 .When(x => !string.IsNullOrEmpty(x.Name))

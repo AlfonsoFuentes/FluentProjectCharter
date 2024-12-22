@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Components;
 using Shared.Models.Cases.Responses;
+using Shared.Models.Projects.Reponses;
 using Shared.Models.StakeHolders.Requests;
 using Shared.Models.StakeHolders.Responses;
 using Web.Infrastructure.Managers.Generic;
+using Web.Infrastructure.Managers.StakeHolders;
 
 namespace FluentWeb.Pages.StakeHolders;
 #nullable disable
@@ -10,53 +12,38 @@ public partial class StakeHolderList
 {
     [CascadingParameter]
     public App App { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public CaseResponse Parent { get; set; } = new();
-    [Parameter]
-    [EditorRequired]
-    public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Action Cancel { get; set; }
+    [Inject]
+    private IGenericService Service {  get; set; }
 
     [Inject]
-    private IGenericService Service { get; set; } = null!;
-    public List<StakeHolderResponse> Items => Parent == null ? new() : Parent.StakeHolders;
+    private IStakeHolderService StakeHolderService { get; set; } = null!;
+    public List<StakeHolderResponse> Items => Reponse.Items;
     string nameFilter;
     public List<StakeHolderResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-    CreateStakeHolderRequest CreateResponse = null!;
+
+    StakeHolderResponseList Reponse = new();
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAll();
+    }
+    async Task GetAll()
+    {
+        var result = await StakeHolderService.GetAll();
+        if (result.Succeeded)
+        {
+            Reponse = result.Data;
+        }
+    }
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-            ProjectId = Parent.ProjectId,
-            CaseId = Parent.Id,
-        };
+        Navigation.NavigateTo($"/CreateStakeHolder");
+
     }
 
-
-
-    public void CancelAsync()
-    {
-        CreateResponse = null!;
-        EditResponse = null!;
-        Cancel();
-    }
-
-    public UpdateStakeHolderRequest EditResponse { get; set; } = null!;
 
     void Edit(StakeHolderResponse response)
     {
-        EditResponse = new()
-        {
-            Id = response.Id,
-            ProjectId = Parent.ProjectId,
-            Name = response.Name,
-            Role = response.Role,
-            Email = response.Email,
-            PhoneNumber = response.PhoneNumber,
-        };
+        Navigation.NavigateTo($"/UpdateStakeHolder/{response.Id}");
     }
     public async Task Delete(StakeHolderResponse response)
     {
@@ -72,12 +59,12 @@ public partial class StakeHolderList
             {
                 Id = response.Id,
                 Name = response.Name,
-                ProjectId = Parent.Id,
+
             };
             var resultDelete = await Service.Delete(request);
             if (resultDelete.Succeeded)
             {
-                await GetAll.Invoke();
+                await GetAll();
                 _snackBar.ShowSuccess(resultDelete.Messages);
 
 

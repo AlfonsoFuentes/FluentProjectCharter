@@ -1,98 +1,100 @@
 ﻿@page "/"
-@using FluentWeb.Pages.BusinessCases
-@using Shared.Models.Projects.Request
 
-<PageTitle>Home</PageTitle>
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%">
+
+<FluentStack Orientation="Orientation.Vertical" Style="width:100%;height:100%;">
     <FluentStack Orientation=" Orientation.Horizontal">
         <div>
-            <FluentButton Id="createproject" IconEnd="@(new Icons.Regular.Size32.Add())" OnClick="AddNew">
+            <FluentButton Id="createproject" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
             </FluentButton>
             <FluentTooltip Anchor="createproject" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Create Project</FluentTooltip>
-            <FluentButton IconEnd="@(new Icons.Regular.Size32.DocumentData())">
 
-            </FluentButton>
-            <FluentButton IconEnd="@(new Icons.Regular.Size32.DocumentPdf())">
 
-            </FluentButton>
         </div>
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
         Placeholder="Search..." />
     </FluentStack>
-    @if (CreateResponse != null)
+
+    @foreach (var row in FilteredItems)
     {
-        <CreateTemplate @ref=CreateForm TItem="CreateProjectRequest" @bind-Model="@CreateResponse"
-                        Cancel="CancelAsync" GetAll="UpdateAll" Title="Create Project">
-            <Content>
-                <TextArea Label="Name"
-                          @bind-Value=@CreateResponse.Name
-                          Placeholder="Define name"
-                          Validate="CreateForm.ValidateAsync"></TextArea>
-                <ValidationMessage For="() => CreateResponse.Name" style="color:red; font-size:x-small;" />
+        <FluentStack Orientation=" Orientation.Vertical" Style="border:solid 1px lightgray;padding:6px; border-radius:5px;">
+            <FluentStack Orientation=" Orientation.Horizontal">
+                <FluentLabel Typo="Typography.H4" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+                <FluentSpacer />
+                <div>
+                    <FluentButton Id="@($"editproject{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
 
-            </Content>
+                    </FluentButton>
+                    <FluentTooltip Anchor="@($"editproject{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
 
-        </CreateTemplate>
+                    <FluentButton id="@($"pdfproject{row.Id}")" IconEnd="@(new Icons.Regular.Size20.DocumentPdf())" OnClick="@(()=>Export(row))"></FluentButton>
+                    <FluentTooltip Anchor="@($"pdfproject{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Create PDF</FluentTooltip>
+
+                    <FluentButton Id="@($"deleteproject{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+
+                    </FluentButton>
+                    <FluentTooltip Anchor="@($"deleteproject{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+
+                    <FluentButton Id="@($"Showproject{row.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(row))">
+
+                    </FluentButton>
+                    <FluentTooltip Anchor="@($"Showproject{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
+
+                </div>
+            </FluentStack>
+            @if (App.AppState.ProjectId != null && row.Id == App.AppState.ProjectId)
+            {
+                <FluentTabs ShowActiveIndicator="false" OnTabChange="HandleOnTabChange" @bind-ActiveTabId=@App.AppState.ProjectTab Style="width:100%">
+                    <FluentTab Label="High Level Requirements" Id="HighLevel">
+                        <Content>
+                            <HighLevelRequirementList GetAll="UpdateAll" Parent="@row"></HighLevelRequirementList>
+                        </Content>
+
+                    </FluentTab>
+                    <FluentTab Label="Stakeholders" Id="Stakeholders">
+                        <Content>
+                            <StakeHolderInsideProjectList GetAll="UpdateAll" Parent="@row"></StakeHolderInsideProjectList>
+                        </Content>
+
+                    </FluentTab>
+                    <FluentTab Label="Business cases" Id="Cases">
+                        <Content>
+                            <BussinesCaseList GetAll="UpdateAll" Parent="@row">
+
+                            </BussinesCaseList>
+                        </Content>
+
+                    </FluentTab>
+                </FluentTabs>
+
+            }
+        </FluentStack>
+    }
+
+</FluentStack>
+<PageTitle>Home</PageTitle>
+
+
+@code {
+    private async Task HandleOnTabChange(FluentTab tab)
+    {
+
+        App.AppState.ProjectTab = tab.Id;
+        await AppStateService.UpdateProjectTab(App.AppState);
+  
+        StateHasChanged();
+    }
+
+    public async Task Show(ProjectResponse response)
+    {
+        App.AppState.ProjectId = App.AppState.ProjectId == response.Id ? null : response.Id;
+        await AppStateService.UpdateActiveProjectState(App.AppState);
+        await App.GetActiveProject();
+        StateHasChanged();
+
+
 
     }
 
-    <FluentAccordion Style="width:100%" ExpandMode="AccordionExpandMode.Multi">
-        @foreach (var row in FilteredItems)
-        {
-            @if (EditResponse != null && EditResponse.Id == row.Id)
-            {
-                <EditTemplate @ref=EditForm TItem="UpdateProjectRequest" @bind-Model=@EditResponse Cancel="CancelAsync"
-                GetAll="UpdateAll" Title="Edit Project">
-                    <Content>
-
-                        <TextArea Label="Name"
-                        @bind-Value=@EditResponse.Name
-                        Placeholder="Define name"
-                        Validate="EditForm.ValidateAsync"></TextArea>
-                        <ValidationMessage For="() => EditResponse.Name" style="color:red; font-size:x-small;" />
-                    </Content>
-
-                </EditTemplate>
-
-            }
-            else
-            {
-                <FluentAccordionItem>
-                    <HeadingTemplate>
-                        <FluentStack Orientation=" Orientation.Horizontal">
-                            <FluentLabel Typo="Typography.H4" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                            <FluentSpacer />
-                            <div>
-                                <FluentButton Id="editproject" IconEnd="@(new Icons.Regular.Size32.Edit())" OnClick="@(()=>Edit(row))">
-
-                                </FluentButton>
-                                <FluentTooltip Anchor="editproject" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                                <FluentButton Id="deleteproject" IconEnd="@(new Icons.Regular.Size32.Delete())" OnClick="@(()=>Delete(row))">
-
-                                </FluentButton>
-                                <FluentTooltip Anchor="deleteproject" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
-                            </div>
-                        </FluentStack>
-
-                    </HeadingTemplate>
-                    <ChildContent>
-                        <BussinesCaseList Cancel="CancelAsync" GetAll="UpdateAll" Parent="@row">
-
-                        </BussinesCaseList>
-                    </ChildContent>
-                </FluentAccordionItem>
-            }
-
-        }
-
-    </FluentAccordion>
-
-
-</FluentStack>
-
-@code {
-    EditTemplate<UpdateProjectRequest> EditForm = null!;
-    CreateTemplate<CreateProjectRequest> CreateForm = null!;
 }

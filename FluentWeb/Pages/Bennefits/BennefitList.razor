@@ -13,66 +13,29 @@
                       @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
                       Placeholder="Search..." />
     </FluentStack>
-    @if (CreateResponse != null)
-    {
-        <CreateTemplate @ref=CreateForm TItem="CreateBennefitRequest" @bind-Model="@CreateResponse"
-                        Cancel="CancelAsync" GetAll="GetAll" Title="Create Bennefit">
-            <Content>
-                <TextArea Label="Name"
-                          @bind-Value=@CreateResponse.Name
-                          Placeholder="Define name"
-                          Validate="CreateForm.ValidateAsync"></TextArea>
-                <ValidationMessage For="() => CreateResponse.Name" style="color:red; font-size:x-small;" />
-            </Content>
-
-        </CreateTemplate>
-
-    }
-
-
     @foreach (var row in FilteredItems)
     {
-        @if (EditResponse != null && EditResponse.Id == row.Id)
-        {
-         
-                <EditTemplate @ref=EditForm TItem="UpdateBennefitRequest" @bind-Model=@EditResponse Cancel="CancelAsync"
-                              GetAll="GetAll" Title="Edit Bennefit">
-                    <Content>
-                        <TextArea Label="Name"
-                                  @bind-Value=@EditResponse.Name
-                                  Placeholder="Define name"
-                                  Validate="EditForm.ValidateAsync"></TextArea>
-                        <ValidationMessage For="() => EditResponse.Name" style="color:red; font-size:x-small;" />
-                    </Content>
+        <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
 
-                </EditTemplate>
-        
+            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+            <FluentSpacer />
+            <div>
+                <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+
+                </FluentButton>
+                <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+
+                </FluentButton>
+                <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
 
-        }
-        else
-        {
-            <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
 
-                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                <FluentSpacer />
-                <div>
-                    <FluentButton Id="editBenf" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
-
-                    </FluentButton>
-                    <FluentTooltip Anchor="editBenf" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                    <FluentButton Id="deleteBenf" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
-
-                    </FluentButton>
-                    <FluentTooltip Anchor="deleteBenf" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
-
-
-                </div>
-            </FluentStack>
-
-        }
+            </div>
+        </FluentStack>
 
     }
+
 
 
 
@@ -80,7 +43,6 @@
 
 @code {
 
-    CreateTemplate<CreateBennefitRequest> CreateForm = null!;
-    EditTemplate<UpdateBennefitRequest> EditForm = null!;
+ 
 
 }

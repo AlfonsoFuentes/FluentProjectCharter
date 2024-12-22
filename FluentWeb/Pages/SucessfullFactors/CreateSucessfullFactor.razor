@@ -1,0 +1,17 @@
+﻿@page "/CreateSucessfullFactor/{CaseId:guid}/{ProjectId:guid}"
+<CreateTemplate @ref=CreateForm TItem="CreateSucessfullFactorRequest" @bind-Model="@Model"
+                 Title="Create SucessfullFactor">
+    <Content>
+        <TextArea Label="Name"
+                  @bind-Value=@Model.Name
+                  Placeholder="Define name"
+                  Validate="CreateForm.ValidateAsync"></TextArea>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+    </Content>
+
+</CreateTemplate>
+
+@code {
+    CreateTemplate<CreateSucessfullFactorRequest> CreateForm = null!;
+
+}

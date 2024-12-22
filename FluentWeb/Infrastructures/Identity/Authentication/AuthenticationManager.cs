@@ -24,11 +24,6 @@ namespace FluentWeb.Infrastructures.Identity.Authentication
             Http = http;
         }
 
-        public async Task<ClaimsPrincipal> CurrentUser()
-        {
-            var state = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            return state.User;
-        }
 
         public async Task<IResult> Login(TokenRequest model)
         {

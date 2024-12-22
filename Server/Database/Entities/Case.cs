@@ -22,8 +22,8 @@ namespace Server.Database.Entities
         //Enunciado situacional que documente el problema o la oportunidad
       
 
-        //Identificacion de los Interesados
-        public List<StakeHolder> StakeHolders { get; set; } = new();
+        ////Identificacion de los Interesados
+        //public List<StakeHolder> StakeHolders { get; set; } = new();
         //Identificacion del Alcance
         public List<Scope> Scopes { get; set; } = new();
 
@@ -37,6 +37,9 @@ namespace Server.Database.Entities
         public List<SucessfullFactor> SucessfullFactors { get; set; } = new();
         //Identificacion de los criterios de decision
         public List<DecissionCriteria> DecissionCriterias { get; set; } = new();
-        
+        public List<ExpertJudgement> ExpertJudgements { get; set; } = new();
+        public string? CaseTab { get; set; } = string.Empty;
+        public Guid? ScopeId { get; set; }
+
     }
 }

@@ -13,6 +13,8 @@ namespace Server.Database.Entities
         public List<DeliverableRisk> DeliverableRisks { get; set; } = new();
         public List<Constrainst> Constraints { get; set; } = new();
         public List<Bennefit> Bennefits { get; set; } = new();
+        public string? DeliverableTab { get; set; } = string.Empty;
+
         public static Deliverable Create(Guid ScopeId)
         {
             return new()
@@ -21,6 +23,7 @@ namespace Server.Database.Entities
                 ScopeId = ScopeId,
             };
         }
+ 
 
     }
 }

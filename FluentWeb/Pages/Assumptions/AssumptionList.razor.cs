@@ -18,44 +18,23 @@ public partial class AssumptionList
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Action Cancel { get; set; }
 
-    [Inject]
-    private IGenericService Service { get; set; } = null!;
+
+  
     public List<AssumptionResponse> Items => Parent == null ? new() : Parent.Assumptions;
     string nameFilter;
     public List<AssumptionResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-    CreateAssumptionRequest CreateResponse = null!;
+
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-            ProjectId = Parent.ProjectId,
-            DeliverableId=Parent.Id,
-        };
+        Navigation.NavigateTo($"/CreateAssumption/{Parent.Id}/{Parent.ProjectId}");
+        
     }
 
-
-
-    public void CancelAsync()
-    {
-        CreateResponse = null!;
-        EditResponse = null!;
-        Cancel();
-    }
-
-    public UpdateAssumptionRequest EditResponse { get; set; } = null!;
 
     void Edit(AssumptionResponse response)
     {
-        EditResponse = new()
-        {
-            Id = response.Id,
-            ProjectId = Parent.ProjectId,
-            Name = response.Name,
-        };
+        Navigation.NavigateTo($"/UpdateAssumption/{response.Id}/{Parent.ProjectId}");
     }
     public async Task Delete(AssumptionResponse response)
     {
@@ -73,7 +52,7 @@ public partial class AssumptionList
                 Name = response.Name,
                 ProjectId = Parent.Id,
             };
-            var resultDelete = await Service.Delete(request);
+            var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)
             {
                 await GetAll.Invoke();

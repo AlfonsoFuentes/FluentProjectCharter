@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components;
 using Shared.Models.Cases.Responses;
 using Shared.Models.KnownRisks.Requests;
 using Shared.Models.KnownRisks.Responses;
-using Web.Infrastructure.Managers.Generic;
 
 namespace FluentWeb.Pages.KnownRisks;
 #nullable disable
@@ -16,45 +15,26 @@ public partial class KnownRiskList
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Action Cancel { get; set; }
 
-    [Inject]
-    private IGenericService Service { get; set; } = null!;
+
+
     public List<KnownRiskResponse> Items => Parent == null ? new() : Parent.KnownRisks;
     string nameFilter;
     public List<KnownRiskResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-    CreateKnownRiskRequest CreateResponse = null!;
+
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-            ProjectId = Parent.ProjectId,
-            CaseId=Parent.Id,
-        };
+        Navigation.NavigateTo($"/CreateKnownRisk/{Parent.Id}/{Parent.ProjectId}");
+
     }
-
-
-
-    public void CancelAsync()
-    {
-        CreateResponse = null!;
-        EditResponse = null!;
-        Cancel();
-    }
-
-    public UpdateKnownRiskRequest EditResponse { get; set; } = null!;
 
     void Edit(KnownRiskResponse response)
     {
-        EditResponse = new()
-        {
-            Id = response.Id,
-            ProjectId = Parent.ProjectId,
-            Name = response.Name,
-        };
+        Navigation.NavigateTo($"/UpdateKnownRisk/{response.Id}/{Parent.ProjectId}");
     }
+
+
+   
     public async Task Delete(KnownRiskResponse response)
     {
         var dialog = await DialogService.ShowWarningAsync($"Delete {response.Name}?");
@@ -71,7 +51,7 @@ public partial class KnownRiskList
                 Name = response.Name,
                 ProjectId = Parent.Id,
             };
-            var resultDelete = await Service.Delete(request);
+            var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)
             {
                 await GetAll.Invoke();

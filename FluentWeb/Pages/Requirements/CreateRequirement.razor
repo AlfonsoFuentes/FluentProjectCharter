@@ -1,0 +1,17 @@
+﻿@page "/CreateRequirement/{DeliverableId:guid}/{ProjectId:guid}"
+<CreateTemplate @ref=CreateForm TItem="CreateRequirementRequest" @bind-Model="@Model"
+                 Title="Create Requirement">
+    <Content>
+        <TextArea Label="Name"
+                  @bind-Value=@Model.Name
+                  Placeholder="Define name"
+                  Validate="CreateForm.ValidateAsync"></TextArea>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+    </Content>
+
+</CreateTemplate>
+
+@code {
+    CreateTemplate<CreateRequirementRequest> CreateForm = null!;
+
+}

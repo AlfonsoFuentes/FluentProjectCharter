@@ -1,0 +1,68 @@
+﻿@page "/CreateStakeHolderInsideProject/{ProjectId:guid}"
+
+<CreateTemplate @ref=CreateForm TItem="CreateStakeHolderInsideProjectRequest" @bind-Model="@Model"
+                Title="Add StakeHolder to Project">
+    <Content>
+        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
+            <FluentSelect TOption="StakeHolderResponse"
+                          Label="Select a StakeHolder"
+                          Items="@StakeHolderResponseList.Items"
+                          Id="people-listbox"
+                          Width="80%"
+                          Height="350px"
+                          Immediate="true"
+                          @onchange="ChangeSelect"
+                          Placeholder="Make a selection..."
+                          OptionValue="@(p => p.Name)"
+                          OptionText="@(p => p.Name)"
+                          @bind-Value="@stakeHolder"
+                          @bind-SelectedOption="@Model.StakeHolder" />
+            <ValidationMessage For="() => Model.StakeHolder" style="color:red; font-size:x-small;" />
+            <FluentButton Id="addorgan" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddStakeHolder">
+
+            </FluentButton>
+            <FluentTooltip Anchor="addorgan" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Stakeholder</FluentTooltip>
+
+        </FluentStack>
+        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
+            <FluentSelect TOption="StakeHolderRoleEnum"
+                          Label="Select Role"
+                          Items="@StakeHolderRoleEnum.List"
+                          Id="people-listbox"
+                          Width="60%"
+                          Height="350px"
+                          @onchange=@ChangeRole
+                          Placeholder="Make a selection..."
+                          OptionValue="@(p => p.Name)"
+                          OptionText="@(p => p.Name)"
+                          @bind-Value="@Model.Role.Name"
+                          @bind-SelectedOption="@Model.Role" />
+
+
+            <ValidationMessage For="() => Model.Role" style="color:red; font-size:x-small;" />
+        </FluentStack>
+    </Content>
+
+</CreateTemplate>
+
+@code {
+    CreateTemplate<CreateStakeHolderInsideProjectRequest> CreateForm = null!;
+    string? stakeHolder;
+    async Task ChangeSelect(ChangeEventArgs args)
+    {
+        if (args == null || args.Value == null) return;
+        if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
+        {
+            Model.StakeHolder = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
+            stakeHolder = args.Value.ToString();
+            await CreateForm.ValidateAsync();
+        }
+
+    }
+    async Task ChangeRole(ChangeEventArgs args)
+    {
+        if (args == null) return;
+        Model.Role = StakeHolderRoleEnum.GetType(args!.Value!.ToString()!);
+        await CreateForm.ValidateAsync();
+    }
+}

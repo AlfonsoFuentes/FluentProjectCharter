@@ -27,6 +27,12 @@
         static Project Map(this UpdateProjectRequest request, Project row)
         {
             row.Name = request.Name;
+            row.ProjectNeedType = request.ProjectNeedType.Name;
+            row.InitialBudget = request.InitialBudget;
+            row.ProjectDescription = request.ProjectDescription;
+            row.ManagerId = request.Manager == null ? null : request.Manager.Id;
+            row.SponsorId = request.Sponsor == null ? null : request.Sponsor.Id;
+            row.Version0Date = request.InitialProjectDate == null ? null : request.InitialProjectDate.Value;
             return row;
         }
 

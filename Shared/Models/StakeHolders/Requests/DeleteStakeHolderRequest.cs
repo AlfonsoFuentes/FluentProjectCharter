@@ -6,7 +6,6 @@ namespace Shared.Models.StakeHolders.Requests
     {
         public string Name { get; set; } = string.Empty;
         public override string Legend => Name;
-        public Guid ProjectId { get; set; }
         public override string ClassName => StaticClass.StakeHolders.ClassName;
 
         public Guid Id { get; set; }

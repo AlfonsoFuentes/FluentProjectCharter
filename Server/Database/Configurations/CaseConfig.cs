@@ -16,11 +16,6 @@ namespace Server.Database.Configurations
          .IsRequired()
          .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(x => x.StakeHolders)
-        .WithOne(t => t.Case)
-        .HasForeignKey(e => e.CaseId)
-        .IsRequired()
-        .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.Scopes)
         .WithOne(t => t.Case)
@@ -41,6 +36,12 @@ namespace Server.Database.Configurations
         .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.DecissionCriterias)
+        .WithOne(t => t.Case)
+        .HasForeignKey(e => e.CaseId)
+        .IsRequired()
+        .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x => x.ExpertJudgements)
         .WithOne(t => t.Case)
         .HasForeignKey(e => e.CaseId)
         .IsRequired()

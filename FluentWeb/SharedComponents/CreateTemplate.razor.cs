@@ -1,7 +1,5 @@
 using Blazored.FluentValidation;
 using Microsoft.AspNetCore.Components;
-using Shared.Models.Assumptions.Requests;
-using Shared.Models.Deliverables.Responses;
 using Shared.Models.FileResults.Generics.Request;
 using Web.Infrastructure.Managers.Generic;
 
@@ -12,12 +10,7 @@ public partial class CreateTemplate<TItem> where TItem : class, IRequest
     [CascadingParameter]
     public App App { get; set; }
 
-    [Parameter]
-    [EditorRequired]
-    public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Action Cancel { get; set; }
+   
     [Inject]
     private IGenericService Service { get; set; } = null!;
     [Parameter]
@@ -36,10 +29,10 @@ public partial class CreateTemplate<TItem> where TItem : class, IRequest
         var result = await Service.Create(Model);
         if (result.Succeeded)
         {
-                       
-            await GetAll.Invoke();
-            Cancel();
+
+            
             _snackBar.ShowSuccess(result.Messages);
+            Cancel();
         }
         else
         {
@@ -49,6 +42,10 @@ public partial class CreateTemplate<TItem> where TItem : class, IRequest
         }
 
 
+    }
+    void Cancel()
+    {
+        Navigation.NavigateBack();
     }
     private bool Validated { get; set; }
     FluentValidationValidator _fluentValidationValidator = null!;

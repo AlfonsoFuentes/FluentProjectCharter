@@ -1,13 +1,5 @@
-﻿@using FluentWeb.Pages.BackGrounds
-@using FluentWeb.Pages.DecissionCriterias
-@using FluentWeb.Pages.KnownRisks
-@using FluentWeb.Pages.OrganizationStrategys
-@using FluentWeb.Pages.Scopes
-@using FluentWeb.Pages.StakeHolders
-@using FluentWeb.Pages.SucessfullFactors
-@using Shared.Models.Cases.Requests
-@using Shared.Models.OrganizationStrategies.Responses
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%">
+﻿@using Shared.Models.Cases.Responses
+<FluentStack Orientation="Orientation.Vertical" Style="width:100%;height:100%;">
     <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
         <FluentButton Id="addcase" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
@@ -17,175 +9,97 @@
         <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage busines cases</strong></FluentLabel>
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
-                      Placeholder="Search..." />
+        @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
+        Placeholder="Search..." />
     </FluentStack>
-    @if (CreateResponse != null)
+    @foreach (var row in FilteredItems)
     {
-        <CreateTemplate @ref=CreateForm TItem="CreateCaseRequest" @bind-Model="@CreateResponse"
-                        Cancel="CancelAsync" GetAll="GetAll" Title="Create Business Case">
-            <Content>
-                <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
-                    <TextArea Label="Name"
-                              @bind-Value=@CreateResponse.Name
-                              Placeholder="Define name"
-                              Validate="CreateForm.ValidateAsync"></TextArea>
-                    <ValidationMessage For="() => CreateResponse.Name" style="color:red; font-size:x-small;" />
-                    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
-                        <FluentSelect TOption="OrganizationStrategyResponse"
-                                      Label="Select a Strategy"
-                                      Items="@OrganizationResponse.Items"
-                                      Id="people-listbox"
-                                      Width="80%"
-                                      Height="350px"
-                                      Placeholder="Make a selection..."
-                                      OptionValue="@(p => p.Name)"
-                                      OptionText="@(p => p.Name)"
-                                      @bind-Value="@SelectedValue"
-                                      @bind-SelectedOption="@CreateResponse.OrganizationStrategy" />
+        <FluentStack Orientation=" Orientation.Vertical" Style="border:solid 1px lightgray;padding:6px; border-radius:5px;">
+            <FluentStack Orientation=" Orientation.Horizontal">
+                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+                <FluentSpacer />
+                <div>
+                    <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
 
-                        <FluentButton Id="addorgan" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddOrganizationStrategy">
+                    </FluentButton>
+                    <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                    <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
 
-                        </FluentButton>
-                        <FluentTooltip Anchor="addorgan" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Organization Strategy</FluentTooltip>
+                    </FluentButton>
+                    <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
-                    </FluentStack>
+                    <FluentButton Id="@($"Show{row.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(row))"></FluentButton>
+                    <FluentTooltip Anchor="@($"Show{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
 
 
-
-                </FluentStack>
-            </Content>
-
-        </CreateTemplate>
-
-    }
-    @if (CreateOrganizationStrategyRequest != null)
-    {
-        <CreateOrganizacionStrategy Cancel="CancelOrganizationStrategy" GetAll="UpdateOrganizationStrategy"
-                                    SendData="GetOrganizationStrategyFromCreate"></CreateOrganizacionStrategy>
-    }
-    <FluentAccordion Style="width:100%" ExpandMode="AccordionExpandMode.Multi">
-        @foreach (var row in FilteredItems)
-        {
-            @if (EditResponse != null && EditResponse.Id == row.Id)
+                </div>
+            </FluentStack>
+            @if (App.AppState.CaseId != null & row.Id == App.AppState.CaseId)
             {
-                <EditTemplate @ref=EditForm TItem="UpdateCaseRequest" @bind-Model=@EditResponse Cancel="CancelAsync"
-                              GetAll="GetAll" Title="Edit Business Case">
-                    <Content>
-                        <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
-                            <TextArea Label="Name"
-                                      @bind-Value=@EditResponse.Name
-                                      Placeholder="Define name"
-                                      Validate="CreateForm.ValidateAsync"></TextArea>
-                            <ValidationMessage For="() => EditResponse.Name" style="color:red; font-size:x-small;" />
-                            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
-                                <FluentSelect TOption="OrganizationStrategyResponse"
-                                              Label="Select a Strategy"
-                                              Items="@OrganizationResponse.Items"
-                                              Id="people-listbox"
-                                              Width="80%"
-                                              Height="350px"
-                                              Placeholder="Make a selection..."
-                                              OptionValue="@(p => p.Name)"
-                                              OptionText="@(p => p.Name)"
-                                              @bind-Value="@SelectedValue"
-                                              @bind-SelectedOption="@EditResponse.OrganizationStrategy" />
+                <FluentTabs ShowActiveIndicator="false" Style="width:100%" OnTabChange="HandleOnTabChange" @bind-ActiveTabId=@App.AppState.CaseTab>
+                    <FluentTab Label="Backgrounds" Id="Backgrounds">
+                        <Content>
+                            <BackGroundList GetAll="GetAll" Parent="@row"></BackGroundList>
+                        </Content>
 
-                                <FluentButton Id="addorgan" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddOrganizationStrategy">
+                    </FluentTab>
 
-                                </FluentButton>
-                                <FluentTooltip Anchor="addorgan" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Organization Strategy</FluentTooltip>
+                    <FluentTab Label="Expert Judgement" Id="Expert">
+                        <Content>
+                            <ExpertJudgementList GetAll="GetAll" Parent="@row"></ExpertJudgementList>
+                        </Content>
 
-                            </FluentStack>
+                    </FluentTab>
+                    <FluentTab Label="Scope" Id="Scope">
+                        <Content>
+                            <ScopeList GetAll="GetAll" Parent="@row"></ScopeList>
+                        </Content>
 
+                    </FluentTab>
+                    <FluentTab Label="Known risks" Id="Known">
+                        <Content>
+                            <KnownRiskList GetAll="GetAll" Parent="@row"></KnownRiskList>
+                        </Content>
 
+                    </FluentTab>
+                    <FluentTab Label="Sucessfull factors" Id="Sucessfull">
+                        <Content>
+                            <SucessfullFactorList GetAll="GetAll" Parent="@row"></SucessfullFactorList>
+                        </Content>
 
-                        </FluentStack>
-                       
+                    </FluentTab>
+                    <FluentTab Label="Decission criterias" Id="Decission">
+                        <Content>
+                            <DecissionCriteriaList GetAll="GetAll" Parent="@row"></DecissionCriteriaList>
+                        </Content>
 
-                    </Content>
-
-                </EditTemplate>
-
-            }
-            else
-            {
-                <FluentAccordionItem>
-                    <HeadingTemplate>
-                        <FluentStack Orientation=" Orientation.Horizontal">
-                            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                            <FluentSpacer />
-                            <div>
-                                <FluentButton Id="editcase" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
-
-                                </FluentButton>
-                                @* <FluentTooltip Anchor="editcase" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip> *@
-                                <FluentButton Id="deletecase" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
-
-                                </FluentButton>
-                                @* <FluentTooltip Anchor="deletecase" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip> *@
-
-
-                            </div>
-                        </FluentStack>
-
-                    </HeadingTemplate>
-                    <ChildContent>
-                        <FluentTabs ShowActiveIndicator="true">
-                            <FluentTab Label="Backgrounds">
-                                <Content>
-                                    <BackGroundList GetAll="GetAll" Cancel="CancelAsync" Parent="@row"></BackGroundList>
-                                </Content>
-
-                            </FluentTab>
-                            <FluentTab Label="Stakeholders">
-                                <Content>
-                                    <StakeHolderList GetAll="GetAll" Cancel="CancelAsync" Parent="@row"></StakeHolderList>
-                                </Content>
-
-                            </FluentTab>
-                            <FluentTab Label="Scope">
-                                <Content>
-                                    <ScopeList GetAll="GetAll" Cancel="CancelAsync" Parent="@row"></ScopeList>
-                                </Content>
-
-                            </FluentTab>
-                            <FluentTab Label="Known risks">
-                                <Content>
-                                    <KnownRiskList GetAll="GetAll" Cancel="CancelAsync" Parent="@row"></KnownRiskList>
-                                </Content>
-
-                            </FluentTab>
-                            <FluentTab Label="Sucessfull factors">
-                                <Content>
-                                    <SucessfullFactorList GetAll="GetAll" Cancel="CancelAsync" Parent="@row"></SucessfullFactorList>
-                                </Content>
-
-                            </FluentTab>
-                            <FluentTab Label="Decission criterias">
-                                <Content>
-                                    <DecissionCriteriaList GetAll="GetAll" Cancel="CancelAsync" Parent="@row"></DecissionCriteriaList>
-                                </Content>
-
-                            </FluentTab>
-                        </FluentTabs>
-                    </ChildContent>
-                </FluentAccordionItem>
+                    </FluentTab>
+                </FluentTabs>
             }
 
-        }
-
-    </FluentAccordion>
+        </FluentStack>
+    }
 
 
 </FluentStack>
 
+
 @code {
 
-    CreateTemplate<CreateCaseRequest> CreateForm = null!;
-    EditTemplate<UpdateCaseRequest> EditForm = null!;
+    public async Task Show(CaseResponse response)
+    {
+        App.AppState.CaseId = App.AppState.CaseId == response.Id ? null : response.Id;
+        await AppStateService.UpdateProjectCase(App.AppState);
+        await App.GetActiveProject();
+        StateHasChanged();
 
-    string? SelectedValue;
-
+    }
+    private async Task HandleOnTabChange(FluentTab tab)
+    {
+        App.AppState.CaseTab = tab.Id;
+        await AppStateService.UpdateCaseTab(App.AppState);
+   
+        StateHasChanged();
+    }
 
 }

@@ -1,5 +1,4 @@
-﻿@using Shared.Models.StakeHolders.Requests
-@using Shared.Models.StakeHolders.Responses
+﻿@page "/StakeHolders"
 
 <FluentStack Orientation="Orientation.Vertical" Style="width:100%">
     <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
@@ -14,117 +13,31 @@
                       @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
                       Placeholder="Search..." />
     </FluentStack>
-    @if (CreateResponse != null)
-    {
-        <CreateTemplate @ref=CreateForm TItem="CreateStakeHolderRequest" @bind-Model="@CreateResponse"
-                        Cancel="CancelAsync" GetAll="GetAll" Title="Create StakeHolder">
-            <Content>
-                <FluentStack Orientation="Orientation.Vertical">
-                    <TextBox Label="Name"
-                             @bind-Value=@CreateResponse.Name
-                             Placeholder="Define name"
-                             Validate="CreateForm.ValidateAsync"></TextBox>
-                    <ValidationMessage For="() => CreateResponse.Name" style="color:red; font-size:x-small;" />
-                    <TextBox Label="Role"
-                             @bind-Value=@CreateResponse.Role
-                             Placeholder="Define Role"
-                             Validate="CreateForm.ValidateAsync"></TextBox>
-                    <ValidationMessage For="() => CreateResponse.Role" style="color:red; font-size:x-small;" />
-                    <TextBox Label="Email"
-                             @bind-Value=@CreateResponse.Email
-                             TextFieldType="TextFieldType.Email"
-                             InputMode="InputMode.Email"
-                             Placeholder="Define Email"
-                             Validate="CreateForm.ValidateAsync"></TextBox>
-                    <ValidationMessage For="() => CreateResponse.Email" style="color:red; font-size:x-small;" />
-                    <TextBox Label="Tel"
-                             @bind-Value=@CreateResponse.PhoneNumber
-                             TextFieldType="TextFieldType.Tel"
-                             InputMode="InputMode.Telephone"
-                             Placeholder="Define Phone Number"
-                             Validate="CreateForm.ValidateAsync"></TextBox>
-                    <ValidationMessage For="() => CreateResponse.PhoneNumber" style="color:red; font-size:x-small;" />
-
-                </FluentStack>
-
-            </Content>
-
-        </CreateTemplate>
-
-    }
-
-
-
     @foreach (var row in FilteredItems)
     {
-        @if (EditResponse != null && EditResponse.Id == row.Id)
-        {
-           
-                <EditTemplate @ref=EditForm TItem="UpdateStakeHolderRequest" @bind-Model=@EditResponse Cancel="CancelAsync"
-                              GetAll="GetAll" Title="Edit StakeHolder">
-                    <Content>
-                        <FluentStack Orientation="Orientation.Vertical">
-                            <TextBox Label="Name"
-                                     @bind-Value=@EditResponse.Name
-                                     Placeholder="Define name"
-                                     Validate="EditForm.ValidateAsync"></TextBox>
-                            <ValidationMessage For="() => EditResponse.Name" style="color:red; font-size:x-small;" />
-                            <TextBox Label="Role"
-                                     @bind-Value=@EditResponse.Role
-                                     Placeholder="Define Role"
-                                     Validate="EditForm.ValidateAsync"></TextBox>
-                            <ValidationMessage For="() => EditResponse.Role" style="color:red; font-size:x-small;" />
-                            <TextBox Label="Email"
-                                     @bind-Value=@EditResponse.Email
-                                     TextFieldType="TextFieldType.Email"
-                                     InputMode="InputMode.Email"
-                                     Placeholder="Define Email"
-                                     Validate="EditForm.ValidateAsync"></TextBox>
-                            <ValidationMessage For="() => EditResponse.Email" style="color:red; font-size:x-small;" />
-                            <TextBox Label="Tel"
-                                     @bind-Value=@EditResponse.PhoneNumber
-                                     TextFieldType="TextFieldType.Tel"
-                                     InputMode="InputMode.Telephone"
-                                     Placeholder="Define Phone Number"
-                                     Validate="EditForm.ValidateAsync"></TextBox>
-                            <ValidationMessage For="() => EditResponse.PhoneNumber" style="color:red; font-size:x-small;" />
+        <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
+            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+            <FluentSpacer />
+            <div>
+                <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
 
-                        </FluentStack>
-                    </Content>
+                </FluentButton>
+                <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
 
-                </EditTemplate>
-           
-        }
-        else
-        {
-            <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
-                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                <FluentSpacer />
-                <div>
-                    <FluentButton Id="editstakh" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
-
-                    </FluentButton>
-                    <FluentTooltip Anchor="editstakh" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                    <FluentButton Id="deletestakh" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
-
-                    </FluentButton>
-                    <FluentTooltip Anchor="deletestakh" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+                </FluentButton>
+                <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
 
-                </div>
-            </FluentStack>
-        }
+            </div>
+        </FluentStack>
 
     }
-
-
 
 
 </FluentStack>
 
 @code {
 
-    CreateTemplate<CreateStakeHolderRequest> CreateForm = null!;
-    EditTemplate<UpdateStakeHolderRequest> EditForm = null!;
 
 }

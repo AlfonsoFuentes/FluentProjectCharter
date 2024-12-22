@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Shared.Models.Assumptions.Responses;
 using Shared.Models.Backgrounds.Requests;
 using Shared.Models.Backgrounds.Responses;
 using Shared.Models.Cases.Responses;
@@ -17,44 +18,21 @@ public partial class BackGroundList
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Action Cancel { get; set; }
+
 
     [Inject]
     private IGenericService Service { get; set; } = null!;
     public List<BackGroundResponse> Items => Parent == null ? new() : Parent.BackGrounds;
     string nameFilter;
     public List<BackGroundResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-    CreateBackGroundRequest CreateResponse = null!;
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-            ProjectId = Parent.ProjectId,
-            CaseId=Parent.Id,
-        };
+        Navigation.NavigateTo($"/CreateBackGround/{Parent.Id}/{Parent.ProjectId}");
+
     }
-
-
-
-    public void CancelAsync()
-    {
-        CreateResponse = null!;
-        EditResponse = null!;
-        Cancel();
-    }
-
-    public UpdateBackGroundRequest EditResponse { get; set; } = null!;
-
     void Edit(BackGroundResponse response)
     {
-        EditResponse = new()
-        {
-            Id = response.Id,
-            ProjectId = Parent.ProjectId,
-            Name = response.Name,
-        };
+        Navigation.NavigateTo($"/UpdateBackGround/{response.Id}/{Parent.ProjectId}");
     }
     public async Task Delete(BackGroundResponse response)
     {

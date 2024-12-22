@@ -16,44 +16,27 @@ public partial class ScopeList
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Action Cancel { get; set; }
+
 
     [Inject]
     private IGenericService Service { get; set; } = null!;
     public List<ScopeResponse> Items => Parent == null ? new() : Parent.Scopes;
     string nameFilter;
     public List<ScopeResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-    CreateScopeRequest CreateResponse = null!;
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-            ProjectId = Parent.ProjectId,
-            CaseId=Parent.Id,
-        };
+        Navigation.NavigateTo($"/CreateScope/{Parent.Id}/{Parent.ProjectId}");
+
     }
 
-
-
-    public void CancelAsync()
+    void CancelAsync()
     {
-        CreateResponse = null!;
-        EditResponse = null!;
-        Cancel();
-    }
 
-    public UpdateScopeRequest EditResponse { get; set; } = null!;
+    }
 
     void Edit(ScopeResponse response)
     {
-        EditResponse = new()
-        {
-            Id = response.Id,
-            ProjectId = Parent.ProjectId,
-            Name = response.Name,
-        };
+        Navigation.NavigateTo($"/UpdateScope/{response.Id}/{Parent.ProjectId}");
     }
     public async Task Delete(ScopeResponse response)
     {

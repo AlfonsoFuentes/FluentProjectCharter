@@ -1,4 +1,4 @@
-﻿@using Shared.Models.KnownRisks.Requests
+﻿
 
 <FluentStack Orientation="Orientation.Vertical" Style="width:100%">
     <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
@@ -13,65 +13,29 @@
                       @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
                       Placeholder="Search..." />
     </FluentStack>
-    @if (CreateResponse != null)
-    {
-        <CreateTemplate @ref=CreateForm TItem="CreateKnownRiskRequest" @bind-Model="@CreateResponse"
-                        Cancel="CancelAsync" GetAll="GetAll" Title="Create Known Risk">
-            <Content>
-                <TextArea Label="Name"
-                          @bind-Value=@CreateResponse.Name
-                          Placeholder="Define name"
-                          Validate="CreateForm.ValidateAsync"></TextArea>
-                <ValidationMessage For="() => CreateResponse.Name" style="color:red; font-size:x-small;" />
-            </Content>
-
-        </CreateTemplate>
-
-    }
-
-
     @foreach (var row in FilteredItems)
     {
-        @if (EditResponse != null && EditResponse.Id == row.Id)
-        {
-          
-                <EditTemplate @ref=EditForm TItem="UpdateKnownRiskRequest" @bind-Model=@EditResponse Cancel="CancelAsync"
-                              GetAll="GetAll" Title="Edit KnownRisk">
-                    <Content>
-                        <TextArea Label="Name"
-                                  @bind-Value=@EditResponse.Name
-                                  Placeholder="Define name"
-                                  Validate="EditForm.ValidateAsync"></TextArea>
-                        <ValidationMessage For="() => EditResponse.Name" style="color:red; font-size:x-small;" />
-                    </Content>
+        <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
 
-                </EditTemplate>
-           
-        }
-        else
-        {
-            <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
+            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+            <FluentSpacer />
+            <div>
+                <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
 
-                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                <FluentSpacer />
-                <div>
-                    <FluentButton Id="editKrisk" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+                </FluentButton>
+                <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="editKrisk" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                    <FluentButton Id="deleteKrisk" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
-
-                    </FluentButton>
-                    <FluentTooltip Anchor="deleteKrisk" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+                </FluentButton>
+                <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
 
-                </div>
-            </FluentStack>
-
-
-        }
+            </div>
+        </FluentStack>
 
     }
+
+
 
 
 
@@ -80,7 +44,6 @@
 
 @code {
 
-    CreateTemplate<CreateKnownRiskRequest> CreateForm = null!;
-    EditTemplate<UpdateKnownRiskRequest> EditForm = null!;
+
 
 }

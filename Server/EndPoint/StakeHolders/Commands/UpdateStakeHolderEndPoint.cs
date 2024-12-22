@@ -14,7 +14,7 @@ namespace Server.EndPoint.StakeHolders.Commands
                     if (row == null) { return Result.Fail(Data.NotFound); }
                     await Repository.UpdateAsync(row);
                     Data.Map(row);
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.StakeHolders.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.StakeHolders.Cache.Key(row.Id)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 
@@ -33,7 +33,7 @@ namespace Server.EndPoint.StakeHolders.Commands
             row.Name = request.Name;
             row.Email = request.Email;
             row.PhoneNumber = request.PhoneNumber;
-            row.Role = request.Role;
+            row.Area=request.Area;
             return row;
         }
 

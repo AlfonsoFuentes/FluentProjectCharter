@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components;
 using Shared.Enums.ExportFiles;
 using Shared.Models.OrganizationStrategies.Requests;
 using Shared.Models.OrganizationStrategies.Responses;
-using Web.Infrastructure.Managers.Generic;
 using Web.Infrastructure.Managers.OrganizationStrategys;
 #nullable disable
 namespace FluentWeb.Pages.OrganizationStrategys;
@@ -12,8 +11,7 @@ public partial class OrganizationStrategyList
     public App App { get; set; }
     [Inject]
     private IOrganizationStrategyService Service { get; set; }
-    [Inject]
-    private IGenericService GenericService { get; set; } = null!;
+
     OrganizationStrategyResponseList Response { get; set; } = new();
     string nameFilter { get; set; } = string.Empty;
     Func<OrganizationStrategyResponse, bool> fiterexpresion => x =>
@@ -35,28 +33,19 @@ public partial class OrganizationStrategyList
             StateHasChanged();
         }
     }
-    CreateOrganizationStrategyRequest CreateResponse = null!;
+
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-
-        };
+        Navigation.NavigateTo($"/CreateOrganizationStrategy");
     }
-    UpdateOrganizationStrategyRequest EditResponse = null!;
-
-    public void Edit(OrganizationStrategyResponse Response)
+    void Edit(OrganizationStrategyResponse response)
     {
-        EditResponse = new()
-        {
-            Id = Response.Id,
-            Name = Response.Name,
-        };
+        Navigation.NavigateTo($"/UpdateOrganizationStrategy/{response.Id}");
     }
+    
     void CancelAsync()
     {
-        EditResponse = null!;
-        CreateResponse = null!;
+       
         StateHasChanged();
     }
     public async Task Delete(OrganizationStrategyResponse response)

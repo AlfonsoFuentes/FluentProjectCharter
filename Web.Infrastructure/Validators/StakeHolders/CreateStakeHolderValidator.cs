@@ -1,4 +1,6 @@
-﻿using Shared.Models.StakeHolders.Requests;
+﻿using FluentValidation;
+using Shared.Enums.StakeHolderTypes;
+using Shared.Models.StakeHolders.Requests;
 using Shared.Models.StakeHolders.Validators;
 using Web.Infrastructure.Managers.Generic;
 
@@ -11,10 +13,11 @@ namespace Web.Infrastructure.Validators.BackGrounds
         public CreateStakeHolderValidator(IGenericService service)
         {
             Service = service;
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
+           
             RuleFor(x => x.Email).NotEmpty().WithMessage("Email must be defined!");
+            RuleFor(x => x.Area).NotEmpty().WithMessage("Area must be defined!");
+
             RuleFor(x => x.Email).EmailAddress().WithMessage("Email must be valid!");
-            RuleFor(x => x.Role).NotEmpty().WithMessage("Role must be defined!");
             RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("Phone Number must be defined!");
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
@@ -28,12 +31,13 @@ namespace Web.Infrastructure.Validators.BackGrounds
             ValidateStakeHolderRequest validate = new()
             {
                 Name = name,
-                CaseId = request.CaseId,
+
 
             };
             var result = await Service.Validate(validate);
             return !result;
         }
+        
     }
     public class UpdateStakeHolderValidator : AbstractValidator<UpdateStakeHolderRequest>
     {
@@ -44,8 +48,9 @@ namespace Web.Infrastructure.Validators.BackGrounds
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
             RuleFor(x => x.Email).NotEmpty().WithMessage("Email must be defined!");
+            RuleFor(x => x.Area).NotEmpty().WithMessage("Area must be defined!");
             RuleFor(x => x.Email).EmailAddress().WithMessage("Email must be valid!");
-            RuleFor(x => x.Role).NotEmpty().WithMessage("Role must be defined!");
+          
             RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("Phone Number must be defined!");
 
 
@@ -60,12 +65,13 @@ namespace Web.Infrastructure.Validators.BackGrounds
             ValidateStakeHolderRequest validate = new()
             {
                 Name = name,
-                CaseId = request.CaseId,
+             
                 Id = request.Id
 
             };
             var result = await Service.Validate(validate);
             return !result;
         }
+       
     }
 }

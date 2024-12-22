@@ -24,11 +24,11 @@ namespace Server.Repositories
     {
         public IAppDbContext Context { get; set; }
 
-        string _tenantId {  get; set; }
+        string _tenantId { get; set; }
         public QueryRepository(IAppDbContext context)
         {
             Context = context;
-            _tenantId=context._tenantId;
+            _tenantId = context._tenantId;
         }
         public async Task<T?> GetAsync<T>(string Cache,
          Func<IQueryable<T>, IIncludableQueryable<T, object>> Includes = null!,
@@ -70,6 +70,7 @@ namespace Server.Repositories
            Expression<Func<T, bool>> Criteria = null!,
           Expression<Func<T, object>> OrderBy = null!) where T : class, IAuditableEntity
         {
+            //var cache = typeof(T).GetInterfaces().Any(x => x == typeof(ITenantEntity)) ? $"{Cache}-{_tenantId}" : Cache;
             var cache = $"{Cache}-{_tenantId}";
             var rows = await Context.GetOrAddCacheAsync(cache, async () =>
             {

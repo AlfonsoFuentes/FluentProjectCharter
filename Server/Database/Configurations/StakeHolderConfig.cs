@@ -10,7 +10,10 @@ namespace Server.Database.Configurations
         {
             builder.HasKey(ci => ci.Id);
 
-
+            builder.HasOne(c => c.RoleInsideProject)
+         .WithMany(t => t.StakeHolders)
+         .HasForeignKey(x => x.RoleInsideProjectId)
+         .OnDelete(DeleteBehavior.NoAction);
 
         }
 

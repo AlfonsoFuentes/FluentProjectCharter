@@ -1,0 +1,21 @@
+﻿@page "/UpdateOrganizationStrategy/{Id:guid}"
+@using Shared.Models.OrganizationStrategies.Requests
+<EditTemplate @ref=EditForm TItem="UpdateOrganizationStrategyRequest" @bind-Model="@Model"
+                  Title="Create Organization Strategy">
+    <Content>
+        <TextArea Label="Name"
+                  @bind-Value=@Model.Name
+                  Placeholder="Define name"
+                  Validate="EditForm.ValidateAsync"></TextArea>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+
+    </Content>
+
+</EditTemplate>
+
+
+
+
+@code {
+    EditTemplate<UpdateOrganizationStrategyRequest> EditForm = null!;
+}

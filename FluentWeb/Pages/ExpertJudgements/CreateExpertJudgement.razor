@@ -1,0 +1,50 @@
+﻿@page "/CreateExpertJudgement/{CaseId:guid}/{ProjectId:guid}"
+<CreateTemplate @ref=CreateForm TItem="CreateExpertJudgementRequest" @bind-Model="@Model"
+                 Title="Create ExpertJudgement">
+    <Content>
+        <TextArea Label="Name"
+                  @bind-Value=@Model.Name
+                  Placeholder="Define name"
+                  Validate="CreateForm.ValidateAsync"></TextArea>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
+            <FluentSelect TOption="StakeHolderResponse"
+                          Label="Select a Expert"
+                          Items="@StakeHolderResponseList.Items"
+                          Id="people-listbox"
+                          Width="80%"
+                          Height="350px"
+                          Immediate="true"
+                          @onchange="ChangeSelect"
+                          Placeholder="Make a selection..."
+                          OptionValue="@(p => p.Name)"
+                          OptionText="@(p => p.Name)"
+                          @bind-Value="@expert"
+                          @bind-SelectedOption="@Model.Expert" />
+            <ValidationMessage For="() => Model.Expert" style="color:red; font-size:x-small;" />
+            <FluentButton Id="addorgan" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@(()=>AddStakeHolder())">
+
+            </FluentButton>
+            <FluentTooltip Anchor="addorgan" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Expert</FluentTooltip>
+
+        </FluentStack>
+    </Content>
+
+</CreateTemplate>
+
+@code {
+    CreateTemplate<CreateExpertJudgementRequest> CreateForm = null!;
+    
+    string? expert;
+    async Task ChangeSelect(ChangeEventArgs args)
+    {
+        if (args == null || args.Value == null) return;
+        if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
+        {
+            Model.Expert = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
+            expert = args.Value.ToString();
+            await CreateForm.ValidateAsync();
+        }
+
+    }
+}

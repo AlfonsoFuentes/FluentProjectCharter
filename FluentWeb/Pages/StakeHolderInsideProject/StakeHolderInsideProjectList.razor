@@ -1,0 +1,45 @@
+﻿<FluentStack Orientation="Orientation.Vertical" Style="width:100%">
+    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+        <FluentButton Id="addScop" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
+
+        </FluentButton>
+        <FluentTooltip Anchor="addScop" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Scope</FluentTooltip>
+
+        <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage StakeHolders</strong></FluentLabel>
+        <FluentSpacer />
+        <FluentSearch @bind-Value="@nameFilter"
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
+                      Placeholder="Search..." />
+    </FluentStack>
+    @foreach (var row in FilteredItems)
+    {
+        <FluentStack Orientation=" Orientation.Vertical" Style="border:solid 1px lightgray;padding:6px; border-radius:5px;">
+            <FluentStack Orientation=" Orientation.Horizontal">
+                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+                <FluentLabel Typo="Typography.Body">@row.Role.Name</FluentLabel>
+                <FluentSpacer />
+                <div>
+                    <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+
+                    </FluentButton>
+                    <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                    <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+
+                    </FluentButton>
+                    <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+
+                 
+                </div>
+            </FluentStack>
+           
+        </FluentStack>
+    }
+
+
+
+
+</FluentStack>
+
+@code {
+
+}

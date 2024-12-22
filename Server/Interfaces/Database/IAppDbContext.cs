@@ -5,7 +5,7 @@ namespace Server.Interfaces.Database
 {
     public interface IAppDbContext
     {
-        string _tenantId {  get; set; }
+        string _tenantId { get; set; }
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
         DbSet<Project> Projects { get; set; }
         DbSet<Case> Cases { get; set; }
@@ -22,10 +22,10 @@ namespace Server.Interfaces.Database
         DbSet<DeliverableRisk> DeliverableRisks { get; set; }
         DbSet<Constrainst> Constrainsts { get; set; }
         DbSet<Bennefit> Bennefits { get; set; }
-        
-
-
-
+        DbSet<ExpertJudgement> ExpertJudgements { get; set; }
+        DbSet<HighLevelRequirement> HighLevelRequirements { get; set; }
+        DbSet<AppState> AppStates { get; set; }     
+        DbSet<RoleInsideProject> RoleInsideProjects { get; set; }
         Task<int> SaveChangesAndRemoveCacheAsync(params string[] cacheKeys);
         Task<T> GetOrAddCacheAsync<T>(string key, Func<Task<T>> addItemFactory);
     }

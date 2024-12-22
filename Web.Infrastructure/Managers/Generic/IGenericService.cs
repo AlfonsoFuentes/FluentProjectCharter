@@ -1,6 +1,7 @@
 ﻿
 
 using Shared.Models.FileResults.Generics.Records;
+using Shared.Models.FileResults.Generics.Reponses;
 using Shared.Models.FileResults.Generics.Request;
 
 namespace Web.Infrastructure.Managers.Generic
@@ -11,8 +12,8 @@ namespace Web.Infrastructure.Managers.Generic
         Task<bool> Validate<T>(T request) where T : class, IRequest;
         Task<IResult> Update<T>(T request) where T : class, IRequest;
         Task<IResult> Delete<T>(T request) where T : class, IRequest;
-        Task<IResult<TResponse>> GetToUpdateById<TResponse, TRequest>(TRequest request)
-            where TResponse : class, IRequest
+        Task<IResult<TResponse>> GetById<TResponse, TRequest>(TRequest request)
+            where TResponse : class, IResponse
             where TRequest : class, IGetById;
     }
     public class GenericService : IGenericService
@@ -45,8 +46,8 @@ namespace Web.Infrastructure.Managers.Generic
             var result = await http.PostAsJsonAsync(request.EndPointName, request);
             return await result.ToObject<bool>();
         }
-        public async Task<IResult<TResponse>> GetToUpdateById<TResponse, TRequest>(TRequest request)
-            where TResponse : class, IRequest
+        public async Task<IResult<TResponse>> GetById<TResponse, TRequest>(TRequest request)
+            where TResponse : class, IResponse
             where TRequest : class, IGetById
         {
 

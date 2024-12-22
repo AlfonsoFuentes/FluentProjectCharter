@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Shared.Models.Assumptions.Responses;
 using Shared.Models.Constrainsts.Requests;
 using Shared.Models.Constrainsts.Responses;
 using Shared.Models.Deliverables.Responses;
@@ -16,44 +17,23 @@ public partial class ConstraintList
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Action Cancel { get; set; }
 
-    [Inject]
-    private IGenericService Service { get; set; } = null!;
+
+ 
     public List<ConstrainstResponse> Items => Parent == null ? new() : Parent.Constrainsts;
     string nameFilter;
     public List<ConstrainstResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-    CreateConstrainstRequest CreateResponse = null!;
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-            ProjectId = Parent.ProjectId,
-            DeliverableId=Parent.Id,
-        };
+        Navigation.NavigateTo($"/CreateConstrainst/{Parent.Id}/{Parent.ProjectId}");
+
     }
 
 
-
-    public void CancelAsync()
-    {
-        CreateResponse = null!;
-        EditResponse = null!;
-        Cancel();
-    }
-
-    public UpdateConstrainstRequest EditResponse { get; set; } = null!;
 
     void Edit(ConstrainstResponse response)
     {
-        EditResponse = new()
-        {
-            Id = response.Id,
-            ProjectId = Parent.ProjectId,
-            Name = response.Name,
-        };
+        Navigation.NavigateTo($"/UpdateConstrainst/{response.Id}/{Parent.ProjectId}");
     }
     public async Task Delete(ConstrainstResponse response)
     {
@@ -71,7 +51,7 @@ public partial class ConstraintList
                 Name = response.Name,
                 ProjectId = Parent.Id,
             };
-            var resultDelete = await Service.Delete(request);
+            var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)
             {
                 await GetAll.Invoke();

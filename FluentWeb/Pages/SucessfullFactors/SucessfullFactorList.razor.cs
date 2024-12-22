@@ -16,44 +16,27 @@ public partial class SucessfullFactorList
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Action Cancel { get; set; }
+
 
     [Inject]
     private IGenericService Service { get; set; } = null!;
     public List<SucessfullFactorResponse> Items => Parent == null ? new() : Parent.SucessfullFactors;
     string nameFilter;
     public List<SucessfullFactorResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-    CreateSucessfullFactorRequest CreateResponse = null!;
     public void AddNew()
     {
-        CreateResponse = new()
-        {
-            ProjectId = Parent.ProjectId,
-            CaseId=Parent.Id,
-        };
+        Navigation.NavigateTo($"/CreateSucessfullFactor/{Parent.Id}/{Parent.ProjectId}");
+
     }
 
-
-
-    public void CancelAsync()
+    void CancelAsync()
     {
-        CreateResponse = null!;
-        EditResponse = null!;
-        Cancel();
-    }
 
-    public UpdateSucessfullFactorRequest EditResponse { get; set; } = null!;
+    }
 
     void Edit(SucessfullFactorResponse response)
     {
-        EditResponse = new()
-        {
-            Id = response.Id,
-            ProjectId = Parent.ProjectId,
-            Name = response.Name,
-        };
+        Navigation.NavigateTo($"/UpdateSucessfullFactor/{response.Id}/{Parent.ProjectId}");
     }
     public async Task Delete(SucessfullFactorResponse response)
     {

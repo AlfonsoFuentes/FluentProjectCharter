@@ -15,16 +15,6 @@ public partial class Login
     }
     private TokenRequest _registerUserModel = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-     
-        var state = await _stateProvider.GetAuthenticationStateAsync();
-        if (state != new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())))
-        {
-
-            _NavigationManager.NavigateTo("/");
-        }
-    }
 
     private async Task SubmitAsync()
     {
@@ -32,6 +22,11 @@ public partial class Login
         if (!result.Succeeded)
         {
             _snackBar.ShowError(result.Messages);
+
+        }
+        else
+        {
+            await App.GetCurrentUser();
         }
 
     }

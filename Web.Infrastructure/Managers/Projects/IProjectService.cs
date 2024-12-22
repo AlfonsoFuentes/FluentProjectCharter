@@ -8,9 +8,10 @@ namespace Web.Infrastructure.Managers.Projects
     {
         Task<IResult<ProjectResponse>> GetById(Guid Id);
         Task<IResult<ProjectResponseList>> GetAll();
-    
-        Task<IResult<FileResult>> Export(ExportFileType fileType, List<ProjectResponse> query);
-    
+        Task<IResult<FileResult>> ExportPDF(ProjectResponse query);
+
+        //Task<IResult<FileResult>> Export(ExportFileType fileType, List<ProjectResponse> query);
+
     }
     public class ProjectService : IProjectService
     {
@@ -29,13 +30,14 @@ namespace Web.Infrastructure.Managers.Projects
             return await result.ToResult<ProjectResponseList>();
         }
 
-        public async Task<IResult<FileResult>> Export(ExportFileType fileType, List<ProjectResponse> query)
+
+        public async Task<IResult<FileResult>> ExportPDF(ProjectResponse query)
         {
 
-            var result = await http.PostAsJsonAsync(StaticClass.Projects.EndPoint.Export, new ProjectGetAllExport(fileType, query));
+            var result = await http.PostAsJsonAsync(StaticClass.Projects.EndPoint.Export, new ProjectGetAllExport(ExportFileType.pdf, query));
             return await result.ToResult<FileResult>();
+
         }
-       
         public async Task<IResult<ProjectResponse>> GetById(Guid Id)
         {
             GetProjectByIdRequest request = new()
@@ -46,5 +48,5 @@ namespace Web.Infrastructure.Managers.Projects
             return await result.ToResult<ProjectResponse>();
         }
     }
-  
+
 }

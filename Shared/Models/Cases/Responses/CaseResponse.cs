@@ -1,5 +1,6 @@
 ﻿using Shared.Models.Backgrounds.Responses;
 using Shared.Models.DecissionCriterias.Responses;
+using Shared.Models.ExpertJudgements.Responses;
 using Shared.Models.KnownRisks.Responses;
 using Shared.Models.OrganizationStrategies.Responses;
 using Shared.Models.Scopes.Responses;
@@ -18,14 +19,13 @@ namespace Shared.Models.Cases.Responses
         //Enunciado situacional que documente el problema o la oportunidad
     
 
-        //Identificacion de los Interesados
-        public List<StakeHolderResponse> StakeHolders { get; set; } = new();
+       
         //Identificacion del Alcance
         public List<ScopeResponse> Scopes { get; set; } = new();
 
         //Identificacion de estrategias, metas y objetivos de la organizacion
         public OrganizationStrategyResponse? OrganizationStrategy { get; set; } = null!;
-        public Guid? OrganizationStrategyId { get; set; }
+   
 
         //Identificacion de los riesgos conocidos
         public List<KnownRiskResponse> KnownRisks { get; set; } = new();
@@ -33,6 +33,7 @@ namespace Shared.Models.Cases.Responses
         public List<SucessfullFactorResponse> SucessfullFactors { get; set; } = new();
         //Identificacion de los criterios de decision
         public List<DecissionCriteriaResponse> DecissionCriterias { get; set; } = new();
-
+        //Juicio de expertos
+        public List<ExpertJudgementResponse> ExpertJudgements { get; set; } = new();
     }
 }

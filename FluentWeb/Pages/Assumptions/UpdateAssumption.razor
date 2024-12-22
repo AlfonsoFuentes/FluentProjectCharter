@@ -1,0 +1,16 @@
+﻿@page "/UpdateAssumption/{Id:guid}/{ProjectId:guid}"
+<EditTemplate @ref=EditForm TItem="UpdateAssumptionRequest" @bind-Model=@Model 
+             Title="Edit Assumption">
+    <Content>
+        <TextArea Label="Name"
+                  @bind-Value=@Model.Name
+                  Placeholder="Define name"
+                  Validate="EditForm.ValidateAsync"></TextArea>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+    </Content>
+
+</EditTemplate>
+
+@code {
+    EditTemplate<UpdateAssumptionRequest> EditForm = null!;
+}

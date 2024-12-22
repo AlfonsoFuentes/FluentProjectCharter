@@ -1,6 +1,5 @@
-﻿
-@using FluentWeb.Pages.Deliverables
-@using Shared.Models.Scopes.Requests
+﻿@using Shared.Models.Scopes.Responses
+
 
 <FluentStack Orientation="Orientation.Vertical" Style="width:100%">
     <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
@@ -13,81 +12,51 @@
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
                       @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
-          
                       Placeholder="Search..." />
     </FluentStack>
-    @if (CreateResponse != null)
+    @foreach (var row in FilteredItems)
     {
-        <CreateTemplate @ref=CreateForm TItem="CreateScopeRequest" @bind-Model="@CreateResponse"
-                        Cancel="CancelAsync" GetAll="GetAll" Title="Create Scope">
-            <Content>
-                <TextArea Label="Name"
-                          @bind-Value=@CreateResponse.Name
-                          Placeholder="Define name"
-                          Validate="CreateForm.ValidateAsync"></TextArea>
-                <ValidationMessage For="() => CreateResponse.Name" style="color:red; font-size:x-small;" />
-            </Content>
+        <FluentStack Orientation=" Orientation.Vertical" Style="border:solid 1px lightgray;padding:6px; border-radius:5px;">
+            <FluentStack Orientation=" Orientation.Horizontal">
+                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+                <FluentSpacer />
+                <div>
+                    <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
 
-        </CreateTemplate>
+                    </FluentButton>
+                    <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                    <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
 
+                    </FluentButton>
+                    <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+
+                    <FluentButton Id="@($"Show{row.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(row))"></FluentButton>
+                    <FluentTooltip Anchor="@($"Show{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
+
+                </div>
+            </FluentStack>
+            @if (App.AppState.ScopeId != null && row.Id == App.AppState.ScopeId)
+            {
+                <DeliverableList Parent="@row" GetAll="GetAll"></DeliverableList>
+            }
+
+        </FluentStack>
     }
 
-    <FluentAccordion Style="width:100%" ExpandMode="AccordionExpandMode.Multi">
-        @foreach (var row in FilteredItems)
-        {
-            @if (EditResponse != null && EditResponse.Id == row.Id)
-            {
-                <EditTemplate @ref=EditForm TItem="UpdateScopeRequest" @bind-Model=@EditResponse Cancel="CancelAsync"
-                              GetAll="GetAll" Title="Edit Scope">
-                    <Content>
-                        <TextArea Label="Name"
-                                  @bind-Value=@EditResponse.Name
-                                  Placeholder="Define name"
-                                  Validate="EditForm.ValidateAsync"></TextArea>
-                        <ValidationMessage For="() => EditResponse.Name" style="color:red; font-size:x-small;" />
-                    </Content>
 
-                </EditTemplate>
-
-            }
-            else
-            {
-                <FluentAccordionItem>
-                    <HeadingTemplate>
-                        <FluentStack Orientation=" Orientation.Horizontal">
-                            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                            <FluentSpacer />
-                            <div>
-                                <FluentButton Id="editScop" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
-
-                                </FluentButton>
-                                <FluentTooltip Anchor="editScop" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                                <FluentButton Id="deleteScop" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
-
-                                </FluentButton>
-                                <FluentTooltip Anchor="deleteScop" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
-
-
-                            </div>
-                        </FluentStack>
-
-                    </HeadingTemplate>
-                    <ChildContent>
-                        <DeliverableList Parent="@row" Cancel="CancelAsync" GetAll="GetAll"></DeliverableList>
-                    </ChildContent>
-                </FluentAccordionItem>
-            }
-
-        }
-
-    </FluentAccordion>
 
 
 </FluentStack>
 
 @code {
 
-    CreateTemplate<CreateScopeRequest> CreateForm = null!;
-    EditTemplate<UpdateScopeRequest> EditForm = null!;
-    
+
+    public async Task Show(ScopeResponse response)
+    {
+        App.AppState.ScopeId = App.AppState.ScopeId == response.Id ? null : App.AppState.ScopeId = response.Id;
+        await AppStateService.UpdateCaseScope(App.AppState);
+        await App.GetActiveProject();
+        StateHasChanged();
+    }
+
 }

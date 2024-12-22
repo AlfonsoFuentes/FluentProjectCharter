@@ -1,11 +1,11 @@
-﻿@using Shared.Models.SucessfullFactors.Requests
+﻿
 
 <FluentStack Orientation="Orientation.Vertical" Style="width:100%">
     <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
         <FluentButton Id="addSuccs" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
         </FluentButton>
-        <FluentTooltip Anchor="addSuccs" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add SucessfullFactor</FluentTooltip>
+        <FluentTooltip Anchor="addSuccs" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Sucessfull Factor</FluentTooltip>
 
         <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Sucessfull Factors</strong></FluentLabel>
         <FluentSpacer />
@@ -13,66 +13,28 @@
                       @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
                       Placeholder="Search..." />
     </FluentStack>
-    @if (CreateResponse != null)
-    {
-        <CreateTemplate @ref=CreateForm TItem="CreateSucessfullFactorRequest" @bind-Model="@CreateResponse"
-                        Cancel="CancelAsync" GetAll="GetAll" Title="Create Sucessfull Factor">
-            <Content>
-                <TextArea Label="Name"
-                          @bind-Value=@CreateResponse.Name
-                          Placeholder="Define name"
-                          Validate="CreateForm.ValidateAsync"></TextArea>
-                <ValidationMessage For="() => CreateResponse.Name" style="color:red; font-size:x-small;" />
-            </Content>
-
-        </CreateTemplate>
-
-    }
-
-
     @foreach (var row in FilteredItems)
     {
-        @if (EditResponse != null && EditResponse.Id == row.Id)
-        {
-           
-                <EditTemplate @ref=EditForm TItem="UpdateSucessfullFactorRequest" @bind-Model=@EditResponse Cancel="CancelAsync"
-                              GetAll="GetAll" Title="Edit Sucessfull Factor">
-                    <Content>
-                        <TextArea Label="Name"
-                                  @bind-Value=@EditResponse.Name
-                                  Placeholder="Define name"
-                                  Validate="EditForm.ValidateAsync"></TextArea>
-                        <ValidationMessage For="() => EditResponse.Name" style="color:red; font-size:x-small;" />
-                    </Content>
+        <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
 
-                </EditTemplate>
-  
-        }
-        else
-        {
-            <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
+            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+            <FluentSpacer />
+            <div>
+                <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
 
-                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                <FluentSpacer />
-                <div>
-                    <FluentButton Id="editSuccs" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+                </FluentButton>
+                <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="editSuccs" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                    <FluentButton Id="deleteSuccs" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
-
-                    </FluentButton>
-                    <FluentTooltip Anchor="deleteSuccs" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+                </FluentButton>
+                <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
 
-                </div>
-            </FluentStack>
 
-
-        }
+            </div>
+        </FluentStack>
 
     }
-
 
 
 
@@ -80,7 +42,6 @@
 
 @code {
 
-    CreateTemplate<CreateSucessfullFactorRequest> CreateForm = null!;
-    EditTemplate<UpdateSucessfullFactorRequest> EditForm = null!;
+  
 
 }

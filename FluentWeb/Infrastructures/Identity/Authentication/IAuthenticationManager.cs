@@ -14,6 +14,6 @@ namespace FluentWeb.Infrastructures.Identity.Authentication
 
         Task<string> TryForceRefreshToken();
 
-        Task<ClaimsPrincipal> CurrentUser();
+      
     }
 }

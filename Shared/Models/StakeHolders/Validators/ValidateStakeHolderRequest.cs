@@ -7,8 +7,7 @@ namespace Shared.Models.StakeHolders.Validators
     {
         public Guid? Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public Guid CaseId { get; set; }
-
+      
         public string EndPointName => StaticClass.StakeHolders.EndPoint.Validate;
 
         public override string Legend => Name;

@@ -1,5 +1,5 @@
 ﻿@page "/OrganizationStrategies"
-@using Shared.Models.OrganizationStrategies.Requests
+
 <FluentStack Orientation="Orientation.Vertical" Style="width:100%">
     <FluentStack Orientation=" Orientation.Horizontal">
         <div>
@@ -18,63 +18,28 @@
         <FluentSearch @bind-Value="@nameFilter"
         Placeholder="Search..." />
     </FluentStack>
-    @if (CreateResponse != null)
-    {
-        <CreateTemplate @ref=CreateForm TItem="CreateOrganizationStrategyRequest" @bind-Model="@CreateResponse"
-                        Cancel="CancelAsync" GetAll="UpdateAll" Title="Create Organization Strategy">
-            <Content>
-                <TextArea Label="Name"
-                          @bind-Value=@CreateResponse.Name
-                          Placeholder="Define name"
-                          Validate="CreateForm.ValidateAsync"></TextArea>
-                <ValidationMessage For="() => CreateResponse.Name" style="color:red; font-size:x-small;" />
 
-            </Content>
-
-        </CreateTemplate>
-
-    }
   
     @foreach (var row in FilteredItems)
     {
-        @if (EditResponse != null && EditResponse.Id == row.Id)
-        {
+        <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
 
-            <EditTemplate @ref=EditForm TItem="UpdateOrganizationStrategyRequest" @bind-Model=@EditResponse Cancel="CancelAsync"
-                          GetAll="UpdateAll" Title="Edit Organization Strategy">
-                <Content>
-                    <TextArea Label="Name"
-                              @bind-Value=@EditResponse.Name
-                              Placeholder="Define name"
-                              Validate="EditForm.ValidateAsync"></TextArea>
-                    <ValidationMessage For="() => EditResponse.Name" style="color:red; font-size:x-small;" />
-                </Content>
+            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+            <FluentSpacer />
+            <div>
+                <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
 
-            </EditTemplate>
+                </FluentButton>
+                <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
 
-        }
-        else
-        {
-            <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
-
-                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                <FluentSpacer />
-                <div>
-                    <FluentButton Id="editorgastra" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
-
-                    </FluentButton>
-                    <FluentTooltip Anchor="editorgastra" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                    <FluentButton Id="deleteorgastra" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
-
-                    </FluentButton>
-                    <FluentTooltip Anchor="deleteorgastra" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+                </FluentButton>
+                <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
 
-                </div>
-            </FluentStack>
 
-
-        }
+            </div>
+        </FluentStack>
 
     }
 
@@ -82,6 +47,6 @@
 </FluentStack>
 
 @code {
-    EditTemplate<UpdateOrganizationStrategyRequest> EditForm = null!;
-    CreateTemplate<CreateOrganizationStrategyRequest> CreateForm = null!;
+
+  
 }

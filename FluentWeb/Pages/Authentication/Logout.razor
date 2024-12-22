@@ -1,9 +1,12 @@
 ﻿@page "/logout"
 
 @code {
+    [CascadingParameter]
+    public App MainApp { get; set; } = null!;
     protected override async Task OnParametersSetAsync()
     {
         await _authenticationManager.Logout();
-        _NavigationManager.NavigateTo("/login");
+        MainApp.CurrentUser = null!;
+        _NavigationManager.NavigateTo("/");
     }
 }

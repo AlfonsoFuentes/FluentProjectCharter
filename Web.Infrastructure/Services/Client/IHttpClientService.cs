@@ -55,11 +55,13 @@ namespace Web.Infrastructure.Services.Client
                            var httpresult = await Http.PostAsJsonAsync(url, request);
                            return httpresult;
                        });
+                Console.WriteLine("Well Excuted");
                 HttpResponse.EnsureSuccessStatusCode();
                 return HttpResponse;
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 string message = ex.Message;
             }
             return result;

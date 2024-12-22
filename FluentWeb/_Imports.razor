@@ -22,6 +22,47 @@
 @using FluentWeb.Layout
 @using Blazored.FluentValidation
 @using FluentWeb.SharedComponents
+@using Shared.Models.Assumptions.Requests
+@using Shared.Models.Backgrounds.Requests
+@using Shared.Models.SucessfullFactors.Requests
+@using Shared.Enums.StakeHolderTypes
+@using Shared.Models.StakeHolders.Requests
+@using Shared.Models.StakeHolders.Responses
+@using Shared.Models.Requirements.Requests
+@using FluentWeb.Pages.Deliverables
+@using Shared.Models.Scopes.Requests
+@using Shared.Models.OrganizationStrategies.Requests
+@using Shared.Models.KnownRisks.Requests
+@using Shared.Models.Bennefits.Requests
+@using Shared.Models.ExpertJudgements.Requests
+@using FluentWeb.Pages.BackGrounds
+@using FluentWeb.Pages.DecissionCriterias
+@using FluentWeb.Pages.ExpertJudgements
+@using FluentWeb.Pages.KnownRisks
+@using FluentWeb.Pages.OrganizationStrategys
+@using FluentWeb.Pages.Scopes
+@using FluentWeb.Pages.StakeHolderInsideProject
+@using FluentWeb.Pages.SucessfullFactors
+@using Shared.Models.Cases.Requests
+@using Shared.Models.OrganizationStrategies.Responses
+@using FluentWeb.Pages.Assumptions
+@using FluentWeb.Pages.Bennefits
+@using FluentWeb.Pages.Constraints
+@using FluentWeb.Pages.DeliverableRisks
+@using FluentWeb.Pages.Requirements
+@using Shared.Models.Deliverables.Requests
+@using Shared.Models.DeliverableRisks.Requests
+@using Shared.Models.DecissionCriterias.Requests
+@using Shared.Models.Constrainsts.Requests
+@using FluentWeb.Pages.BusinessCases
+@using FluentWeb.Pages.Projects
+@using Shared.Models.Projects.Request
+@using Shared.Enums.ProjectNeedTypes
+@using Web.Infrastructure.Managers.AppStates
+@using Web.Infrastructure.Managers.Generic
+@using Shared.Models.HighLevelRequirements.Requests
+@using FluentWeb.Pages.HighLevelRequirements
+@using Shared.Models.Projects.Reponses
 
 @attribute [Authorize]
 @inject IBlazorDownloadFileService blazorDownloadFileService
@@ -38,3 +79,5 @@
 @inject NavigationBack Navigation
 @inject ISnackBar _snackBar
 @inject IDialogService DialogService
+@inject IGenericService GenericService
+@inject IAppStateService AppStateService

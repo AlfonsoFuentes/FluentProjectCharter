@@ -1,0 +1,17 @@
+﻿@page "/CreateHighLevelRequirement/{ProjectId:guid}"
+<CreateTemplate @ref=CreateForm TItem="CreateHighLevelRequirementRequest" @bind-Model="@Model"
+                 Title="Create High Level Requirement">
+    <Content>
+        <TextArea Label="Name"
+                  @bind-Value=@Model.Name
+                  Placeholder="Define name"
+                  Validate="CreateForm.ValidateAsync"></TextArea>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+    </Content>
+
+</CreateTemplate>
+
+@code {
+    CreateTemplate<CreateHighLevelRequirementRequest> CreateForm = null!;
+
+}

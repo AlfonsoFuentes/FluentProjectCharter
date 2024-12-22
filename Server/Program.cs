@@ -1,6 +1,6 @@
 using Server.MiddleWare;
 using Server.RegisterServices;
-
+using Microsoft.Extensions.FileProviders;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,7 +17,7 @@ app.UseHttpsRedirection();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
-//app.UseCors("cors");
+//app.MapStaticAssets();
 
 app.UseRouting();
 app.UseAuthentication();

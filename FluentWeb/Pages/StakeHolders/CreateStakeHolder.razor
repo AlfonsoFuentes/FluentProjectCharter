@@ -1,0 +1,44 @@
+﻿@page "/CreateStakeHolder"
+<CreateTemplate @ref=CreateForm TItem="CreateStakeHolderRequest" @bind-Model="@Model"
+                Title="Create Stakeholder">
+    <Content>
+        <FluentStack Orientation="Orientation.Vertical">
+            <TextBox Label="Name"
+                     @bind-Value=@Model.Name
+                     Placeholder="Define name"
+                     Validate="CreateForm.ValidateAsync"></TextBox>
+            <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+           
+
+            <TextBox Label="Email"
+                     @bind-Value=@Model.Email
+                     TextFieldType="TextFieldType.Email"
+                     InputMode="InputMode.Email"
+                     Placeholder="Define Email"
+                     Validate="CreateForm.ValidateAsync"></TextBox>
+            <ValidationMessage For="() => Model.Email" style="color:red; font-size:x-small;" />
+            <TextBox Label="Tel"
+                     @bind-Value=@Model.PhoneNumber
+                     TextFieldType="TextFieldType.Tel"
+                     InputMode="InputMode.Telephone"
+                     Placeholder="Define Phone Number"
+                     Validate="CreateForm.ValidateAsync"></TextBox>
+            <ValidationMessage For="() => Model.PhoneNumber" style="color:red; font-size:x-small;" />
+            <TextBox Label="Area"
+                     @bind-Value=@Model.Area
+                     TextFieldType="TextFieldType.Text"
+                     InputMode="InputMode.Text"
+                     Placeholder="Define Area"
+                     Validate="CreateForm.ValidateAsync"></TextBox>
+            <ValidationMessage For="() => Model.Area" style="color:red; font-size:x-small;" />
+
+        </FluentStack>
+    </Content>
+
+</CreateTemplate>
+
+@code {
+    CreateTemplate<CreateStakeHolderRequest> CreateForm = null!;
+    
+
+}

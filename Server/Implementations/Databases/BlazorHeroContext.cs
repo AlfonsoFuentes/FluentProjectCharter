@@ -42,13 +42,18 @@ namespace Server.Implementations.Databases
         public DbSet<DeliverableRisk> DeliverableRisks { get; set; } = null!;
         public DbSet<Constrainst> Constrainsts { get; set; } = null!;
         public DbSet<Bennefit> Bennefits { get; set; } = null!;
+        public DbSet<ExpertJudgement> ExpertJudgements { get; set; } = null!;
+        public DbSet<HighLevelRequirement> HighLevelRequirements { get; set; } = null!;
+        public DbSet<AppState> AppStates { get; set; } = null!;
+
+        public DbSet<RoleInsideProject> RoleInsideProjects { get; set; } = null!;
         void ConfiguerQueryFilters(ModelBuilder builder)
         {
 
             builder.Entity<Project>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Case>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<BackGround>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<StakeHolder>().HasQueryFilter(p => p.IsDeleted == false );
+            builder.Entity<StakeHolder>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<Scope>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<OrganizationStrategy>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<KnownRisk>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
@@ -60,16 +65,17 @@ namespace Server.Implementations.Databases
             builder.Entity<DeliverableRisk>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Constrainst>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Bennefit>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<ExpertJudgement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<HighLevelRequirement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<AppState>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
 
-
+            builder.Entity<RoleInsideProject>().HasQueryFilter(p => p.IsDeleted == false);
 
         }
-        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
-
+           
             ConfigureDatatTypes(builder);
 
             base.OnModelCreating(builder);
@@ -78,9 +84,6 @@ namespace Server.Implementations.Databases
 
 
         }
-
-
-       
 
         void ConfigureDatatTypes(ModelBuilder builder)
         {
@@ -99,10 +102,11 @@ namespace Server.Implementations.Databases
             }
         }
 
-
         public async Task<int> SaveChangesAndRemoveCacheAsync(params string[] cacheKeys)
         {
             var result = await SaveChangesAsync();
+
+
             foreach (var cacheKey in cacheKeys)
             {
                 var key = $"{cacheKey}-{_tenantId}";
@@ -122,7 +126,7 @@ namespace Server.Implementations.Databases
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            
+
             try
             {
                 if (string.IsNullOrWhiteSpace(_tenantId))
