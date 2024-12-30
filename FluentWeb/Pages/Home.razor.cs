@@ -88,6 +88,8 @@ public partial class Home
         var resultExport = await Service.ExportPDF(response);
         if (resultExport.Succeeded)
         {
+
+            Console.WriteLine(resultExport.Message);
             var downloadresult = await blazorDownloadFileService.DownloadFile(resultExport.Data.ExportFileName,
               resultExport.Data.Data, contentType: resultExport.Data.ContentType);
             if (downloadresult.Succeeded)

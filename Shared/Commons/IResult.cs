@@ -6,6 +6,7 @@ namespace Shared.Commons
     {
         List<string> Messages { get; set; }
 
+        string Message {  get; }
         bool Succeeded { get; set; }
     }
 

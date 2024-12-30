@@ -13,6 +13,7 @@ namespace Shared.Commons
 
         public List<string> Messages { get; set; } = new List<string>();
 
+        public string Message => Messages.Count == 0 ? string.Empty : Messages[0];
         public bool Succeeded { get; set; }
 
         public static IResult Fail()
@@ -49,7 +50,7 @@ namespace Shared.Commons
         {
             return new Result { Succeeded = true };
         }
-        
+
         public static IResult Success(string message)
         {
             return new Result { Succeeded = true, Messages = new List<string> { message } };
@@ -81,7 +82,7 @@ namespace Shared.Commons
             return Result<T>.Success(Data);
         }
     }
-    
+
     public class Result<T> : Result, IResult<T>
     {
         public Result()
@@ -139,7 +140,7 @@ namespace Shared.Commons
         {
             return new Result<T> { Succeeded = true, Data = data, Messages = new List<string> { message } };
         }
-        
+
         public static Result<T> Success(T data, List<string> messages)
         {
             return new Result<T> { Succeeded = true, Data = data, Messages = messages };

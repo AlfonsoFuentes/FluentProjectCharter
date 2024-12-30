@@ -5,6 +5,7 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System.Text;
 namespace Server.EndPoint.Projects.Exports
 {
     public static class GetAllProjectExportEndPoint
@@ -15,32 +16,40 @@ namespace Server.EndPoint.Projects.Exports
             ProjectResponse response = null!;
             byte[] CPLogo = null!;
             byte[] PMLogo = null!;
+
+            StringBuilder mesajes = new StringBuilder();
             void GetImageData(IWebHostEnvironment host)
             {
                 var path = host.WebRootPath;
-                Console.WriteLine(path);
-                if (path == null) return;
 
+                if (path == null)
+                {
+                    mesajes.Append("path not found");
+                
+                    return;
+                }
+                Console.WriteLine(path);
                 var rutaImagen = Path.Combine(path, "Assets/CPLogo.PNG");
                 CPLogo = System.IO.File.ReadAllBytes(rutaImagen);
 
-                Console.WriteLine($"Size CPLogo: {CPLogo.Length}");
+                mesajes.Append($"CPLogo: created");
                 rutaImagen = Path.Combine(path, "Assets/PMLogo.PNG");
                 PMLogo = System.IO.File.ReadAllBytes(rutaImagen);
-                Console.WriteLine($"Size PMLogo: {PMLogo.Length}");
+                mesajes.Append($"PMLogo: created");
             }
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
                 app.MapPost(StaticClass.Projects.EndPoint.Export, (ProjectGetAllExport request, [FromServices] IWebHostEnvironment host) =>
                 {
-
+             
+                    mesajes.Append("Ingresado a exportar");
                     GetImageData(host);
 
                     response = request.ProjectResponse;
                     var responsePDF = CreatePDF(request.ProjectResponse);
 
 
-                    return Result<Shared.Models.FileResults.FileResult>.Success(responsePDF);
+                    return Result<Shared.Models.FileResults.FileResult>.Success(responsePDF, mesajes.ToString());
                 });
             }
             Shared.Models.FileResults.FileResult CreatePDF(ProjectResponse response)
@@ -128,12 +137,15 @@ namespace Server.EndPoint.Projects.Exports
                             col1.Item().Element(InitialBudgetContent);
 
                             col1.Item().Element(HighLevelContent);
+
+                       
+
                             col1.Item().Element(StakeHoldersContent);
                             col1.Item().Element(BusinsesCaseContent);
 
                             col1.Item().LineHorizontal(0.5f);
 
-                            col1.Item().Table(table => GetSign(table));
+                            col1.Item().Element(SignContent);
                         });
 
                     });
@@ -278,34 +290,7 @@ namespace Server.EndPoint.Projects.Exports
 
                         });
                     });
-                    col1.Item().PaddingBottom(10).Column(col2 =>
-                    {
-                        foreach (var row in response.Cases)
-                        {
-                            foreach (var rowexpert in row.ExpertJudgements)
-                            {
-                                col2.Item().PaddingBottom(5).Text(txt =>
-                                {
-                                    txt.Span($"{rowexpert.Name} ").FontSize(11);
-                                    txt.Span($"Role: Expert").FontSize(11);
-
-                                });
-                            }
-
-                        }
-                        foreach (var row in response.StakeHolders)
-                        {
-                            col2.Item().PaddingBottom(5).Text(txt =>
-                            {
-                                txt.Span($"{row.Name} ").FontSize(11);
-                                txt.Span($"Role: {row.Role.Name}").FontSize(11);
-
-                            });
-                           
-                        }
-                        
-
-                    });
+                    col1.Item().PaddingBottom(10).Table(table => GetStakeHoldersTable(table));
                 });
             }
             void BusinsesCaseContent(IContainer container)
@@ -337,6 +322,23 @@ namespace Server.EndPoint.Projects.Exports
                 });
             }
 
+            void SignContent(IContainer container)
+            {
+                
+                container.Column(col1 =>
+                {
+
+                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    {
+                        col2.Item().Text(txt =>
+                        {
+                            txt.Span("Approvals").FontSize(12).SemiBold();
+
+                        });
+                    });
+                    col1.Item().Table(table => GetSign(table));
+                });
+            }
             ColumnDescriptor GetCase(ColumnDescriptor col2, CaseResponse row)
             {
 
@@ -608,10 +610,10 @@ namespace Server.EndPoint.Projects.Exports
             {
                 tabla.ColumnsDefinition(columns =>
                 {
-                    columns.RelativeColumn(2);
-                    columns.RelativeColumn(2);
-                    columns.RelativeColumn();
-
+                    columns.RelativeColumn(3);
+                    columns.RelativeColumn(1);
+                    columns.RelativeColumn(1);
+                    columns.RelativeColumn(1);
 
                 });
 
@@ -624,7 +626,10 @@ namespace Server.EndPoint.Projects.Exports
                    .Padding(4).Text("Role").Bold();
 
                     header.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                   .Padding(4).Text("Sign date").Bold();
+                   .Padding(4).Text("Sign").Bold();
+                   
+                    header.Cell().Border(0.5f).BorderColor("#D9D9D9")
+                    .Padding(4).Text("Sign date").Bold();
 
 
                 });
@@ -638,6 +643,9 @@ namespace Server.EndPoint.Projects.Exports
 
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
                     .Padding(4).Text(string.Empty).FontSize(10);
+
+                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
+                    .Padding(4).Text(string.Empty).FontSize(10);
                 }
                 if (response.Manager != null)
                 {
@@ -646,6 +654,9 @@ namespace Server.EndPoint.Projects.Exports
 
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
                     .Padding(4).Text("Manager").FontSize(10);
+
+                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
+                    .Padding(4).Text(string.Empty).FontSize(10);
 
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
                     .Padding(4).Text(string.Empty).FontSize(10);
@@ -662,6 +673,9 @@ namespace Server.EndPoint.Projects.Exports
 
                         tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
                         .Padding(4).Text(string.Empty).FontSize(10);
+                        
+                        tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
+                        .Padding(4).Text(string.Empty).FontSize(10);
                     }
                 }
                 foreach (var stakeholder in response.StakeHolders)
@@ -674,6 +688,76 @@ namespace Server.EndPoint.Projects.Exports
 
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
                     .Padding(4).Text(string.Empty).FontSize(10);
+
+                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
+                    .Padding(4).Text(string.Empty).FontSize(10);
+                }
+                return tabla;
+            }
+
+            TableDescriptor GetStakeHoldersTable(TableDescriptor tabla)
+            {
+                tabla.ColumnsDefinition(columns =>
+                {
+                    columns.RelativeColumn(2);
+                    columns.RelativeColumn(2);
+                   
+
+                });
+
+                tabla.Header(header =>
+                {
+                    header.Cell()
+                    .Padding(4).Text("Name").Bold();
+
+                    header.Cell()
+                   .Padding(4).Text("Role").Bold();
+
+                   
+
+
+                });
+                if (response.Sponsor != null)
+                {
+                    tabla.Cell()
+                   .Padding(4).Text(response.Sponsor.Name).FontSize(10);
+
+                    tabla.Cell()
+                    .Padding(4).Text("Sponsor").FontSize(10);
+
+                   
+                }
+                if (response.Manager != null)
+                {
+                    tabla.Cell()
+                   .Padding(4).Text(response.Manager.Name).FontSize(10);
+
+                    tabla.Cell()
+                    .Padding(4).Text("Manager").FontSize(10);
+
+                  
+                }
+                foreach (var caseitem in response.Cases)
+                {
+                    foreach (var expert in caseitem.ExpertJudgements)
+                    {
+                        tabla.Cell()
+                        .Padding(4).Text(expert.Name).FontSize(10);
+
+                        tabla.Cell()
+                        .Padding(4).Text("Expert").FontSize(10);
+
+                    }
+                }
+                foreach (var stakeholder in response.StakeHolders)
+                {
+                    tabla.Cell()
+                        .Padding(4).Text(stakeholder.Name).FontSize(10);
+
+                    tabla.Cell()
+                    .Padding(4).Text(stakeholder.Role.Name).FontSize(10);
+
+                    
                 }
                 return tabla;
             }

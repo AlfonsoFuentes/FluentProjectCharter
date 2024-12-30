@@ -53,8 +53,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="wwwroot\Assets\CPLogo.png" />
-	  <None Include="wwwroot\Assets\PMLogo.png" />
+	  <None Include="wwwroot\Assets\CPLogo.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Include="wwwroot\Assets\PMLogo.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

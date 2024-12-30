@@ -55,7 +55,7 @@ namespace Web.Infrastructure.Services.Client
                            var httpresult = await Http.PostAsJsonAsync(url, request);
                            return httpresult;
                        });
-                Console.WriteLine("Well Excuted");
+            
                 HttpResponse.EnsureSuccessStatusCode();
                 return HttpResponse;
             }
