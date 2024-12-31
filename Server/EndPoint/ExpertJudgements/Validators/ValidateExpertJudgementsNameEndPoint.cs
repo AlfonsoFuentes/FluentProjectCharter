@@ -1,7 +1,7 @@
 ﻿using Shared.Models.ExpertJudgements.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.ExpertJudgements.Vallidators
+namespace Server.EndPoint.ExpertJudgements.Validators
 {
     public static class ValidateExpertJudgementsNameEndPoint
     {

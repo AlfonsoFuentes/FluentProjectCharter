@@ -21,9 +21,7 @@ namespace Server.Database.Entities
         public List<BackGround> BackGrounds { get; set; } = new();
         //Enunciado situacional que documente el problema o la oportunidad
       
-
-        ////Identificacion de los Interesados
-        //public List<StakeHolder> StakeHolders { get; set; } = new();
+       
         //Identificacion del Alcance
         public List<Scope> Scopes { get; set; } = new();
 

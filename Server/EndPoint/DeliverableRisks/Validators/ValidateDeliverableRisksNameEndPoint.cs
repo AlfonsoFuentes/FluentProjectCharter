@@ -1,7 +1,7 @@
 ﻿using Shared.Models.DeliverableRisks.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.DeliverableRisks.Vallidators
+namespace Server.EndPoint.DeliverableRisks.Validators
 {
     public static class ValidateDeliverableRisksNameEndPoint
     {

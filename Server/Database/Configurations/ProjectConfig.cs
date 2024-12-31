@@ -13,17 +13,56 @@ namespace Server.Database.Configurations
             builder.HasKey(ci => ci.Id);
 
 
+            builder.HasMany(x => x.ProcessFlowDiagrams)
+          .WithOne(t => t.Project)
+          .HasForeignKey(e => e.ProjectId)
+          .IsRequired()
+          .OnDelete(DeleteBehavior.Cascade);
+
+
             builder.HasMany(x => x.Cases)
           .WithOne(t => t.Project)
           .HasForeignKey(e => e.ProjectId)
           .IsRequired()
           .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(x => x.IssueLogs)
+       .WithOne(t => t.Project)
+       .HasForeignKey(e => e.ProjectId)
+       .IsRequired()
+       .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x => x.LearnedLessons)
+        .WithOne(t => t.Project)
+        .HasForeignKey(e => e.ProjectId)
+        .IsRequired()
+        .OnDelete(DeleteBehavior.Cascade);
+
+
             builder.HasMany(x => x.HighLevelRequirements)
          .WithOne(t => t.Project)
          .HasForeignKey(e => e.ProjectId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x => x.BudgetItems)
+            .WithOne(t => t.Project)
+            .HasForeignKey(e => e.ProjectId)
+               .IsRequired()
+               .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x => x.WBSComponents)
+          .WithOne(t => t.Project)
+          .HasForeignKey(e => e.ProjectId)
+             .IsRequired()
+             .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x => x.ProcessFlowDiagrams)
+             .WithOne(t => t.Project)
+             .HasForeignKey(e => e.ProjectId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
 
             builder.HasMany(e => e.StakeHolders)
                   .WithMany(e => e.Projects);

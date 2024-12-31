@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Deliverables.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.Deliverables.Vallidators
+namespace Server.EndPoint.Deliverables.Validators
 {
     public static class ValidateDeliverablesNameEndPoint
     {

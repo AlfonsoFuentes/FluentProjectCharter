@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Backgrounds.Validators;
 using Shared.Models.StakeHolders.Validators;
 
-namespace Server.EndPoint.BackGrounds.Vallidators
+namespace Server.EndPoint.StakeHolders.Vallidators
 {
     public static class ValidateStakeHolderNameEndPoint
     {

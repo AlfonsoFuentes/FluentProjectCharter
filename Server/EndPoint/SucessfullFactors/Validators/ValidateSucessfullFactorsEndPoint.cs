@@ -1,7 +1,7 @@
 ﻿using Shared.Models.SucessfullFactors.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.SucessfullFactors.Vallidators
+namespace Server.EndPoint.SucessfullFactors.Validators
 {
     public static class ValidateSucessfullFactorsEndPoint
     {

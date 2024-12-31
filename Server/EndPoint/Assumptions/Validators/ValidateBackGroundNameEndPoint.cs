@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Assumptions.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.Assumptions.Vallidators
+namespace Server.EndPoint.Assumptions.Validators
 {
     public static class ValidateAssumptionsNameEndPoint
     {

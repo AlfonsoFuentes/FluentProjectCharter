@@ -1,7 +1,7 @@
 ﻿using Shared.Models.DecissionCriterias.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.DecissionCriterias.Vallidators
+namespace Server.EndPoint.DecissionCriterias.Validators
 {
     public static class ValidateDecissionCriteriasNameEndPoint
     {

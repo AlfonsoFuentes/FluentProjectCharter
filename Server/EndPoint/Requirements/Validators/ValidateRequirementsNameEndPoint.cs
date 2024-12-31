@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Requirements.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.Requirements.Vallidators
+namespace Server.EndPoint.Requirements.Validators
 {
     public static class ValidateRequirementsNameEndPoint
     {

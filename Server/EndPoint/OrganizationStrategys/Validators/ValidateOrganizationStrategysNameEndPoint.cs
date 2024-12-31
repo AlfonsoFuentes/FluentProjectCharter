@@ -1,6 +1,6 @@
 ﻿using Shared.Models.OrganizationStrategies.Validators;
 
-namespace Server.EndPoint.OrganizationStrategys.Vallidators
+namespace Server.EndPoint.OrganizationStrategys.Validators
 {
     public static class ValidateOrganizationStrategysNameEndPoint
     {

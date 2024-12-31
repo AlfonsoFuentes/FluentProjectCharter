@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Scopes.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.Scopes.Vallidators
+namespace Server.EndPoint.Scopes.Validators
 {
     public static class ValidateScopesEndPoint
     {

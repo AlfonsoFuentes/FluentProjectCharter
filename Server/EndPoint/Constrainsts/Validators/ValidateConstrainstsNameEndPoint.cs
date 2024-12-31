@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Constrainsts.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.Constrainsts.Vallidators
+namespace Server.EndPoint.Constrainsts.Validators
 {
     public static class ValidateConstrainstsNameEndPoint
     {

@@ -1,4 +1,6 @@
 ﻿using Server.Database.Contracts;
+using Server.Database.Entities.BudgetItems;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Database.Entities
 {
@@ -13,6 +15,7 @@ namespace Server.Database.Entities
         public List<DeliverableRisk> DeliverableRisks { get; set; } = new();
         public List<Constrainst> Constraints { get; set; } = new();
         public List<Bennefit> Bennefits { get; set; } = new();
+        public List<AcceptanceCriteria> AcceptanceCriterias { get; set; } = new();
         public string? DeliverableTab { get; set; } = string.Empty;
 
         public static Deliverable Create(Guid ScopeId)
@@ -23,7 +26,14 @@ namespace Server.Database.Entities
                 ScopeId = ScopeId,
             };
         }
- 
+
+        public Deliverable? SubDeliverable { get; set; } = null!;
+        public Guid? SubDeliverableId { get; set; } = Guid.Empty;
+        [ForeignKey("SubDeliverableId")]
+        public List<Deliverable> SubDeliverables { get; set; } = new();
+
+        [ForeignKey("BudgetItemId")]
+        public List<BudgetItem> BudgetItems { get; set; } = new();
 
     }
 }

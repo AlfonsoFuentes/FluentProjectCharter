@@ -17,4 +17,5 @@ namespace Server.Database.Entities
             };
         }
     }
+   
 }

@@ -1,6 +1,6 @@
 ﻿using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.BackGrounds.Vallidators
+namespace Server.EndPoint.BackGrounds.Validators
 {
     public static class ValidateBackGroundNameEndPoint
     {

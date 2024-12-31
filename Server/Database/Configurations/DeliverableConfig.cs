@@ -11,34 +11,46 @@ namespace Server.Database.Configurations
             builder.HasKey(ci => ci.Id);
 
             builder.HasMany(x => x.Requirements)
-        .WithOne(t => t.Deliverable)
-        .HasForeignKey(e => e.DeliverableId)
-        .IsRequired()
-        .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(t => t.Deliverable)
+            .HasForeignKey(e => e.DeliverableId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.Assumptions)
-        .WithOne(t => t.Deliverable)
-        .HasForeignKey(e => e.DeliverableId)
-        .IsRequired()
-        .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(t => t.Deliverable)
+            .HasForeignKey(e => e.DeliverableId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.DeliverableRisks)
-        .WithOne(t => t.Deliverable)
-        .HasForeignKey(e => e.DeliverableId)
-        .IsRequired()
-        .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(t => t.Deliverable)
+            .HasForeignKey(e => e.DeliverableId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.Constraints)
-        .WithOne(t => t.Deliverable)
-        .HasForeignKey(e => e.DeliverableId)
-        .IsRequired()
-        .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(t => t.Deliverable)
+            .HasForeignKey(e => e.DeliverableId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.Bennefits)
-    .WithOne(t => t.Deliverable)
-    .HasForeignKey(e => e.DeliverableId)
-    .IsRequired()
-    .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(t => t.Deliverable)
+            .HasForeignKey(e => e.DeliverableId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x => x.AcceptanceCriterias)
+           .WithOne(t => t.Deliverable)
+           .HasForeignKey(e => e.DeliverableId)
+           .IsRequired()
+           .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.HasOne(c => c.SubDeliverable)
+              .WithMany(t => t.SubDeliverables)
+              .HasForeignKey(x => x.SubDeliverableId)
+              .OnDelete(DeleteBehavior.NoAction);
 
         }
 

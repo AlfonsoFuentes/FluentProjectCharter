@@ -1,4 +1,6 @@
 ﻿using Server.Database.Contracts;
+using Server.Database.Entities.BudgetItems;
+using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams;
 
 namespace Server.Database.Entities
 {
@@ -6,9 +8,12 @@ namespace Server.Database.Entities
     {
         public string TenantId { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-      
-        public List<Case> Cases { get; set; } = new();
 
+        public List<LearnedLesson> LearnedLessons { get; set; } = new();
+        public List<Case> Cases { get; set; } = new();
+        public List<IssueLog> IssueLogs { get; set; } = new();
+        public List<BudgetItem> BudgetItems { get; set; } = new();
+        public List<ProcessFlowDiagram> ProcessFlowDiagrams { get; set; } = new();
         public string ProjectNeedType { get; set; } = string.Empty;
         public static Project Create()
         {
@@ -31,12 +36,8 @@ namespace Server.Database.Entities
       
         public string? ProjectTab {  get; set; } = string.Empty;
         public Guid? CaseId { get; set; }
-       
-     
-        
 
-      
+        public List<WBSComponent> WBSComponents { get; set; } = new();
     }
-
 
 }

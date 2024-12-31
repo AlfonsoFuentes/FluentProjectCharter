@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Server.Database.Entities;
+using Server.Database.Entities.BudgetItems;
+using Server.Database.Entities.BudgetItems.Commons;
 
 namespace Server.Interfaces.Database
 {
@@ -26,6 +28,13 @@ namespace Server.Interfaces.Database
         DbSet<HighLevelRequirement> HighLevelRequirements { get; set; }
         DbSet<AppState> AppStates { get; set; }     
         DbSet<RoleInsideProject> RoleInsideProjects { get; set; }
+        DbSet<Meeting> Meetings { get; set; }
+        DbSet<MeetingAttendant> MeetingAttendants { get; set; }
+        DbSet<MeetingAttendantSuggestion> MeetingAttendantSuggestions { get; set; }
+        DbSet<LearnedLesson> LearnedLessons { get; set; }
+        DbSet<IssueLog> IssueLogs { get; set; }
+       
+
         Task<int> SaveChangesAndRemoveCacheAsync(params string[] cacheKeys);
         Task<T> GetOrAddCacheAsync<T>(string key, Func<Task<T>> addItemFactory);
     }

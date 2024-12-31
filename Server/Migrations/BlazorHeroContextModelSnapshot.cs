@@ -170,6 +170,48 @@ namespace Server.Migrations
                     b.ToTable("ProjectStakeHolder");
                 });
 
+            modelBuilder.Entity("Server.Database.Entities.AcceptanceCriteria", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeliverableId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliverableId");
+
+                    b.ToTable("AcceptanceCriterias");
+                });
+
             modelBuilder.Entity("Server.Database.Entities.AppState", b =>
                 {
                     b.Property<Guid>("Id")
@@ -330,6 +372,671 @@ namespace Server.Migrations
                     b.HasIndex("DeliverableId");
 
                     b.ToTable("Bennefits");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.BudgetItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Budget")
+                        .HasColumnType("float");
+
+                    b.Property<Guid?>("BudgetItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeliverableId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Letter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliverableId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable((string)null);
+
+                    b.UseTpcMappingStrategy();
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Brand", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles.Nozzle", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EndType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("EngineeringItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("HeightDiameterUnit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HeightUnit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ItemConnectedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NominalDiameter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<double>("OuterDiameter")
+                        .HasColumnType("float");
+
+                    b.Property<string>("OuterDiameterUnit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Thickness")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ThicknessUnit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WeldType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EngineeringItemId");
+
+                    b.HasIndex("ItemConnectedId");
+
+                    b.ToTable("Nozzles");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles.NozzleTemplate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConnectionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Diameter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("TemplateId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TemplateId");
+
+                    b.ToTable("NozzleTemplates");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.EngineeringFluidCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EngineeringFluidCodes");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.IsometricItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("IsometricId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("PipingAccesoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsometricId");
+
+                    b.HasIndex("PipingAccesoryId");
+
+                    b.ToTable("IsometricItems");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PipingCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PipingCategoryId");
+
+                    b.ToTable("PipingAccesorys");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesoryCodeBrand", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PipingCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PipingCategoryId");
+
+                    b.ToTable("PipingAccesoryCodeBrands");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesoryImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PipingAccesoryImages");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Class")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("PipingAccesoryImageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PipingAccesoryImageId");
+
+                    b.ToTable("PipingCategorys");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingConnectionType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccesoryConnectionSide")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EndType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NominalDiameter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("OuterDiameter")
+                        .HasColumnType("float");
+
+                    b.Property<string>("OuterDiameterUnit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PipingAccesoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Thickness")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ThicknessUnit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WeldType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PipingAccesoryId");
+
+                    b.ToTable("PipingConnectionTypes");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.ProcessFlowDiagram", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ProjectId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProcessFlowDiagrams");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BrandTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EngineeringItemType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SubType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TagLetter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandTemplateId");
+
+                    b.ToTable((string)null);
+
+                    b.UseTpcMappingStrategy();
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.Taxes.TaxesItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("SelectedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TaxItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SelectedId");
+
+                    b.HasIndex("TaxItemId");
+
+                    b.ToTable("TaxesItems");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Case", b =>
@@ -503,6 +1210,9 @@ namespace Server.Migrations
                     b.Property<Guid>("ScopeId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("SubDeliverableId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -510,6 +1220,8 @@ namespace Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ScopeId");
+
+                    b.HasIndex("SubDeliverableId");
 
                     b.ToTable("Deliverables");
                 });
@@ -645,6 +1357,76 @@ namespace Server.Migrations
                     b.ToTable("HighLevelRequirements");
                 });
 
+            modelBuilder.Entity("Server.Database.Entities.IssueLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HowToSolveIssue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("IssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("SolveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("StakeHolderIssuerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StakeHolderResponsibleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("StakeHolderIssuerId");
+
+                    b.HasIndex("StakeHolderResponsibleId");
+
+                    b.ToTable("IssueLogs");
+                });
+
             modelBuilder.Entity("Server.Database.Entities.KnownRisk", b =>
                 {
                     b.Property<Guid>("Id")
@@ -685,6 +1467,183 @@ namespace Server.Migrations
                     b.HasIndex("CaseId");
 
                     b.ToTable("KnownRisks");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.LearnedLesson", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("LearnedLessons");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.Meeting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateofMeeting")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MeetingType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Meetings");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.MeetingAttendant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("MeetingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeetingId");
+
+                    b.ToTable("MeetingAttendants");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.MeetingAttendantSuggestion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateofSuggestion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("MeetingAttendantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeetingAttendantId");
+
+                    b.ToTable("MeetingAttendantSuggestions");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.OrganizationStrategy", b =>
@@ -809,6 +1768,9 @@ namespace Server.Migrations
                     b.Property<Guid>("DeliverableId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -822,13 +1784,31 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Priority")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("RequestedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ResponsibleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DeliverableId");
+
+                    b.HasIndex("RequestedById");
+
+                    b.HasIndex("ResponsibleId");
 
                     b.ToTable("Requirements");
                 });
@@ -1009,6 +1989,53 @@ namespace Server.Migrations
                     b.ToTable("SucessfullFactors");
                 });
 
+            modelBuilder.Entity("Server.Database.Entities.WBSComponent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("SubComponentRelationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("SubComponentRelationId");
+
+                    b.ToTable("WBSComponents");
+                });
+
             modelBuilder.Entity("Server.Database.Identity.BlazorHeroUser", b =>
                 {
                     b.Property<string>("Id")
@@ -1116,6 +2143,378 @@ namespace Server.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Alteration", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<string>("CostCenter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UnitaryCost")
+                        .HasColumnType("float");
+
+                    b.ToTable("Alterations");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.EHS", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UnitaryCost")
+                        .HasColumnType("float");
+
+                    b.ToTable("EHSs");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Electrical", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UnitaryCost")
+                        .HasColumnType("float");
+
+                    b.ToTable("Electricals");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Foundation", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UnitaryCost")
+                        .HasColumnType("float");
+
+                    b.ToTable("Foundations");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Painting", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UnitaryCost")
+                        .HasColumnType("float");
+
+                    b.ToTable("Paintings");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Structural", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UnitaryCost")
+                        .HasColumnType("float");
+
+                    b.ToTable("Structurals");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Testing", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UnitaryCost")
+                        .HasColumnType("float");
+
+                    b.ToTable("Testings");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.EngineeringContingency.Contingency", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<double>("Percentage")
+                        .HasColumnType("float");
+
+                    b.ToTable("Contingencys");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.EngineeringContingency.Engineering", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<double>("Percentage")
+                        .HasColumnType("float");
+
+                    b.ToTable("Engineerings");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<Guid?>("ProcessFlowDiagramId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TagLetter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TagNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasIndex("ProcessFlowDiagramId");
+
+                    b.ToTable((string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.Taxes.Tax", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<double>("Percentage")
+                        .HasColumnType("float");
+
+                    b.ToTable("Taxes");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.EquipmentTemplate", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template");
+
+                    b.Property<string>("ExternalMaterial")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InternalMaterial")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.ToTable("EquipmentTemplates");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments.InstrumentTemplate", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template");
+
+                    b.Property<string>("ExternalMaterial")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InternalMaterial")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Material")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifierInstrument")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SignalType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.Property<string>("VariableInstrument")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("InstrumentTemplates");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipeTemplate", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template");
+
+                    b.Property<string>("Class")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Diameter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("EquivalentLenghPrice")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LaborDayPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Material")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("PipeTemplates");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves.ValveTemplate", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template");
+
+                    b.Property<string>("ActuadorType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Diameter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FailType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("HasFeedBack")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Material")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PositionerType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SignalType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.ToTable("ValveTemplates");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.Equipment", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem");
+
+                    b.Property<Guid?>("EquipmentTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("EquipmentTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasIndex("EquipmentTemplateId");
+
+                    b.ToTable("Equipments");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments.Instrument", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem");
+
+                    b.Property<Guid?>("InstrumentTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasIndex("InstrumentTemplateId");
+
+                    b.ToTable("Instruments");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Isometric", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem");
+
+                    b.Property<string>("Diameter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("FluidCodeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Insulation")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("LaborQuantity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LaborUnitaryCost")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Material")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("MaterialQuantity")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MaterialUnitaryCost")
+                        .HasColumnType("float");
+
+                    b.HasIndex("FluidCodeId");
+
+                    b.ToTable("Isometrics");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves.Valve", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ValveTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("ValveTemplateId");
+
+                    b.ToTable("Valves");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1182,6 +2581,17 @@ namespace Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Server.Database.Entities.AcceptanceCriteria", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
+                        .WithMany("AcceptanceCriterias")
+                        .HasForeignKey("DeliverableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deliverable");
+                });
+
             modelBuilder.Entity("Server.Database.Entities.Assumption", b =>
                 {
                     b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
@@ -1213,6 +2623,153 @@ namespace Server.Migrations
                         .IsRequired();
 
                     b.Navigation("Deliverable");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.BudgetItem", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
+                        .WithMany("BudgetItems")
+                        .HasForeignKey("DeliverableId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("BudgetItems")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deliverable");
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles.Nozzle", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem", "EngineeringItem")
+                        .WithMany("Nozzles")
+                        .HasForeignKey("EngineeringItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem", "ItemConnected")
+                        .WithMany("ItemConnecteds")
+                        .HasForeignKey("ItemConnectedId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("EngineeringItem");
+
+                    b.Navigation("ItemConnected");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles.NozzleTemplate", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template", "Template")
+                        .WithMany("NozzleTemplates")
+                        .HasForeignKey("TemplateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Template");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.IsometricItem", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Isometric", "Isometric")
+                        .WithMany("IsometricItems")
+                        .HasForeignKey("IsometricId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesory", "PipingAccesory")
+                        .WithMany("IsometricItems")
+                        .HasForeignKey("PipingAccesoryId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Isometric");
+
+                    b.Navigation("PipingAccesory");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesory", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingCategory", "PipingCategory")
+                        .WithMany("PipingAccesories")
+                        .HasForeignKey("PipingCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PipingCategory");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesoryCodeBrand", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingCategory", "PipingCategory")
+                        .WithMany("PipingAccesoryCodeBrands")
+                        .HasForeignKey("PipingCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PipingCategory");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingCategory", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesoryImage", "PipingAccesoryImage")
+                        .WithMany("PipingCategories")
+                        .HasForeignKey("PipingAccesoryImageId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("PipingAccesoryImage");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingConnectionType", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesory", "PipingAccesory")
+                        .WithMany("PipingConnectionTypes")
+                        .HasForeignKey("PipingAccesoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PipingAccesory");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.ProcessFlowDiagram", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("ProcessFlowDiagrams")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Brand", "BrandTemplate")
+                        .WithMany("BrandTemplates")
+                        .HasForeignKey("BrandTemplateId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("BrandTemplate");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.Taxes.TaxesItem", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.BudgetItem", "Selected")
+                        .WithMany("TaxesSelecteds")
+                        .HasForeignKey("SelectedId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Server.Database.Entities.BudgetItems.Taxes.Tax", "TaxItem")
+                        .WithMany("TaxesItems")
+                        .HasForeignKey("TaxItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Selected");
+
+                    b.Navigation("TaxItem");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Case", b =>
@@ -1263,7 +2820,14 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Server.Database.Entities.Deliverable", "SubDeliverable")
+                        .WithMany("SubDeliverables")
+                        .HasForeignKey("SubDeliverableId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("Scope");
+
+                    b.Navigation("SubDeliverable");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.DeliverableRisk", b =>
@@ -1306,6 +2870,29 @@ namespace Server.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("Server.Database.Entities.IssueLog", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("IssueLogs")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Server.Database.Entities.StakeHolder", "StakeHolderIssuer")
+                        .WithMany()
+                        .HasForeignKey("StakeHolderIssuerId");
+
+                    b.HasOne("Server.Database.Entities.StakeHolder", "StakeHolderResponsible")
+                        .WithMany()
+                        .HasForeignKey("StakeHolderResponsibleId");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("StakeHolderIssuer");
+
+                    b.Navigation("StakeHolderResponsible");
+                });
+
             modelBuilder.Entity("Server.Database.Entities.KnownRisk", b =>
                 {
                     b.HasOne("Server.Database.Entities.Case", "Case")
@@ -1315,6 +2902,39 @@ namespace Server.Migrations
                         .IsRequired();
 
                     b.Navigation("Case");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.LearnedLesson", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("LearnedLessons")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.MeetingAttendant", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Meeting", "Meeting")
+                        .WithMany("MeetingAttendants")
+                        .HasForeignKey("MeetingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Meeting");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.MeetingAttendantSuggestion", b =>
+                {
+                    b.HasOne("Server.Database.Entities.MeetingAttendant", "MeetingAttendant")
+                        .WithMany("MeetingAttendantSuggestions")
+                        .HasForeignKey("MeetingAttendantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MeetingAttendant");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Project", b =>
@@ -1342,7 +2962,21 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Server.Database.Entities.StakeHolder", "RequestedBy")
+                        .WithMany("RequirementRequestedBys")
+                        .HasForeignKey("RequestedById")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Server.Database.Entities.StakeHolder", "Responsible")
+                        .WithMany("RequirementResponsibles")
+                        .HasForeignKey("ResponsibleId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("Deliverable");
+
+                    b.Navigation("RequestedBy");
+
+                    b.Navigation("Responsible");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Scope", b =>
@@ -1377,6 +3011,118 @@ namespace Server.Migrations
                     b.Navigation("Case");
                 });
 
+            modelBuilder.Entity("Server.Database.Entities.WBSComponent", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("WBSComponents")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Server.Database.Entities.WBSComponent", "SubComponentRelation")
+                        .WithMany("SubComponents")
+                        .HasForeignKey("SubComponentRelationId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Project");
+
+                    b.Navigation("SubComponentRelation");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.ProcessFlowDiagram", "ProcessFlowDiagram")
+                        .WithMany("EngineeringItems")
+                        .HasForeignKey("ProcessFlowDiagramId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("ProcessFlowDiagram");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.Equipment", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.EquipmentTemplate", "EquipmentTemplate")
+                        .WithMany("Equipments")
+                        .HasForeignKey("EquipmentTemplateId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("EquipmentTemplate");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments.Instrument", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments.InstrumentTemplate", "InstrumentTemplate")
+                        .WithMany("Instruments")
+                        .HasForeignKey("InstrumentTemplateId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("InstrumentTemplate");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Isometric", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.EngineeringFluidCode", "FluidCode")
+                        .WithMany("Isometrics")
+                        .HasForeignKey("FluidCodeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("FluidCode");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves.Valve", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves.ValveTemplate", "ValveTemplate")
+                        .WithMany("Valves")
+                        .HasForeignKey("ValveTemplateId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("ValveTemplate");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.BudgetItem", b =>
+                {
+                    b.Navigation("TaxesSelecteds");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Brand", b =>
+                {
+                    b.Navigation("BrandTemplates");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.EngineeringFluidCode", b =>
+                {
+                    b.Navigation("Isometrics");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesory", b =>
+                {
+                    b.Navigation("IsometricItems");
+
+                    b.Navigation("PipingConnectionTypes");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesoryImage", b =>
+                {
+                    b.Navigation("PipingCategories");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingCategory", b =>
+                {
+                    b.Navigation("PipingAccesories");
+
+                    b.Navigation("PipingAccesoryCodeBrands");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.ProcessFlowDiagram", b =>
+                {
+                    b.Navigation("EngineeringItems");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template", b =>
+                {
+                    b.Navigation("NozzleTemplates");
+                });
+
             modelBuilder.Entity("Server.Database.Entities.Case", b =>
                 {
                     b.Navigation("BackGrounds");
@@ -1394,15 +3140,31 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.Deliverable", b =>
                 {
+                    b.Navigation("AcceptanceCriterias");
+
                     b.Navigation("Assumptions");
 
                     b.Navigation("Bennefits");
+
+                    b.Navigation("BudgetItems");
 
                     b.Navigation("Constraints");
 
                     b.Navigation("DeliverableRisks");
 
                     b.Navigation("Requirements");
+
+                    b.Navigation("SubDeliverables");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.Meeting", b =>
+                {
+                    b.Navigation("MeetingAttendants");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.MeetingAttendant", b =>
+                {
+                    b.Navigation("MeetingAttendantSuggestions");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.OrganizationStrategy", b =>
@@ -1412,9 +3174,19 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.Project", b =>
                 {
+                    b.Navigation("BudgetItems");
+
                     b.Navigation("Cases");
 
                     b.Navigation("HighLevelRequirements");
+
+                    b.Navigation("IssueLogs");
+
+                    b.Navigation("LearnedLessons");
+
+                    b.Navigation("ProcessFlowDiagrams");
+
+                    b.Navigation("WBSComponents");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.RoleInsideProject", b =>
@@ -1433,7 +3205,48 @@ namespace Server.Migrations
 
                     b.Navigation("Managers");
 
+                    b.Navigation("RequirementRequestedBys");
+
+                    b.Navigation("RequirementResponsibles");
+
                     b.Navigation("Sponsors");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.WBSComponent", b =>
+                {
+                    b.Navigation("SubComponents");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem", b =>
+                {
+                    b.Navigation("ItemConnecteds");
+
+                    b.Navigation("Nozzles");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.Taxes.Tax", b =>
+                {
+                    b.Navigation("TaxesItems");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.EquipmentTemplate", b =>
+                {
+                    b.Navigation("Equipments");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments.InstrumentTemplate", b =>
+                {
+                    b.Navigation("Instruments");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves.ValveTemplate", b =>
+                {
+                    b.Navigation("Valves");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Isometric", b =>
+                {
+                    b.Navigation("IsometricItems");
                 });
 #pragma warning restore 612, 618
         }

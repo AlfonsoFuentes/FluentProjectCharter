@@ -1,7 +1,7 @@
 ﻿using Shared.Models.KnownRisks.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.KnownRisks.Vallidators
+namespace Server.EndPoint.KnownRisks.Validators
 {
     public static class ValidateKnownRisksNameEndPoint
     {

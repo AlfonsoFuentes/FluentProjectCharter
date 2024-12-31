@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Projects.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.Projects.Vallidators
+namespace Server.EndPoint.Projects.Validators
 {
     public static class ValidateProjectsNameEndPoint
     {

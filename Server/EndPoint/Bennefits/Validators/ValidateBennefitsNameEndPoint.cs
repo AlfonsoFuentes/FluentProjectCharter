@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Bennefits.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.Bennefits.Vallidators
+namespace Server.EndPoint.Bennefits.Validators
 {
     public static class ValidateBennefitsNameEndPoint
     {
