@@ -1,9 +1,6 @@
-using FluentWeb.Layout;
 using Microsoft.AspNetCore.Components;
-using Shared.Enums.ExportFiles;
 using Shared.Models.Projects.Reponses;
 using Shared.Models.Projects.Request;
-using Web.Infrastructure.Managers.Generic;
 using Web.Infrastructure.Managers.Projects;
 
 namespace FluentWeb.Pages;
@@ -12,11 +9,11 @@ public partial class Home
 {
     [CascadingParameter]
     public App App { get; set; }
- 
+
     [Inject]
     private IProjectService Service { get; set; }
 
-    ProjectResponseList Response { get; set; } = new();
+    ProjectResponseList Response => App.ProjectList;
     string nameFilter { get; set; } = string.Empty;
     Func<ProjectResponse, bool> fiterexpresion => x =>
        x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase);
@@ -26,6 +23,7 @@ public partial class Home
     protected override async Task OnInitializedAsync()
     {
         await UpdateAll();
+       
     }
     async Task UpdateAll()
     {
@@ -33,12 +31,13 @@ public partial class Home
         var result = await Service.GetAll();
         if (result.Succeeded)
         {
-            Response = result.Data;
-
+            App.ProjectList = result.Data;
+    
             StateHasChanged();
         }
     }
 
+   
 
     public void AddNew()
     {
@@ -50,8 +49,8 @@ public partial class Home
     {
         Navigation.NavigateTo($"/UpdateProject/{Response.Id}");
     }
-   
-   
+
+
 
     public async Task Delete(ProjectResponse response)
     {

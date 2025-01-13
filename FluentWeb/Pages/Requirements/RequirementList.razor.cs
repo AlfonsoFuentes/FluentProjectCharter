@@ -12,7 +12,10 @@ public partial class RequirementList
     public App App { get; set; }
     [Parameter]
     [EditorRequired]
-    public DeliverableResponse Parent { get; set; } = new();
+    public Guid DeliverableId { get; set; }
+    [Parameter]
+    [EditorRequired]
+    public Guid ProjectId { get; set; }
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
@@ -20,18 +23,20 @@ public partial class RequirementList
 
     [Inject]
     private IGenericService Service { get; set; } = null!;
-    public List<RequirementResponse> Items => Parent == null ? new() : Parent.Requirements;
+    [Parameter]
+    [EditorRequired]
+    public List<RequirementResponse> Items { get; set; }
     string nameFilter;
     public List<RequirementResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateRequirement/{Parent.Id}/{Parent.ProjectId}");
+        Navigation.NavigateTo($"/CreateRequirement/{DeliverableId}/{ProjectId}");
 
     }
 
     void Edit(RequirementResponse response)
     {
-        Navigation.NavigateTo($"/UpdateRequirement/{response.Id}/{Parent.ProjectId}");
+        Navigation.NavigateTo($"/UpdateRequirement/{response.Id}/{ProjectId}");
     }
     public async Task Delete(RequirementResponse response)
     {
@@ -47,7 +52,7 @@ public partial class RequirementList
             {
                 Id = response.Id,
                 Name = response.Name,
-                ProjectId = Parent.Id,
+                ProjectId = ProjectId,
             };
             var resultDelete = await Service.Delete(request);
             if (resultDelete.Succeeded)

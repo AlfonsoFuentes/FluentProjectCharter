@@ -9,11 +9,13 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams
 
         public string TagNumber { get; set; } = string.Empty;
         public string TagLetter { get; set; } = string.Empty;
-        public string Tag { get; set; } = string.Empty;
+        [NotMapped]
+        public virtual string Tag => $"{TagLetter}-{TagNumber}";
 
-        public EngineeringItemType Type { get; set; } = EngineeringItemType.None;
+       
         public ProcessFlowDiagram? ProcessFlowDiagram { get; set; } = null!;
-        public Guid? ProcessFlowDiagramId {  get; set; } 
+        public Guid? ProcessFlowDiagramId { get; set; }
+       
         public ICollection<Nozzle> Nozzles { get; set; } = new List<Nozzle>();
 
         [ForeignKey("ItemConnectedId")]

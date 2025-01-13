@@ -13,7 +13,7 @@ using Color = DocumentFormat.OpenXml.Spreadsheet.Color;
 using Font = DocumentFormat.OpenXml.Spreadsheet.Font;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 
-namespace Server.Implementations.Storage
+namespace Server.DatabaseImplementations.Storage
 {
     public class ExcelService : IExcelService
     {

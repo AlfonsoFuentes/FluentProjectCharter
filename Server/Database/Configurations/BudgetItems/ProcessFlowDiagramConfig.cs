@@ -8,8 +8,12 @@ namespace Server.Database.Configurations.BudgetItems
     {
         public void Configure(EntityTypeBuilder<ProcessFlowDiagram> builder)
         {
+          //  builder.HasOne(c => c.Deliverable)
+          //.WithMany(t => t.ProcessFlowDiagrams)
+          //.HasForeignKey(x => x.DeliverableId)
+          //.OnDelete(DeleteBehavior.NoAction);
 
-            
+    
         }
     }
 }

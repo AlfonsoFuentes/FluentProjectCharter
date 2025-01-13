@@ -1,26 +1,4 @@
-﻿
-
-
-
-using LazyCache;
-using Microsoft.EntityFrameworkCore;
-using Server.Database.Contracts;
-using Server.Database.Entities;
-using Server.Database.Entities.BudgetItems;
-using Server.Database.Entities.BudgetItems.Commons;
-using Server.Database.Entities.BudgetItems.EngineeringContingency;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves;
-using Server.Database.Entities.BudgetItems.Taxes;
-using Server.Interfaces.Database;
-using Server.Interfaces.UserServices;
-using System.Reflection;
-
-namespace Server.Implementations.Databases
+﻿namespace Server.DatabaseImplementations.Databases
 {
     public class BlazorHeroContext : AuditableContext, IAppDbContext
     {
@@ -59,7 +37,7 @@ namespace Server.Implementations.Databases
         public DbSet<RoleInsideProject> RoleInsideProjects { get; set; } = null!;
         public DbSet<Meeting> Meetings { get; set; } = null!;
         public DbSet<MeetingAttendant> MeetingAttendants { get; set; } = null!;
-        public DbSet<MeetingAttendantSuggestion> MeetingAttendantSuggestions { get; set; } = null!;
+        public DbSet<MeetingAgreement> MeetingAgreements { get; set; } = null!;
         public DbSet<LearnedLesson> LearnedLessons { get; set; } = null!;
         public DbSet<IssueLog> IssueLogs { get; set; } = null!;
 
@@ -70,11 +48,11 @@ namespace Server.Implementations.Databases
         public DbSet<Painting> Paintings { get; set; } = null!;
         public DbSet<Structural> Structurals { get; set; } = null!;
         public DbSet<Testing> Testings { get; set; } = null!;
-        public DbSet<Contingency> Contingencys { get; set; } = null!;
-        public DbSet<Engineering> Engineerings { get; set; } = null!;
+     
+        public DbSet<EngineeringDesign> Engineerings { get; set; } = null!;
         public DbSet<Tax> Taxes { get; set; } = null!;
         public DbSet<TaxesItem> TaxesItems { get; set; } = null!;
-        public DbSet<ProcessFlowDiagram> ProcessFlowDiagrams {  get; set; } = null!;
+        public DbSet<ProcessFlowDiagram> ProcessFlowDiagrams { get; set; } = null!;
         public DbSet<Equipment> Equipments { get; set; } = null!;
         public DbSet<Instrument> Instruments { get; set; } = null!;
         public DbSet<Valve> Valves { get; set; } = null!;
@@ -97,6 +75,7 @@ namespace Server.Implementations.Databases
         public DbSet<PipingAccesoryCodeBrand> PipingAccesoryCodeBrands { get; set; } = null!;
         public DbSet<AcceptanceCriteria> AcceptanceCriterias { get; set; } = null!;
         public DbSet<WBSComponent> WBSComponents { get; set; } = null!;
+        public DbSet<Temporary> Temporarys { get; set; } = null!;
         void ConfiguerQueryFilters(ModelBuilder builder)
         {
 
@@ -110,6 +89,7 @@ namespace Server.Implementations.Databases
             builder.Entity<SucessfullFactor>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<DecissionCriteria>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Deliverable>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+          
             builder.Entity<Requirement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Assumption>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<DeliverableRisk>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
@@ -120,10 +100,10 @@ namespace Server.Implementations.Databases
             builder.Entity<AppState>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Meeting>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<MeetingAttendant>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<MeetingAttendantSuggestion>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<MeetingAgreement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<IssueLog>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<BudgetItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-           
+
             builder.Entity<TaxesItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<ProcessFlowDiagram>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<IsometricItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
@@ -135,6 +115,8 @@ namespace Server.Implementations.Databases
             builder.Entity<EngineeringItem>().UseTpcMappingStrategy();
             builder.Entity<Template>().UseTpcMappingStrategy();
 
+            builder.Entity<Brand>().HasQueryFilter(p => p.IsDeleted == false);
+
             builder.Entity<RoleInsideProject>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<LearnedLesson>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<Template>().HasQueryFilter(p => p.IsDeleted == false);
@@ -145,12 +127,13 @@ namespace Server.Implementations.Databases
             builder.Entity<PipingAccesoryCodeBrand>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<PipingConnectionType>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<PipingAccesoryImage>().HasQueryFilter(p => p.IsDeleted == false);
+            builder.Entity<Temporary>().HasQueryFilter(p => p.IsDeleted == false);
 
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-           
+
             ConfigureDatatTypes(builder);
 
             base.OnModelCreating(builder);

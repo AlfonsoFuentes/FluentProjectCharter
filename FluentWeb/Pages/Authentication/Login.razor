@@ -1,4 +1,5 @@
-﻿@layout MainLayout
+﻿@page "/login"
+@layout MainLayout
 @attribute [AllowAnonymous]
 
 
@@ -7,6 +8,21 @@
     <FluentValidationValidator @ref="_fluentValidationValidator" />
     <FluentStack Orientation="Orientation.Vertical" VerticalGap="2" Style="width:400px" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Center">
         <FluentGrid AdaptiveRendering="true" Justify="JustifyContent.Center">
+            <FluentGridItem xs="12" sm="12">
+                <FluentLabel Typo="Typography.H1">
+                    <strong> CP Project Management</strong>
+                </FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12">
+                <FluentLabel Typo="Typography.H2">
+                    Interactive Software to plan and follow projects
+                </FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12">
+                <FluentLabel Typo="Typography.H6">
+                   Colgate-Palmolive - Cali
+                </FluentLabel>
+            </FluentGridItem>
             <FluentGridItem xs="12" sm="12">
                 <FluentLabel Typo="Typography.H4">
                     Don't have an account? <FluentAnchor Appearance="Appearance.Hypertext" Href="register">Register here</FluentAnchor>

@@ -1,18 +1,10 @@
 ﻿@page "/UpdateStakeHolderInsideProject/{Id:guid}/{ProjectId:guid}"
 
 <EditTemplate @ref=EditForm TItem="UpdateStakeHolderInsideProjectRequest" @bind-Model="@Model"
-                Title="Edit StakeHolder to Project">
+              Title="Edit StakeHolder to Project">
     <Content>
-        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
-
+        <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
             <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@Model.StakeHolder.Name</FluentLabel>
-            <FluentButton Id="addorgan" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddStakeHolder">
-
-            </FluentButton>
-            <FluentTooltip Anchor="addorgan" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Stakeholder</FluentTooltip>
-
-        </FluentStack>
-        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
             <FluentSelect TOption="StakeHolderRoleEnum"
                           Label="Select Role"
                           Items="@StakeHolderRoleEnum.List"
@@ -29,24 +21,14 @@
 
             <ValidationMessage For="() => Model.Role" style="color:red; font-size:x-small;" />
         </FluentStack>
+       
     </Content>
 
 </EditTemplate>
 
 @code {
     EditTemplate<UpdateStakeHolderInsideProjectRequest> EditForm = null!;
-    string? stakeHolder;
-    async Task ChangeSelect(ChangeEventArgs args)
-    {
-        if (args == null || args.Value == null) return;
-        if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
-        {
-            Model.StakeHolder = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
-            stakeHolder = args.Value.ToString();
-            await EditForm.ValidateAsync();
-        }
-
-    }
+    
     async Task ChangeRole(ChangeEventArgs args)
     {
         if (args == null) return;

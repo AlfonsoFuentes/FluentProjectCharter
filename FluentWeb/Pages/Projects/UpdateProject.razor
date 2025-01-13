@@ -1,97 +1,174 @@
 ﻿@page "/UpdateProject/{Id:guid}"
 
-<EditTemplate @ref=EditForm TItem="UpdateProjectRequest" @bind-Model=@Model
+<EditTemplate @ref=Form TItem="UpdateProjectRequest" @bind-Model=@Model
               Title="Edit Project">
     <Content>
-
-        <TextArea Label="Name"
-                  @bind-Value=@Model.Name
-                  Placeholder="Define name"
-                  Validate="EditForm.ValidateAsync"></TextArea>
-        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
-        <TextArea Label="Project Description"
-                  @bind-Value=@Model.ProjectDescription
-                  Placeholder="Define Project Description"
-                  Rows="3"
-                  Validate="EditForm.ValidateAsync"></TextArea>
-        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
-        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
-            <FluentSelect TOption="ProjectNeedTypeEnum"
-                          Label="Select Project Need"
-                          Items="@ProjectNeedTypeEnum.List"
-                          Id="people-listbox"
-                          Width="60%"
-                          Height="350px"
-                          @onchange=@ChangeSelect
-                          Placeholder="Make a selection..."
-                          OptionValue="@(p => p.Name)"
-                          OptionText="@(p => p.Name)"
-                          @bind-Value="@Model.ProjectNeedType.Name"
-                          @bind-SelectedOption="@Model.ProjectNeedType" />
-
-
-            <ValidationMessage For="() => Model.ProjectNeedType" style="color:red; font-size:x-small;" />
-        </FluentStack>
-        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
-            <FluentSelect TOption="StakeHolderResponse"
-                          Label="Select a Manager"
-                          Items="@StakeHolderResponseList.Items"
-                          Id="people-listbox"
-                          Width="60%"
-                          Height="350px"
-                          Immediate="true"
-                          @onchange="ChangeManager"
-                          Placeholder="Make a selection..."
-                          OptionValue="@(p => p.Name)"
-                          OptionText="@(p => p.Name)"
-                          @bind-Value="@manager"
-                          @bind-SelectedOption="@Model.Manager" />
-            <ValidationMessage For="() => Model.Manager" style="color:red; font-size:x-small;" />
-            <FluentButton Id="addmanager" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@(()=>AddStakeHolder(StakeHolderRoleEnum.Manager))">
-
-            </FluentButton>
-            <FluentTooltip Anchor="addmanager" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Manager</FluentTooltip>
-
-        </FluentStack>
-        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="4" Width="100%">
-            <FluentSelect TOption="StakeHolderResponse"
-                          Label="Select a Sponsor"
-                          Items="@StakeHolderResponseList.Items"
-                          Id="people-listbox"
-                          Width="60%"
-                          Height="350px"
-                          Immediate="true"
-                          @onchange="ChangeSponsor"
-                          Placeholder="Make a selection..."
-                          OptionValue="@(p => p.Name)"
-                          OptionText="@(p => p.Name)"
-                          @bind-Value="@sponsor"
-                          @bind-SelectedOption="@Model.Sponsor" />
-            <ValidationMessage For="() => Model.Sponsor" style="color:red; font-size:x-small;" />
-            <FluentButton Id="addsponsor" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@(()=>AddStakeHolder(StakeHolderRoleEnum.Sponsor))">
-
-            </FluentButton>
-            <FluentTooltip Anchor="addsponsor" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Sponsor</FluentTooltip>
+        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
+            <FluentGridItem xs="12" sm="12" md="6">
+                <TextArea Label="Name"
+                          @bind-Value=@Model.Name
+                          Rows="3"
+                          Placeholder="Define name"
+                          Validate="Form.ValidateAsync"></TextArea>
+                <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="6">
+                <TextArea Label="Project Description"
+                          @bind-Value=@Model.ProjectDescription
+                          Placeholder="Define Project Description"
+                          Rows="3"
+                          Validate="Form.ValidateAsync"></TextArea>
+                <ValidationMessage For="() => Model.ProjectDescription" style="color:red; font-size:x-small;" />
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="4">
+                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
+                    <FluentGridItem xs="12">
+                        <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="1" Width="100%">
+                            <FluentSelect TOption="ProjectNeedTypeEnum"
+                                          Label="Select Project Need"
+                                          Items="@ProjectNeedTypeEnum.List"
+                                          Id="people-listbox"
+                                          Width="60%"
+                                          Height="350px"
+                                          @onchange=@ChangeSelectProjectNeed
+                                          Placeholder="Make a selection..."
+                                          OptionValue="@(p => p.Name)"
+                                          OptionText="@(p => p.Name)"
+                                          @bind-Value="@Model.ProjectNeedType.Name"
+                                          @bind-SelectedOption="@Model.ProjectNeedType" />
 
 
-        </FluentStack>
-        <FluentDatePicker Label="Project Initial Date" AriaLabel="To" @bind-Value="@Model.InitialProjectDate" DoubleClickToDate="@Model.InitialProjectDate" />
-        <ValidationMessage For="() => Model.InitialProjectDate" style="color:red; font-size:x-small;" />
-        <FluentNumberField @bind-Value=@Model.InitialBudget Placeholder="Define Initial Budget" Label="Initial Budget, USD"></FluentNumberField>
+                            <ValidationMessage For="() => Model.ProjectNeedType" style="color:red; font-size:x-small;" />
+                        </FluentStack>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="1" Width="100%">
+                            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="1" Width="100%">
+                                <FluentSelect TOption="StakeHolderResponse"
+                                              Label="Select a Manager"
+                                              Items="@StakeHolderResponseList.Items"
+                                              Id="people-listbox"
+                                              Width="60%"
+                                              Height="350px"
+                                              Immediate="true"
+                                              @onchange="ChangeManager"
+                                              Placeholder="Make a selection..."
+                                              OptionValue="@(p => p.Name)"
+                                              OptionText="@(p => p.Name)"
+                                              @bind-Value="@manager"
+                                              @bind-SelectedOption="@Model.Manager" />
+
+                                <FluentButton Id="addmanager" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@(()=>AddStakeHolder())">
+
+                                </FluentButton>
+                                <FluentTooltip Anchor="addmanager" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Manager</FluentTooltip>
+
+                            </FluentStack>
+                            <ValidationMessage For="() => Model.Manager" style="color:red; font-size:x-small;" />
+                        </FluentStack>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="1" Width="100%">
+
+                            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="1" Width="100%">
+                                <FluentSelect TOption="StakeHolderResponse"
+                                              Label="Select a Sponsor"
+                                              Items="@StakeHolderResponseList.Items"
+                                              Id="people-listbox"
+                                              Width="60%"
+                                              Height="350px"
+                                              Immediate="true"
+                                              @onchange="ChangeSponsor"
+                                              Placeholder="Make a selection..."
+                                              OptionValue="@(p => p.Name)"
+                                              OptionText="@(p => p.Name)"
+                                              @bind-Value="@sponsor"
+                                              @bind-SelectedOption="@Model.Sponsor" />
+
+                                <FluentButton Id="addsponsor" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@(()=>AddStakeHolder())">
+
+                                </FluentButton>
+                                <FluentTooltip Anchor="addsponsor" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Sponsor</FluentTooltip>
 
 
+                            </FluentStack>
+                            <ValidationMessage For="() => Model.Sponsor" style="color:red; font-size:x-small;" />
 
+                        </FluentStack>
+                    </FluentGridItem>
+                </FluentGrid>
+
+
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="4">
+                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
+                    <FluentGridItem xs="12">
+                        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="3" Width="100%">
+                            <FluentDatePicker Label="Project Initial Date" AriaLabel="To" @bind-Value="@Model.InitialProjectDate" DoubleClickToDate="@Model.InitialProjectDate" />
+                            <ValidationMessage For="() => Model.InitialProjectDate" style="color:red; font-size:x-small;" />
+                        </FluentStack>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="3" Width="100%">
+                            <FluentSelect TOption="ProjectStatusEnum"
+                                          Label="Select Project status"
+                                          Items="@ProjectStatusEnum.List"
+                                          Id="people-listbox"
+                                          Width="60%"
+                                          Height="350px"
+                                          @onchange=@ChangeSelectProjectStatus
+                                          Placeholder="Make a selection..."
+                                          OptionValue="@(p => p.Name)"
+                                          OptionText="@(p => p.Name)"
+                                     
+                                          @bind-Value="@Model.Status.Name"
+                                          @bind-SelectedOption="@Model.Status" />
+
+
+                            <ValidationMessage For="() => Model.Status" style="color:red; font-size:x-small;" />
+                        </FluentStack>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="3" Width="100%">
+                            <FluentNumberField @bind-Value=@Model.InitialBudget Placeholder="Define Initial Budget" Label="Initial Budget, USD"></FluentNumberField>
+                        </FluentStack>
+                    </FluentGridItem>
+                </FluentGrid>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="4">
+                <NumberField Label="%Engineering" @bind-Value=@Model.PercentageEngineering Validate="Form.ValidateAsync"></NumberField>
+                <ValidationMessage For="() => Model.PercentageEngineering" style="color:red; font-size:x-small;" />
+                <NumberField Label="%Contingency" @bind-Value=@Model.PercentageContingency Validate="Form.ValidateAsync"></NumberField>
+                <ValidationMessage For="() => Model.PercentageContingency" style="color:red; font-size:x-small;" />
+                <FluentCheckbox Label="Is Productive Asset?" @bind-Value=@Model.IsProductiveAsset></FluentCheckbox>
+                @if (!Model.IsProductiveAsset)
+                {
+                    <NumberField Label="%Tax (VAT)" @bind-Value=@Model.PercentageTaxProductive Validate="Form.ValidateAsync"></NumberField>
+                    <ValidationMessage For="() => Model.PercentageTaxProductive" style="color:red; font-size:x-small;" />
+                }
+            </FluentGridItem>
+
+        </FluentGrid>
     </Content>
 
 </EditTemplate>
 
 @code {
-    EditTemplate<UpdateProjectRequest> EditForm = null!;
-    async Task ChangeSelect(ChangeEventArgs args)
+    EditTemplate<UpdateProjectRequest> Form = null!;
+    int Spacing = 3;
+    JustifyContent Justification = JustifyContent.FlexStart;
+
+    async Task ChangeSelectProjectNeed(ChangeEventArgs args)
     {
         if (args == null) return;
         Model.ProjectNeedType = ProjectNeedTypeEnum.GetType(args!.Value!.ToString()!);
-        await EditForm.ValidateAsync();
+        await Form.ValidateAsync();
+    }
+    async Task ChangeSelectProjectStatus(ChangeEventArgs args)
+    {
+        if (args == null) return;
+        Model.Status = ProjectStatusEnum.GetType(args!.Value!.ToString()!);
+        await Form.ValidateAsync();
     }
     string? manager;
     async Task ChangeManager(ChangeEventArgs args)
@@ -101,7 +178,7 @@
         {
             Model.Manager = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
             manager = args.Value.ToString();
-            await EditForm.ValidateAsync();
+            await Form.ValidateAsync();
         }
 
     }
@@ -113,7 +190,7 @@
         {
             Model.Sponsor = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
             sponsor = args.Value.ToString();
-            await EditForm.ValidateAsync();
+            await Form.ValidateAsync();
         }
 
     }

@@ -1,6 +1,4 @@
-﻿using Server.EndPoint.Projects.Queries;
-using Shared.Models.HighLevelRequirements.Records;
-
+﻿
 namespace Server.EndPoint.HighLevelRequirements.Queries
 {
     public static class GetHighLevelRequirementByIdEndPoint
@@ -29,7 +27,15 @@ namespace Server.EndPoint.HighLevelRequirements.Queries
                 });
             }
         }
-
+        public static HighLevelRequirementResponse Map(this HighLevelRequirement row)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                ProjectId = row.ProjectId,
+            };
+        }
 
 
     }

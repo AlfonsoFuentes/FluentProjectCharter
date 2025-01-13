@@ -15,7 +15,8 @@ namespace Server.Database.Configurations.BudgetItems.PipingTempates
                  .OnDelete(DeleteBehavior.Cascade);
 
 
-            builder.HasOne(c => c.FluidCode).WithMany(t => t.Isometrics).HasForeignKey(x => x.FluidCodeId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(c => c.FluidCode).WithMany(t => t.Isometrics).HasForeignKey(x => x.FluidCodeId)
+                .OnDelete(DeleteBehavior.NoAction);
 
 
         }

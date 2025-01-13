@@ -12,8 +12,6 @@ public partial class EditTemplate<TItem> where TItem : class, IRequest
     [CascadingParameter]
     public App App { get; set; }
 
-    
-   
     [Inject]
     private IGenericService Service { get; set; } = null!;
     [Parameter]

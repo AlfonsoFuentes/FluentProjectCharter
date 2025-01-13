@@ -26,7 +26,7 @@ public partial class CreateProject
             StakeHolderResponseList = result.Data;
         }
     }
-    void AddStakeHolder(StakeHolderRoleEnum Role)
+    void AddStakeHolder()
     {
         Navigation.NavigateTo($"/CreateStakeHolder");
     }

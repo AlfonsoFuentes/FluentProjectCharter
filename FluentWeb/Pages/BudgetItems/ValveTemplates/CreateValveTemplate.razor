@@ -1,0 +1,315 @@
+﻿@page "/CreateValveTemplate"
+
+
+
+<CreateTemplate @ref=Form TItem="CreateValveTemplateRequest" @bind-Model="@Model"
+Title="Create Valve Template">
+    <Content>
+        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 2px;width:100%; ">
+            <FluentGridItem xs="12" sm="12" md="4">
+                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px;width:100%; ">
+                    <FluentGridItem xs="12">
+                        <FluentSelect TOption="BrandResponse"
+                        Label="Select a Brand"
+                        Items="@BrandsResponseList.Items"
+                        Id="people-listbox"
+                        Width="90%"
+                        Height="auto"
+                        Immediate="true"
+                        @onchange=@ChangeSelect
+                        Placeholder="Make a selection..."
+                        OptionValue="@(p => p.Name)"
+                        OptionText="@(p => p.Name)"
+                        @bind-Value="@SelectedBrand"
+                        @bind-SelectedOption="@Model.BrandResponse" />
+                        <ValidationMessage For="() => Model.BrandResponse" style="color:red; font-size:x-small;" />
+
+                        <FluentButton Id="addB" OnClick="@(()=>AddBrand())" IconEnd="@(new Icons.Regular.Size20.Add())"></FluentButton>
+                        <FluentTooltip Anchor="addB" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Brand</FluentTooltip>
+
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <TextBox Label="Model"
+                        @bind-Value=@Model.Model
+                        Placeholder="Define Model"
+                        Validate="Form.ValidateAsync"></TextBox>
+                        <ValidationMessage For="() => Model.Model" style="color:red; font-size:x-small;" />
+
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentSelect TOption="ValveTypesEnum"
+                        Label="Select Valve Type"
+                        Items="@ValveTypesEnum.List"
+                        Id="people-listbox"
+                        Width="100%"
+                        Height="350px"
+                        @onchange=@ChangValveType
+                        Placeholder="Make a selection..."
+                        OptionValue="@(p => p.Name)"
+                        OptionText="@(p => p.Name)"
+                        @bind-Value="@Model.Type.Name"
+                        @bind-SelectedOption="@Model.Type" />
+                        <ValidationMessage For="() => Model.Type" style="color:red; font-size:x-small;" />
+
+
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <NumberField @bind-Value="@Model.Value" Label="Value, USD" Validate="Form.ValidateAsync">
+
+                        </NumberField>
+                        <ValidationMessage For="() => Model.Value" style="color:red; font-size:x-small;" />
+                    </FluentGridItem>
+
+                </FluentGrid>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="4">
+                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px;width:100%; ">
+
+
+                    <FluentGridItem xs="12">
+                        <FluentSelect TOption="ActuatorTypeEnum"
+                        Label="Select Actuator Type"
+                        Items="@ActuatorTypeEnum.List"
+                        Id="people-listbox"
+                        Width="100%"
+                        Height="350px"
+                        @onchange=@ChangeActuator
+                        Placeholder="Make a selection..."
+                        OptionValue="@(p => p.Name)"
+                        OptionText="@(p => p.Name)"
+                        @bind-Value="@Model.ActuatorType.Name"
+                        @bind-SelectedOption="@Model.ActuatorType" />
+                        <ValidationMessage For="() => Model.ActuatorType" style="color:red; font-size:x-small;" />
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentSelect TOption="MaterialEnum"
+                        Label="Select Material"
+                        Items="@MaterialEnum.List"
+                        Id="people-listbox"
+                        Width="100%"
+                        Height="350px"
+                        @onchange=@ChangeMaterial
+                        Placeholder="Make a selection..."
+                        OptionValue="@(p => p.Name)"
+                        OptionText="@(p => p.Name)"
+                        @bind-Value="@Model.Material.Name"
+                        @bind-SelectedOption="@Model.Material" />
+                        <ValidationMessage For="() => Model.Material" style="color:red; font-size:x-small;" />
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentSelect TOption="NominalDiameterEnum"
+                        Label="Select Diameter"
+                        Items="@NominalDiameterEnum.List"
+                        Id="people-listbox"
+                        Width="100%"
+                        Height="350px"
+                        @onchange=@ChangeDiameter
+                        Placeholder="Make a selection..."
+                        OptionValue="@(p => p.Name)"
+                        OptionText="@(p => p.Name)"
+                        @bind-Value="@Model.Diameter.Name"
+                        @bind-SelectedOption="@Model.Diameter" />
+                        <ValidationMessage For="() => Model.Diameter" style="color:red; font-size:x-small;" />
+                    </FluentGridItem>
+                </FluentGrid>
+
+
+
+
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="4">
+                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px;width:100%; ">
+                    <FluentGridItem xs="12">
+                        <FluentSelect TOption="PositionerTypeEnum"
+                        Label="Select Positioner Type"
+                        Items="@PositionerTypeEnum.List"
+                        Id="people-listbox"
+                        Width="100%"
+                        Height="350px"
+                        @onchange=@ChangePositioner
+                        Placeholder="Make a selection..."
+                        OptionValue="@(p => p.Name)"
+                        OptionText="@(p => p.Name)"
+                        @bind-Value="@Model.PositionerType.Name"
+                        @bind-SelectedOption="@Model.PositionerType" />
+                        <ValidationMessage For="() => Model.PositionerType" style="color:red; font-size:x-small;" />
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentSelect TOption="FailTypeEnum"
+                        Label="Select Fail Type"
+                        Items="@FailTypeEnum.List"
+                        Id="people-listbox"
+                        Width="100%"
+                        Height="350px"
+                        @onchange=@ChangeFailType
+                        Placeholder="Make a selection..."
+                        OptionValue="@(p => p.Name)"
+                        OptionText="@(p => p.Name)"
+                        @bind-Value="@Model.FailType.Name"
+                        @bind-SelectedOption="@Model.FailType" />
+                        <ValidationMessage For="() => Model.FailType" style="color:red; font-size:x-small;" />
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentSelect TOption="SignalTypeEnum"
+                        Label="Select Signal Type"
+                        Items="@SignalTypeEnum.ListForValves"
+                        Id="people-listbox"
+                        Width="100%"
+                        Height="350px"
+                        @onchange=@ChangeSignalType
+                        Placeholder="Make a selection..."
+                        OptionValue="@(p => p.Name)"
+                        OptionText="@(p => p.Name)"
+                        @bind-Value="@Model.SignalType.Name"
+                        @bind-SelectedOption="@Model.SignalType" />
+                        <ValidationMessage For="() => Model.SignalType" style="color:red; font-size:x-small;" />
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentSwitch @bind-Value=@Model.HasFeedBack Label="Has Feed Back?"></FluentSwitch>
+                    </FluentGridItem>
+                </FluentGrid>
+            </FluentGridItem>
+
+
+        </FluentGrid>
+        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 2px;width:100%; ">
+            <FluentGridItem xs="12" sm="12" md="12">
+                <NozzleTemplateList EnableAdd="false" @bind-Items=@Model.Nozzles Validate="Form.ValidateAsync"></NozzleTemplateList>
+                <ValidationMessage For="() => Model.Nozzles" style="color:red; font-size:x-small;" />
+            </FluentGridItem>
+        </FluentGrid>
+
+    </Content>
+
+</CreateTemplate>
+@if (debug)
+{
+
+}
+@code {
+    bool debug = true;
+    CreateTemplate<CreateValveTemplateRequest> Form = null!;
+    int Spacing = 1;
+    JustifyContent Justification = JustifyContent.SpaceBetween;
+
+    void OnBreakpointEnterHandler(GridItemSize size)
+    {
+
+    }
+    string? SelectedBrand;
+    async Task ChangeSelect(ChangeEventArgs args)
+    {
+        if (args == null || args.Value == null) return;
+        if (BrandsResponseList.Items.Any(x => x.Name == args.Value.ToString()))
+        {
+            Model.BrandResponse = BrandsResponseList.Items.Single(x => x.Name == args.Value.ToString());
+            SelectedBrand = Model.Brand;
+            await Form.ValidateAsync();
+        }
+
+    }
+    async Task ChangeMaterial(ChangeEventArgs args)
+    {
+        if (args == null) return;
+        Model.Material = MaterialEnum.GetType(args!.Value!.ToString()!);
+        await Form.ValidateAsync();
+    }
+    async Task ChangValveType(ChangeEventArgs args)
+    {
+        if (args == null) return;
+
+        var newValveType = ValveTypesEnum.GetTypeByName(args!.Value!.ToString()!);
+        Model.Type = newValveType;
+
+        // Actualizar las boquillas según el tipo de válvula
+        UpdateNozzlesBasedOnValveType();
+
+        await Form.ValidateAsync();
+    }
+
+    void UpdateNozzlesBasedOnValveType()
+    {
+        if (Model.Nozzles.Count == 0)
+        {
+            AddInitialNozzles();
+        }
+        else
+        {
+            AdjustNozzlesForValveType();
+        }
+    }
+
+    void AddInitialNozzles()
+    {
+        Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Inlet, NominalDiameter = Model.Diameter });
+        Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+
+        if (Model.Type == ValveTypesEnum.Three_Way)
+        {
+            Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+        }
+    }
+
+    void AdjustNozzlesForValveType()
+    {
+        if (Model.Type == ValveTypesEnum.Three_Way)
+        {
+            if (Model.Nozzles.Count == 2)
+            {
+                Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+            }
+        }
+        else if (Model.Nozzles.Count == 3)
+        {
+            Model.Nozzles.Remove(Model.Nozzles.Last());
+        }
+    }
+
+
+    async Task ChangeDiameter(ChangeEventArgs args)
+    {
+        if (args == null) return;
+        Model.Diameter = NominalDiameterEnum.GetType(args!.Value!.ToString()!);
+        if (Model.Nozzles.Count > 0)
+        {
+            foreach (var nozzle in Model.Nozzles)
+            {
+                nozzle.NominalDiameter = Model.Diameter;
+            }
+        }
+        await Form.ValidateAsync();
+    }
+    async Task ChangeActuator(ChangeEventArgs args)
+    {
+        if (args == null) return;
+        Model.ActuatorType = ActuatorTypeEnum.GetType(args!.Value!.ToString()!);
+        await Form.ValidateAsync();
+    }
+    async Task ChangePositioner(ChangeEventArgs args)
+    {
+        if (args == null) return;
+        Model.PositionerType = PositionerTypeEnum.GetType(args!.Value!.ToString()!);
+        if (Model.PositionerType == PositionerTypeEnum.Proportional)
+        {
+            Model.SignalType = SignalTypeEnum.mA_4_20;
+        }
+        else
+        {
+            Model.SignalType = SignalTypeEnum.None;
+        }
+        await Form.ValidateAsync();
+    }
+    async Task ChangeFailType(ChangeEventArgs args)
+    {
+        if (args == null) return;
+        Model.FailType = FailTypeEnum.GetType(args!.Value!.ToString()!);
+        await Form.ValidateAsync();
+    }
+    async Task ChangeSignalType(ChangeEventArgs args)
+    {
+        if (args == null) return;
+        Model.SignalType = SignalTypeEnum.GetType(args!.Value!.ToString()!);
+        await Form.ValidateAsync();
+    }
+}
+

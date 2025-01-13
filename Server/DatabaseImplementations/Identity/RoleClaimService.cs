@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Org.BouncyCastle.Crypto;
 using Server.Database.Identity;
-using Server.Implementations.Databases;
+using Server.DatabaseImplementations.Databases;
 using Server.Interfaces.Identity;
 using Server.Interfaces.UserServices;
 using Shared.Commons;
 using Shared.Models.IdentityModels.Requests.Identity;
 using Shared.Models.IdentityModels.Responses.Identity;
 
-namespace Server.Implementations.Identity
+namespace Server.DatabaseImplementations.Identity
 {
     public class RoleClaimService : IRoleClaimService
     {
@@ -97,11 +97,11 @@ namespace Server.Implementations.Identity
                 {
                     existingRoleClaim.ClaimType = request.Type;
                     existingRoleClaim.ClaimValue = request.Value;
-            
+
                     existingRoleClaim.RoleId = request.RoleId;
                     _db.RoleClaims.Update(existingRoleClaim);
                     await _db.SaveChangesAsync(new CancellationToken());
-                    return await Result<string>.SuccessAsync(string.Format("Role Claim {0} for Role {1} updated.", 
+                    return await Result<string>.SuccessAsync(string.Format("Role Claim {0} for Role {1} updated.",
                         request.Value, existingRoleClaim.RoleId));
                 }
             }
@@ -115,7 +115,7 @@ namespace Server.Implementations.Identity
             {
                 _db.RoleClaims.Remove(existingRoleClaim);
                 await _db.SaveChangesAsync(new CancellationToken());
-                return await Result<string>.SuccessAsync(string.Format("Role Claim {0} for {1} Role deleted.", 
+                return await Result<string>.SuccessAsync(string.Format("Role Claim {0} for {1} Role deleted.",
                     existingRoleClaim.ClaimValue, existingRoleClaim.RoleId));
             }
             else

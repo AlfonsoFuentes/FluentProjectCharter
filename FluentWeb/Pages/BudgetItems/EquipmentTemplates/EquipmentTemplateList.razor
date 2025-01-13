@@ -1,0 +1,66 @@
+﻿@page "/templates/equipment-templates"
+
+<FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:1px solid lightgray;border-radius:5px; padding:4px;">
+    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Equipment Templates</strong></FluentLabel>
+
+    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+
+        @if (!ByParameter)
+        {
+            <FluentButton Id="addA" OnClick="@(()=>AddNew())" IconEnd="@(new Icons.Regular.Size20.Add())"></FluentButton>
+            <FluentTooltip Anchor="addA" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Equipment Template</FluentTooltip>
+
+
+        }
+
+        <FluentSpacer />
+        <FluentSearch @bind-Value="@nameFilter"
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
+                      Placeholder="Search..." />
+    </FluentStack>
+    <FluentDataGrid Items="@FilteredItems.AsQueryable()"
+                    Virtualize="true"
+                    ItemSize="46"
+                    Style="width:100%"
+                    GenerateHeader="GenerateHeaderOption.Sticky"
+                    TGridItem="EquipmentTemplateResponse">
+        @if (!ByParameter)
+        {
+            <PropertyColumn Title="Type" Property="@(c => c.Type)" />
+            <PropertyColumn Title="Sub Type" Property="@(c => c.SubType)" />
+        }
+        <PropertyColumn Title="Brand" Property="@(c => c.Brand)" />
+        <PropertyColumn Title="Model" Property="@(c => c.Model)" />
+        <PropertyColumn Title="Reference" Property="@(c => c.Reference)" />
+        @if (!ByParameter)
+        {
+            <PropertyColumn Title="Internal Material" Property="@(c => c.InternalMaterial.Name)" />
+            <PropertyColumn Title="External Material" Property="@(c => c.ExternalMaterial.Name)" />
+        }
+        <PropertyColumn Title="Value, USD" Property="@(c => c.sValue)" />
+
+        <TemplateColumn Title="Actions" Align="@Align.Start" Width="15%">
+            @if (!ByParameter)
+            {
+                <FluentButton Id="@($"edit{context.Id}")" aria-label="Edit item" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
+                <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                <FluentButton Id="@($"copy{context.Id}")" aria-label="Copy item" IconEnd="@(new Icons.Regular.Size16.Copy())" OnClick="@(() => Copy(context))" />
+                <FluentTooltip Anchor="@($"copy{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Copy</FluentTooltip>
+                <FluentButton Id="@($"delete{context.Id}")" aria-label="Delete item" IconEnd="@(new Icons.Regular.Size16.Delete())" OnClick="@(() => Delete(context))" />
+                <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+            }
+            else
+            {
+                <FluentButton Id="@($"send{context.Id}")" aria-label="Delete item" IconEnd="@(new Icons.Regular.Size16.SendPerson())" OnClick="@(() => OnSendToForm(context))" />
+                <FluentTooltip Anchor="@($"send{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Send to form</FluentTooltip>
+            }
+        </TemplateColumn>
+    </FluentDataGrid>
+
+
+
+</FluentStack>
+
+@code {
+
+}

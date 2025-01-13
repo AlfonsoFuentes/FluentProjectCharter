@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Shared.Models.Cases.Responses;
-using Shared.Models.OrganizationStrategies.Records;
-using Shared.Models.OrganizationStrategies.Responses;
+﻿
 
 namespace Server.EndPoint.OrganizationStrategys.Queries
 {
@@ -15,8 +11,8 @@ namespace Server.EndPoint.OrganizationStrategys.Queries
                 app.MapPost(StaticClass.OrganizationStrategys.EndPoint.GetById,
                     async (GetOrganizationStrategyByIdRequest request, IQueryRepository Repository) =>
                 {
-                    Func<IQueryable<OrganizationStrategy>, IIncludableQueryable<OrganizationStrategy, object>> Includes = x => 
-                    x.Include(x=>x.Cases).ThenInclude(x=>x.Project);
+                    Func<IQueryable<OrganizationStrategy>, IIncludableQueryable<OrganizationStrategy, object>> Includes = x =>
+                    x.Include(x => x.Cases).ThenInclude(x => x.Project);
                     ;
 
                     Expression<Func<OrganizationStrategy, bool>> Criteria = x => x.Id == request.Id;
@@ -44,19 +40,11 @@ namespace Server.EndPoint.OrganizationStrategys.Queries
                 Id = row.Id,
                 Name = row.Name,
 
-                Cases = row.Cases.Count == 0 ? new() : row.Cases.Select(x => x.MapShort()).ToList(),
+                Cases = row.Cases == null || row.Cases.Count == 0 ? new() : row.Cases.Select(x => x.MapShort()).ToList(),
             };
         }
-        public static CaseResponse MapShort(this Case row)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
+       
 
-
-            };
-        }
 
     }
 }

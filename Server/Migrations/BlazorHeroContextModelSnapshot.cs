@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Server.Implementations.Databases;
+using Server.DatabaseImplementations.Databases;
 
 #nullable disable
 
@@ -383,9 +383,6 @@ namespace Server.Migrations
                     b.Property<double>("Budget")
                         .HasColumnType("float");
 
-                    b.Property<Guid?>("BudgetItemId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(128)");
 
@@ -475,6 +472,10 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ConnectionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(128)");
 
@@ -484,18 +485,20 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EndType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("EngineeringItemId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("HeightDiameterUnit")
+                    b.Property<double>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<string>("HeightUnit")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HeightUnit")
+                    b.Property<double>("InnerDiameter")
+                        .HasColumnType("float");
+
+                    b.Property<string>("InnerDiameterUnit")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -512,6 +515,10 @@ namespace Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NominalDiameter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NozzleType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -533,10 +540,6 @@ namespace Server.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("ThicknessUnit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WeldType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -568,10 +571,6 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Diameter")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -580,6 +579,14 @@ namespace Server.Migrations
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("NominalDiameter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NozzleType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("TemplateId")
                         .IsRequired()
@@ -913,6 +920,9 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("DeliverableId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -926,8 +936,7 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProjectId")
-                        .IsRequired()
+                    b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Tag")
@@ -939,6 +948,8 @@ namespace Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DeliverableId");
 
                     b.HasIndex("ProjectId");
 
@@ -962,9 +973,6 @@ namespace Server.Migrations
 
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("EngineeringItemType")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -994,6 +1002,103 @@ namespace Server.Migrations
                     b.ToTable((string)null);
 
                     b.UseTpcMappingStrategy();
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Temporary", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BrandTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Equipment")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("EquipmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("EquipmentTemplate")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("EquipmentTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ExternalMaterial")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("InstrumentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("InstrumentTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("InternalMaterial")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Material")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("PipingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PipingTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TagLetter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.Property<Guid?>("ValveId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ValveTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Temporarys");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Taxes.TaxesItem", b =>
@@ -1045,9 +1150,6 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CaseTab")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(128)");
 
@@ -1058,6 +1160,9 @@ namespace Server.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsNodeOpen")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastModifiedBy")
@@ -1076,8 +1181,8 @@ namespace Server.Migrations
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ScopeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Tab")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenantId")
                         .IsRequired()
@@ -1191,10 +1296,10 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DeliverableTab")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsNodeOpen")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastModifiedBy")
@@ -1210,8 +1315,8 @@ namespace Server.Migrations
                     b.Property<Guid>("ScopeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("SubDeliverableId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Tab")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenantId")
                         .IsRequired()
@@ -1220,8 +1325,6 @@ namespace Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ScopeId");
-
-                    b.HasIndex("SubDeliverableId");
 
                     b.ToTable("Deliverables");
                 });
@@ -1528,6 +1631,9 @@ namespace Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsNodeOpen")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(128)");
 
@@ -1542,8 +1648,14 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Subject")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tab")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenantId")
@@ -1552,10 +1664,12 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProjectId");
+
                     b.ToTable("Meetings");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.MeetingAttendant", b =>
+            modelBuilder.Entity("Server.Database.Entities.MeetingAgreement", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1586,10 +1700,6 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1598,10 +1708,10 @@ namespace Server.Migrations
 
                     b.HasIndex("MeetingId");
 
-                    b.ToTable("MeetingAttendants");
+                    b.ToTable("MeetingAgreements");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.MeetingAttendantSuggestion", b =>
+            modelBuilder.Entity("Server.Database.Entities.MeetingAttendant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1611,9 +1721,6 @@ namespace Server.Migrations
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateofSuggestion")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedOnUtc")
@@ -1628,12 +1735,11 @@ namespace Server.Migrations
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("MeetingAttendantId")
+                    b.Property<Guid>("MeetingId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("StakeHolderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
                         .IsRequired()
@@ -1641,9 +1747,11 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeetingAttendantId");
+                    b.HasIndex("MeetingId");
 
-                    b.ToTable("MeetingAttendantSuggestions");
+                    b.HasIndex("StakeHolderId");
+
+                    b.ToTable("MeetingAttendants");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.OrganizationStrategy", b =>
@@ -1685,9 +1793,6 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CaseId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(128)");
 
@@ -1703,6 +1808,12 @@ namespace Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsNodeOpen")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsProductiveAsset")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(128)");
 
@@ -1712,9 +1823,24 @@ namespace Server.Migrations
                     b.Property<Guid?>("ManagerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("MeetingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MeetingTab")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("PercentageContingency")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PercentageEngineering")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PercentageTaxProductive")
+                        .HasColumnType("float");
 
                     b.Property<string>("ProjectDescription")
                         .IsRequired()
@@ -1728,11 +1854,15 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProjectTab")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("SponsorId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tab")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenantId")
                         .IsRequired()
@@ -1867,10 +1997,10 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("DeliverableId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsNodeOpen")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastModifiedBy")
@@ -1883,7 +2013,7 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ScopeTab")
+                    b.Property<string>("Tab")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TenantId")
@@ -2238,22 +2368,9 @@ namespace Server.Migrations
                     b.ToTable("Testings");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.BudgetItems.EngineeringContingency.Contingency", b =>
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.EngineeringContingency.EngineeringDesign", b =>
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
-
-                    b.Property<double>("Percentage")
-                        .HasColumnType("float");
-
-                    b.ToTable("Contingencys");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.BudgetItems.EngineeringContingency.Engineering", b =>
-                {
-                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
-
-                    b.Property<double>("Percentage")
-                        .HasColumnType("float");
 
                     b.ToTable("Engineerings");
                 });
@@ -2265,10 +2382,6 @@ namespace Server.Migrations
                     b.Property<Guid?>("ProcessFlowDiagramId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Tag")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TagLetter")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -2276,9 +2389,6 @@ namespace Server.Migrations
                     b.Property<string>("TagNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
 
                     b.HasIndex("ProcessFlowDiagramId");
 
@@ -2325,23 +2435,11 @@ namespace Server.Migrations
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template");
 
-                    b.Property<string>("ExternalMaterial")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InternalMaterial")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Material")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModifierInstrument")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -2355,10 +2453,6 @@ namespace Server.Migrations
 
                     b.Property<double>("Value")
                         .HasColumnType("float");
-
-                    b.Property<string>("VariableInstrument")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.ToTable("InstrumentTemplates");
                 });
@@ -2392,7 +2486,7 @@ namespace Server.Migrations
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template");
 
-                    b.Property<string>("ActuadorType")
+                    b.Property<string>("ActuatorType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -2474,6 +2568,10 @@ namespace Server.Migrations
 
                     b.Property<Guid?>("FluidCodeId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FluidCodeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Insulation")
                         .HasColumnType("bit");
@@ -2735,6 +2833,10 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.ProcessFlowDiagram", b =>
                 {
+                    b.HasOne("Server.Database.Entities.Deliverable", null)
+                        .WithMany("ProcessFlowDiagrams")
+                        .HasForeignKey("DeliverableId");
+
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("ProcessFlowDiagrams")
                         .HasForeignKey("ProjectId")
@@ -2820,14 +2922,7 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Server.Database.Entities.Deliverable", "SubDeliverable")
-                        .WithMany("SubDeliverables")
-                        .HasForeignKey("SubDeliverableId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.Navigation("Scope");
-
-                    b.Navigation("SubDeliverable");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.DeliverableRisk", b =>
@@ -2915,6 +3010,28 @@ namespace Server.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("Server.Database.Entities.Meeting", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("Meetings")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.MeetingAgreement", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Meeting", "Meeting")
+                        .WithMany("MeetingAgreements")
+                        .HasForeignKey("MeetingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Meeting");
+                });
+
             modelBuilder.Entity("Server.Database.Entities.MeetingAttendant", b =>
                 {
                     b.HasOne("Server.Database.Entities.Meeting", "Meeting")
@@ -2923,18 +3040,14 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Server.Database.Entities.StakeHolder", "StakeHolder")
+                        .WithMany("MeetingAttendants")
+                        .HasForeignKey("StakeHolderId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("Meeting");
-                });
 
-            modelBuilder.Entity("Server.Database.Entities.MeetingAttendantSuggestion", b =>
-                {
-                    b.HasOne("Server.Database.Entities.MeetingAttendant", "MeetingAttendant")
-                        .WithMany("MeetingAttendantSuggestions")
-                        .HasForeignKey("MeetingAttendantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MeetingAttendant");
+                    b.Navigation("StakeHolder");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Project", b =>
@@ -3152,19 +3265,16 @@ namespace Server.Migrations
 
                     b.Navigation("DeliverableRisks");
 
-                    b.Navigation("Requirements");
+                    b.Navigation("ProcessFlowDiagrams");
 
-                    b.Navigation("SubDeliverables");
+                    b.Navigation("Requirements");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Meeting", b =>
                 {
-                    b.Navigation("MeetingAttendants");
-                });
+                    b.Navigation("MeetingAgreements");
 
-            modelBuilder.Entity("Server.Database.Entities.MeetingAttendant", b =>
-                {
-                    b.Navigation("MeetingAttendantSuggestions");
+                    b.Navigation("MeetingAttendants");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.OrganizationStrategy", b =>
@@ -3183,6 +3293,8 @@ namespace Server.Migrations
                     b.Navigation("IssueLogs");
 
                     b.Navigation("LearnedLessons");
+
+                    b.Navigation("Meetings");
 
                     b.Navigation("ProcessFlowDiagrams");
 
@@ -3204,6 +3316,8 @@ namespace Server.Migrations
                     b.Navigation("Judgements");
 
                     b.Navigation("Managers");
+
+                    b.Navigation("MeetingAttendants");
 
                     b.Navigation("RequirementRequestedBys");
 

@@ -16,9 +16,11 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using Microsoft.FluentUI.AspNetCore.Components
+@using Icons = Microsoft.FluentUI.AspNetCore.Components.Icons
 @using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip
 @using Microsoft.JSInterop
 @using FluentWeb
+@using Shared.Models.AcceptanceCriterias.Requests
 @using FluentWeb.Layout
 @using Blazored.FluentValidation
 @using FluentWeb.SharedComponents
@@ -58,11 +60,44 @@
 @using FluentWeb.Pages.Projects
 @using Shared.Models.Projects.Request
 @using Shared.Enums.ProjectNeedTypes
-@using Web.Infrastructure.Managers.AppStates
+@using FluentWeb.Pages.BudgetItems
+@using Shared.Models.Deliverables.Responses
+@using Shared.Models.BudgetItems
 @using Web.Infrastructure.Managers.Generic
 @using Shared.Models.HighLevelRequirements.Requests
 @using FluentWeb.Pages.HighLevelRequirements
 @using Shared.Models.Projects.Reponses
+@using Shared.Models.Meetings.Requests
+@using Shared.Enums.Meetings
+@using FluentWeb.Pages.Meetings
+@using Shared.Models.Meetings.Responses
+@using Shared.Models.MeetingAgreements.Requests
+@using Shared.Models.MeetingAttendants.Requests
+@using FluentWeb.Pages.MeetingAgreements
+@using FluentWeb.Pages.MeetingAttendants
+@using FluentWeb.Pages.AcceptanceCriterias
+@using Shared.Models.Deliverables.Records
+@using Shared.Models.BudgetItems.Alterations.Requests
+@using Shared.Models.Brands.Requests
+@using Shared.StaticClasses
+@using Shared.Models.Templates.Equipments.Requests
+@using Shared.Models.Brands.Responses
+@using Shared.Enums.Materials
+@using Shared.Models.Templates.Equipments.Responses
+@using Shared.Models.Templates.NozzleTemplates
+@using FluentWeb.Pages.BudgetItems.NozzleTemplates
+@using Shared.Enums.ConnectionTypes
+@using Shared.Enums.DiameterEnum
+@using Shared.Enums.NozzleTypes
+@using FluentWeb.Pages.BudgetItems.EquipmentTemplates
+@using Shared.Models.BudgetItems.Equipments.Requests
+@using Shared.Models.BudgetItems.Nozzles.Responses
+@using FluentWeb.Pages.BudgetItems.NozzleBudgetarys
+@using Shared.Models.Templates.Valves.Responses
+@using Shared.Models.Templates.Valves.Requests
+@using Shared.Enums.ValvesEnum
+@using FluentWeb.Pages.BudgetItems.ValveTemplates
+@using Shared.Models.BudgetItems.Valves.Requests
 
 @attribute [Authorize]
 @inject IBlazorDownloadFileService blazorDownloadFileService
@@ -80,4 +115,3 @@
 @inject ISnackBar _snackBar
 @inject IDialogService DialogService
 @inject IGenericService GenericService
-@inject IAppStateService AppStateService

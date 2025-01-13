@@ -9,11 +9,16 @@ namespace Server.Database.Configurations
             builder.HasKey(ci => ci.Id);
 
             builder.HasMany(x => x.MeetingAttendants)
-        .WithOne(t => t.Meeting)
-        .HasForeignKey(e => e.MeetingId)
-        .IsRequired()
-        .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(t => t.Meeting)
+                .HasForeignKey(e => e.MeetingId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(x => x.MeetingAgreements)
+            .WithOne(t => t.Meeting)
+            .HasForeignKey(e => e.MeetingId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
         }
 
     }
@@ -23,11 +28,12 @@ namespace Server.Database.Configurations
         {
             builder.HasKey(ci => ci.Id);
 
-            builder.HasMany(x => x.MeetingAttendantSuggestions)
-        .WithOne(t => t.MeetingAttendant)
-        .HasForeignKey(e => e.MeetingAttendantId)
-        .IsRequired()
-        .OnDelete(DeleteBehavior.Cascade);
+            
+
+            builder.HasOne(c => c.StakeHolder)
+        .WithMany(t => t.MeetingAttendants)
+        .HasForeignKey(x => x.StakeHolderId)
+        .OnDelete(DeleteBehavior.NoAction);
 
         }
 

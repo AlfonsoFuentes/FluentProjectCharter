@@ -8,6 +8,10 @@ namespace Server.Database.Entities
 
         public Deliverable Deliverable { get; set; } = null!;
         public Guid DeliverableId { get; set; }
+
+        //public SubDeliverable? SubDeliverable { get; set; } = null!;
+        //public Guid? SubDeliverableId { get; set; }
+
         public string Name { set; get; } = string.Empty;
         public string Type {  set; get; } = string.Empty;
         public StakeHolder? RequestedBy { get; set; }
@@ -24,5 +28,13 @@ namespace Server.Database.Entities
                 DeliverableId= DeliverableId,
             };
         }
+        //public static Requirement CreateSubDeliverable(Guid DeliverableId)
+        //{
+        //    return new()
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        SubDeliverableId = DeliverableId,
+        //    };
+        //}
     }
 }

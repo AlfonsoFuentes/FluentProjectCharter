@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.AppStates.Responses;
+using Shared.Models.Cases.Responses;
+using Shared.Models.Projects.Reponses;
 using Web.Infrastructure.Services.Currencies;
 
 namespace FluentWeb;
@@ -10,7 +11,10 @@ public partial class App
     [Inject]
     public IRate _CurrencyService { get; set; }
     public ConversionRate RateList { get; set; }
-    public ActiveAppResponse AppState { get; set; } = new();
+    public ProjectResponseList ProjectList { get; set; } = new();
+
+    public ProjectResponse Project => ProjectList.CurrentProject;
+  
 
     protected override async Task OnInitializedAsync()
     {
@@ -20,27 +24,15 @@ public partial class App
 
 
     }
-    public async Task GetActiveProject()
-    {
-        var result = await AppStateService.GetProjectState(AppState);
-        if (result.Succeeded)
-        {
-            AppState = result.Data;
-        }
-    }
+
     public async Task GetCurrentUser()
     {
         var state = await _stateProvider.GetAuthenticationStateAsync();
         if (state.User.Identity.IsAuthenticated && state != new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())))
         {
             CurrentUser = state.User;
-            var result = await AppStateService.GetInitialProjectState();
-            if (result.Succeeded)
-            {
-                AppState = result.Data;
-                await GetActiveProject();
-                StateHasChanged();
-            }
+
+
         }
     }
     public string Email => CurrentUser == null ? string.Empty : CurrentUser.FindFirstValue(ClaimTypes.Email)!;

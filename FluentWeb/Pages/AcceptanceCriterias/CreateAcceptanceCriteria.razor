@@ -1,0 +1,17 @@
+﻿@page "/CreateAcceptanceCriteria/{DeliverableId:guid}/{ProjectId:guid}"
+<CreateTemplate @ref=CreateForm TItem="CreateAcceptanceCriteriaRequest" @bind-Model="@Model"
+                 Title="Create Acceptance Criteria">
+    <Content>
+        <TextArea Label="Name"
+                  @bind-Value=@Model.Name
+                  Placeholder="Define name"
+                  Validate="CreateForm.ValidateAsync"></TextArea>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+    </Content>
+
+</CreateTemplate>
+
+@code {
+    CreateTemplate<CreateAcceptanceCriteriaRequest> CreateForm = null!;
+
+}

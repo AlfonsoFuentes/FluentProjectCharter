@@ -18,7 +18,7 @@ public partial class UpdateStakeHolderInsideProject
     protected override async Task OnInitializedAsync()
     {
         Model.ProjectId = ProjectId;
-        await UpdateStakeHolder();
+      
         var result = await GenericService.GetById<StakeHolderInsideProjectResponse, GetStakeHolderInsideProjectByIdRequest>(
             new GetStakeHolderInsideProjectByIdRequest() { Id = Id, ProjectId = ProjectId });
 
@@ -31,24 +31,8 @@ public partial class UpdateStakeHolderInsideProject
                 Role = result.Data.Role,
                 ProjectId = ProjectId,
             };
-            stakeHolder = Model.StakeHolder.Name;
+           
         }
     }
 
-    [Inject]
-    private IStakeHolderService StakeHolderService { get; set; }
-    StakeHolderResponseList StakeHolderResponseList = new();
-
-    async Task UpdateStakeHolder()
-    {
-        var result = await StakeHolderService.GetAll();
-        if (result.Succeeded)
-        {
-            StakeHolderResponseList = result.Data;
-        }
-    }
-    void AddStakeHolder()
-    {
-        Navigation.NavigateTo($"/CreateStakeHolder");
-    }
 }

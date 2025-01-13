@@ -1,6 +1,17 @@
-﻿
-
-using Shared.Models.HighLevelRequirements.Responses;
+﻿using Server.EndPoint.Alterations.Queries;
+using Server.EndPoint.Electricals.Queries;
+using Server.EndPoint.Equipments.Queries;
+using Server.EndPoint.Foundations.Queries;
+using Server.EndPoint.Instruments.Queries;
+using Server.EndPoint.Pipings.Queries;
+using Server.EndPoint.StakeHolders.Queries;
+using Server.EndPoint.Structurals.Queries;
+using Server.EndPoint.Valves.Queries;
+using Server.EndPoint.EHSs.Queries;
+using Server.EndPoint.Paintings.Queries;
+using Server.EndPoint.Taxs.Queries;
+using Server.EndPoint.Testings.Queries;
+using Server.EndPoint.EngineeringDesigns.Queries;
 
 namespace Server.EndPoint.Projects.Queries
 {
@@ -14,21 +25,36 @@ namespace Server.EndPoint.Projects.Queries
                 {
                     Func<IQueryable<Project>, IIncludableQueryable<Project, object>> Includes = x => x
                      .Include(x => x.HighLevelRequirements)
+
                      .Include(x => x.StakeHolders).ThenInclude(x => x.RoleInsideProject!)
+
                      .Include(x => x.Manager)
                      .Include(x => x.Sponsor)
-                     .Include(x => x.Cases).ThenInclude(x => x.KnownRisks)
-                     .Include(x => x.Cases).ThenInclude(x => x.BackGrounds)
 
-                     .Include(x => x.Cases).ThenInclude(x => x.ExpertJudgements).ThenInclude(x => x.Expert)
+                     .Include(x => x.Meetings)
+
+                     .Include(x => x.BudgetItems)
+                     .Include(x => x.ProcessFlowDiagrams).ThenInclude(x => x.EngineeringItems)
+
+                     .Include(x => x.Cases).ThenInclude(x => x.OrganizationStrategy!)
+
+                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.AcceptanceCriterias)
                      .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Requirements)
                      .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Assumptions)
                      .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.DeliverableRisks)
                      .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Constraints)
                      .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Bennefits)
-                     .Include(x => x.Cases).ThenInclude(x => x.OrganizationStrategy)
-                     .Include(x => x.Cases).ThenInclude(x => x.SucessfullFactors)
-                     .Include(x => x.Cases).ThenInclude(x => x.DecissionCriterias);
+                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.BudgetItems)
+
+
+                    .Include(x => x.Cases).ThenInclude(x => x.BackGrounds)
+                    .Include(x => x.Cases).ThenInclude(x => x.KnownRisks)
+                    .Include(x => x.Cases).ThenInclude(x => x.SucessfullFactors)
+                    .Include(x => x.Cases).ThenInclude(x => x.DecissionCriterias)
+                    .Include(x => x.Cases).ThenInclude(x => x.ExpertJudgements);
+
+                    ;
+
 
                     string CacheKey = StaticClass.Projects.Cache.GetAll;
                     var rows = await Repository.GetAllAsync(CacheKey, Includes: Includes);
@@ -40,13 +66,17 @@ namespace Server.EndPoint.Projects.Queries
                     List<ProjectResponse> maps = rows.Count == 0 ? new() : rows.Select(x => x.Map()).ToList();
 
 
+
                     ProjectResponseList response = new ProjectResponseList()
                     {
+                        CurrentProject = maps.FirstOrDefault(x => x.IsNodeOpen),
                         Items = maps
                     };
                     return Result<ProjectResponseList>.Success(response);
                 });
             }
+
+
         }
 
         public static ProjectResponse Map(this Project row)
@@ -57,14 +87,20 @@ namespace Server.EndPoint.Projects.Queries
 
                 Name = row.Name,
 
+                IsNodeOpen = row.IsNodeOpen,
+                Tab = row.Tab,
+                PercentageEngineering = row.PercentageEngineering,
+                PercentageContingency = row.PercentageContingency,
                 ProjectNeedType = ProjectNeedTypeEnum.GetType(row.ProjectNeedType),
 
                 Cases = row.Cases == null || row.Cases.Count == 0 ? new() : row.Cases.Select(x => x.Map()).ToList(),
+                CurrentCase = row.Cases == null || row.Cases.Count == 0 || row.Cases.All(x => x.IsNodeOpen == false) ? null! : row.Cases.First(x => x.IsNodeOpen).Map(),
 
                 HighLevelRequirements = row.HighLevelRequirements == null || row.HighLevelRequirements.Count == 0 ? new() :
                 row.HighLevelRequirements.Select(x => x.Map()).ToList(),
 
-                StakeHolders = row.StakeHolders == null || row.StakeHolders.Count == 0 ? new() : row.StakeHolders.Select(x => x.MapInsideProject(row.Id)).ToList(),
+                StakeHolders = row.StakeHolders == null || row.StakeHolders.Count == 0 ? new() :
+                row.StakeHolders.Select(x => x.MapInsideProject(row.Id)).ToList(),
 
                 ProjectDescription = row.ProjectDescription,
 
@@ -75,217 +111,33 @@ namespace Server.EndPoint.Projects.Queries
                 ProjectNumber = row.ProjectNumber,
 
                 Sponsor = row.Sponsor == null ? null! : row.Sponsor.Map(),
+                Status = ProjectStatusEnum.GetType(row.Status),
+                IsProductive = row.IsProductiveAsset,
+                PercentageTaxes = row.PercentageTaxProductive,
+
+                Meetings = row.Meetings == null || row.Meetings.Count == 0 ? new() : row.Meetings.Select(x => x.Map()).ToList(),
+                CurrentMeeting = row.Meetings == null || row.Meetings.Count == 0 || row.Meetings.All(x => x.IsNodeOpen == false) ? null! : row.Meetings.First(x => x.IsNodeOpen).Map(),
+
+                Alterations = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Alteration>().Select(x => x.Map()).ToList(),
+                Structurals = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Structural>().Select(x => x.Map()).ToList(),
+                Foundations = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Foundation>().Select(x => x.Map()).ToList(),
+                Equipments = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Equipment>().Select(x => x.Map()).ToList(),
+
+                Valves = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Valve>().Select(x => x.Map()).ToList(),
+                Electricals = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Electrical>().Select(x => x.Map()).ToList(),
+                Pipings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Isometric>().Select(x => x.Map()).ToList(),
+                Instruments = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Instrument>().Select(x => x.Map()).ToList(),
+
+                EHSs = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<EHS>().Select(x => x.Map()).ToList(),
+                Paintings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Painting>().Select(x => x.Map()).ToList(),
+                Taxes = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Tax>().Select(x => x.Map()).ToList(),
+                Testings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Testing>().Select(x => x.Map()).ToList(),
+
+                EngineeringDesigns = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<EngineeringDesign>().Select(x => x.Map()).ToList(),
 
             };
         }
-        public static HighLevelRequirementResponse Map(this HighLevelRequirement row)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                ProjectId = row.ProjectId,
-            };
-        }
-        public static CaseResponse Map(this Case row)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                ProjectId = row.ProjectId,
-                BackGrounds = row.BackGrounds == null || row.BackGrounds.Count == 0 ? new() : row.BackGrounds.Select(x => x.Map(row.ProjectId)).ToList(),
 
-                Scopes = row.Scopes == null || row.Scopes.Count == 0 ? new() : row.Scopes.Select(x => x.Map(row.ProjectId)).ToList(),
-                KnownRisks = row.KnownRisks == null || row.KnownRisks.Count == 0 ? new() : row.KnownRisks.Select(x => x.Map(row.ProjectId)).ToList(),
-                SucessfullFactors = row.SucessfullFactors == null || row.SucessfullFactors.Count == 0 ? new() :
-                row.SucessfullFactors.Select(x => x.Map(row.ProjectId)).ToList(),
-                DecissionCriterias = row.DecissionCriterias == null || row.DecissionCriterias.Count == 0 ? new() :
-                row.DecissionCriterias.Select(x => x.Map(row.ProjectId)).ToList(),
-                OrganizationStrategy = row.OrganizationStrategy == null ? null! : row.OrganizationStrategy.Map(),
-                ExpertJudgements = row.ExpertJudgements == null || row.ExpertJudgements.Count == 0 ? new() :
-                row.ExpertJudgements.Select(x => x.Map(row.ProjectId)).ToList(),
-            };
-        }
-        public static BackGroundResponse Map(this BackGround row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                CaseId = row.CaseId,
-                ProjectId = ProjectId,
-            };
-        }
-        public static StakeHolderInsideProjectResponse MapInsideProject(this StakeHolder row, Guid _projectid)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                StakeHolder = new()
-                {
-                    Id = row.Id,
-                    Name = row.Name,
-                    PhoneNumber = row.PhoneNumber,
-                    Email = row.Email,
-                    Area = row.Area,
-
-                },
-                ProjectId = _projectid,
-                Role = row.RoleInsideProject == null ? StakeHolderRoleEnum.None : StakeHolderRoleEnum.GetType(row.RoleInsideProject.Name),
-
-
-
-            };
-        }
-        public static StakeHolderResponse Map(this StakeHolder row)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                Area = row.Area,
-                Email = row.Email,
-                PhoneNumber = row.PhoneNumber,
-
-
-            };
-        }
-        public static ExpertJudgementResponse Map(this ExpertJudgement row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                CaseId = row.CaseId,
-                Expert = row.Expert == null ? null! : row.Expert.Map(),
-                ProjectId = ProjectId,
-            };
-        }
-        public static ScopeResponse Map(this Scope row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                CaseId = row.CaseId,
-                ProjectId = ProjectId,
-                Deliverables = row.Deliverables == null || row.Deliverables.Count == 0 ? new() : row.Deliverables.Select(x => x.Map(ProjectId)).ToList(),
-            };
-        }
-        public static OrganizationStrategyResponse Map(this OrganizationStrategy row)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-
-            };
-        }
-        public static KnownRiskResponse Map(this KnownRisk row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                CaseId = row.CaseId,
-                ProjectId = ProjectId,
-            };
-        }
-        public static SucessfullFactorResponse Map(this SucessfullFactor row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                CaseId = row.CaseId,
-                ProjectId = ProjectId
-            };
-        }
-        public static DecissionCriteriaResponse Map(this DecissionCriteria row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                CaseId = row.CaseId,
-                ProjectId = ProjectId,
-            };
-        }
-        public static DeliverableResponse Map(this Deliverable row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                ScopeId = row.ScopeId,
-                Requirements = row.Requirements == null || row.Requirements.Count == 0 ? new() : row.Requirements.Select(x => x.Map(ProjectId)).ToList(),
-
-                Assumptions = row.Assumptions == null || row.Assumptions.Count == 0 ? new() : row.Assumptions.Select(x => x.Map(ProjectId)).ToList(),
-
-                DeliverableRisks = row.DeliverableRisks == null || row.DeliverableRisks.Count == 0 ? new() :
-                row.DeliverableRisks.Select(x => x.Map(ProjectId)).ToList(),
-
-                Constrainsts = row.Constraints == null || row.Constraints.Count == 0 ? new() :
-                row.Constraints.Select(x => x.Map(ProjectId)).ToList(),
-
-                Bennefits = row.Bennefits == null || row.Bennefits.Count == 0 ? new() : row.Bennefits.Select(x => x.Map(ProjectId)).ToList(),
-
-                ProjectId = ProjectId,
-            };
-        }
-        public static RequirementResponse Map(this Requirement row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                DeliverableId = row.DeliverableId,
-                ProjectId = ProjectId,
-
-            };
-        }
-        public static AssumptionResponse Map(this Assumption row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                DeliverableId = row.DeliverableId,
-                ProjectId = ProjectId,
-            };
-        }
-        public static DeliverableRiskResponse Map(this DeliverableRisk row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                DeliverableId = row.DeliverableId,
-                ProjectId = ProjectId,
-            };
-        }
-        public static ConstrainstResponse Map(this Constrainst row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                DeliverableId = row.DeliverableId,
-                ProjectId = ProjectId,
-            };
-        }
-        public static BennefitResponse Map(this Bennefit row, Guid ProjectId)
-        {
-            return new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-                DeliverableId = row.DeliverableId,
-                ProjectId = ProjectId,
-            };
-        }
 
     }
 }

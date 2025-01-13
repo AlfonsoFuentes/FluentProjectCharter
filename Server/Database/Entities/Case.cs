@@ -36,8 +36,8 @@ namespace Server.Database.Entities
         //Identificacion de los criterios de decision
         public List<DecissionCriteria> DecissionCriterias { get; set; } = new();
         public List<ExpertJudgement> ExpertJudgements { get; set; } = new();
-        public string? CaseTab { get; set; } = string.Empty;
-        public Guid? ScopeId { get; set; }
+        public bool IsNodeOpen { get; set; }
+        public string? Tab { get; set; } = string.Empty;
 
     }
 }

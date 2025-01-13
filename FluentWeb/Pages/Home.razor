@@ -1,7 +1,7 @@
 ﻿@page "/"
 
-
 <FluentStack Orientation="Orientation.Vertical" Style="width:100%;height:100%;">
+
     <FluentStack Orientation=" Orientation.Horizontal">
         <div>
             <FluentButton Id="createproject" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
@@ -43,9 +43,9 @@
 
                 </div>
             </FluentStack>
-            @if (App.AppState.ProjectId != null && row.Id == App.AppState.ProjectId)
+            @if (row.IsNodeOpen)
             {
-                <FluentTabs ShowActiveIndicator="false" OnTabChange="HandleOnTabChange" @bind-ActiveTabId=@App.AppState.ProjectTab Style="width:100%">
+                <FluentTabs ShowActiveIndicator="false" OnTabChange="HandleOnTabChange" @bind-ActiveTabId=@row.Tab Style="width:100%">
                     <FluentTab Label="High Level Requirements" Id="HighLevel">
                         <Content>
                             <HighLevelRequirementList GetAll="UpdateAll" Parent="@row"></HighLevelRequirementList>
@@ -66,6 +66,22 @@
                         </Content>
 
                     </FluentTab>
+                    <FluentTab Label="Meetings" Id="Meetings">
+                        <Content>
+                            <MeetingList GetAll="UpdateAll" Parent="@row">
+
+                            </MeetingList>
+                        </Content>
+
+                    </FluentTab>
+                    <FluentTab Label="Budget Items" Id="Budgetitems">
+                        <Content>
+                            <ProjectBudgetItemsList GetAll="UpdateAll" Parent="@row">
+
+                            </ProjectBudgetItemsList>
+                        </Content>
+
+                    </FluentTab>
                 </FluentTabs>
 
             }
@@ -79,19 +95,41 @@
 @code {
     private async Task HandleOnTabChange(FluentTab tab)
     {
+        if (App.ProjectList.CurrentProject != null)
+        {
+            App.ProjectList.CurrentProject.Tab = tab.Id;
+            await GenericService.UpdateState(App.ProjectList.CurrentProject);
+        }
 
-        App.AppState.ProjectTab = tab.Id;
-        await AppStateService.UpdateProjectTab(App.AppState);
-  
         StateHasChanged();
     }
 
     public async Task Show(ProjectResponse response)
     {
-        App.AppState.ProjectId = App.AppState.ProjectId == response.Id ? null : response.Id;
-        await AppStateService.UpdateActiveProjectState(App.AppState);
-        await App.GetActiveProject();
-        StateHasChanged();
+        if (App.ProjectList.CurrentProject == null)
+        {
+            App.ProjectList.CurrentProject = response;
+            response.Open();
+            await GenericService.UpdateState(response);
+
+        }
+        else if (App.ProjectList.CurrentProject.Id == response.Id)
+        {
+            response.Close();
+            App.ProjectList.CurrentProject = null!;
+            await GenericService.UpdateState(response);
+        }
+        else
+        {
+            App.ProjectList.CurrentProject.Close();
+            await GenericService.UpdateState(App.ProjectList.CurrentProject);
+            App.ProjectList.CurrentProject = response;
+            
+            response.Open();
+            await GenericService.UpdateState(response);
+        }
+        
+       
 
 
 

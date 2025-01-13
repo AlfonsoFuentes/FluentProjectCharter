@@ -2,6 +2,14 @@
 
 namespace Shared.Models.FileResults.Generics.Reponses
 {
+    public interface IResponseAll
+    {
+
+    }
+    public interface IUpdateStateResponse
+    {
+        string EndPointName { get; }
+    }
     public interface IResponse
     {
         Guid Id { get; set; }

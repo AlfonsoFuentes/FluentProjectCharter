@@ -48,7 +48,28 @@ namespace Server.EndPoint.StakeHolders.Queries
             };
 
         }
+        public static StakeHolderInsideProjectResponse MapInsideProject(this StakeHolder row, Guid _projectid)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                StakeHolder = new()
+                {
+                    Id = row.Id,
+                    Name = row.Name,
+                    PhoneNumber = row.PhoneNumber,
+                    Email = row.Email,
+                    Area = row.Area,
 
+                },
+                ProjectId = _projectid,
+                Role = row.RoleInsideProject == null ? StakeHolderRoleEnum.None : StakeHolderRoleEnum.GetType(row.RoleInsideProject.Name),
+
+
+
+            };
+        }
 
     }
 }

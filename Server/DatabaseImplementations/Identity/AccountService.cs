@@ -6,7 +6,7 @@ using Server.Interfaces.Storage;
 using Shared.Commons;
 using Shared.Models.IdentityModels.Requests.Identity;
 
-namespace Server.Implementations.Identity
+namespace Server.DatabaseImplementations.Identity
 {
     public class AccountService : IAccountService
     {
@@ -26,7 +26,7 @@ namespace Server.Implementations.Identity
 
         }
 
-        public async Task<Shared.Commons.IResult> ChangePasswordAsync(ChangePasswordRequest model, string userId)
+        public async Task<IResult> ChangePasswordAsync(ChangePasswordRequest model, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -42,7 +42,7 @@ namespace Server.Implementations.Identity
             return identityResult.Succeeded ? await Result.SuccessAsync() : await Result.FailAsync(errors);
         }
 
-        public async Task<Shared.Commons.IResult> UpdateProfileAsync(UpdateProfileRequest request, string userId)
+        public async Task<IResult> UpdateProfileAsync(UpdateProfileRequest request, string userId)
         {
             if (!string.IsNullOrWhiteSpace(request.PhoneNumber))
             {

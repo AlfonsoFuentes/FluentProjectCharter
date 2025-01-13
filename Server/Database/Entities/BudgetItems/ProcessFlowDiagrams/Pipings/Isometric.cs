@@ -6,7 +6,8 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings
 {
     public class Isometric : EngineeringItem
     {
-
+        [NotMapped]
+        public override string Tag => $"{Diameter}-{FluidCodeName}-{TagNumber}-{Material}-{InsulationCode}";
         public override string Letter { get; set; } = "F";
         public double MaterialUnitaryCost { get; set; }
         public double MaterialQuantity { get; set; }
@@ -14,24 +15,21 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings
         public double LaborQuantity { get; set; }
         public string Diameter { get; set; } = string.Empty;
         public EngineeringFluidCode? FluidCode { get; set; } = null!;
-        public Guid? FluidCodeId { get; set; } = Guid.Empty;
+        public Guid? FluidCodeId { get; set; } 
+        public string FluidCodeName { get; set; } = string.Empty;
+      
         public string Material { get; set; } = string.Empty;
         public bool Insulation { get; set; }
+        [NotMapped]
+        public string InsulationCode => Insulation ? "1" : "0";
         public List<IsometricItem> IsometricItems { get; set; } = new List<IsometricItem>();
-    }
-    public class EngineeringFluidCode : AuditableEntity<Guid>, ITenantCommon
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Code { get; set; } = string.Empty;
-        [ForeignKey("FluidCodeId")]
-
-        public ICollection<Isometric> Isometrics { get; set; } = new List<Isometric>();
-
-        public static EngineeringFluidCode Create()
+        public static Isometric Create(Guid ProjectId, Guid DeliverableId)
         {
-            return new EngineeringFluidCode()
+            return new()
             {
                 Id = Guid.NewGuid(),
+                ProjectId = ProjectId,
+                DeliverableId = DeliverableId,
             };
         }
     }

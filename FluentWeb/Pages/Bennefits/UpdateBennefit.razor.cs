@@ -26,9 +26,5 @@ public partial class UpdateBennefit
             };
         }
     }
-    private void CancelAsync()
-    {
-        Navigation.NavigateBack();
-
-    }
+   
 }

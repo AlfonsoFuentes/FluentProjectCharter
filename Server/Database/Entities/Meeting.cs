@@ -2,50 +2,28 @@
 
 namespace Server.Database.Entities
 {
-    public class LearnedLesson : AuditableEntity<Guid>, ITenantCommon
-    {
-        public string Name { get; set; } = string.Empty;
-        public Guid ProjectId { get; set; }
-        public Project Project { get; set; } = null!;
-    }
     public class Meeting : AuditableEntity<Guid>, ITenantEntity
     {
         public string TenantId { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public DateTime? DateofMeeting { get; set; }
         public string MeetingType { get; set; } = string.Empty;
-
         public string Subject { get; set; } = string.Empty;
-        public static Meeting Create()
+        public static Meeting Create(Guid ProjectId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
+                ProjectId = ProjectId,
 
             };
         }
         public ICollection<MeetingAttendant> MeetingAttendants { get; set; } = new List<MeetingAttendant>();
-    }
-    public class MeetingAttendant : AuditableEntity<Guid>, ITenantEntity
-    {
-        public string TenantId { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
-        public string Role { get; set; } = string.Empty;
+        public ICollection<MeetingAgreement> MeetingAgreements { get; set; } = new List<MeetingAgreement>();
+        public Project Project { get; set; } = null!;
+        public Guid ProjectId { get; set; }
 
-        public Meeting Meeting { get; set; } = null!;
-        public Guid MeetingId { get; set; }
-
-        public ICollection<MeetingAttendantSuggestion> MeetingAttendantSuggestions { get; set; } = new List<MeetingAttendantSuggestion>();
-    }
-    public class MeetingAttendantSuggestion : AuditableEntity<Guid>, ITenantEntity
-    {
-        public string TenantId { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
-
-        public DateTime? DateofSuggestion { get; set; }
-        public MeetingAttendant MeetingAttendant { get; set; } = null!;
-        public Guid MeetingAttendantId { get; set; }
-
-
+        public bool IsNodeOpen { get; set; }
+        public string? Tab { get; set; } = string.Empty;
     }
 }

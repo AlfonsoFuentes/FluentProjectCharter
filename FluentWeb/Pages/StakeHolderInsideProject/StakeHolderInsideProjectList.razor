@@ -1,11 +1,12 @@
-﻿<FluentStack Orientation="Orientation.Vertical" Style="width:100%">
+﻿<FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:1px solid lightgray;border-radius:5px; padding:4px;">
+    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage StakeHolders</strong></FluentLabel>
     <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
         <FluentButton Id="addScop" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
         </FluentButton>
         <FluentTooltip Anchor="addScop" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Scope</FluentTooltip>
 
-        <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage StakeHolders</strong></FluentLabel>
+       
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
                       @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"

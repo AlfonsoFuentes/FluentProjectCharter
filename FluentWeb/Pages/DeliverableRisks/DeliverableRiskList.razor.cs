@@ -15,20 +15,24 @@ public partial class DeliverableRiskList
     public App App { get; set; }
     [Parameter]
     [EditorRequired]
-    public DeliverableResponse Parent { get; set; } = new();
+    public Guid DeliverableId { get; set; }
+    [Parameter]
+    [EditorRequired]
+    public Guid ProjectId { get; set; }
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
 
 
-
-    public List<DeliverableRiskResponse> Items => Parent == null ? new() : Parent.DeliverableRisks;
+    [Parameter]
+    [EditorRequired]
+    public List<DeliverableRiskResponse> Items { get; set; }
     string nameFilter;
     public List<DeliverableRiskResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
 
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateDeliverableRisk/{Parent.Id}/{Parent.ProjectId}");
+        Navigation.NavigateTo($"/CreateDeliverableRisk/{DeliverableId}/{ProjectId}");
 
     }
 
@@ -36,7 +40,7 @@ public partial class DeliverableRiskList
 
     void Edit(DeliverableRiskResponse response)
     {
-        Navigation.NavigateTo($"/UpdateDeliverableRisk/{response.Id}/{Parent.ProjectId}");
+        Navigation.NavigateTo($"/UpdateDeliverableRisk/{response.Id}/{ProjectId}");
     }
     public async Task Delete(DeliverableRiskResponse response)
     {
@@ -52,7 +56,7 @@ public partial class DeliverableRiskList
             {
                 Id = response.Id,
                 Name = response.Name,
-                ProjectId = Parent.Id,
+                ProjectId = ProjectId,
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

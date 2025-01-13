@@ -9,8 +9,8 @@ namespace Server.Database.Entities
         public Guid CaseId { get; set; }
         public string Name { get; set; } = string.Empty;
         public List<Deliverable> Deliverables { get; set; } = new();
-        public string? ScopeTab { get; set; } = string.Empty;
-        public Guid? DeliverableId { get; set; }
+        public bool IsNodeOpen { get; set; }
+        public string? Tab { get; set; } = string.Empty;
         public static Scope Create(Guid CaseId)
         {
             return new()

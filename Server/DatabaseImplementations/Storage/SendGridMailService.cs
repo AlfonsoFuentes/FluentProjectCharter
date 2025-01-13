@@ -1,4 +1,4 @@
-﻿namespace Server.Implementations.Storage
+﻿namespace Server.DatabaseImplementations.Storage
 {
     internal class SendGridMailService
     {

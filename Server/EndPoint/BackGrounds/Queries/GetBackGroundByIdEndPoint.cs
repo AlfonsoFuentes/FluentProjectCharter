@@ -31,8 +31,17 @@ namespace Server.EndPoint.BackGrounds.Queries
                 });
             }
         }
+        public static BackGroundResponse Map(this BackGround row, Guid ProjectId)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                CaseId = row.CaseId,
+                ProjectId = ProjectId,
+            };
+        }
 
 
-      
     }
 }

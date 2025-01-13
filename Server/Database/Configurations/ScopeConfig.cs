@@ -13,8 +13,9 @@ namespace Server.Database.Configurations
             builder.HasMany(x => x.Deliverables)
          .WithOne(t => t.Scope)
          .HasForeignKey(e => e.ScopeId)
-         .IsRequired()
+        .IsRequired()
          .OnDelete(DeleteBehavior.Cascade);
+
 
         }
 

@@ -1,7 +1,4 @@
-﻿using Server.EndPoint.Projects.Queries;
-using Shared.Models.Assumptions.Records;
-
-namespace Server.EndPoint.Assumptions.Queries
+﻿namespace Server.EndPoint.Assumptions.Queries
 {
     public static class GetAssumptionByIdEndPoint
     {
@@ -30,7 +27,17 @@ namespace Server.EndPoint.Assumptions.Queries
             }
         }
 
-
+        public static AssumptionResponse Map(this Assumption row, Guid ProjectId)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                DeliverableId = row.DeliverableId,
+                //SubDeliverableId = row.SubDeliverableId ,
+                ProjectId = ProjectId,
+            };
+        }
 
     }
 }

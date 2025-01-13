@@ -12,20 +12,22 @@ public partial class BennefitList
     public App App { get; set; }
     [Parameter]
     [EditorRequired]
-    public DeliverableResponse Parent { get; set; } = new();
+    public Guid DeliverableId { get; set; }
+    [Parameter]
+    [EditorRequired]
+    public Guid ProjectId { get; set; }
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-
-
-
-    public List<BennefitResponse> Items => Parent == null ? new() : Parent.Bennefits;
+    [Parameter]
+    [EditorRequired]
+    public List<BennefitResponse> Items { get; set; }
     string nameFilter;
     public List<BennefitResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
 
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateBennefit/{Parent.Id}/{Parent.ProjectId}");
+        Navigation.NavigateTo($"/CreateBennefit/{DeliverableId}/{ProjectId}");
 
     }
 
@@ -33,7 +35,7 @@ public partial class BennefitList
 
     void Edit(BennefitResponse response)
     {
-        Navigation.NavigateTo($"/UpdateBennefit/{response.Id}/{Parent.ProjectId}");
+        Navigation.NavigateTo($"/UpdateBennefit/{response.Id}/{ProjectId}");
     }
     public async Task Delete(BennefitResponse response)
     {
@@ -49,7 +51,7 @@ public partial class BennefitList
             {
                 Id = response.Id,
                 Name = response.Name,
-                ProjectId = Parent.Id,
+                ProjectId = ProjectId,
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

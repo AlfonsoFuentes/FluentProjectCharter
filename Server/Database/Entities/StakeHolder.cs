@@ -11,6 +11,9 @@ namespace Server.Database.Entities
         public List<Project> Managers { get; } = [];
         [ForeignKey("SponsorId")]
         public List<Project> Sponsors { get; } = [];
+
+        [ForeignKey("StakeHolderId")]
+        public List<MeetingAttendant> MeetingAttendants { get; } = [];
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;

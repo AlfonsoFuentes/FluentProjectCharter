@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Server.Database.Identity;
-using Server.Implementations.Databases;
+using Server.DatabaseImplementations.Databases;
 using Shared.Constants.Role;
 using Shared.Constants.User;
 

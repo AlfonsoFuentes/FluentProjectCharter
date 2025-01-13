@@ -30,7 +30,19 @@ namespace Server.EndPoint.StakeHolders.Queries
             }
         }
 
+        public static StakeHolderResponse Map(this StakeHolder row)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                Area = row.Area,
+                Email = row.Email,
+                PhoneNumber = row.PhoneNumber,
 
+
+            };
+        }
 
     }
 }

@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 using Server.Database.Identity;
+using Server.DatabaseImplementations.Identity.Specifications;
 using Server.Exceptions;
 using Server.ExtensionsMethods;
-using Server.Implementations.Identity.Specifications;
 using Server.Interfaces.Identity;
 using Server.Interfaces.Storage;
 using Server.Interfaces.UserServices;
@@ -18,7 +17,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 
 
-namespace Server.Implementations.Identity
+namespace Server.DatabaseImplementations.Identity
 {
     public class UserService : IUserService
     {
@@ -91,7 +90,7 @@ namespace Server.Implementations.Identity
                     if (result.Succeeded)
                     {
                         var role = await _roleManager.FindByNameAsync(RoleConstants.BasicRole);
-                        
+
                         await _userManager.AddToRoleAsync(user, RoleConstants.BasicRole);
 
                         return await Result<string>.SuccessAsync(user.Id, string.Format("User {0} Registered.", user.UserName));
@@ -101,13 +100,14 @@ namespace Server.Implementations.Identity
                         return await Result.FailAsync(result.Errors.Select(a => a.Description).ToList());
                     }
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
 
                     string exm = ex.Message;
                     return await Result.FailAsync(exm);
                 }
 
-              
+
             }
             else
             {
@@ -161,7 +161,7 @@ namespace Server.Implementations.Identity
                 var userRolesViewModel = new UserRoleModel
                 {
                     RoleName = role.Name!,
-                  
+
                 };
                 if (await _userManager.IsInRoleAsync(user!, role.Name!))
                 {

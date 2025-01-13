@@ -1,4 +1,14 @@
-﻿namespace Shared.Models.Deliverables.Records
+﻿using Shared.Models.FileResults.Generics.Records;
+using Shared.Models.FileResults.Generics.Request;
+
+namespace Shared.Models.Deliverables.Records
 {
-    public record DeliverableGetAll();
+    public class GetAllDeliverableRequest : GetByIdMessageResponse, IGetAll
+    {
+        public string EndPointName => StaticClass.SubDeliverables.EndPoint.GetAll;
+        public Guid DeliverableId { get; set; }
+        public Guid ProjectId { get; set; }
+
+        public override string ClassName => StaticClass.Deliverables.ClassName;
+    }
 }

@@ -45,6 +45,12 @@ namespace Server.Database.Configurations
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(x => x.Meetings)
+         .WithOne(t => t.Project)
+         .HasForeignKey(e => e.ProjectId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
             builder.HasMany(x => x.BudgetItems)
             .WithOne(t => t.Project)
             .HasForeignKey(e => e.ProjectId)

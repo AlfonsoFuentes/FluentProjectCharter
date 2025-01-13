@@ -1,0 +1,62 @@
+﻿
+
+<FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px;width:100%; ">
+    <FluentGridItem xs="12" sm="12" md="6">
+        <FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:1px solid lightgray;border-radius:5px; padding:4px;">
+            <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Nozzles</strong></FluentLabel>
+
+            <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+
+
+
+                <FluentButton Id="addA" OnClick="@(()=>Add())" IconEnd="@(new Icons.Regular.Size20.Add())"></FluentButton>
+                <FluentTooltip Anchor="addA" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Nozzle</FluentTooltip>
+
+                <FluentSpacer />
+
+            </FluentStack>
+            <FluentDataGrid Items="@Items.AsQueryable()"
+                            Virtualize="true"
+                            ItemSize="46"
+                            GenerateHeader="GenerateHeaderOption.Sticky"
+                            TGridItem="NozzleResponse">
+                <PropertyColumn Title="Type" Property="@(c => c.NozzleType.Name)" />
+                <PropertyColumn Title="Diameter" Property="@(c => c.NominalDiameter.Name)" />
+                <PropertyColumn Title="Connection Type" Property="@(c => c.ConnectionType.Name)" />
+
+                <TemplateColumn Title="Actions" Align="@Align.End">
+                    <FluentButton Id="@($"edit{context.Id}")" aria-label="Edit item" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => Edit(context))" />
+                    <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                    <FluentButton Id="@($"delete{context.Id}")" aria-label="Delete item" IconEnd="@(new Icons.Regular.Size16.Delete())" OnClick="@(() => Delete(context))" />
+                    <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+
+                </TemplateColumn>
+            </FluentDataGrid>
+
+
+        </FluentStack>
+    </FluentGridItem>
+    <FluentGridItem xs="12" sm="12" md="4">
+        <div style="width:100%">
+            @if (CreateItem != null)
+            {
+                <NozzleBudgetary @bind-Model="@CreateItem" Ok="AddItemOk" Cancel="CancelAdd" Title="Create Nozzle" />
+
+            }
+        </div>
+        <div style="width:100%">
+            @if (EditItem != null)
+            {
+                <NozzleBudgetary @bind-Model="@EditItem" Ok="EditItemOk" Cancel="CancelEdit" Title="Edit Nozzle" />
+
+            }
+        </div>
+    </FluentGridItem>
+</FluentGrid>
+
+
+
+@code {
+    int Spacing = 1;
+    JustifyContent Justification = JustifyContent.FlexStart;
+}

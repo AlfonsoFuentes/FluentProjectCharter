@@ -1,5 +1,6 @@
 ﻿using Server.Database.Contracts;
 using Server.Database.Entities.BudgetItems.Taxes;
+using Shared.Models.BudgetItems;
 using System.ComponentModel.DataAnnotations.Schema;
 using static Shared.StaticClasses.StaticClass;
 
@@ -22,6 +23,7 @@ namespace Server.Database.Entities.BudgetItems
 
         public Deliverable? Deliverable { get; set; } = null!;
         public Guid? DeliverableId {  get; set; }
+
 
     }
 

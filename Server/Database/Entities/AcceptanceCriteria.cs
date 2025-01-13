@@ -7,8 +7,18 @@ namespace Server.Database.Entities
         public string TenantId { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
 
-        public Deliverable Deliverable {  get; set; } = null!;
-        public Guid DeliverableId {  get; set; }
+        public Deliverable Deliverable { get; set; } = null!;
+        public Guid DeliverableId { get; set; }
 
+        //public SubDeliverable? SubDeliverable { get; set; } = null!;
+        //public Guid? SubDeliverableId { get; set; }
+        public static AcceptanceCriteria Create(Guid DeliverableId)
+        {
+            return new()
+            {
+                Id = Guid.NewGuid(),
+                DeliverableId = DeliverableId,
+            };
+        }
     }
 }

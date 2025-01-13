@@ -1,0 +1,20 @@
+.card {
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+    overflow: auto;
+}
+
+.stack {
+    width: 100%;
+    height: 100%;
+}
+
+.content {
+    overflow: auto;
+    max-height: calc(100% - 50px);
+}
+
+.actions {
+    padding: 4px;
+}

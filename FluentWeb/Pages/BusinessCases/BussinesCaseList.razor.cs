@@ -38,11 +38,7 @@ public partial class BussinesCaseList
         Navigation.NavigateTo($"/CreateCase/{Parent.Id}");
 
     }
-    void CancelAsync()
-    {
-
-    }
-
+    CaseResponse currentCase => App.Project == null ? null : App.Project.CurrentCase == null ? null : FilteredItems.FirstOrDefault(x => x.Id == App.Project.CurrentCase.Id);
 
     void Edit(CaseResponse response)
     {

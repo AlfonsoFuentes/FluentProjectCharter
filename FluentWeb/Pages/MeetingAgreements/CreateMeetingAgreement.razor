@@ -1,0 +1,21 @@
+﻿@page "/CreateMeetingAgreement/{MeetingId:guid}/{ProjectId:guid}"
+
+
+<CreateTemplate @ref=Form TItem="CreateMeetingAgreementRequest" @bind-Model="@Model"
+                Title="Create  Agreement">
+    <Content>
+        <TextArea Label=" Agreement "
+                  @bind-Value=@Model.Name
+                  Placeholder="Define Agreement"
+                  Validate="Form.ValidateAsync"></TextArea>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+
+      
+    </Content>
+
+</CreateTemplate>
+
+@code {
+    CreateTemplate<CreateMeetingAgreementRequest> Form = null!;
+ 
+}

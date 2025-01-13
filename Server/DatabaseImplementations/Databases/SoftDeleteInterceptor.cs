@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Server.Database.Contracts;
 
-namespace Server.Implementations.Databases
+namespace Server.DatabaseImplementations.Databases
 {
     public sealed class SoftDeleteInterceptor : SaveChangesInterceptor
     {

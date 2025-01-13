@@ -1,12 +1,4 @@
-﻿
-
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Shared.Models.OrganizationStrategies.Records;
-using Shared.Models.OrganizationStrategies.Responses;
-
-namespace Server.EndPoint.OrganizationStrategys.Queries
+﻿namespace Server.EndPoint.OrganizationStrategys.Queries
 {
     public static class GetAllOrganizationStrategyEndPoint
     {

@@ -28,11 +28,9 @@ public partial class ScopeList
         Navigation.NavigateTo($"/CreateScope/{Parent.Id}/{Parent.ProjectId}");
 
     }
+    ScopeResponse currentScope => App.Project == null || App.Project.CurrentCase == null ? null : 
+        FilteredItems.FirstOrDefault(x => x.Id == App.Project.CurrentCase.CurrentScope.Id);
 
-    void CancelAsync()
-    {
-
-    }
 
     void Edit(ScopeResponse response)
     {

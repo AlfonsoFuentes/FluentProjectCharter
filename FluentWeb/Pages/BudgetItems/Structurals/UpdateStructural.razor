@@ -1,0 +1,29 @@
+﻿@page "/UpdateStructurals/{Id:guid}/{ProjectId:guid}"
+@using Shared.Models.BudgetItems.Structurals.Requests
+
+
+
+<EditTemplate @ref=EditForm TItem="UpdateStructuralRequest" @bind-Model=@Model
+              Title="Edit Structural">
+    <Content>
+        <TextBox Label="Name"
+                 @bind-Value=@Model.Name
+                 Placeholder="Define name"
+                 Validate="EditForm.ValidateAsync"></TextBox>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+
+        <NumberField @bind-Value="@Model.UnitaryCost" Label="Unitary Cost, USD" Validate="EditForm.ValidateAsync">
+
+        </NumberField>
+        <ValidationMessage For="() => Model.UnitaryCost" style="color:red; font-size:x-small;" />
+
+        <NumberField @bind-Value="@Model.Quantity" Label="Quantity" Validate="EditForm.ValidateAsync"></NumberField>
+
+        <FluentLabel Typo="Typography.Body">Budget: @Model.sBudget</FluentLabel>
+    </Content>
+
+</EditTemplate>
+
+@code {
+    EditTemplate<UpdateStructuralRequest> EditForm = null!;
+}

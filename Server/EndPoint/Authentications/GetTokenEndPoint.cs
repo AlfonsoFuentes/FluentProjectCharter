@@ -1,8 +1,6 @@
-﻿using Server.Implementations.Identity;
-using Server.Interfaces.Identity;
+﻿using Server.Interfaces.Identity;
 using Shared.Constants.Routes;
 using Shared.Models.IdentityModels.Requests.Identity;
-using Shared.Models.IdentityModels.Responses.Identity;
 
 
 namespace Server.EndPoint.Authentications

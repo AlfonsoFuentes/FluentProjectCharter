@@ -31,8 +31,17 @@ namespace Server.EndPoint.SucessfullFactors.Queries
                 });
             }
         }
+        public static SucessfullFactorResponse Map(this SucessfullFactor row, Guid ProjectId)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                CaseId = row.CaseId,
+                ProjectId = ProjectId
+            };
+        }
 
 
-      
     }
 }

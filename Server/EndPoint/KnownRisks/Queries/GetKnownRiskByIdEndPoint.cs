@@ -31,8 +31,17 @@ namespace Server.EndPoint.KnownRisks.Queries
                 });
             }
         }
+        public static KnownRiskResponse Map(this KnownRisk row, Guid ProjectId)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                CaseId = row.CaseId,
+                ProjectId = ProjectId,
+            };
+        }
 
 
-      
     }
 }

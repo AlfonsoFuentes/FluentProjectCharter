@@ -13,28 +13,28 @@ public partial class AssumptionList
     [CascadingParameter]
     public App App { get; set; }
     [Parameter]
-    [EditorRequired]
-    public DeliverableResponse Parent { get; set; } = new();
+    public Guid DeliverableId { get; set; }
+    [Parameter]
+    public Guid ProjectId { get; set; }
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-
-
-  
-    public List<AssumptionResponse> Items => Parent == null ? new() : Parent.Assumptions;
+    [Parameter]
+    [EditorRequired]
+    public List<AssumptionResponse> Items { get; set; }
     string nameFilter;
     public List<AssumptionResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
 
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateAssumption/{Parent.Id}/{Parent.ProjectId}");
+        Navigation.NavigateTo($"/CreateAssumption/{DeliverableId}/{ProjectId}");
         
     }
 
 
     void Edit(AssumptionResponse response)
     {
-        Navigation.NavigateTo($"/UpdateAssumption/{response.Id}/{Parent.ProjectId}");
+        Navigation.NavigateTo($"/UpdateAssumption/{response.Id}/{ProjectId}");
     }
     public async Task Delete(AssumptionResponse response)
     {
@@ -50,7 +50,7 @@ public partial class AssumptionList
             {
                 Id = response.Id,
                 Name = response.Name,
-                ProjectId = Parent.Id,
+                ProjectId = ProjectId,
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

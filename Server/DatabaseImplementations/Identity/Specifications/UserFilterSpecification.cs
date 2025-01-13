@@ -1,6 +1,6 @@
 ﻿using Server.Database.Identity;
 
-namespace Server.Implementations.Identity.Specifications
+namespace Server.DatabaseImplementations.Identity.Specifications
 {
     public class UserFilterSpecification : HeroSpecification<BlazorHeroUser>
     {

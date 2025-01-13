@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="EndPoint\AppStates\Queries\GetEndPointProjectCase.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
     <PackageReference Include="AutoMapper" Version="13.0.1" />
@@ -56,6 +52,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FluentWeb\FluentWeb.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\UnitSystem\UnitSystem.csproj" />
   </ItemGroup>
 
 </Project>

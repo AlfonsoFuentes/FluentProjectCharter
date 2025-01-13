@@ -1,0 +1,49 @@
+﻿@page "/CreateMeeting/{ProjectId:guid}"
+
+
+<CreateTemplate @ref=Form TItem="CreateMeetingRequest" @bind-Model="@Model"
+                Title="Create Meeting">
+    <Content>
+        <TextArea Label="Meeting Name"
+                  @bind-Value=@Model.Name
+                  Placeholder="Define meeting name"
+                  Validate="Form.ValidateAsync"></TextArea>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+
+        <TextArea Label="Meeting Subject"
+                  @bind-Value=@Model.Subject
+                  Placeholder="Define Subject"
+                  Validate="Form.ValidateAsync"></TextArea>
+        <ValidationMessage For="() => Model.Subject" style="color:red; font-size:x-small;" />
+        <FluentSelect TOption="MeetingTypeEnum"
+                      Label="Meeting Type"
+                      Items="@MeetingTypeEnum.List"
+                      Id="people-listbox"
+                      Width="60%"
+                      Height="350px"
+                      @onchange=@ChangeSelectMeetingType
+                      Placeholder="Make a selection..."
+                      OptionValue="@(p => p.Name)"
+                      OptionText="@(p => p.Name)"
+                      @bind-Value="@Model.MeetingType.Name"
+                      @bind-SelectedOption="@Model.MeetingType" />
+
+
+        <ValidationMessage For="() => Model.MeetingType" style="color:red; font-size:x-small;" />
+
+        <FluentDatePicker Label="Meeting Date" AriaLabel="To" @bind-Value="@Model.DateofMeeting" DoubleClickToDate="@Model.DateofMeeting" />
+        <ValidationMessage For="() => Model.DateofMeeting" style="color:red; font-size:x-small;" />
+
+    </Content>
+
+</CreateTemplate>
+
+@code {
+    CreateTemplate<CreateMeetingRequest> Form = null!;
+    async Task ChangeSelectMeetingType(ChangeEventArgs args)
+    {
+        if (args == null) return;
+        Model.MeetingType = MeetingTypeEnum.GetType(args!.Value!.ToString()!);
+        await Form.ValidateAsync();
+    }
+}

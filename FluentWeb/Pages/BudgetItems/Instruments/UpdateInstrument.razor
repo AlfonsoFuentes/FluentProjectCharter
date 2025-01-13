@@ -1,0 +1,163 @@
+﻿@page "/UpdateInstruments/{Id:guid}/{ProjectId:guid}"
+@using Shared.Models.BudgetItems.Instruments.Requests
+
+
+
+<EditTemplate @ref=Form TItem="UpdateInstrumentRequest" @bind-Model=@Model
+              Title="Edit Instrument">
+    <Content>
+        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
+            <FluentGridItem xs="12" sm="12" md="7">
+                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 2px;width:100%; ">
+                    @* //fila *@
+                    <FluentGridItem xs="12" sm="12" md="12">
+                        <TextArea Label="Name"
+                                  @bind-Value=@Model.Name
+                                  Rows="2"
+                                  Placeholder="Define name"
+                                  Validate="Form.ValidateAsync"></TextArea>
+                        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+                    </FluentGridItem>
+                    @* //fila *@
+                    <FluentGridItem xs="12" sm="12" md="4">
+                        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px;width:100%; ">
+                            @if (ShowDetails)
+                            {
+                                <FluentGridItem xs="12">
+                                    <TextBox Label="Tag Letter"
+                                             @bind-Value=@Model.TagLetter
+                                             Placeholder="Define Tag Letter"
+                                             Validate="Form.ValidateAsync"></TextBox>
+                                </FluentGridItem>
+                                <FluentGridItem xs="12">
+                                    <TextBox Label="Tag Number"
+                                             @bind-Value=@Model.TagNumber
+                                             Placeholder="Define Tag Nummber"
+                                             Validate="Form.ValidateAsync"></TextBox>
+                                </FluentGridItem>
+                                <FluentGridItem xs="12">
+                                    <TextBox Label="Variable"
+                                             @bind-Value=@Model.VariableInstrument
+                                             Placeholder="Define Variable"
+                                             Validate="Form.ValidateAsync"></TextBox>
+                                </FluentGridItem>
+                                <FluentGridItem xs="12">
+                                    <TextBox Label="Sub Modifier"
+                                             @bind-Value=@Model.ModifierInstrument
+                                             Placeholder="Define Modifier"
+                                             Validate="Form.ValidateAsync"></TextBox>
+                                </FluentGridItem>
+                            }
+                            <FluentGridItem xs="12">
+                                <NumberField @bind-Value="@Model.Budget" Label="Budget, USD" Validate="Form.ValidateAsync">
+
+                                </NumberField>
+                                <ValidationMessage For="() => Model.Budget" style="color:red; font-size:x-small;" />
+                            </FluentGridItem>
+                            <FluentGridItem xs="12">
+                                <FluentButton Appearance="Appearance.Accent" OnClick="@(()=>ShowDetails=!ShowDetails)">
+                                    @(ShowDetails ? "Hide Details" : "Show Details")
+                                </FluentButton>
+
+
+                            </FluentGridItem>
+
+                        </FluentGrid>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="12" md="4">
+
+                        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px;width:100%; ">
+                            @if (ShowDetails)
+                            {
+                                <FluentGridItem xs="12">
+                                   @*  <TextBox Label="Brand"
+                                             @bind-Value=@Model.Brand
+                                             Placeholder="Define Brand"
+                                             Validate="Form.ValidateAsync"></TextBox> *@
+
+                                </FluentGridItem>
+                                <FluentGridItem xs="12">
+                                    <TextBox Label="Model"
+                                             @bind-Value=@Model.Model
+                                             Placeholder="Define Model"
+                                             Validate="Form.ValidateAsync"></TextBox>
+                                </FluentGridItem>
+                                <FluentGridItem xs="12">
+                                    <TextBox Label="Reference"
+                                             @bind-Value=@Model.Reference
+                                             Placeholder="Define Reference"
+                                             Validate="Form.ValidateAsync"></TextBox>
+                                </FluentGridItem>
+                                <FluentGridItem xs="12">
+
+
+
+                                </FluentGridItem>
+                            }
+
+                        </FluentGrid>
+
+
+
+
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="12" md="4">
+
+                        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
+                            @if (ShowDetails)
+                            {
+
+                                <FluentGridItem xs="12">
+                                   @*  <TextBox Label="Material"
+                                             @bind-Value=@Model.Material
+                                             Placeholder="Define Material"
+                                             Validate="Form.ValidateAsync"></TextBox> *@
+                                </FluentGridItem>
+                                <FluentGridItem xs="12">
+                                    @* <TextBox Label="Nozzle Type"
+                                             @bind-Value=@Model.NozzleType
+                                             Placeholder="Define Nozzle Type"
+                                             Validate="Form.ValidateAsync"></TextBox> *@
+                                </FluentGridItem>
+                                <FluentGridItem xs="12">
+
+                                </FluentGridItem>
+
+
+                                <FluentGridItem xs="12">
+
+                                </FluentGridItem>
+                            }
+                        </FluentGrid>
+
+
+                    </FluentGridItem>
+
+                </FluentGrid>
+
+
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="5">
+                @if (ShowDetails)
+                {
+                }
+            </FluentGridItem>
+
+
+        </FluentGrid>
+
+   
+    </Content>
+
+</EditTemplate>
+
+@code {
+    EditTemplate<UpdateInstrumentRequest> Form = null!;
+    int Spacing = 1;
+    JustifyContent Justification = JustifyContent.SpaceBetween;
+    bool ShowDetails = false;
+    void OnBreakpointEnterHandler(GridItemSize size)
+    {
+
+    }
+}

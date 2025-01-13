@@ -8,6 +8,9 @@ namespace Server.Database.Entities
 
         public Deliverable Deliverable { get; set; } = null!;
         public Guid DeliverableId { get; set; }
+
+        //public SubDeliverable? SubDeliverable { get; set; } = null!;
+        //public Guid? SubDeliverableId { get; set; }
         public string Name { set; get; } = string.Empty;
 
         public static Assumption Create(Guid DeliverableId)

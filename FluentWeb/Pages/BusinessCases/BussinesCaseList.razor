@@ -1,16 +1,18 @@
-﻿@using Shared.Models.Cases.Responses
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%;height:100%;">
+﻿@using Shared.Models.Cases.Records
+@using Shared.Models.Cases.Responses
+<FluentStack Orientation="Orientation.Vertical" Style="width:100%;height:100%;border:1px solid lightgray;border-radius:5px; padding:4px;">
+    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage busines cases</strong></FluentLabel>
     <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
         <FluentButton Id="addcase" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
         </FluentButton>
         <FluentTooltip Anchor="addcase" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Case</FluentTooltip>
 
-        <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage busines cases</strong></FluentLabel>
+
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-        @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
-        Placeholder="Search..." />
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
+                      Placeholder="Search..." />
     </FluentStack>
     @foreach (var row in FilteredItems)
     {
@@ -34,43 +36,43 @@
 
                 </div>
             </FluentStack>
-            @if (App.AppState.CaseId != null & row.Id == App.AppState.CaseId)
+            @if (row.IsNodeOpen)
             {
-                <FluentTabs ShowActiveIndicator="false" Style="width:100%" OnTabChange="HandleOnTabChange" @bind-ActiveTabId=@App.AppState.CaseTab>
+                <FluentTabs ShowActiveIndicator="false" Style="width:100%" OnTabChange="HandleOnTabChange" @bind-ActiveTabId=@row.Tab>
                     <FluentTab Label="Backgrounds" Id="Backgrounds">
                         <Content>
-                            <BackGroundList GetAll="GetAll" Parent="@row"></BackGroundList>
+                            <BackGroundList GetAll="GetAll" Parent="@App.Project.CurrentCase"></BackGroundList>
                         </Content>
 
                     </FluentTab>
 
                     <FluentTab Label="Expert Judgement" Id="Expert">
                         <Content>
-                            <ExpertJudgementList GetAll="GetAll" Parent="@row"></ExpertJudgementList>
+                            <ExpertJudgementList GetAll="GetAll" Parent="@App.Project.CurrentCase"></ExpertJudgementList>
                         </Content>
 
                     </FluentTab>
                     <FluentTab Label="Scope" Id="Scope">
                         <Content>
-                            <ScopeList GetAll="GetAll" Parent="@row"></ScopeList>
+                            <ScopeList GetAll="GetAll" Parent="@App.Project.CurrentCase"></ScopeList>
                         </Content>
 
                     </FluentTab>
                     <FluentTab Label="Known risks" Id="Known">
                         <Content>
-                            <KnownRiskList GetAll="GetAll" Parent="@row"></KnownRiskList>
+                            <KnownRiskList GetAll="GetAll" Parent="@App.Project.CurrentCase"></KnownRiskList>
                         </Content>
 
                     </FluentTab>
                     <FluentTab Label="Sucessfull factors" Id="Sucessfull">
                         <Content>
-                            <SucessfullFactorList GetAll="GetAll" Parent="@row"></SucessfullFactorList>
+                            <SucessfullFactorList GetAll="GetAll" Parent="@App.Project.CurrentCase"></SucessfullFactorList>
                         </Content>
 
                     </FluentTab>
                     <FluentTab Label="Decission criterias" Id="Decission">
                         <Content>
-                            <DecissionCriteriaList GetAll="GetAll" Parent="@row"></DecissionCriteriaList>
+                            <DecissionCriteriaList GetAll="GetAll" Parent="@App.Project.CurrentCase"></DecissionCriteriaList>
                         </Content>
 
                     </FluentTab>
@@ -88,17 +90,59 @@
 
     public async Task Show(CaseResponse response)
     {
-        App.AppState.CaseId = App.AppState.CaseId == response.Id ? null : response.Id;
-        await AppStateService.UpdateProjectCase(App.AppState);
-        await App.GetActiveProject();
+        if (App.Project == null) return;
+
+        if (App.Project.CurrentCase == null)
+        {
+            App.Project.CurrentCase = response;
+            response.Open();
+            await GenericService.UpdateState(response);
+
+        }
+        else if (App.Project.CurrentCase.Id == response.Id)
+        {
+            response.Close();
+            App.Project.CurrentCase = null!;
+            await GenericService.UpdateState(response);
+        }
+        else
+        {
+        
+            if (currentCase != null)
+            {
+                currentCase.Close();
+                await GenericService.UpdateState(currentCase);
+            }
+                  
+            App.Project.CurrentCase = response;
+
+            App.Project.CurrentCase.Open();
+            await GenericService.UpdateState(App.Project.CurrentCase);
+        }
+        StateHasChanged();
+        if (App.Project.CurrentCase != null)
+        {
+            var result = await GenericService.GetById<CaseResponse, GetCaseByIdRequest>(new GetCaseByIdRequest() { Id = App.Project.CurrentCase.Id });
+
+            if (result.Succeeded)
+            {
+                App.Project.CurrentCase = result.Data;
+            }
+
+        }
         StateHasChanged();
 
     }
     private async Task HandleOnTabChange(FluentTab tab)
     {
-        App.AppState.CaseTab = tab.Id;
-        await AppStateService.UpdateCaseTab(App.AppState);
-   
+        if (App.Project == null) return;
+        if (App.Project.CurrentCase != null)
+        {
+            App.Project.CurrentCase.Tab = tab.Id;
+            await GenericService.UpdateState(App.Project.CurrentCase);
+        }
+
+
         StateHasChanged();
     }
 

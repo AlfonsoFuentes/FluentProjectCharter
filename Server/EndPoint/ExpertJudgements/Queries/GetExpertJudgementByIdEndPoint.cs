@@ -1,4 +1,5 @@
 ﻿using Server.EndPoint.Projects.Queries;
+using Server.EndPoint.StakeHolders.Queries;
 using Shared.Models.ExpertJudgements.Records;
 
 namespace Server.EndPoint.ExpertJudgements.Queries
@@ -32,7 +33,17 @@ namespace Server.EndPoint.ExpertJudgements.Queries
             }
         }
 
-
+        public static ExpertJudgementResponse Map(this ExpertJudgement row, Guid ProjectId)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                CaseId = row.CaseId,
+                Expert = row.Expert == null ? null! : row.Expert.Map(),
+                ProjectId = ProjectId,
+            };
+        }
 
     }
 }

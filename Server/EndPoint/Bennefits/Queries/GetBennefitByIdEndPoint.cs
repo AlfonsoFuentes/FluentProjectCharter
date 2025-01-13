@@ -1,7 +1,4 @@
-﻿using Server.EndPoint.Projects.Queries;
-using Shared.Models.Bennefits.Records;
-
-namespace Server.EndPoint.Bennefits.Queries
+﻿namespace Server.EndPoint.Bennefits.Queries
 {
     public static class GetBennefitByIdEndPoint
     {
@@ -29,7 +26,17 @@ namespace Server.EndPoint.Bennefits.Queries
             }
         }
 
-
+        public static BennefitResponse Map(this Bennefit row, Guid ProjectId)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                DeliverableId = row.DeliverableId,
+                //SubDeliverableId = row.SubDeliverableId,
+                ProjectId = ProjectId,
+            };
+        }
 
     }
 }

@@ -7,7 +7,7 @@ namespace Shared.Models.StakeHolders.Requests
     public class UpdateStakeHolderInsideProjectRequest : UpdateMessageResponse, IRequest
     {
         public Guid Id { get; set; }
-        public StakeHolderResponse StakeHolder { get; set; } = null!;
+        public StakeHolderResponse StakeHolder { get; set; } = new();
         public Guid ProjectId { get; set; }
 
         public string EndPointName => StaticClass.StakeHolders.EndPoint.UpdateInsideProject;

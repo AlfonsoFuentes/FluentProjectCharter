@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Server.Database.Entities.BudgetItems.Taxes;
 
-namespace Server.Database.Configurations
+namespace Server.Database.Configurations.BudgetItems
 {
     internal class TaxConfig : IEntityTypeConfiguration<Tax>
     {

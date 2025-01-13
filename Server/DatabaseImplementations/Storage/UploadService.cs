@@ -2,7 +2,7 @@
 using Shared.ExtensionsMetods;
 using Shared.Models.IdentityModels.Requests;
 
-namespace Server.Implementations.Storage
+namespace Server.DatabaseImplementations.Storage
 {
     public class UploadService : IUploadService
     {

@@ -9,7 +9,7 @@ using Shared.Constants.Role;
 using Shared.Models.IdentityModels.Requests.Identity;
 using Shared.Models.IdentityModels.Responses.Identity;
 
-namespace Server.Implementations.Identity
+namespace Server.DatabaseImplementations.Identity
 {
     public class RoleService : IRoleService
     {
@@ -122,7 +122,7 @@ namespace Server.Implementations.Identity
 
             #region GetPermissions
 
-           
+
 
             #endregion GetPermissions
 
@@ -161,7 +161,7 @@ namespace Server.Implementations.Identity
                 }
                 existingRole.Name = request.Name;
                 existingRole.NormalizedName = request.Name.ToUpper();
-         
+
                 await _roleManager.UpdateAsync(existingRole);
                 return await Result<string>.SuccessAsync(string.Format("Role {0} Updated.", existingRole!.Name));
             }

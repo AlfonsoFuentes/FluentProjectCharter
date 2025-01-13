@@ -1,7 +1,4 @@
-﻿using Server.EndPoint.Projects.Queries;
-using Shared.Models.Constrainsts.Records;
-
-namespace Server.EndPoint.Constrainsts.Queries
+﻿namespace Server.EndPoint.Constrainsts.Queries
 {
     public static class GetConstrainstByIdEndPoint
     {
@@ -32,7 +29,17 @@ namespace Server.EndPoint.Constrainsts.Queries
             }
         }
 
+        public static ConstrainstResponse Map(this Constrainst row, Guid ProjectId)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                DeliverableId = row.DeliverableId,
+                //SubDeliverableId = row.SubDeliverableId,
+                ProjectId = ProjectId,
+            };
+        }
 
-      
     }
 }

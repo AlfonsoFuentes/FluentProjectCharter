@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using Server.Database.Entities;
+
 
 namespace Server.Database.Configurations
 {
@@ -13,19 +12,19 @@ namespace Server.Database.Configurations
             builder.HasMany(x => x.Requirements)
             .WithOne(t => t.Deliverable)
             .HasForeignKey(e => e.DeliverableId)
-            .IsRequired()
+           .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.Assumptions)
             .WithOne(t => t.Deliverable)
             .HasForeignKey(e => e.DeliverableId)
-            .IsRequired()
+           .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.DeliverableRisks)
             .WithOne(t => t.Deliverable)
             .HasForeignKey(e => e.DeliverableId)
-            .IsRequired()
+        .IsRequired()   
             .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.Constraints)
@@ -44,14 +43,9 @@ namespace Server.Database.Configurations
            .WithOne(t => t.Deliverable)
            .HasForeignKey(e => e.DeliverableId)
            .IsRequired()
-           .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Cascade);
 
-
-            builder.HasOne(c => c.SubDeliverable)
-              .WithMany(t => t.SubDeliverables)
-              .HasForeignKey(x => x.SubDeliverableId)
-              .OnDelete(DeleteBehavior.NoAction);
-
+         
         }
 
     }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Shared.Models.IdentityModels.Requests.Mail;
 
-namespace Server.Implementations.Storage
+namespace Server.DatabaseImplementations.Storage
 {
     //public class SMTPMailService : IMailService
     //{

@@ -32,5 +32,4 @@ namespace Shared.Enums.ProjectNeedTypes
         public static ProjectNeedTypeEnum GetType(string name) => List.Exists(x => x.Name == name) ? List.FirstOrDefault(x => x.Name == name)!
             : None;
     }
-
 }

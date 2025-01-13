@@ -1,0 +1,108 @@
+﻿
+
+
+<FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:1px solid lightgray;border-radius:5px; padding:4px;">
+    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Meetings</strong></FluentLabel>
+    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+        <FluentButton Id="addmeeting" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
+
+        </FluentButton>
+        <FluentTooltip Anchor="addmeeting" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Meeting</FluentTooltip>
+
+       
+        <FluentSpacer />
+        <FluentSearch @bind-Value="@nameFilter"
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
+                      Placeholder="Search..." />
+    </FluentStack>
+    @foreach (var row in FilteredItems)
+    {
+        <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
+
+            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
+            <FluentLabel Style="overflow-wrap: break-word;">@row.DateofMeeting!.Value.ToString("d")</FluentLabel>
+            <FluentLabel Style="overflow-wrap: break-word;">@row.MeetingType</FluentLabel>
+
+            <FluentSpacer />
+            <div>
+                <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+
+                </FluentButton>
+                <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+                <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+
+                </FluentButton>
+                <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+
+                <FluentButton Id="@($"Show{row.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(row))"></FluentButton>
+                <FluentTooltip Anchor="@($"Show{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
+
+
+
+            </div>
+        </FluentStack>
+        @if (row.IsNodeOpen)
+        {
+            <FluentTabs ShowActiveIndicator="false" Style="width:100%" OnTabChange="HandleOnTabChange" @bind-ActiveTabId=@row.Tab>
+                <FluentTab Label="Meeting Attendants" Id="Attendants">
+                    <Content>
+                      <MeetingAttendantList GetAll="GetAll" Parent="row"></MeetingAttendantList>
+                    </Content>
+
+                </FluentTab>
+                <FluentTab Label="Meeting Agreements" Id="Agreements">
+                    <Content>
+                        <MeetingAgreementList  GetAll="GetAll" Parent="row"></MeetingAgreementList>
+                    </Content>
+
+                </FluentTab>
+            </FluentTabs>
+        }
+
+    }
+
+
+</FluentStack>
+
+@code {
+
+    public async Task Show(MeetingResponse response)
+    {
+        if (App.ProjectList.CurrentProject == null) return;
+        if (App.ProjectList.CurrentProject.CurrentMeeting == null)
+        {
+            App.ProjectList.CurrentProject.CurrentMeeting = response;
+            response.Open();
+            await GenericService.UpdateState(response);
+
+        }
+        else if (App.ProjectList.CurrentProject.CurrentMeeting.Id == response.Id)
+        {
+            response.Close();
+            App.ProjectList.CurrentProject.CurrentMeeting = null!;
+            await GenericService.UpdateState(response);
+        }
+        else
+        {
+            App.ProjectList.CurrentProject.CurrentMeeting.Close();
+            await GenericService.UpdateState(App.ProjectList.CurrentProject.CurrentMeeting);
+            App.ProjectList.CurrentProject.CurrentMeeting = response;
+
+            response.Open();
+            await GenericService.UpdateState(response);
+        }
+        StateHasChanged();
+
+    }
+    private async Task HandleOnTabChange(FluentTab tab)
+    {
+        if (App.ProjectList.CurrentProject == null) return;
+        if (App.ProjectList.CurrentProject.CurrentMeeting != null)
+        {
+            App.ProjectList.CurrentProject.CurrentMeeting.Tab = tab.Id;
+            await GenericService.UpdateState(App.ProjectList.CurrentProject.CurrentMeeting);
+        }
+
+        StateHasChanged();
+    }
+}

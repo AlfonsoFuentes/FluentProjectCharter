@@ -13,10 +13,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments
 
         [ForeignKey("EquipmentTypeId")]
         public List<Equipment> Equipments { get; set; } = new();
-
-
-
-
+       
     }
 
 }

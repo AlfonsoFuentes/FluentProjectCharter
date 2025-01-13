@@ -1,14 +1,16 @@
-﻿@using Shared.Models.Scopes.Responses
+﻿@using Shared.Models.Scopes.Records
+@using Shared.Models.Scopes.Responses
 
 
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%">
+<FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:solid 1px lightgray;padding:6px; border-radius:5px;">
+    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Scopes</strong></FluentLabel>
     <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
         <FluentButton Id="addScop" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
         </FluentButton>
         <FluentTooltip Anchor="addScop" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Scope</FluentTooltip>
 
-        <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Scopes</strong></FluentLabel>
+      
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
                       @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
@@ -35,9 +37,9 @@
 
                 </div>
             </FluentStack>
-            @if (App.AppState.ScopeId != null && row.Id == App.AppState.ScopeId)
+            @if (row.IsNodeOpen)
             {
-                <DeliverableList Parent="@row" GetAll="GetAll"></DeliverableList>
+                <DeliverableList Parent="@App.Project.CurrentCase!.CurrentScope" GetAll="GetAll"></DeliverableList>
             }
 
         </FluentStack>
@@ -53,9 +55,46 @@
 
     public async Task Show(ScopeResponse response)
     {
-        App.AppState.ScopeId = App.AppState.ScopeId == response.Id ? null : App.AppState.ScopeId = response.Id;
-        await AppStateService.UpdateCaseScope(App.AppState);
-        await App.GetActiveProject();
+        if (App.Project == null || App.Project.CurrentCase == null) return;
+
+        if (App.Project.CurrentCase.CurrentScope == null)
+        {
+            App.Project.CurrentCase.CurrentScope = response;
+            response.Open();
+            await GenericService.UpdateState(response);
+
+        }
+        else if (App.Project.CurrentCase.CurrentScope.Id == response.Id)
+        {
+            response.Close();
+            App.Project.CurrentCase.CurrentScope = null!;
+            await GenericService.UpdateState(response);
+        }
+        else
+        {
+
+            if (currentScope != null)
+            {
+                currentScope.Close();
+                await GenericService.UpdateState(currentScope);
+            }
+
+            App.Project.CurrentCase.CurrentScope = response;
+
+            App.Project.CurrentCase.CurrentScope.Open();
+            await GenericService.UpdateState(App.Project.CurrentCase.CurrentScope);
+        }
+        StateHasChanged();
+        if (App.Project.CurrentCase.CurrentScope != null)
+        {
+            var result = await GenericService.GetById<ScopeResponse, GetScopeByIdRequest>(new GetScopeByIdRequest() { Id = App.Project.CurrentCase.CurrentScope.Id });
+
+            if (result.Succeeded)
+            {
+                App.Project.CurrentCase.CurrentScope = result.Data;
+            }
+
+        }
         StateHasChanged();
     }
 

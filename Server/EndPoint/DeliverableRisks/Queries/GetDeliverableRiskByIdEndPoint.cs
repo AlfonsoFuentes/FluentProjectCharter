@@ -1,7 +1,4 @@
-﻿using Server.EndPoint.Projects.Queries;
-using Shared.Models.DeliverableRisks.Records;
-
-namespace Server.EndPoint.DeliverableRisks.Queries
+﻿namespace Server.EndPoint.DeliverableRisks.Queries
 {
     public static class GetDeliverableRiskByIdEndPoint
     {
@@ -32,7 +29,17 @@ namespace Server.EndPoint.DeliverableRisks.Queries
             }
         }
 
+        public static DeliverableRiskResponse Map(this DeliverableRisk row, Guid ProjectId)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                DeliverableId = row.DeliverableId,
+                //SubDeliverableId = row.SubDeliverableId,
+                ProjectId = ProjectId,
+            };
+        }
 
-      
     }
 }

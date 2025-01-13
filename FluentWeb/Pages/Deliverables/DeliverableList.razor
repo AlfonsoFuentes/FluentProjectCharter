@@ -1,18 +1,20 @@
-﻿@using Shared.Models.Deliverables.Responses
+﻿
 
 
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%">
+
+<FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:solid 1px lightgray;padding:6px; border-radius:5px;">
+    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Deliverables</strong></FluentLabel>
     <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
         <FluentButton Id="addDel" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
         </FluentButton>
         <FluentTooltip Anchor="addDel" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Deliverable</FluentTooltip>
 
-        <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Deliverables</strong></FluentLabel>
+
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
-                      Placeholder="Search..." />
+        @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
+        Placeholder="Search..." />
     </FluentStack>
     @foreach (var row in FilteredItems)
     {
@@ -37,40 +39,52 @@
 
                 </div>
             </FluentStack>
-            @if (App.AppState.DeliverableId != null && row.Id == App.AppState.DeliverableId)
+            @if (row.IsNodeOpen)
             {
-                <FluentTabs ShowActiveIndicator="false" Style="width:100%" @bind-ActiveTabId=@App.AppState.DeliverableTab OnTabChange="HandleOnTabChange">
+                <FluentTabs ShowActiveIndicator="false" Style="width:100%" @bind-ActiveTabId=@row.Tab OnTabChange="HandleOnTabChange">
                     <FluentTab Label="Requirements" Id="Requirements">
                         <Content>
-                            <RequirementList GetAll="GetAll" Parent="@row"></RequirementList>
+                            <RequirementList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.Requirements"></RequirementList>
                         </Content>
 
                     </FluentTab>
                     <FluentTab Label="Assumptions" Id="Assumptions">
                         <Content>
-                            <AssumptionList GetAll="GetAll" Parent="@row"></AssumptionList>
+                            <AssumptionList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.Assumptions"></AssumptionList>
                         </Content>
 
                     </FluentTab>
                     <FluentTab Label="Risks" Id="Risks">
                         <Content>
-                            <DeliverableRiskList GetAll="GetAll" Parent="@row"></DeliverableRiskList>
+                            <DeliverableRiskList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.DeliverableRisks"></DeliverableRiskList>
                         </Content>
 
                     </FluentTab>
                     <FluentTab Label="Constrainsts" Id="Constrainsts">
                         <Content>
-                            <ConstraintList GetAll="GetAll" Parent="@row"></ConstraintList>
+                            <ConstraintList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.Constrainsts"></ConstraintList>
                         </Content>
 
                     </FluentTab>
                     <FluentTab Label="Bennefits" Id="Bennefits">
                         <Content>
-                            <BennefitList GetAll="GetAll" Parent="@row"></BennefitList>
+                            <BennefitList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.Bennefits"></BennefitList>
                         </Content>
 
                     </FluentTab>
+                    <FluentTab Label="Accpetance Criterias" Id="AcceptanceCriteria">
+                        <Content>
+                            <AcceptanceCriteriaList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.AcceptanceCriterias"></AcceptanceCriteriaList>
+                        </Content>
 
+                    </FluentTab>
+                    <FluentTab Label="Budget Items" Id="BudgetItems">
+                        <Content>
+                            <DeliverableBudgetItemList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.BudgetItems"></DeliverableBudgetItemList>
+                        </Content>
+
+                    </FluentTab>
+                    
                 </FluentTabs>
             }
 
@@ -85,18 +99,62 @@
 
     private async Task HandleOnTabChange(FluentTab tab)
     {
-        App.AppState.DeliverableTab = tab.Id;
-        await AppStateService.UpdateDeliverableTab(App.AppState);
- 
+        if (App.Project == null || App.Project.CurrentCase == null || App.Project.CurrentCase.CurrentScope == null) return;
+        if (App.Project.CurrentCase.CurrentScope.CurrentDeliverable != null)
+        {
+            App.Project.CurrentCase.CurrentScope.CurrentDeliverable!.Tab = tab.Id;
+            await GenericService.UpdateState(App.Project.CurrentCase.CurrentScope.CurrentDeliverable!);
+        }
+
         StateHasChanged();
 
     }
+ 
     public async Task Show(DeliverableResponse response)
     {
-        App.AppState.DeliverableId = App.AppState.DeliverableId == response.Id ? null : App.AppState.DeliverableId = response.Id;
-        await AppStateService.UpdateScopeDeliverable(App.AppState);
-        await App.GetActiveProject();
+        if (App.Project == null || App.Project.CurrentCase == null || App.Project.CurrentCase.CurrentScope == null) return;
+
+        if (App.Project.CurrentCase.CurrentScope.CurrentDeliverable == null)
+        {
+            App.Project.CurrentCase.CurrentScope.CurrentDeliverable = response;
+            response.Open();
+            await GenericService.UpdateState(response);
+
+        }
+        else if (App.Project.CurrentCase.CurrentScope.CurrentDeliverable!.Id == response.Id)
+        {
+            response.Close();
+            App.Project.CurrentCase.CurrentScope.CurrentDeliverable = null!;
+            await GenericService.UpdateState(response);
+        }
+        else
+        {
+
+            if (currentDeliverable != null)
+            {
+                currentDeliverable.Close();
+                await GenericService.UpdateState(currentDeliverable);
+            }
+
+            App.Project.CurrentCase.CurrentScope.CurrentDeliverable = response;
+
+            App.Project.CurrentCase.CurrentScope.CurrentDeliverable!.Open();
+            await GenericService.UpdateState(App.Project.CurrentCase.CurrentScope.CurrentDeliverable!);
+        }
         StateHasChanged();
+        if (App.Project.CurrentCase.CurrentScope.CurrentDeliverable != null)
+        {
+            var result = await GenericService.GetById<DeliverableResponse, 
+            GetDeliverableByIdRequest>(new GetDeliverableByIdRequest() { 
+                Id = App.Project.CurrentCase.CurrentScope.CurrentDeliverable!.Id });
+
+            if (result.Succeeded)
+            {
+                App.Project.CurrentCase.CurrentScope.CurrentDeliverable = result.Data;
+            }
+
+        }
+       
 
     }
 

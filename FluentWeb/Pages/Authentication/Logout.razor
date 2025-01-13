@@ -7,6 +7,6 @@
     {
         await _authenticationManager.Logout();
         MainApp.CurrentUser = null!;
-        _NavigationManager.NavigateTo("/");
+        _NavigationManager.NavigateTo("/login");
     }
 }

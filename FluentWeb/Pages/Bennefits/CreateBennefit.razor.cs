@@ -15,10 +15,6 @@ public partial class CreateBennefit
         Model.ProjectId = ProjectId;
         Model.DeliverableId = DeliverableId;
     }
-    private void CancelAsync()
-    {
-        Navigation.NavigateBack();
-
-    }
+   
 
 }

@@ -14,7 +14,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Server.Implementations.Identity
+namespace Server.DatabaseImplementations.Identity
 {
     public class IdentityService : ITokenService
     {

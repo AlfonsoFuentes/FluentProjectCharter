@@ -84,8 +84,16 @@ namespace Server.Repositories
             {
                 query = query.OrderBy(OrderBy);
             }
-            var result = await query.FirstOrDefaultAsync();
-            return result;
+            try
+            {
+                var result = await query.FirstOrDefaultAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                string exm = ex.Message;
+            }
+            return null;
         }
         public async Task<List<T>> GetAllAsync<T>(
             Func<IQueryable<T>, IIncludableQueryable<T, object>> Includes = null!,

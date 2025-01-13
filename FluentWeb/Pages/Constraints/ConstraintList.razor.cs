@@ -13,19 +13,23 @@ public partial class ConstraintList
     public App App { get; set; }
     [Parameter]
     [EditorRequired]
-    public DeliverableResponse Parent { get; set; } = new();
+    public Guid DeliverableId { get; set; }
+    [Parameter]
+    [EditorRequired]
+    public Guid ProjectId { get; set; }
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
 
 
- 
-    public List<ConstrainstResponse> Items => Parent == null ? new() : Parent.Constrainsts;
+    [Parameter]
+    [EditorRequired]
+    public List<ConstrainstResponse> Items { get; set; }
     string nameFilter;
     public List<ConstrainstResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateConstrainst/{Parent.Id}/{Parent.ProjectId}");
+        Navigation.NavigateTo($"/CreateConstrainst/{DeliverableId}/{ProjectId}");
 
     }
 
@@ -33,7 +37,7 @@ public partial class ConstraintList
 
     void Edit(ConstrainstResponse response)
     {
-        Navigation.NavigateTo($"/UpdateConstrainst/{response.Id}/{Parent.ProjectId}");
+        Navigation.NavigateTo($"/UpdateConstrainst/{response.Id}/{ProjectId}");
     }
     public async Task Delete(ConstrainstResponse response)
     {
@@ -49,7 +53,7 @@ public partial class ConstraintList
             {
                 Id = response.Id,
                 Name = response.Name,
-                ProjectId = Parent.Id,
+                ProjectId = ProjectId,
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

@@ -3,7 +3,7 @@ using Server.Interfaces.Specifications;
 using Shared.ExtensionsMetods;
 using System.Linq.Expressions;
 
-namespace Server.Implementations.Identity.Specifications
+namespace Server.DatabaseImplementations.Identity.Specifications
 {
     public abstract class HeroSpecification<T> : ISpecification<T> where T : class, IEntity
     {

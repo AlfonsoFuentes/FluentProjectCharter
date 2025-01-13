@@ -1,7 +1,4 @@
-﻿using Server.Database.Contracts;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams
 {

@@ -15,6 +15,15 @@
             TaxesItems.Add(result);
             return result;
         }
+        public static Tax Create(Guid ProjectId, Guid DeliverableId)
+        {
+            return new()
+            {
+                Id = Guid.NewGuid(),
+                ProjectId = ProjectId,
+                DeliverableId = DeliverableId,
+            };
+        }
     }
 
 }

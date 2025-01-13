@@ -31,8 +31,17 @@ namespace Server.EndPoint.DecissionCriterias.Queries
                 });
             }
         }
+        public static DecissionCriteriaResponse Map(this DecissionCriteria row, Guid ProjectId)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                CaseId = row.CaseId,
+                ProjectId = ProjectId,
+            };
+        }
 
 
-      
     }
 }

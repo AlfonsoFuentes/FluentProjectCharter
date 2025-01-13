@@ -1,10 +1,4 @@
-﻿using Server.Database.Contracts;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Enums;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings;
-using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves;
+﻿using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Enums;
 
 namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams
 {
@@ -12,11 +6,11 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams
     {
         public string Type { get; set; } = string.Empty;
         public string SubType { get; set; } = string.Empty;
-        public EngineeringItemType EngineeringItemType { get; set; } = EngineeringItemType.None;
         public Brand? BrandTemplate { get; set; } = null!;
         public Guid? BrandTemplateId { get; set; }
         public string TagLetter { get; set; } = string.Empty;
-
+        public string Brand => BrandTemplate == null ? string.Empty : BrandTemplate.Name;
+ 
         public List<NozzleTemplate> NozzleTemplates { get; set; } = new();
 
         public static EquipmentTemplate AddEquipmentTemplate()
@@ -24,7 +18,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams
             return new()
             {
                 Id = Guid.NewGuid(),
-                EngineeringItemType = EngineeringItemType.Equipment,
+
             };
         }
         public static InstrumentTemplate AddInstrumentTemplate()
@@ -32,7 +26,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams
             return new()
             {
                 Id = Guid.NewGuid(),
-                EngineeringItemType = EngineeringItemType.Instrument,
+
             };
         }
         public static ValveTemplate AddValveTemplate()
@@ -40,7 +34,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams
             return new()
             {
                 Id = Guid.NewGuid(),
-                EngineeringItemType = EngineeringItemType.Valve,
+
             };
         }
         public static PipeTemplate AddPipeTemplate()
@@ -48,7 +42,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams
             return new()
             {
                 Id = Guid.NewGuid(),
-                EngineeringItemType = EngineeringItemType.Isometric,
+
             };
         }
     }

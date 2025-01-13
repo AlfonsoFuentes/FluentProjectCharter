@@ -7,5 +7,8 @@ namespace Shared.Models.FileResults.Generics.Records
         Guid Id { get; }
 
     }
-
+    public interface IGetAll : IRequest
+    {
+       
+    }
 }

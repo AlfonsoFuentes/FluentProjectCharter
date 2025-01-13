@@ -7,7 +7,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves
     {
         public string Model { get; set; } = string.Empty;
         public string Material { get; set; } = string.Empty;
-        public string ActuadorType { get; set; } = string.Empty;
+        public string ActuatorType { get; set; } = string.Empty;
         public string PositionerType { get; set; } = string.Empty;
         public bool HasFeedBack { get; set; }
         public string Diameter { get; set; } = string.Empty;

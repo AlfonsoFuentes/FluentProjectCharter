@@ -31,10 +31,15 @@ public partial class UpdateProject
                 Manager = result.Data.Manager,
                 Sponsor = result.Data.Sponsor,
                 InitialProjectDate = result.Data.InitialProjectDate,
+                Status = result.Data.Status,
+                PercentageContingency = result.Data.PercentageContingency,
+                PercentageEngineering = result.Data.PercentageEngineering,
+                PercentageTaxProductive=result.Data.PercentageTaxes,
+                IsProductiveAsset = result.Data.IsProductive
 
             };
-            //manager = Model.Manager==null?string.Empty:Model.Manager.Name;
-            //sponsor = Model.Sponsor == null ? string.Empty : Model.Sponsor.Name;
+            manager = Model.Manager == null ? string.Empty : Model.Manager.Name;
+            sponsor = Model.Sponsor == null ? string.Empty : Model.Sponsor.Name;
         }
     }
     [Inject]
@@ -49,8 +54,8 @@ public partial class UpdateProject
             StakeHolderResponseList = result.Data;
         }
     }
-    void AddStakeHolder(StakeHolderRoleEnum Role)
+    void AddStakeHolder()
     {
-        Navigation.NavigateTo($"/CreateStakeHolder/{Role.Name}");
+        Navigation.NavigateTo($"/CreateStakeHolder");
     }
 }

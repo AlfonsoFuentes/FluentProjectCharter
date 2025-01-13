@@ -1,13 +1,24 @@
-﻿<div class="navmenu">
+﻿
+<div class="navmenu">
     <input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon" />
     <label for="navmenu-toggle" class="navmenu-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Navigation())" Color="Color.Fill" /></label>
     <nav class="sitenav" aria-labelledby="main-menu">
-        <FluentNavMenu Id="main-menu" Width="250" Collapsible="true" Title="Navigation menu" @bind-Expanded="expanded" CustomToggle="true">
-            <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Projects</FluentNavLink>
-            <FluentNavLink Href="OrganizationStrategies" Icon="@(new Icons.Regular.Size20.MoneySettings())" IconColor="Color.Accent">Organization Strategies</FluentNavLink>
-            <FluentNavLink Href="StakeHolders" Icon="@(new Icons.Regular.Size20.PeopleAudience())" IconColor="Color.Accent">Persons</FluentNavLink>
+        <AuthorizeView>
+            <FluentNavMenu Id="main-menu" Width="250" Collapsible="true" Title="Navigation menu" @bind-Expanded="expanded" CustomToggle="true">
+                <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Projects</FluentNavLink>
+                <FluentNavLink Href="OrganizationStrategies" Icon="@(new Icons.Regular.Size20.MoneySettings())" IconColor="Color.Accent">Organization Strategies</FluentNavLink>
+                <FluentNavLink Href="StakeHolders" Icon="@(new Icons.Regular.Size20.PeopleAudience())" IconColor="Color.Accent">Persons</FluentNavLink>
+                <FluentNavLink Href="Brands" Icon="@(new Icons.Regular.Size20.Storage())" IconColor="Color.Accent">Brands</FluentNavLink>
+                <FluentNavGroup Expanded="true" Title="Templates" Icon="@(new Icons.Regular.Size20.BookTemplate())">
+                    <FluentNavLink Href="templates/equipment-templates" Icon="@(new Icons.Regular.Size20.LeafOne())">Equipments</FluentNavLink>
+                    <FluentNavLink Href="templates/valve-templates" Icon="@(new Icons.Regular.Size20.LeafOne())">Valves</FluentNavLink>
+                    <FluentNavLink Href="templates/instrument-templates" Icon="@(new Icons.Regular.Size20.LeafOne())">Instruments</FluentNavLink>
+                    <FluentNavLink Href="templates/piping-templates" Icon="@(new Icons.Regular.Size20.LeafOne())">Piping</FluentNavLink>
 
-        </FluentNavMenu>
+
+                </FluentNavGroup>
+            </FluentNavMenu>
+        </AuthorizeView>
     </nav>
 </div>
 

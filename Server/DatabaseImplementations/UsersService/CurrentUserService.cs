@@ -2,7 +2,7 @@
 using Server.Interfaces.UserServices;
 using System.Security.Claims;
 
-namespace Server.Implementations.UsersService
+namespace Server.DatabaseImplementations.UsersService
 {
     public class CurrentUserService : ICurrentUserService
     {

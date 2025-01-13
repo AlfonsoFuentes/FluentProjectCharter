@@ -1,7 +1,4 @@
-﻿using Server.EndPoint.Projects.Queries;
-using Shared.Models.Requirements.Records;
-
-namespace Server.EndPoint.Requirements.Queries
+﻿namespace Server.EndPoint.Requirements.Queries
 {
     public static class GetRequirementByIdEndPoint
     {
@@ -32,7 +29,18 @@ namespace Server.EndPoint.Requirements.Queries
             }
         }
 
+        public static RequirementResponse Map(this Requirement row, Guid ProjectId)
+        {
+            return new()
+            {
+                Id = row.Id,
+                Name = row.Name,
+                DeliverableId = row.DeliverableId,
+                //SubDeliverableId = row.SubDeliverableId,
+                ProjectId = ProjectId,
 
-      
+            };
+        }
+
     }
 }
