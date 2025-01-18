@@ -7,14 +7,13 @@ namespace FluentWeb.Pages.Requirements;
 public partial class UpdateRequirement
 {
     UpdateRequirementRequest Model = new();
-    [Parameter]
-    public Guid ProjectId { get; set; }
+
     [Parameter]
     public Guid Id { get; set; }
     protected override async Task OnInitializedAsync()
     {
         var result = await GenericService.GetById<RequirementResponse, GetRequirementByIdRequest>(
-            new GetRequirementByIdRequest() { Id = Id, ProjectId= ProjectId });
+            new GetRequirementByIdRequest() { Id = Id });
 
         if (result.Succeeded)
         {
@@ -22,13 +21,10 @@ public partial class UpdateRequirement
             {
                 Id = result.Data.Id,
                 Name = result.Data.Name,
-                ProjectId = ProjectId,
+                 ProjectId= result.Data.ProjectId,
+           
             };
         }
     }
-    private void CancelAsync()
-    {
-        Navigation.NavigateBack();
-
-    }
+  
 }

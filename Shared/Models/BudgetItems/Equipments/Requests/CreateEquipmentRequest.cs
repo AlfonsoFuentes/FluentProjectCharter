@@ -26,16 +26,16 @@ namespace Shared.Models.BudgetItems.Equipments.Requests
         public string Model { get; set; } = string.Empty;
         public MaterialEnum InternalMaterial { get; set; } = MaterialEnum.None;
         public MaterialEnum ExternalMaterial { get; set; } = MaterialEnum.None;
-        
+
         public string Type { get; set; } = string.Empty;
         public string SubType { get; set; } = string.Empty;
         public string TagLetter { get; set; } = string.Empty;
         public BrandResponse BrandResponse { get; set; } = new();
-        public string Brand => BrandResponse.Name;
+        public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
 
         public string TagNumber { get; set; } = string.Empty;
         public string Tag => $"{TagLetter}-{TagNumber}";
-        public bool ShowDetails { get; set; }=false;
+        public bool ShowDetails { get; set; } = false;
         public List<NozzleResponse> Nozzles { get; set; } = new();
 
     }

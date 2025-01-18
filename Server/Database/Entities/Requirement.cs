@@ -6,12 +6,10 @@ namespace Server.Database.Entities
     {
         public string TenantId { get; set; } = string.Empty;
 
-        public Deliverable Deliverable { get; set; } = null!;
-        public Guid DeliverableId { get; set; }
-
-        //public SubDeliverable? SubDeliverable { get; set; } = null!;
-        //public Guid? SubDeliverableId { get; set; }
-
+        public Project Project { get; set; } = null!;
+        public Guid ProjectId { get; set; }
+        public Deliverable? Deliverable { get; set; } = null!;
+        public Guid? DeliverableId { get; set; }
         public string Name { set; get; } = string.Empty;
         public string Type {  set; get; } = string.Empty;
         public StakeHolder? RequestedBy { get; set; }
@@ -20,21 +18,15 @@ namespace Server.Database.Entities
         public Guid? ResponsibleId { get; set; }
         public DateTime? DueDate { get; set; }
         public string Priority {  set; get; } = string.Empty;
-        public static Requirement Create(Guid DeliverableId)
+        public static Requirement Create(Guid ProjectId, Guid? DeliverableId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
-                DeliverableId= DeliverableId,
+                DeliverableId = DeliverableId,
+                ProjectId = ProjectId,
             };
         }
-        //public static Requirement CreateSubDeliverable(Guid DeliverableId)
-        //{
-        //    return new()
-        //    {
-        //        Id = Guid.NewGuid(),
-        //        SubDeliverableId = DeliverableId,
-        //    };
-        //}
+        
     }
 }

@@ -10,7 +10,7 @@ using Shared.Models.BudgetItems.Equipments.Responses;
 using Shared.Models.BudgetItems.Foundations.Responses;
 using Shared.Models.BudgetItems.Instruments.Responses;
 using Shared.Models.BudgetItems.Paintings.Responses;
-using Shared.Models.BudgetItems.Pipings.Responses;
+using Shared.Models.BudgetItems.Pipes.Responses;
 using Shared.Models.BudgetItems.Structurals.Responses;
 using Shared.Models.BudgetItems.Taxs.Responses;
 using Shared.Models.BudgetItems.Testings.Responses;
@@ -27,10 +27,12 @@ namespace Shared.Models.Deliverables.Responses
 
         public Guid ScopeId { get; set; }
 
-        public List<RequirementResponse> Requirements { get; set; } = new();
         public List<AssumptionResponse> Assumptions { get; set; } = new();
-        public List<DeliverableRiskResponse> DeliverableRisks { get; set; } = new();
         public List<ConstrainstResponse> Constrainsts { get; set; } = new();
+        public List<RequirementResponse> Requirements { get; set; } = new();
+       
+        public List<DeliverableRiskResponse> DeliverableRisks { get; set; } = new();
+   
 
         public List<BennefitResponse> Bennefits { get; set; } = new();
         public List<AcceptanceCriteriaResponse> AcceptanceCriterias { get; set; } = new();
@@ -39,7 +41,7 @@ namespace Shared.Models.Deliverables.Responses
         public List<StructuralResponse> Structurals { get; set; } = new();
         public List<EquipmentResponse> Equipments { get; set; } = new();
         public List<ElectricalResponse> Electricals { get; set; } = new();
-        public List<PipingResponse> Pipings { get; set; } = new();
+        public List<PipeResponse> Pipings { get; set; } = new();
         public List<InstrumentResponse> Instruments { get; set; } = new();
         public List<EHSResponse> EHSs { get; set; } = new();
         public List<PaintingResponse> Paintings { get; set; } = new();

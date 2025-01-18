@@ -15,7 +15,7 @@ public partial class UpdateOrganizationStrategy
     public Guid Id { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        var result = await GenericService.GetById<OrganizationStrategyResponse, GetOrganizationStrategyByIdRequest>(new GetOrganizationStrategyByIdRequest() { Id = Id });
+        var result = await GenericService.GetById<EngineeringFluidCodeResponse, GetOrganizationStrategyByIdRequest>(new GetOrganizationStrategyByIdRequest() { Id = Id });
 
         if (result.Succeeded)
         {

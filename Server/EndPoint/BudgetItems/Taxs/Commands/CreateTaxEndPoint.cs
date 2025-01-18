@@ -26,8 +26,13 @@ namespace Server.EndPoint.Taxs.Commands
                     var row = Tax.Create(Data.ProjectId, Data.DeliverableId);
 
                     await Repository.AddAsync(row);
+                    foreach (var item in Data.TaxItems)
+                    {
+                        var taxitem = TaxesItem.Create(row.Id, item.BudgetItemId!.Value);
+                        await Repository.AddAsync(taxitem);
 
-                    
+                    }
+
                     row.Order = order;
 
                     Data.Map(row);
@@ -49,7 +54,7 @@ namespace Server.EndPoint.Taxs.Commands
         static Tax Map(this CreateTaxRequest request, Tax row)
         {
             row.Name = request.Name;
-           
+            row.Percentage = request.Percentage;
             row.Budget = request.Budget;
             return row;
         }

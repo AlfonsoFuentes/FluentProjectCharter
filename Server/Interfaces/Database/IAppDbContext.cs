@@ -21,7 +21,7 @@
         DbSet<Bennefit> Bennefits { get; set; }
         DbSet<ExpertJudgement> ExpertJudgements { get; set; }
         DbSet<HighLevelRequirement> HighLevelRequirements { get; set; }
-        DbSet<AppState> AppStates { get; set; }
+        //DbSet<AppState> AppStates { get; set; }
         DbSet<RoleInsideProject> RoleInsideProjects { get; set; }
         DbSet<Meeting> Meetings { get; set; }
         DbSet<MeetingAttendant> MeetingAttendants { get; set; }
@@ -39,7 +39,7 @@
         DbSet<EngineeringDesign> Engineerings { get; set; }
         DbSet<Tax> Taxes { get; set; }
         DbSet<TaxesItem> TaxesItems { get; set; }
-        DbSet<ProcessFlowDiagram> ProcessFlowDiagrams { get; set; }
+        //DbSet<ProcessFlowDiagram> ProcessFlowDiagrams { get; set; }
         DbSet<Equipment> Equipments { get; set; }
         DbSet<Instrument> Instruments { get; set; }
         DbSet<Valve> Valves { get; set; }
@@ -51,7 +51,7 @@
         DbSet<NozzleTemplate> NozzleTemplates { get; set; }
         DbSet<Brand> Brands { get; set; }
 
-        DbSet<Isometric> Isometrics { get; set; }
+        DbSet<Pipe> Isometrics { get; set; }
         DbSet<IsometricItem> IsometricItems { get; set; }
         DbSet<PipingAccesory> PipingAccesorys { get; set; }
         DbSet<PipingCategory> PipingCategorys { get; set; }

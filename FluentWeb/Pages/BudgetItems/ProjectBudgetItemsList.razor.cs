@@ -23,7 +23,7 @@ public partial class ProjectBudgetItemsList
     public List<IBudgetItemResponse> Items => Parent == null ? new() : Parent.BudgetItems;
     string nameFilter;
     public List<IBudgetItemResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-
+  
     void EditBudgetItem(IBudgetItemResponse response)
     {
 

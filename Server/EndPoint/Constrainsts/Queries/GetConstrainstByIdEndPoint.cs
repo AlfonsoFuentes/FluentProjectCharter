@@ -22,22 +22,22 @@
                         return Result.Fail(request.NotFound);
                     }
 
-                    var response = row.Map(request.ProjectId);
+                    var response = row.Map();
                     return Result.Success(response);
 
                 });
             }
         }
 
-        public static ConstrainstResponse Map(this Constrainst row, Guid ProjectId)
+        public static ConstrainstResponse Map(this Constrainst row)
         {
             return new()
             {
                 Id = row.Id,
                 Name = row.Name,
                 DeliverableId = row.DeliverableId,
-                //SubDeliverableId = row.SubDeliverableId,
-                ProjectId = ProjectId,
+         
+                ProjectId = row.ProjectId,
             };
         }
 

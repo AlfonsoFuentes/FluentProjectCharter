@@ -32,8 +32,6 @@
         public DbSet<Bennefit> Bennefits { get; set; } = null!;
         public DbSet<ExpertJudgement> ExpertJudgements { get; set; } = null!;
         public DbSet<HighLevelRequirement> HighLevelRequirements { get; set; } = null!;
-        public DbSet<AppState> AppStates { get; set; } = null!;
-
         public DbSet<RoleInsideProject> RoleInsideProjects { get; set; } = null!;
         public DbSet<Meeting> Meetings { get; set; } = null!;
         public DbSet<MeetingAttendant> MeetingAttendants { get; set; } = null!;
@@ -52,7 +50,7 @@
         public DbSet<EngineeringDesign> Engineerings { get; set; } = null!;
         public DbSet<Tax> Taxes { get; set; } = null!;
         public DbSet<TaxesItem> TaxesItems { get; set; } = null!;
-        public DbSet<ProcessFlowDiagram> ProcessFlowDiagrams { get; set; } = null!;
+        //public DbSet<ProcessFlowDiagram> ProcessFlowDiagrams { get; set; } = null!;
         public DbSet<Equipment> Equipments { get; set; } = null!;
         public DbSet<Instrument> Instruments { get; set; } = null!;
         public DbSet<Valve> Valves { get; set; } = null!;
@@ -64,7 +62,7 @@
         public DbSet<NozzleTemplate> NozzleTemplates { get; set; } = null!;
         public DbSet<Brand> Brands { get; set; } = null!;
 
-        public DbSet<Isometric> Isometrics { get; set; } = null!;
+        public DbSet<Pipe> Isometrics { get; set; } = null!;
         public DbSet<IsometricItem> IsometricItems { get; set; } = null!;
         public DbSet<PipingAccesory> PipingAccesorys { get; set; } = null!;
         public DbSet<PipingCategory> PipingCategorys { get; set; } = null!;
@@ -97,7 +95,7 @@
             builder.Entity<Bennefit>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<ExpertJudgement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<HighLevelRequirement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<AppState>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+        
             builder.Entity<Meeting>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<MeetingAttendant>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<MeetingAgreement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
@@ -105,7 +103,7 @@
             builder.Entity<BudgetItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
 
             builder.Entity<TaxesItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<ProcessFlowDiagram>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+
             builder.Entity<IsometricItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<AcceptanceCriteria>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<WBSComponent>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
@@ -120,6 +118,7 @@
             builder.Entity<RoleInsideProject>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<LearnedLesson>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<Template>().HasQueryFilter(p => p.IsDeleted == false);
+
             builder.Entity<NozzleTemplate>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<PipingAccesory>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<PipingCategory>().HasQueryFilter(p => p.IsDeleted == false);

@@ -15,11 +15,20 @@
                              Validate="Form.ValidateAsync"></TextBox>
                     <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
                 </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="6">
+                </FluentGridItem>
                 <FluentGridItem xs="12" sm="12" md="3">
                     <NumberField @bind-Value="@Model.Budget" Label="Budget, USD" Validate="Form.ValidateAsync"></NumberField>
                     <ValidationMessage For="() => Model.Budget" style="color:red; font-size:x-small;" />
                 </FluentGridItem>
                 <FluentGridItem xs="12" sm="12" md="3">
+                    @if (Model.ShowDetails)
+                    {
+                        <FluentLabel><strong>Tag : @Model.Tag</strong></FluentLabel>
+                        <ValidationMessage For="() => Model.Tag" style="color:red; font-size:x-small;" />
+                    }
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="6">
                 </FluentGridItem>
             </FluentGrid>
 
@@ -65,14 +74,9 @@
                                                  Validate="Form.ValidateAsync"></TextBox>
                                         <ValidationMessage For="() => Model.TagNumber" style="color:red; font-size:x-small;" />
                                     </FluentGridItem>
-                                    <FluentGridItem xs="12">
-                                        <TextBox Label="Tag"
-                                                 Value=@Model.Tag
-                                                 Disable="true"></TextBox>
-                                        <ValidationMessage For="() => Model.Tag" style="color:red; font-size:x-small;" />
-                                    </FluentGridItem>
 
-                                    <!-- Brand Selection -->
+
+                        
 
                                 </FluentGrid>
                             </FluentGridItem>

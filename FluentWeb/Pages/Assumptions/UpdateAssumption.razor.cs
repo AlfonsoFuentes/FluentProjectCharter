@@ -9,14 +9,13 @@ namespace FluentWeb.Pages.Assumptions;
 public partial class UpdateAssumption
 {
     UpdateAssumptionRequest Model = new();
-    [Parameter]
-    public Guid ProjectId { get; set; }
+
     [Parameter]
     public Guid Id { get; set; }
     protected override async Task OnInitializedAsync()
     {
         var result = await GenericService.GetById<AssumptionResponse, GetAssumptionByIdRequest>(
-            new GetAssumptionByIdRequest() { Id = Id,ProjectId=ProjectId });
+            new GetAssumptionByIdRequest() { Id = Id});
 
         if (result.Succeeded)
         {
@@ -24,13 +23,10 @@ public partial class UpdateAssumption
             {
                 Id = result.Data.Id,
                 Name = result.Data.Name,
-                ProjectId = ProjectId,
+                ProjectId = result.Data.ProjectId,
+
             };
         }
     }
-    private void CancelAsync()
-    {
-        Navigation.NavigateBack();
-
-    }
+  
 }

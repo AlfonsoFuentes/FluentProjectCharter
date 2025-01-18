@@ -25,7 +25,7 @@ namespace Shared.Models.Templates.Valves.Requests
         public SignalTypeEnum SignalType { get; set; } = SignalTypeEnum.None;
         public bool HasFeedBack { get; set; }
         public BrandResponse? BrandResponse { get; set; }
-        public string Brand => BrandResponse?.Name ?? string.Empty;
+        public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
         public List<NozzleTemplateResponse> Nozzles { get; set; } = new();
         public double Value { get; set; }
         public string sValue => string.Format(new CultureInfo("en-US"), "{0:C0}", Value);

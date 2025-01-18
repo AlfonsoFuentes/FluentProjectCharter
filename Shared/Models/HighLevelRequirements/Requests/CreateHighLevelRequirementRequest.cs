@@ -10,7 +10,7 @@ namespace Shared.Models.HighLevelRequirements.Requests
         public string Name { get; set; } = string.Empty;
         public string EndPointName => StaticClass.HighLevelRequirements.EndPoint.Create;
 
-        public OrganizationStrategyResponse? OrganizationStrategy { get; set; }
+        public EngineeringFluidCodeResponse? OrganizationStrategy { get; set; }
         public override string Legend => Name;
 
         public override string ClassName => StaticClass.HighLevelRequirements.ClassName;

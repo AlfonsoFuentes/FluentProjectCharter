@@ -22,7 +22,7 @@ namespace Shared.Models.Templates.Equipments.Requests
         public string SubType { get; set; } = string.Empty;
         public string TagLetter { get; set; } = string.Empty;
         public BrandResponse? BrandResponse { get; set; }
-        public string Brand => BrandResponse?.Name ?? string.Empty;
+        public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
         public List<NozzleTemplateResponse> Nozzles { get; set; } = new();
     }
 }

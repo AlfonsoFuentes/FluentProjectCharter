@@ -9,16 +9,12 @@ public partial class CreateConstraint
     [Parameter]
     public Guid ProjectId { get; set; }
     [Parameter]
-    public Guid DeliverableId { get; set; }
+    public Guid? DeliverableId { get; set; }
     protected override void OnInitialized()
     {
         Model.ProjectId = ProjectId;
         Model.DeliverableId = DeliverableId;
     }
-    private void CancelAsync()
-    {
-        Navigation.NavigateBack();
-
-    }
+   
    
 }

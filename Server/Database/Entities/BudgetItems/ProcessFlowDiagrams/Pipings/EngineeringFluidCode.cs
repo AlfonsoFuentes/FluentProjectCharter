@@ -7,7 +7,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings
         public string Name { get; set; } = string.Empty;
         public string Code { get; set; } = string.Empty;
         [ForeignKey("FluidCodeId")]
-        public ICollection<Isometric> Isometrics { get; set; } = new List<Isometric>();
+        public ICollection<Pipe> Isometrics { get; set; } = new List<Pipe>();
 
         public static EngineeringFluidCode Create()
         {

@@ -14,6 +14,8 @@ namespace Server.Database.Entities.BudgetItems
         public virtual double Budget { get; set; }
         public Project Project { get; set; } = null!;
         public Guid ProjectId { get; set; }
+        public Deliverable? Deliverable { get; set; } = null!;
+        public Guid? DeliverableId { get; set; }
 
         [ForeignKey("SelectedId")]
         public List<TaxesItem> TaxesSelecteds { get; set; } = new();
@@ -21,8 +23,7 @@ namespace Server.Database.Entities.BudgetItems
         public string Nomenclatore => $"{Letter}{Order}";
         public string Name { get; set; } = string.Empty;
 
-        public Deliverable? Deliverable { get; set; } = null!;
-        public Guid? DeliverableId {  get; set; }
+    
 
 
     }

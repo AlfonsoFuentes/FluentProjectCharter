@@ -79,6 +79,38 @@ namespace Shared.StaticClasses
 
 
         }
+        public static class EngineeringFluidCodes
+        {
+            public static string ClassLegend = "Engineering Fluid Code";
+            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
+            public static class EndPoint
+            {
+                public static string Create = $"{ClassName}/{Actions.Create}";
+
+                public static string Update = $"{ClassName}/{Actions.Update}";
+                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string GetById = $"{ClassName}/{Actions.GetById}";
+                public static string Delete = $"{ClassName}/{Actions.Delete}";
+                public static string Export = $"{ClassName}/{Actions.Export}";
+                public static string Validate = $"{ClassName}/{Actions.Validate}";
+            }
+            public static class Cache
+            {
+
+                public static string[] Key(Guid BrandId) => new[] { GetAll, GetById(BrandId) };
+                public static string GetAll => $"GetAll-{ClassName}";
+                public static string GetById(Guid BrandId) => $"GetById-{ClassName}-{BrandId}";
+            }
+            public static class PageName
+            {
+                public static string Create = $"Create{ClassName}";
+                public static string Update = $"Update{ClassName}";
+                public static string GetAll = $"GetAll{ClassName}";
+
+            }
+
+
+        }
         public static class Brands
         {
             public static string ClassLegend = "Brand";
@@ -239,9 +271,9 @@ namespace Shared.StaticClasses
 
 
         }
-        public static class PipingTemplates
+        public static class PipeTemplates
         {
-            public static string ClassLegend = "Piping Template";
+            public static string ClassLegend = "Pipe Template";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
@@ -1256,9 +1288,9 @@ namespace Shared.StaticClasses
 
 
         }
-        public static class Pipings
+        public static class Pipes
         {
-            public static string ClassLegend = "Piping";
+            public static string ClassLegend = "Pipes";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
@@ -1270,6 +1302,7 @@ namespace Shared.StaticClasses
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
                 public static string Export = $"{ClassName}/{Actions.Export}";
                 public static string Validate = $"{ClassName}/{Actions.Validate}";
+                public static string ValidateTag = $"{ClassName}/{Actions.Validate}Tag";
             }
             public static class Cache
             {
@@ -1302,6 +1335,7 @@ namespace Shared.StaticClasses
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
                 public static string Export = $"{ClassName}/{Actions.Export}";
                 public static string Validate = $"{ClassName}/{Actions.Validate}";
+                public static string ValidateTag = $"{ClassName}/{Actions.Validate}Tag";
             }
             public static class Cache
             {
@@ -1391,7 +1425,7 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-
+                public static string GetBudgetItemsToApplyTaxById = $"{ClassName}/GetBudgetItemsToApplyTaxById";
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";

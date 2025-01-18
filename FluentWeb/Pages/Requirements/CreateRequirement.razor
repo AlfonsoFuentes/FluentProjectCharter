@@ -1,4 +1,5 @@
-﻿@page "/CreateRequirement/{DeliverableId:guid}/{ProjectId:guid}"
+﻿@page "/CreateRequirement/{ProjectId:guid}"
+@page "/CreateRequirement/{ProjectId:guid}/{DeliverableId:guid}"
 <CreateTemplate @ref=CreateForm TItem="CreateRequirementRequest" @bind-Model="@Model"
                  Title="Create Requirement">
     <Content>

@@ -10,15 +10,57 @@ namespace Server.EndPoint.StakeHolders.Commands
             {
                 app.MapPost(StaticClass.StakeHolders.EndPoint.Delete, async (DeleteStakeHolderRequest Data, IRepository Repository) =>
                 {
-                    var row = await Repository.GetByIdAsync<StakeHolder>(Data.Id);
+                    Func<IQueryable<StakeHolder>, IIncludableQueryable<StakeHolder, object>> Includes = x => x
+                   
+                     .Include(x => x.Managers)
+                     .Include(x => x.Sponsors)
+                      .Include(x => x.MeetingAttendants)
+                      .Include(x => x.Judgements)
+                      .Include(x => x.RequirementRequestedBys)
+                      .Include(x => x.RequirementResponsibles)
+                     ;
+                    Expression<Func<StakeHolder, bool>> Criteria = x => x.Id == Data.Id;
+                    var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
                     if (row == null) { return Result.Fail(Data.NotFound); }
 
-                    Func<IQueryable<Project>, IIncludableQueryable<Project, object>> Includes = x => x
-                     .Include(x => x.StakeHolders).ThenInclude(x => x.RoleInsideProject!);
+                    foreach (var rowintem in row.Managers)
+                    {
+                        rowintem.ManagerId=null;
+                        await Repository.UpdateAsync(rowintem);
+                    }
+                    foreach (var rowintem in row.Sponsors)
+                    {
+                        rowintem.SponsorId = null;
+                        await Repository.UpdateAsync(rowintem);
+                    }
+                    foreach (var rowintem in row.MeetingAttendants)
+                    {
+                        rowintem.StakeHolderId = null;
+                        await Repository.UpdateAsync(rowintem);
+                    }
+                    foreach (var rowintem in row.Judgements)
+                    {
+                        rowintem.ExpertId = null;
+                        await Repository.UpdateAsync(rowintem);
+                    }
+                    foreach (var rowintem in row.RequirementRequestedBys)
+                    {
+                        rowintem.RequestedById = null;
+                        await Repository.UpdateAsync(rowintem);
+                    }
+                    foreach (var rowintem in row.RequirementResponsibles)
+                    {
+                        rowintem.ResponsibleId = null;
+                        await Repository.UpdateAsync(rowintem);
+                    }
+
+                    Func<IQueryable<Project>, IIncludableQueryable<Project, object>> IncludesProject = x => x
+                     .Include(x => x.StakeHolders).ThenInclude(x => x.RoleInsideProject!)
+                     ;
                     Expression<Func<Project, bool>> CriteriaProject = x => x.StakeHolders.Any(x => x.Id == Data.Id);
 
 
-                    var projects = await Repository.GetAllAsync(Includes: Includes, Criteria: CriteriaProject);
+                    var projects = await Repository.GetAllAsync(Includes: IncludesProject, Criteria: CriteriaProject);
 
                     List<string> cache = [.. StaticClass.StakeHolders.Cache.Key(row.Id)];
 

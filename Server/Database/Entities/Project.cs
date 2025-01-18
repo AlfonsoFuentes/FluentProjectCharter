@@ -41,7 +41,11 @@ namespace Server.Database.Entities
         public List<LearnedLesson> LearnedLessons { get; set; } = new();
         public List<WBSComponent> WBSComponents { get; set; } = new();
         public List<BudgetItem> BudgetItems { get; set; } = new();
-        public List<ProcessFlowDiagram> ProcessFlowDiagrams { get; set; } = new();
+        public List<Requirement> Requirements { get; set; } = new();
+        public List<Constrainst> Constrainsts { get; set; } = new();
+        public List<Assumption> Assumptions { get; set; } = new();
+
+        //public List<ProcessFlowDiagram> ProcessFlowDiagrams { get; set; } = new();
 
         public double PercentageEngineering { get; set; }
         public double PercentageContingency { get; set; }

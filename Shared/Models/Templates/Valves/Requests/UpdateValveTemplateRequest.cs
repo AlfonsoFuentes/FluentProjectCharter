@@ -31,7 +31,7 @@ namespace Shared.Models.Templates.Valves.Requests
 
         public string TagLetter =>$"{PositionerType.Letter}{Type.Letter}" ;
         public BrandResponse BrandResponse { get; set; } = new();
-        public string Brand => BrandResponse.Name;
+        public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
         public List<NozzleTemplateResponse> Nozzles { get; set; } = new();
     }
 }

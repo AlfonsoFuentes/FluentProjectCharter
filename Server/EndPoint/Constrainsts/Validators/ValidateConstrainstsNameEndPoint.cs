@@ -11,7 +11,7 @@ namespace Server.EndPoint.Constrainsts.Validators
             {
                 app.MapPost(StaticClass.Constrainsts.EndPoint.Validate, async (ValidateConstrainstRequest Data, IQueryRepository Repository) =>
                 {
-                    Expression<Func<Constrainst, bool>> CriteriaId = x => x.DeliverableId == Data.DeliverableId;
+                    Expression<Func<Constrainst, bool>> CriteriaId = x => x.ProjectId == Data.ProjectId;
                     Func<Constrainst, bool> CriteriaExist = x => Data.Id == null ?
                     x.Name.Equals(Data.Name) : x.Id != Data.Id.Value && x.Name.Equals(Data.Name);
                     string CacheKey = StaticClass.Constrainsts.Cache.GetAll;

@@ -11,7 +11,7 @@ namespace Web.Infrastructure.Validators.Constrainsts
         public CreateConstrainstValidator(IGenericService service)
         {
             Service = service;
-                  RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
 
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
@@ -25,8 +25,8 @@ namespace Web.Infrastructure.Validators.Constrainsts
             ValidateConstrainstRequest validate = new()
             {
                 Name = name,
-
-                DeliverableId = request.DeliverableId
+                ProjectId = request.ProjectId,
+          
 
             };
             var result = await Service.Validate(validate);
@@ -40,7 +40,7 @@ namespace Web.Infrastructure.Validators.Constrainsts
         public UpdateConstrainstValidator(IGenericService service)
         {
             Service = service;
-                  RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
 
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
@@ -54,7 +54,8 @@ namespace Web.Infrastructure.Validators.Constrainsts
             ValidateConstrainstRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
+
+                ProjectId = request.ProjectId,
                 Id = request.Id
 
             };

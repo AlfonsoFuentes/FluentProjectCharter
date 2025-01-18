@@ -7,7 +7,8 @@ namespace Shared.Models.Assumptions.Validators
     {
         public Guid? Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public Guid DeliverableId { get; set; }
+
+        public Guid ProjectId { get; set; }
 
         public string EndPointName => StaticClass.Assumptions.EndPoint.Validate;
 

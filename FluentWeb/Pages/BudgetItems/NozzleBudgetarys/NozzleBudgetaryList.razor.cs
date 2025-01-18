@@ -25,8 +25,10 @@ public partial class NozzleBudgetaryList
       
     }
     [Parameter]
-
     public EventCallback Validate { get; set; }
+
+    [Parameter]
+    public bool IsAbleTodAdd { get; set; } = true;
     void Edit(NozzleResponse item)
     {
         EditItem= item;

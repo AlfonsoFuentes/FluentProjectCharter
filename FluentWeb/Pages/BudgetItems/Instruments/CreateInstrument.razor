@@ -1,160 +1,279 @@
 ﻿@page "/CreateInstruments/{DeliverableId:guid}/{ProjectId:guid}"
-@using Shared.Models.BudgetItems.Instruments.Requests
+
 <CreateTemplate @ref=Form TItem="CreateInstrumentRequest" @bind-Model="@Model"
                 Title="Create Instrument">
     <Content>
-        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
-            <FluentGridItem xs="12" sm="12" md="7">
-                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 2px;width:100%; ">
-                    @* //fila *@
-                    <FluentGridItem xs="12" sm="12" md="12">
-                        <TextArea Label="Name"
-                                  @bind-Value=@Model.Name
-                                  Rows="2"
-                                  Placeholder="Define name"
-                                  Validate="Form.ValidateAsync"></TextArea>
-                        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
-                    </FluentGridItem>
-                    @* //fila *@
-                    <FluentGridItem xs="12" sm="12" md="4">
-                        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px;width:100%; ">
-                            @if (ShowDetails)
-                            {
-                                <FluentGridItem xs="12">
-                                    <TextBox Label="Tag Letter"
-                                             @bind-Value=@Model.TagLetter
-                                             Placeholder="Define Tag Letter"
-                                             Validate="Form.ValidateAsync"></TextBox>
-                                </FluentGridItem>
-                                <FluentGridItem xs="12">
-                                    <TextBox Label="Tag Number"
-                                             @bind-Value=@Model.TagNumber
-                                             Placeholder="Define Tag Nummber"
-                                             Validate="Form.ValidateAsync"></TextBox>
-                                </FluentGridItem>
-                                <FluentGridItem xs="12">
-                                    <TextBox Label="Variable"
-                                             @bind-Value=@Model.VariableInstrument
-                                             Placeholder="Define Variable"
-                                             Validate="Form.ValidateAsync"></TextBox>
-                                </FluentGridItem>
-                                <FluentGridItem xs="12">
-                                    <TextBox Label="Sub Modifier"
-                                             @bind-Value=@Model.ModifierInstrument
-                                             Placeholder="Define Modifier"
-                                             Validate="Form.ValidateAsync"></TextBox>
-                                </FluentGridItem>
-                            }
-                            <FluentGridItem xs="12">
-                                <NumberField @bind-Value="@Model.Budget" Label="Budget, USD" Validate="Form.ValidateAsync">
+        <FluentStack Orientation="Orientation.Vertical" Style="width:100%" VerticalGap="2">
+            <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 4px;width:100%">
 
-                                </NumberField>
-                                <ValidationMessage For="() => Model.Budget" style="color:red; font-size:x-small;" />
+                <FluentGridItem xs="12" sm="12" md="6">
+                    <TextBox Label="Name"
+                             @bind-Value=@Model.Name
+                             Placeholder="Define name"
+                             Validate="Form.ValidateAsync"></TextBox>
+                    <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="6">
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="3">
+                    <NumberField @bind-Value="@Model.Budget" Label="Budget, USD" Validate="Form.ValidateAsync"></NumberField>
+                    <ValidationMessage For="() => Model.Budget" style="color:red; font-size:x-small;" />
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="3">
+                    @if (Model.ShowDetails)
+                    {
+                        <FluentLabel><strong>Tag : @Model.Tag</strong></FluentLabel>
+                        <ValidationMessage For="() => Model.Tag" style="color:red; font-size:x-small;" />
+                    }
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="6">
+                </FluentGridItem>
+            </FluentGrid>
+
+            <FluentButton Appearance="Appearance.Accent" OnClick="@(()=>Model.ShowDetails=!Model.ShowDetails)">
+                @(Model.ShowDetails ? "Hide Details" : "Show Details")
+            </FluentButton>
+
+
+            @if (Model.ShowDetails)
+            {
+                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 4px;width:100%;">
+
+                    <FluentGridItem xs="12" sm="12" md="6">
+                        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 4px;">
+
+                            <FluentGridItem xs="12" sm="12" md="6">
+                                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 2px; width:100%;">
+
+
+                                    <FluentGridItem xs="12">
+                                        <FluentSelect TOption="VariableInstrumentEnum"
+                                                      Label="Select Variable"
+                                                      Items="@VariableInstrumentEnum.List"
+                                                      Id="people-listbox"
+                                                      Width="100%"
+                                                      Height="350px"
+                                                      @onchange=@ChangInstrumentType
+                                                      Placeholder="Make a selection..."
+                                                      OptionValue="@(p => p.Name)"
+                                                      OptionText="@(p => p.Name)"
+                                                      @bind-Value="@Model.Type.Name"
+                                                      @bind-SelectedOption="@Model.Type" />
+                                        <ValidationMessage For="() => Model.Type" style="color:red; font-size:x-small;" />
+                                    </FluentGridItem>
+                                    <FluentGridItem xs="12">
+                                        <FluentSelect TOption="ModifierVariableInstrumentEnum"
+                                                      Label="Select Modifier"
+                                                      Items="@ModifierVariableInstrumentEnum.List"
+                                                      Id="people-listbox"
+                                                      Width="100%"
+                                                      Height="350px"
+                                                      @onchange=@ChangInstrumentSubType
+                                                      Placeholder="Make a selection..."
+                                                      OptionValue="@(p => p.Name)"
+                                                      OptionText="@(p => p.Name)"
+                                                      @bind-Value="@Model.SubType.Name"
+                                                      @bind-SelectedOption="@Model.SubType" />
+                                        <ValidationMessage For="() => Model.SubType" style="color:red; font-size:x-small;" />
+                                    </FluentGridItem>
+                                    <FluentGridItem xs="12">
+                                        <TextBox Label="Tag Number"
+                                                 @bind-Value=@Model.TagNumber
+                                                 Placeholder="Define Tag Number"
+                                                 Validate="Form.ValidateAsync"></TextBox>
+                                        <ValidationMessage For="() => Model.TagNumber" style="color:red; font-size:x-small;" />
+                                    </FluentGridItem>
+                                    <FluentGridItem xs="12">
+                                        <FluentSelect TOption="SignalTypeEnum"
+                                                      Label="Select Signal Type"
+                                                      Items="@SignalTypeEnum.List"
+                                                      Id="people-listbox"
+                                                      Width="100%"
+                                                      Height="350px"
+                                                      @onchange=@ChangeSignalType
+                                                      Placeholder="Make a selection..."
+                                                      OptionValue="@(p => p.Name)"
+                                                      OptionText="@(p => p.Name)"
+                                                      @bind-Value="@Model.SignalType.Name"
+                                                      @bind-SelectedOption="@Model.SignalType" />
+                                        <ValidationMessage For="() => Model.SignalType" style="color:red; font-size:x-small;" />
+                                    </FluentGridItem>
+
+
+
+                                </FluentGrid>
                             </FluentGridItem>
-                            <FluentGridItem xs="12">
-                                <FluentButton Appearance="Appearance.Accent" OnClick="@(()=>ShowDetails=!ShowDetails)">
-                                    @(ShowDetails ? "Hide Details" : "Show Details")
-                                </FluentButton>
+                            <FluentGridItem xs="12" sm="12" md="6">
+                                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 4px;">
+                                    <FluentGridItem xs="12">
+                                        <FluentSelect TOption="BrandResponse"
+                                                      Label="Select a Brand"
+                                                      Items="@BrandsResponseList.Items"
+                                                      Id="people-listbox"
+                                                      Width="80%"
+                                                      Height="auto"
+                                                      Immediate="true"
+                                                      @onchange=@ChangeSelect
+                                                      Placeholder="Make a selection..."
+                                                      OptionValue="@(p => p.Name)"
+                                                      OptionText="@(p => p.Name)"
+                                                      @bind-Value="@SelectedBrand"
+                                                      @bind-SelectedOption="@Model.BrandResponse" />
+                                        <ValidationMessage For="() => Model.Brand" style="color:red; font-size:x-small;" />
+                                        <FluentButton Id="addB" OnClick="@AddBrand" IconEnd="@(new Icons.Regular.Size20.Add())"></FluentButton>
+                                        <FluentTooltip Anchor="addB" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Brand</FluentTooltip>
+                                    </FluentGridItem>
+                                    <FluentGridItem xs="12">
+                                        <TextBox Label="Model"
+                                                 @bind-Value=@Model.Model
+                                                 Placeholder="Define Model"
+                                                 Validate="Form.ValidateAsync"></TextBox>
+                                        <ValidationMessage For="() => Model.Model" style="color:red; font-size:x-small;" />
+                                    </FluentGridItem>
+                                    <FluentGridItem xs="12">
+                                        <TextBox Label="Reference"
+                                                 @bind-Value=@Model.Reference
+                                                 Placeholder="Define Model"
+                                                 Validate="Form.ValidateAsync"></TextBox>
+                                        <ValidationMessage For="() => Model.Reference" style="color:red; font-size:x-small;" />
+                                    </FluentGridItem>
+                                    <FluentGridItem xs="12">
+                                        <FluentSelect TOption="MaterialEnum"
+                                                      Label="Select Material"
+                                                      Items="@MaterialEnum.List"
+                                                      Id="people-listbox"
+                                                      Width="100%"
+                                                      Height="350px"
+                                                      @onchange=@ChangeMaterial
+                                                      Placeholder="Make a selection..."
+                                                      OptionValue="@(p => p.Name)"
+                                                      OptionText="@(p => p.Name)"
+                                                      @bind-Value="@Model.Material.Name"
+                                                      @bind-SelectedOption="@Model.Material" />
+                                        <ValidationMessage For="() => Model.Material" style="color:red; font-size:x-small;" />
+                                    </FluentGridItem>
 
 
+
+                                </FluentGrid>
                             </FluentGridItem>
-
                         </FluentGrid>
                     </FluentGridItem>
-                    <FluentGridItem xs="12" sm="12" md="4">
-
-                        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px;width:100%; ">
-                            @if (ShowDetails)
-                            {
-                                <FluentGridItem xs="12">
-                                    @* <TextBox Label="Brand"
-                                             @bind-Value=@Model.Brand
-                                             Placeholder="Define Brand"
-                                             Validate="Form.ValidateAsync"></TextBox> *@
-
-                                </FluentGridItem>
-                                <FluentGridItem xs="12">
-                                    <TextBox Label="Model"
-                                             @bind-Value=@Model.Model
-                                             Placeholder="Define Model"
-                                             Validate="Form.ValidateAsync"></TextBox>
-                                </FluentGridItem>
-                                <FluentGridItem xs="12">
-                                    <TextBox Label="Reference"
-                                             @bind-Value=@Model.Reference
-                                             Placeholder="Define Reference"
-                                             Validate="Form.ValidateAsync"></TextBox>
-                                </FluentGridItem>
-                                <FluentGridItem xs="12">
-
-
-
-                                </FluentGridItem>
-                            }
-
-                        </FluentGrid>
-
-
-
-
+                    <FluentGridItem xs="12" sm="12" md="6">
+                        <InstrumentTemplateList Items="@InstrumentTemplateResponseList.Items" SendToForm="GetFromTamplateList"></InstrumentTemplateList>
                     </FluentGridItem>
-                    <FluentGridItem xs="12" sm="12" md="4">
-
-                        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
-                            @if (ShowDetails)
-                            {
-
-                                <FluentGridItem xs="12">
-                             @*        <TextBox Label="Material"
-                                             @bind-Value=@Model.Material
-                                             Placeholder="Define Material"
-                                             Validate="Form.ValidateAsync"></TextBox> *@
-                                </FluentGridItem>
-                                <FluentGridItem xs="12">
-                                  @*   <TextBox Label="Nozzle Type"
-                                             @bind-Value=@Model.NozzleType
-                                             Placeholder="Define Nozzle Type"
-                                             Validate="Form.ValidateAsync"></TextBox> *@
-                                </FluentGridItem>
-                                <FluentGridItem xs="12">
-                                   
-                                </FluentGridItem>
-
-
-                                <FluentGridItem xs="12">
-
-                                </FluentGridItem>
-                            }
-                        </FluentGrid>
-
-
-                    </FluentGridItem>
-
                 </FluentGrid>
+                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 4px;width:100%;">
+                    <FluentGridItem xs="12" sm="12" md="12">
+                        <NozzleBudgetaryList @bind-Items=@Model.Nozzles Validate="Form.ValidateAsync"></NozzleBudgetaryList>
+                        <ValidationMessage For="() => Model.Nozzles" style="color:red; font-size:x-small;" />
+                    </FluentGridItem>
+                </FluentGrid>
+            }
+        </FluentStack>
 
-
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="12" md="5">
-                @if (ShowDetails)
-                {
-                }
-            </FluentGridItem>
-
-
-        </FluentGrid>
-
-       
     </Content>
 
 </CreateTemplate>
+
 
 @code {
     CreateTemplate<CreateInstrumentRequest> Form = null!;
     int Spacing = 1;
     JustifyContent Justification = JustifyContent.SpaceBetween;
-    bool ShowDetails = false;
+
     void OnBreakpointEnterHandler(GridItemSize size)
     {
 
+    }
+    string? SelectedBrand;
+    async Task ChangeSelect(ChangeEventArgs args)
+    {
+        if (args == null || args.Value == null) return;
+        if (BrandsResponseList.Items.Any(x => x.Name == args.Value.ToString()))
+        {
+            Model.BrandResponse = BrandsResponseList.Items.Single(x => x.Name == args.Value.ToString());
+            SelectedBrand = Model.Brand;
+            await Form.ValidateAsync();
+        }
+
+    }
+    async Task ChangeMaterial(ChangeEventArgs args)
+    {
+        if (args == null) return;
+        Model.Material = MaterialEnum.GetType(args!.Value!.ToString()!);
+        await Form.ValidateAsync();
+    }
+    async Task ChangInstrumentType(ChangeEventArgs args)
+    {
+        if (args == null) return;
+
+        var newInstrumentType = VariableInstrumentEnum.GetTypeByName(args!.Value!.ToString()!);
+        Model.Type = newInstrumentType;
+
+        // Actualizar las boquillas según el tipo de válvula
+        UpdateNozzlesBasedOnInstrumentType();
+
+        await Form.ValidateAsync();
+    }
+    async Task ChangInstrumentSubType(ChangeEventArgs args)
+    {
+        if (args == null) return;
+
+        var newInstrumentType = ModifierVariableInstrumentEnum.GetTypeByName(args!.Value!.ToString()!);
+        Model.SubType = newInstrumentType;
+
+        // Actualizar las boquillas según el tipo de válvula
+        UpdateNozzlesBasedOnInstrumentType();
+
+        await Form.ValidateAsync();
+    }
+
+    void UpdateNozzlesBasedOnInstrumentType()
+    {
+        if (Model.Nozzles.Count == 0)
+        {
+            AddInitialNozzles();
+        }
+        else
+        {
+            AdjustNozzlesForInstrumentType();
+        }
+    }
+
+    void AddInitialNozzles()
+    {
+        Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Inlet });
+
+        if (Model.Type == VariableInstrumentEnum.MassFlowMeter || Model.Type == VariableInstrumentEnum.VolumeFlowMeter)
+        {
+            Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet });
+        }
+
+    }
+    void AdjustNozzlesForInstrumentType()
+    {
+        if (Model.Type == VariableInstrumentEnum.MassFlowMeter || Model.Type == VariableInstrumentEnum.VolumeFlowMeter)
+        {
+            if (Model.Nozzles.Count == 1)
+            {
+                Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet });
+            }
+
+        }
+        else if (Model.Nozzles.Count == 2)
+        {
+            Model.Nozzles.Remove(Model.Nozzles.Last());
+        }
+    }
+
+
+
+
+    async Task ChangeSignalType(ChangeEventArgs args)
+    {
+        if (args == null) return;
+        Model.SignalType = SignalTypeEnum.GetType(args!.Value!.ToString()!);
+        await Form.ValidateAsync();
     }
 }

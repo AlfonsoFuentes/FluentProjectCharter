@@ -12,10 +12,10 @@ public partial class ConstraintList
     [CascadingParameter]
     public App App { get; set; }
     [Parameter]
-    [EditorRequired]
-    public Guid DeliverableId { get; set; }
+
+    public Guid? DeliverableId { get; set; }
     [Parameter]
-    [EditorRequired]
+
     public Guid ProjectId { get; set; }
     [Parameter]
     [EditorRequired]
@@ -29,7 +29,7 @@ public partial class ConstraintList
     public List<ConstrainstResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateConstrainst/{DeliverableId}/{ProjectId}");
+        Navigation.NavigateTo($"/CreateConstrainst/{ProjectId}/{DeliverableId}");
 
     }
 
@@ -37,7 +37,7 @@ public partial class ConstraintList
 
     void Edit(ConstrainstResponse response)
     {
-        Navigation.NavigateTo($"/UpdateConstrainst/{response.Id}/{ProjectId}");
+        Navigation.NavigateTo($"/UpdateConstrainst/{response.Id}");
     }
     public async Task Delete(ConstrainstResponse response)
     {

@@ -1,0 +1,25 @@
+﻿@page "/CreateEngineeringFluidCodes"
+@using Shared.Models.OrganizationStrategies.Requests
+<CreateTemplate @ref=CreateForm TItem="CreateEngineeringFluidCodeRequest" @bind-Model="@Model"
+                  Title="Create Organization Strategy">
+    <Content>
+        <TextBox Label="Code"
+                  @bind-Value=@Model.Code
+                 Placeholder="Define Code"
+                  Validate="CreateForm.ValidateAsync"></TextBox>
+        <ValidationMessage For="() => Model.Code" style="color:red; font-size:x-small;" />
+        <TextBox Label="Name"
+                 @bind-Value=@Model.Name
+                 Placeholder="Define name"
+                 Validate="CreateForm.ValidateAsync"></TextBox>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+    </Content>
+
+</CreateTemplate>
+
+
+
+
+@code {
+    CreateTemplate<CreateEngineeringFluidCodeRequest> CreateForm = null!;
+}

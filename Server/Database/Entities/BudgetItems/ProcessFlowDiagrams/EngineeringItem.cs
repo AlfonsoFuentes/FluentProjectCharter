@@ -11,11 +11,6 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams
         public string TagLetter { get; set; } = string.Empty;
         [NotMapped]
         public virtual string Tag => $"{TagLetter}-{TagNumber}";
-
-       
-        public ProcessFlowDiagram? ProcessFlowDiagram { get; set; } = null!;
-        public Guid? ProcessFlowDiagramId { get; set; }
-       
         public ICollection<Nozzle> Nozzles { get; set; } = new List<Nozzle>();
 
         [ForeignKey("ItemConnectedId")]

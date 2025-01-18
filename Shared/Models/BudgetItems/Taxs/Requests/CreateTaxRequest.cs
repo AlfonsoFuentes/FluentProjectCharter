@@ -13,11 +13,12 @@ namespace Shared.Models.BudgetItems.Taxs.Requests
         public override string Legend => Name;
 
         public override string ClassName => StaticClass.Taxs.ClassName;
-
-
-        public double Budget { get; set; }
-
-       
+        public double Budget => BudgetCalculated;
+        public double Percentage { get; set; }
         public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
+        public List<TaxItemResponse> TaxItems { get; set; } = new List<TaxItemResponse>();
+        public double BudgetTaxItem => TaxItems.Count == 0 ? 0 : TaxItems.Sum(x => x.Budget);
+
+        double BudgetCalculated => BudgetTaxItem * Percentage / 100;
     }
 }

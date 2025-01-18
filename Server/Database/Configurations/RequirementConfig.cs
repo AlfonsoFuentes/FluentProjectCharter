@@ -20,6 +20,11 @@ namespace Server.Database.Configurations
        .HasForeignKey(x => x.ResponsibleId)
        .OnDelete(DeleteBehavior.NoAction);
 
+            builder.HasOne(x => x.Deliverable)
+          .WithMany(t => t.Requirements)
+          .HasForeignKey(e => e.DeliverableId)
+          .OnDelete(DeleteBehavior.NoAction);
+
         }
 
     }

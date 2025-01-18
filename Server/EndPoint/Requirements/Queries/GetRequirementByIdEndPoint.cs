@@ -8,8 +8,10 @@
             {
                 app.MapPost(StaticClass.Requirements.EndPoint.GetById, async (GetRequirementByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //Func<IQueryable<Requirement>, IIncludableQueryable<Requirement, object>> Includes = x => null!
-               
+                    //TODO::
+                    //Func<IQueryable<Requirement>, IIncludableQueryable<Requirement, object>> Includes = x => 
+                    //x.Include(x => x.Deliverable!);
+
                     //;
 
                     Expression<Func<Requirement, bool>> Criteria = x => x.Id == request.Id;
@@ -22,22 +24,22 @@
                         return Result.Fail(request.NotFound);
                     }
 
-                    var response = row.Map(request.ProjectId);
+                    var response = row.Map();
                     return Result.Success(response);
 
                 });
             }
         }
 
-        public static RequirementResponse Map(this Requirement row, Guid ProjectId)
+        public static RequirementResponse Map(this Requirement row)
         {
             return new()
             {
                 Id = row.Id,
                 Name = row.Name,
-                DeliverableId = row.DeliverableId,
-                //SubDeliverableId = row.SubDeliverableId,
-                ProjectId = ProjectId,
+                DeliverableId = row.DeliverableId ?? null,
+
+                ProjectId = row.ProjectId,
 
             };
         }

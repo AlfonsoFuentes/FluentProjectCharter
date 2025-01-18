@@ -16,7 +16,7 @@ namespace Shared.Models.Templates.Equipments.Responses
         public string SubType { get; set; } = string.Empty;
         public string TagLetter { get; set; } = string.Empty;
         public BrandResponse BrandResponse { get; set; } = new();
-        public string Brand => BrandResponse.Name;
+        public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
         public List<NozzleTemplateResponse> Nozzles { get; set; } = new();
 
     }

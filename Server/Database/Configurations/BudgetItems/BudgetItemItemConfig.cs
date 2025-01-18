@@ -15,10 +15,7 @@ namespace Server.Database.Configurations.BudgetItems
             .HasForeignKey(e => e.DeliverableId)
             .OnDelete(DeleteBehavior.NoAction);
 
-           // builder.HasOne(x => x.SubDeliverable)
-           //.WithMany(t => t.BudgetItems)
-           //.HasForeignKey(e => e.SubDeliverableId)
-           //.OnDelete(DeleteBehavior.NoAction);
+          
         }
     }
 }

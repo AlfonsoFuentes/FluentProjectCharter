@@ -13,11 +13,20 @@
                              Validate="Form.ValidateAsync"></TextBox>
                     <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
                 </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="6">
+                </FluentGridItem>
                 <FluentGridItem xs="12" sm="12" md="3">
                     <NumberField @bind-Value="@Model.Budget" Label="Budget, USD" Validate="Form.ValidateAsync"></NumberField>
                     <ValidationMessage For="() => Model.Budget" style="color:red; font-size:x-small;" />
                 </FluentGridItem>
                 <FluentGridItem xs="12" sm="12" md="3">
+                    @if (Model.ShowDetails)
+                    {
+                        <FluentLabel><strong>Tag : @Model.Tag</strong></FluentLabel>
+                        <ValidationMessage For="() => Model.Tag" style="color:red; font-size:x-small;" />
+                    }
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="6">
                 </FluentGridItem>
             </FluentGrid>
 
@@ -35,7 +44,7 @@
 
                             <FluentGridItem xs="12" sm="12" md="6">
                                 <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 2px; width:100%;">
-                      
+
                                     <FluentGridItem xs="12">
                                         <FluentSelect TOption="BrandResponse"
                                                       Label="Select a Brand"
@@ -83,12 +92,7 @@
                                                  Validate="Form.ValidateAsync"></TextBox>
                                         <ValidationMessage For="() => Model.TagNumber" style="color:red; font-size:x-small;" />
                                     </FluentGridItem>
-                                    <FluentGridItem xs="12">
-                                        <FluentLabel>Tag : @Model.Tag</FluentLabel>
-                                        <ValidationMessage For="() => Model.Tag" style="color:red; font-size:x-small;" />
 
-
-                                    </FluentGridItem>
                                     <FluentGridItem xs="12">
                                         <FluentSelect TOption="NominalDiameterEnum"
                                                       Label="Select Diameter"
@@ -125,7 +129,7 @@
                                                       @bind-SelectedOption="@Model.ActuatorType" />
                                         <ValidationMessage For="() => Model.ActuatorType" style="color:red; font-size:x-small;" />
                                     </FluentGridItem>
-                             
+
                                     <FluentGridItem xs="12">
                                         <FluentSelect TOption="MaterialEnum"
                                                       Label="Select Material"
@@ -216,7 +220,7 @@
     CreateTemplate<CreateValveRequest> Form = null!;
     int Spacing = 1;
     JustifyContent Justification = JustifyContent.SpaceBetween;
-  
+
     void OnBreakpointEnterHandler(GridItemSize size)
     {
 
@@ -267,6 +271,11 @@
         {
             Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
         }
+        else if (Model.Type == ValveTypesEnum.Four_Way)
+        {
+            Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+            Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+        }
     }
 
     void AdjustNozzlesForValveType()
@@ -278,8 +287,25 @@
                 Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
             }
         }
+        else if (Model.Type == ValveTypesEnum.Four_Way)
+        {
+            if (Model.Nozzles.Count == 2)
+            {
+                Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+            }
+            else if (Model.Nozzles.Count == 3)
+            {
+                Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+            }
+
+        }
         else if (Model.Nozzles.Count == 3)
         {
+            Model.Nozzles.Remove(Model.Nozzles.Last());
+        }
+        else if (Model.Nozzles.Count == 4)
+        {
+            Model.Nozzles.Remove(Model.Nozzles.Last());
             Model.Nozzles.Remove(Model.Nozzles.Last());
         }
     }

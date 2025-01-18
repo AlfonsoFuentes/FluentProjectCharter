@@ -37,8 +37,8 @@
         };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;
         public static string GetLetter(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Letter : string.Empty;
-        public static BudgetItemTypeEnum GetTypeByName(string type) => List.Exists(x => x.Name == type) ? List.FirstOrDefault(x => x.Name == type)! : None;
-        public static BudgetItemTypeEnum GetTypeByLetter(string letter) => List.Exists(x => x.Letter == letter) ? List.FirstOrDefault(x => x.Letter == letter)! : None;
+        public static BudgetItemTypeEnum GetTypeByName(string type) => List.Exists(x => x.Name.Equals(type)) ? List.FirstOrDefault(x => x.Name.Equals(type))! : None;
+        public static BudgetItemTypeEnum GetTypeByLetter(string letter) => List.Exists(x => x.Letter.Equals(letter)) ? List.FirstOrDefault(x => x.Letter.Equals(letter))! : None;
         public static BudgetItemTypeEnum GetType(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)! : None;
         protected override IEnumerable<object> GetEqualityComponents()
         {

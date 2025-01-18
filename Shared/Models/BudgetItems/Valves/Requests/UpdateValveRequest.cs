@@ -37,7 +37,7 @@ namespace Shared.Models.BudgetItems.Valves.Requests
         public string Tag => $"{TagLetter}-{TagNumber}";
         public string TagLetter => $"{PositionerType.Letter}{Type.Letter}";
         public BrandResponse BrandResponse { get; set; } = new();
-        public string Brand => BrandResponse.Name;
+        public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
         public List<NozzleResponse> Nozzles { get; set; } = new();
         public bool ShowDetails { get; set; } = false;
     }

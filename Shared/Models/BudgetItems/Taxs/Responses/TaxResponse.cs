@@ -1,6 +1,7 @@
 ﻿using Shared.Enums.BudgetItemTypes;
 using Shared.Enums.CostCenter;
 using Shared.Models.BudgetItems;
+using Shared.Models.BudgetItems.Taxs.Requests;
 using System.Globalization;
 
 namespace Shared.Models.BudgetItems.Taxs.Responses
@@ -11,18 +12,19 @@ namespace Shared.Models.BudgetItems.Taxs.Responses
         public Guid DeliverableId { get; set; }
         public Guid ProjectId { get; set; }
 
-        public CostCenterEnum CostCenter { get; set; } = CostCenterEnum.None;
-        public double UnitaryCost { get; set; }
-        public double Quantity { get; set; }
-        public double Budget => UnitaryCost * Quantity;
 
-        public string sUnitaryCost => string.Format(new CultureInfo("en-US"), "{0:C0}", UnitaryCost);
-        public string sQuantity => $"{Quantity}";
-        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
 
         public string Nomenclatore { get; set; } = string.Empty;
 
         public string UpadtePageName { get; set; } = StaticClass.Taxs.PageName.Update;
         public string Tag { get; set; } = string.Empty;
+
+        public double Budget { get; set; }
+        public double Percentage { get; set; }
+        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
+        public List<TaxItemResponse> TaxItems { get; set; } = new List<TaxItemResponse>();
+        public double BudgetTaxItem => TaxItems.Count == 0 ? 0 : TaxItems.Sum(x => x.Budget);
+
+        double BudgetCalculated => BudgetTaxItem * Percentage / 100;
     }
 }

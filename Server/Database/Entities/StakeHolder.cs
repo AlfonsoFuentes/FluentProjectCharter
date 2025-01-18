@@ -24,7 +24,7 @@ namespace Server.Database.Entities
         public List<ExpertJudgement> Judgements { get; set; } = new();
 
         [ForeignKey("RequestedById")]
-        public List<Requirement> RequirementRequestedBys {  get; set; } = new();
+        public List<Requirement> RequirementRequestedBys { get; set; } = new();
         [ForeignKey("ResponsibleId")]
         public List<Requirement> RequirementResponsibles { get; set; } = new();
         public static StakeHolder Create()

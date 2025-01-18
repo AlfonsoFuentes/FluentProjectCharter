@@ -20,10 +20,11 @@ namespace Shared.Enums.ValvesEnum
         public static ValveTypesEnum Three_Way = Create(6, "VTV", "Three way");
         public static ValveTypesEnum Check = Create(7, "VCH", "Check");
         public static ValveTypesEnum Other = Create(8, "VOT", "Other");
+        public static ValveTypesEnum Four_Way = Create(9, "VTV", "Four way");
 
         public static List<ValveTypesEnum> List = new List<ValveTypesEnum>()
         {
-            None,Butterfly, Ball, Diaphragm, Gate, Knife,Three_Way,Globe, Check, Other
+            None,Butterfly, Ball, Diaphragm, Gate, Knife,Globe, Check,Three_Way,Four_Way, Other
 
         };
         public static List<ValveTypesEnum> ControlledList = new List<ValveTypesEnum>()
@@ -33,8 +34,8 @@ namespace Shared.Enums.ValvesEnum
         };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;
         public static string GetLetter(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Letter : string.Empty;
-        public static ValveTypesEnum GetTypeByName(string type) => List.Exists(x => x.Name == type) ? List.FirstOrDefault(x => x.Name == type)! : None;
-        public static ValveTypesEnum GetTypeByLetter(string letter) => List.Exists(x => x.Letter == letter) ? List.FirstOrDefault(x => x.Letter == letter)! : None;
+        public static ValveTypesEnum GetTypeByName(string type) => List.Exists(x => x.Name.Equals(type)) ? List.FirstOrDefault(x => x.Name.Equals(type))! : None;
+        public static ValveTypesEnum GetTypeByLetter(string letter) => List.Exists(x => x.Letter.Equals(letter)) ? List.FirstOrDefault(x => x.Letter.Equals(letter))! : None;
         public static ValveTypesEnum GetType(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)! : None;
        
     }

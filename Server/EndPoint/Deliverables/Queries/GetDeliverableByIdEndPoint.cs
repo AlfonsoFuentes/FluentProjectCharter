@@ -1,6 +1,5 @@
-﻿using Server.EndPoint.Alterations.Queries;
-using Shared.Models.Deliverables.Records;
-using Server.EndPoint.AcceptanceCriterias.Queries;
+﻿using Server.EndPoint.AcceptanceCriterias.Queries;
+using Server.EndPoint.Alterations.Queries;
 using Server.EndPoint.EHSs.Queries;
 using Server.EndPoint.Electricals.Queries;
 using Server.EndPoint.EngineeringDesigns.Queries;
@@ -8,11 +7,12 @@ using Server.EndPoint.Equipments.Queries;
 using Server.EndPoint.Foundations.Queries;
 using Server.EndPoint.Instruments.Queries;
 using Server.EndPoint.Paintings.Queries;
-using Server.EndPoint.Pipings.Queries;
+using Server.EndPoint.Pipes.Queries;
 using Server.EndPoint.Structurals.Queries;
 using Server.EndPoint.Taxs.Queries;
 using Server.EndPoint.Testings.Queries;
 using Server.EndPoint.Valves.Queries;
+using Shared.Models.Deliverables.Records;
 namespace Server.EndPoint.Deliverables.Queries
 {
     public static class GetDeliverableByIdEndPoint
@@ -61,18 +61,18 @@ namespace Server.EndPoint.Deliverables.Queries
                 Name = row.Name,
                 ScopeId = row.ScopeId,
 
-                Requirements = row.Requirements == null || row.Requirements.Count == 0 ? new() : row.Requirements.Select(x => x.Map(ProjectId)).ToList(),
+                Requirements = row.Requirements == null || row.Requirements.Count == 0 ? new() : row.Requirements.Select(x => x.Map()).ToList(),
 
                 IsNodeOpen = row.IsNodeOpen,
                 Tab = row.Tab,
 
-                Assumptions = row.Assumptions == null || row.Assumptions.Count == 0 ? new() : row.Assumptions.Select(x => x.Map(ProjectId)).ToList(),
+                Assumptions = row.Assumptions == null || row.Assumptions.Count == 0 ? new() : row.Assumptions.Select(x => x.Map()).ToList(),
 
                 DeliverableRisks = row.DeliverableRisks == null || row.DeliverableRisks.Count == 0 ? new() :
                 row.DeliverableRisks.Select(x => x.Map(ProjectId)).ToList(),
 
                 Constrainsts = row.Constraints == null || row.Constraints.Count == 0 ? new() :
-                row.Constraints.Select(x => x.Map(ProjectId)).ToList(),
+                row.Constraints.Select(x => x.Map()).ToList(),
 
                 Bennefits = row.Bennefits == null || row.Bennefits.Count == 0 ? new() : row.Bennefits.Select(x => x.Map(ProjectId)).ToList(),
 
@@ -88,7 +88,7 @@ namespace Server.EndPoint.Deliverables.Queries
 
                 Valves = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Valve>().Select(x => x.Map()).ToList(),
                 Electricals = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Electrical>().Select(x => x.Map()).ToList(),
-                Pipings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Isometric>().Select(x => x.Map()).ToList(),
+                Pipings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Pipe>().Select(x => x.Map()).ToList(),
                 Instruments = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Instrument>().Select(x => x.Map()).ToList(),
 
                 EHSs = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<EHS>().Select(x => x.Map()).ToList(),
@@ -97,7 +97,7 @@ namespace Server.EndPoint.Deliverables.Queries
                 Testings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Testing>().Select(x => x.Map()).ToList(),
 
                 EngineeringDesigns = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<EngineeringDesign>().Select(x => x.Map()).ToList(),
-
+                //
             };
 
         }

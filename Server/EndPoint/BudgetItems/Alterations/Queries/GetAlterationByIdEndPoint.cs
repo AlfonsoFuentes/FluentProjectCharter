@@ -13,7 +13,8 @@ namespace Server.EndPoint.Alterations.Queries
             {
                 app.MapPost(StaticClass.Alterations.EndPoint.GetById, async (GetAlterationByIdRequest request, IQueryRepository Repository) =>
                 {
-                    Func<IQueryable<Alteration>, IIncludableQueryable<Alteration, object>> Includes = x => x.Include(x => x.Deliverable!);
+                    Func<IQueryable<Alteration>, IIncludableQueryable<Alteration, object>> Includes = x => x
+                    .Include(x => x.Deliverable!);
 
                     ;
 

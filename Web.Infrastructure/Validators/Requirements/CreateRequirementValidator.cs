@@ -26,8 +26,8 @@ namespace Web.Infrastructure.Validators.Requirements
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
-
+            
+                 ProjectId = request.ProjectId, 
             };
             var result = await Service.Validate(validate);
             return !result;
@@ -54,7 +54,8 @@ namespace Web.Infrastructure.Validators.Requirements
             ValidateRequirementRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
+            
+                ProjectId = request.ProjectId,
                 Id = request.Id
 
             };

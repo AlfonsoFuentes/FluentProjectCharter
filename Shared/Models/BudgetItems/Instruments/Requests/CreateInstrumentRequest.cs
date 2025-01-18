@@ -1,7 +1,10 @@
 ﻿using Shared.Enums.CostCenter;
 using Shared.Enums.Materials;
+using Shared.Enums.NozzleTypes;
 using Shared.Models.Brands.Responses;
+using Shared.Models.BudgetItems.Nozzles.Responses;
 using Shared.Models.FileResults.Generics.Request;
+using Shared.Models.Templates.NozzleTemplates;
 
 namespace Shared.Models.BudgetItems.Instruments.Requests
 {
@@ -18,21 +21,23 @@ namespace Shared.Models.BudgetItems.Instruments.Requests
 
   
         public double Budget { get; set; }
-
-     
         public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
-       
-        public string SignalType { get; set; } = string.Empty;
+        public string TagNumber { get; set; } = string.Empty;
+        public SignalTypeEnum SignalType { get; set; } = SignalTypeEnum.None;
 
-        public string VariableInstrument { get; set; } = string.Empty;
-        public string ModifierInstrument { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
         public MaterialEnum Material { get; set; } = MaterialEnum.None;
 
         public string Reference { get; set; } = string.Empty;
-        public string TagNumber { get; set; } = string.Empty;
-        public string TagLetter { get; set; } = string.Empty;
-        public BrandResponse? Brand { get; set; } 
-   
+
+        public VariableInstrumentEnum Type { get; set; } = VariableInstrumentEnum.None;
+        public ModifierVariableInstrumentEnum SubType { get; set; } = ModifierVariableInstrumentEnum.None;
+        public BrandResponse BrandResponse { get; set; } = new();
+        public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
+        public List<NozzleResponse> Nozzles { get; set; } = new();
+        public string TagLetter => $"{Type.Letter}{SubType.Letter}";
+        public bool ShowDetails {  get; set; }
+        public string Tag => $"{TagLetter}-{TagNumber}";
+
     }
 }

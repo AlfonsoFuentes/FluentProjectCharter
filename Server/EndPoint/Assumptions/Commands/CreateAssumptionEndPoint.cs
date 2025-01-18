@@ -16,7 +16,7 @@ namespace Server.EndPoint.Assumptions.Commands
             {
                 app.MapPost(StaticClass.Assumptions.EndPoint.Create, async (CreateAssumptionRequest Data, IRepository Repository) =>
                 {
-                    var row = Assumption.Create(Data.DeliverableId);
+                    var row = Assumption.Create(Data.ProjectId,Data.DeliverableId);
 
                     await Repository.AddAsync(row);
 

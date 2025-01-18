@@ -1,9 +1,15 @@
-﻿using Shared.Enums.Materials;
+﻿using FluentValidation;
+using Shared.Enums.ConnectionTypes;
+using Shared.Enums.DiameterEnum;
+using Shared.Enums.Materials;
+using Shared.Enums.NozzleTypes;
 using Shared.Models.BudgetItems.Equipments.Requests;
 using Shared.Models.BudgetItems.Equipments.Validators;
+using Shared.Models.BudgetItems.Nozzles.Responses;
+using Shared.Models.Templates.NozzleTemplates;
 using Web.Infrastructure.Managers.Generic;
 
-namespace Web.Infrastructure.Validators.Equipments
+namespace Web.Infrastructure.Validators.BudgetItems.Equipments
 {
     public class CreateEquipmentValidator : AbstractValidator<CreateEquipmentRequest>
     {
@@ -34,7 +40,7 @@ namespace Web.Infrastructure.Validators.Equipments
             RuleFor(x => x.Reference).NotEmpty().When(x => x.ShowDetails)
           .WithMessage("Reference must be defined!");
 
-            RuleFor(x => x.Nozzles).Must(x => x.Count > 0).When(x => x.ShowDetails).WithMessage("Nozzles must be greater than zero");
+            RuleFor(x => x.Nozzles).Must(ReviewInletOutlet).When(x => x.ShowDetails).WithMessage("Nozzles must be have on inlet and one outlet");
             RuleFor(x => x.TagNumber).NotEmpty().When(x => x.ShowDetails)
                 .WithMessage("Tag Number must be defined!");
 
@@ -76,6 +82,24 @@ namespace Web.Infrastructure.Validators.Equipments
             var result = await Service.Validate(validate);
             return !result;
         }
+        bool ReviewInletOutlet(List<NozzleResponse> nozzles)
+        {
+            if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Inlet.Id)) return false;
+            if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Outlet.Id)) return false;
+            return true;
+        }
+        bool ReviewConnectionType(List<NozzleResponse> nozzles)
+        {
+            if (nozzles.Any(x => x.ConnectionType.Id == ConnectionTypeEnum.None.Id)) return false;
+
+            return true;
+        }
+        bool ReviewDiameter(List<NozzleResponse> nozzles)
+        {
+            if (nozzles.Any(x => x.NominalDiameter.Id == NominalDiameterEnum.None.Id)) return false;
+
+            return true;
+        }
     }
     public class UpdateEquipmentValidator : AbstractValidator<UpdateEquipmentRequest>
     {
@@ -106,7 +130,16 @@ namespace Web.Infrastructure.Validators.Equipments
             RuleFor(x => x.Reference).NotEmpty().When(x => x.ShowDetails)
           .WithMessage("Reference must be defined!");
 
-            RuleFor(x => x.Nozzles).Must(x => x.Count > 0).When(x => x.ShowDetails).WithMessage("Nozzles must be greater than zero");
+            RuleFor(x => x.Nozzles).Must(ReviewInletOutlet).When(x => x.ShowDetails)
+                .WithMessage("Nozzles must be have on inlet and one outlet");
+
+            RuleFor(x => x.Nozzles).Must(ReviewConnectionType).When(x => x.ShowDetails)
+               .WithMessage("All connection types nozzle must be defined!");
+
+            RuleFor(x => x.Nozzles).Must(ReviewDiameter).When(x => x.ShowDetails)
+                .WithMessage("All diameter nozzle must be defined!");
+
+
             RuleFor(x => x.TagNumber).NotEmpty().When(x => x.ShowDetails)
                 .WithMessage("Tag Number must be defined!");
 
@@ -147,6 +180,24 @@ namespace Web.Infrastructure.Validators.Equipments
             };
             var result = await Service.Validate(validate);
             return !result;
+        }
+        bool ReviewInletOutlet(List<NozzleResponse> nozzles)
+        {
+            if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Inlet.Id)) return false;
+            if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Outlet.Id)) return false;
+            return true;
+        }
+        bool ReviewConnectionType(List<NozzleResponse> nozzles)
+        {
+            if (nozzles.Any(x => x.ConnectionType.Id == ConnectionTypeEnum.None.Id)) return false;
+
+            return true;
+        }
+        bool ReviewDiameter(List<NozzleResponse> nozzles)
+        {
+            if (nozzles.Any(x => x.NominalDiameter.Id == NominalDiameterEnum.None.Id)) return false;
+
+            return true;
         }
     }
 }

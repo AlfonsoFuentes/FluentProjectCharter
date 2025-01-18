@@ -11,10 +11,10 @@ public partial class RequirementList
     [CascadingParameter]
     public App App { get; set; }
     [Parameter]
-    [EditorRequired]
-    public Guid DeliverableId { get; set; }
+
+    public Guid? DeliverableId { get; set; }
     [Parameter]
-    [EditorRequired]
+
     public Guid ProjectId { get; set; }
     [Parameter]
     [EditorRequired]
@@ -30,13 +30,13 @@ public partial class RequirementList
     public List<RequirementResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateRequirement/{DeliverableId}/{ProjectId}");
+        Navigation.NavigateTo($"/CreateRequirement/{ProjectId}/{DeliverableId}");
 
     }
 
     void Edit(RequirementResponse response)
     {
-        Navigation.NavigateTo($"/UpdateRequirement/{response.Id}/{ProjectId}");
+        Navigation.NavigateTo($"/UpdateRequirement/{response.Id}");
     }
     public async Task Delete(RequirementResponse response)
     {

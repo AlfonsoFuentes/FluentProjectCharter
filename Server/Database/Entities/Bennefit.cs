@@ -8,8 +8,7 @@ namespace Server.Database.Entities
         public Deliverable Deliverable { get; set; } = null!;
         public Guid DeliverableId { get; set; }
 
-        //public SubDeliverable? SubDeliverable { get; set; } = null!;
-        //public Guid? SubDeliverableId { get; set; }
+       
         public string Name { get; set; } = string.Empty;
         public static Bennefit Create(Guid DeliverableId)
         {

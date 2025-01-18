@@ -247,19 +247,43 @@
         {
             Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
         }
+        else if (Model.Type == ValveTypesEnum.Four_Way)
+        {
+            Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+            Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+        }
     }
 
     void AdjustNozzlesForValveType()
     {
         if (Model.Type == ValveTypesEnum.Three_Way)
         {
+
             if (Model.Nozzles.Count == 2)
             {
                 Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
             }
         }
+        else if (Model.Type == ValveTypesEnum.Four_Way)
+        {
+            if (Model.Nozzles.Count == 2)
+            {
+                Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+                Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+            }
+            else if (Model.Nozzles.Count == 3)
+            {
+                Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+            }
+
+        }
         else if (Model.Nozzles.Count == 3)
         {
+            Model.Nozzles.Remove(Model.Nozzles.Last());
+        }
+        else if (Model.Nozzles.Count == 4)
+        {
+            Model.Nozzles.Remove(Model.Nozzles.Last());
             Model.Nozzles.Remove(Model.Nozzles.Last());
         }
     }

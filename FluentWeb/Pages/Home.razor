@@ -13,7 +13,7 @@
         </div>
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-        Placeholder="Search..." />
+                      Placeholder="Search..." />
     </FluentStack>
 
     @foreach (var row in FilteredItems)
@@ -74,6 +74,26 @@
                         </Content>
 
                     </FluentTab>
+                    <FluentTab Label="Requirements" Id="RequirementProject">
+                        <Content>
+                            <RequirementList GetAll="UpdateAll" Items="row.Requirements" ProjectId="row.Id"></RequirementList>
+                        </Content>
+
+                    </FluentTab>
+                    <FluentTab Label="Constrainst" Id="ConstrainstProject">
+                        <Content>
+                            <ConstraintList GetAll="UpdateAll" Items="row.Constrainsts" ProjectId="row.Id"></ConstraintList>
+                        </Content>
+
+                    </FluentTab>
+                    <FluentTab Label="Assumptions" Id="AssumptionsProject">
+                        <Content>
+                            <AssumptionList GetAll="UpdateAll" Items="row.Assumptions" ProjectId="row.Id"></AssumptionList>
+                        </Content>
+
+                    </FluentTab>
+                
+                   
                     <FluentTab Label="Budget Items" Id="Budgetitems">
                         <Content>
                             <ProjectBudgetItemsList GetAll="UpdateAll" Parent="@row">
@@ -124,12 +144,12 @@
             App.ProjectList.CurrentProject.Close();
             await GenericService.UpdateState(App.ProjectList.CurrentProject);
             App.ProjectList.CurrentProject = response;
-            
+
             response.Open();
             await GenericService.UpdateState(response);
         }
-        
-       
+
+
 
 
 

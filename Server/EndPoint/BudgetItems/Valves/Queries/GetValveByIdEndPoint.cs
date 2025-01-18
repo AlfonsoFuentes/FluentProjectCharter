@@ -17,7 +17,8 @@ namespace Server.EndPoint.Valves.Queries
                 app.MapPost(StaticClass.Valves.EndPoint.GetById, async (GetValveByIdRequest request, IQueryRepository Repository) =>
                 {
                     Func<IQueryable<Valve>, IIncludableQueryable<Valve, object>> Includes = x => x
-                    .Include(x => x.Deliverable!)
+              
+                    .Include(x => x.Nozzles)
                     .Include(x => x.ValveTemplate!).ThenInclude(x => x.BrandTemplate!)
                     .Include(x => x.ValveTemplate!).ThenInclude(x => x.NozzleTemplates!);
 
@@ -62,12 +63,12 @@ namespace Server.EndPoint.Valves.Queries
                 TagLetter = row.TagLetter,
                 ShowDetails = row.ValveTemplate != null,
                 Nozzles = row.Nozzles == null || row.Nozzles.Count == 0 ? new() : row.Nozzles.Select(x => x.Map()).ToList(),
-                
+
             };
-           
+
             return result;
         }
-       
+
 
     }
 }

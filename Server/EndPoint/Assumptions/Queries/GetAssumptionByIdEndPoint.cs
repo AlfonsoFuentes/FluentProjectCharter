@@ -20,22 +20,22 @@
                         return Result.Fail(request.NotFound);
                     }
 
-                    var response = row.Map(request.ProjectId);
+                    var response = row.Map();
                     return Result.Success(response);
 
                 });
             }
         }
 
-        public static AssumptionResponse Map(this Assumption row, Guid ProjectId)
+        public static AssumptionResponse Map(this Assumption row)
         {
             return new()
             {
                 Id = row.Id,
                 Name = row.Name,
                 DeliverableId = row.DeliverableId,
-                //SubDeliverableId = row.SubDeliverableId ,
-                ProjectId = ProjectId,
+          
+                ProjectId = row.ProjectId,
             };
         }
 

@@ -1,7 +1,13 @@
 using Microsoft.AspNetCore.Components;
+using Shared.Models.Brands.Records;
+using Shared.Models.Brands.Responses;
+using Shared.Models.BudgetItems.Nozzles.Responses;
 using Shared.Models.BudgetItems.Instruments.Records;
 using Shared.Models.BudgetItems.Instruments.Requests;
 using Shared.Models.BudgetItems.Instruments.Responses;
+using Shared.Models.Templates.Instruments.Records;
+using Shared.Models.Templates.Instruments.Responses;
+using Shared.StaticClasses;
 
 namespace FluentWeb.Pages.BudgetItems.Instruments;
 public partial class UpdateInstrument
@@ -11,8 +17,11 @@ public partial class UpdateInstrument
     public Guid ProjectId { get; set; }
     [Parameter]
     public Guid Id { get; set; }
+    BrandResponseList BrandsResponseList { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
+        await GetAllEquipmentTemplate();
+        await GetBrands();
         var result = await GenericService.GetById<InstrumentResponse, GetInstrumentByIdRequest>(
             new GetInstrumentByIdRequest() { Id = Id, ProjectId = ProjectId });
 
@@ -24,19 +33,78 @@ public partial class UpdateInstrument
                 Name = result.Data.Name,
                 ProjectId = ProjectId,
                 Budget = result.Data.Budget,
+
+                TagNumber = result.Data.TagNumber,
+
+                Type = result.Data.Type,
+                SignalType = result.Data.SignalType,
+
                 Material = result.Data.Material,
                 Model = result.Data.Model,
-                Reference = result.Data.Reference,
-                TagLetter = result.Data.TagLetter,
-                TagNumber = result.Data.TagNumber,
-                Brand = result.Data.Brand,
-              
-                SignalType = result.Data.SignalType,
-                VariableInstrument = result.Data.VariableInstrument,
-                ModifierInstrument = result.Data.ModifierInstrument,
 
+                BrandResponse = result.Data.BrandResponse,
+                DeliverableId = result.Data.DeliverableId,
+                Nozzles = result.Data.Nozzles,
+
+                ShowDetails = result.Data.ShowDetails,
+                Reference = result.Data.Reference,
+                SubType = result.Data.SubType,
+                 
 
             };
+            SelectedBrand = Model.Brand;
         }
+    }
+    async Task GetBrands()
+    {
+        var result = await GenericService.GetAll<BrandResponseList, BrandGetAll>(new BrandGetAll());
+        if (result.Succeeded)
+        {
+            BrandsResponseList = result.Data;
+        }
+    }
+    void AddBrand()
+    {
+        //CreateTemporaryRequest temporaryRequest = new()
+        //{
+        //    Model = Model.Model,
+
+
+        //};
+        //var result = await GenericService.Create(temporaryRequest);
+
+        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+    }
+    InstrumentTemplateResponseList InstrumentTemplateResponseList = new();
+    async Task GetAllEquipmentTemplate()
+    {
+        var result = await GenericService.GetAll<InstrumentTemplateResponseList, InstrumentTemplateGetAll>(new InstrumentTemplateGetAll());
+        if (result.Succeeded)
+        {
+            InstrumentTemplateResponseList = result.Data;
+        }
+    }
+    void GetFromTamplateList(InstrumentTemplateResponse response)
+    {
+        Model.BrandResponse = response.BrandResponse;
+        Model.SignalType = response.SignalType;
+        Model.Model = response.Model;
+        Model.Material = response.Material;
+        Model.Reference = response.Reference;
+        Model.Type = response.Type;
+        Model.SubType = response.SubType;
+
+
+        Model.Nozzles = response.Nozzles.Select((row, index) => new NozzleResponse
+        {
+            Order = index + 1,
+            Id = Guid.NewGuid(),
+            ConnectionType = row.ConnectionType,
+            NominalDiameter = row.NominalDiameter,
+            NozzleType = row.NozzleType
+        }).ToList();
+        Model.Budget = response.Value;
+        SelectedBrand = Model.Brand;
+        StateHasChanged();
     }
 }

@@ -212,42 +212,6 @@ namespace Server.Migrations
                     b.ToTable("AcceptanceCriterias");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.AppState", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ActiveProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AppStates");
-                });
-
             modelBuilder.Entity("Server.Database.Entities.Assumption", b =>
                 {
                     b.Property<Guid>("Id")
@@ -263,7 +227,7 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DeliverableId")
+                    b.Property<Guid?>("DeliverableId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
@@ -279,6 +243,9 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -286,6 +253,8 @@ namespace Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeliverableId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Assumptions");
                 });
@@ -905,57 +874,6 @@ namespace Server.Migrations
                     b.ToTable("PipingConnectionTypes");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.ProcessFlowDiagram", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeliverableId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Tag")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DeliverableId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ProcessFlowDiagrams");
-                });
-
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1212,7 +1130,7 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DeliverableId")
+                    b.Property<Guid?>("DeliverableId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
@@ -1228,6 +1146,9 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1235,6 +1156,8 @@ namespace Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeliverableId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Constrainsts");
                 });
@@ -1895,7 +1818,7 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DeliverableId")
+                    b.Property<Guid?>("DeliverableId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DueDate")
@@ -1918,6 +1841,9 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("RequestedById")
                         .HasColumnType("uniqueidentifier");
 
@@ -1935,6 +1861,8 @@ namespace Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeliverableId");
+
+                    b.HasIndex("ProjectId");
 
                     b.HasIndex("RequestedById");
 
@@ -2379,9 +2307,6 @@ namespace Server.Migrations
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
 
-                    b.Property<Guid?>("ProcessFlowDiagramId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("TagLetter")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -2389,8 +2314,6 @@ namespace Server.Migrations
                     b.Property<string>("TagNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.HasIndex("ProcessFlowDiagramId");
 
                     b.ToTable((string)null);
                 });
@@ -2471,6 +2394,9 @@ namespace Server.Migrations
 
                     b.Property<double>("EquivalentLenghPrice")
                         .HasColumnType("float");
+
+                    b.Property<bool>("Insulation")
+                        .HasColumnType("bit");
 
                     b.Property<double>("LaborDayPrice")
                         .HasColumnType("float");
@@ -2558,7 +2484,7 @@ namespace Server.Migrations
                     b.ToTable("Instruments");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Isometric", b =>
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Pipe", b =>
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem");
 
@@ -2566,20 +2492,23 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("FluidCodeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<double>("EquivalentLenghPrice")
+                        .HasColumnType("float");
 
-                    b.Property<string>("FluidCodeName")
+                    b.Property<string>("FluidCodeCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("FluidCodeId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Insulation")
                         .HasColumnType("bit");
 
-                    b.Property<double>("LaborQuantity")
+                    b.Property<double>("LaborDayPrice")
                         .HasColumnType("float");
 
-                    b.Property<double>("LaborUnitaryCost")
+                    b.Property<double>("LaborQuantity")
                         .HasColumnType("float");
 
                     b.Property<string>("Material")
@@ -2589,10 +2518,12 @@ namespace Server.Migrations
                     b.Property<double>("MaterialQuantity")
                         .HasColumnType("float");
 
-                    b.Property<double>("MaterialUnitaryCost")
-                        .HasColumnType("float");
+                    b.Property<Guid?>("PipeTemplateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasIndex("FluidCodeId");
+
+                    b.HasIndex("PipeTemplateId");
 
                     b.ToTable("Isometrics");
                 });
@@ -2695,10 +2626,17 @@ namespace Server.Migrations
                     b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
                         .WithMany("Assumptions")
                         .HasForeignKey("DeliverableId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("Assumptions")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Deliverable");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BackGround", b =>
@@ -2772,7 +2710,7 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.IsometricItem", b =>
                 {
-                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Isometric", "Isometric")
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Pipe", "Isometric")
                         .WithMany("IsometricItems")
                         .HasForeignKey("IsometricId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2831,21 +2769,6 @@ namespace Server.Migrations
                     b.Navigation("PipingAccesory");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.ProcessFlowDiagram", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Deliverable", null)
-                        .WithMany("ProcessFlowDiagrams")
-                        .HasForeignKey("DeliverableId");
-
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("ProcessFlowDiagrams")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template", b =>
                 {
                     b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Brand", "BrandTemplate")
@@ -2897,10 +2820,17 @@ namespace Server.Migrations
                     b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
                         .WithMany("Constraints")
                         .HasForeignKey("DeliverableId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("Constrainsts")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Deliverable");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.DecissionCriteria", b =>
@@ -3072,6 +3002,11 @@ namespace Server.Migrations
                     b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
                         .WithMany("Requirements")
                         .HasForeignKey("DeliverableId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("Requirements")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3086,6 +3021,8 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Deliverable");
+
+                    b.Navigation("Project");
 
                     b.Navigation("RequestedBy");
 
@@ -3142,16 +3079,6 @@ namespace Server.Migrations
                     b.Navigation("SubComponentRelation");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem", b =>
-                {
-                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.ProcessFlowDiagram", "ProcessFlowDiagram")
-                        .WithMany("EngineeringItems")
-                        .HasForeignKey("ProcessFlowDiagramId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("ProcessFlowDiagram");
-                });
-
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.Equipment", b =>
                 {
                     b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.EquipmentTemplate", "EquipmentTemplate")
@@ -3172,14 +3099,21 @@ namespace Server.Migrations
                     b.Navigation("InstrumentTemplate");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Isometric", b =>
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Pipe", b =>
                 {
                     b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.EngineeringFluidCode", "FluidCode")
                         .WithMany("Isometrics")
                         .HasForeignKey("FluidCodeId")
                         .OnDelete(DeleteBehavior.NoAction);
 
+                    b.HasOne("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipeTemplate", "PipeTemplate")
+                        .WithMany("Isometrics")
+                        .HasForeignKey("PipeTemplateId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("FluidCode");
+
+                    b.Navigation("PipeTemplate");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves.Valve", b =>
@@ -3226,11 +3160,6 @@ namespace Server.Migrations
                     b.Navigation("PipingAccesoryCodeBrands");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.ProcessFlowDiagram", b =>
-                {
-                    b.Navigation("EngineeringItems");
-                });
-
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template", b =>
                 {
                     b.Navigation("NozzleTemplates");
@@ -3265,8 +3194,6 @@ namespace Server.Migrations
 
                     b.Navigation("DeliverableRisks");
 
-                    b.Navigation("ProcessFlowDiagrams");
-
                     b.Navigation("Requirements");
                 });
 
@@ -3284,9 +3211,13 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.Project", b =>
                 {
+                    b.Navigation("Assumptions");
+
                     b.Navigation("BudgetItems");
 
                     b.Navigation("Cases");
+
+                    b.Navigation("Constrainsts");
 
                     b.Navigation("HighLevelRequirements");
 
@@ -3296,7 +3227,7 @@ namespace Server.Migrations
 
                     b.Navigation("Meetings");
 
-                    b.Navigation("ProcessFlowDiagrams");
+                    b.Navigation("Requirements");
 
                     b.Navigation("WBSComponents");
                 });
@@ -3353,12 +3284,17 @@ namespace Server.Migrations
                     b.Navigation("Instruments");
                 });
 
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipeTemplate", b =>
+                {
+                    b.Navigation("Isometrics");
+                });
+
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves.ValveTemplate", b =>
                 {
                     b.Navigation("Valves");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Isometric", b =>
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Pipe", b =>
                 {
                     b.Navigation("IsometricItems");
                 });

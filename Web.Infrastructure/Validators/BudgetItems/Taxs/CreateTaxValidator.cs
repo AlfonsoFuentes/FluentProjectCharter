@@ -12,7 +12,8 @@ namespace Web.Infrastructure.Validators.Taxs
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-        
+
+            RuleFor(x => x.Budget).NotEqual(0).WithMessage("Budget must be defined!");
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
                 .When(x => !string.IsNullOrEmpty(x.Name))
@@ -22,17 +23,23 @@ namespace Web.Infrastructure.Validators.Taxs
 
         async Task<bool> ReviewIfNameExist(CreateTaxRequest request, string name, CancellationToken cancellationToken)
         {
-            ValidateTaxRequest validate = new()
+            try
             {
-                Name = name,
+                ValidateTaxRequest validate = new()
+                {
+                    Name = name,
+                    ProjectId = request.ProjectId,
 
-                DeliverableId = request.DeliverableId,
-                ProjectId = request.ProjectId,
+                };
+                var result = await Service.Validate(validate);
+                return !result;
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+            }
+            return false;
 
-
-            };
-            var result = await Service.Validate(validate);
-            return !result;
         }
     }
     public class UpdateTaxValidator : AbstractValidator<UpdateTaxRequest>
@@ -43,11 +50,11 @@ namespace Web.Infrastructure.Validators.Taxs
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-          
 
-            RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
-                .When(x => !string.IsNullOrEmpty(x.Name))
-                .WithMessage(x => $"{x.Name} already exist");
+
+            //RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
+            //    .When(x => !string.IsNullOrEmpty(x.Name))
+            //    .WithMessage(x => $"{x.Name} already exist");
 
         }
 

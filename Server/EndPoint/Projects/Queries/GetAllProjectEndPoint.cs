@@ -1,18 +1,17 @@
 ﻿using Server.EndPoint.Alterations.Queries;
+using Server.EndPoint.EHSs.Queries;
 using Server.EndPoint.Electricals.Queries;
+using Server.EndPoint.EngineeringDesigns.Queries;
 using Server.EndPoint.Equipments.Queries;
 using Server.EndPoint.Foundations.Queries;
 using Server.EndPoint.Instruments.Queries;
-using Server.EndPoint.Pipings.Queries;
+using Server.EndPoint.Paintings.Queries;
 using Server.EndPoint.StakeHolders.Queries;
 using Server.EndPoint.Structurals.Queries;
-using Server.EndPoint.Valves.Queries;
-using Server.EndPoint.EHSs.Queries;
-using Server.EndPoint.Paintings.Queries;
 using Server.EndPoint.Taxs.Queries;
 using Server.EndPoint.Testings.Queries;
-using Server.EndPoint.EngineeringDesigns.Queries;
-
+using Server.EndPoint.Valves.Queries;
+using Server.EndPoint.Pipes.Queries;
 namespace Server.EndPoint.Projects.Queries
 {
     public static class GetAllProjectEndPoint
@@ -25,26 +24,23 @@ namespace Server.EndPoint.Projects.Queries
                 {
                     Func<IQueryable<Project>, IIncludableQueryable<Project, object>> Includes = x => x
                      .Include(x => x.HighLevelRequirements)
-
+                     .Include(x => x.Requirements.Where(x => x.Deliverable == null))
+                     .Include(x => x.Assumptions.Where(x => x.Deliverable == null))
+                     .Include(x => x.Constrainsts.Where(x => x.Deliverable == null))
                      .Include(x => x.StakeHolders).ThenInclude(x => x.RoleInsideProject!)
-
                      .Include(x => x.Manager)
                      .Include(x => x.Sponsor)
-
                      .Include(x => x.Meetings)
-
                      .Include(x => x.BudgetItems)
-                     .Include(x => x.ProcessFlowDiagrams).ThenInclude(x => x.EngineeringItems)
 
                      .Include(x => x.Cases).ThenInclude(x => x.OrganizationStrategy!)
-
                      .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.AcceptanceCriterias)
+                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.DeliverableRisks)
                      .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Requirements)
                      .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Assumptions)
-                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.DeliverableRisks)
+                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.BudgetItems)
                      .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Constraints)
                      .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Bennefits)
-                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.BudgetItems)
 
 
                     .Include(x => x.Cases).ThenInclude(x => x.BackGrounds)
@@ -78,7 +74,7 @@ namespace Server.EndPoint.Projects.Queries
 
 
         }
-
+        //TODO: Mapear las nuevas relaciones
         public static ProjectResponse Map(this Project row)
         {
             return new()
@@ -92,6 +88,9 @@ namespace Server.EndPoint.Projects.Queries
                 PercentageEngineering = row.PercentageEngineering,
                 PercentageContingency = row.PercentageContingency,
                 ProjectNeedType = ProjectNeedTypeEnum.GetType(row.ProjectNeedType),
+                Requirements = row.Requirements == null || row.Requirements.Count == 0 ? new() : row.Requirements.Select(x => x.Map()).ToList(),
+                Assumptions = row.Assumptions == null || row.Assumptions.Count == 0 ? new() : row.Assumptions.Select(x => x.Map()).ToList(),
+                Constrainsts = row.Constrainsts == null || row.Constrainsts.Count == 0 ? new() : row.Constrainsts.Select(x => x.Map()).ToList(),
 
                 Cases = row.Cases == null || row.Cases.Count == 0 ? new() : row.Cases.Select(x => x.Map()).ToList(),
                 CurrentCase = row.Cases == null || row.Cases.Count == 0 || row.Cases.All(x => x.IsNodeOpen == false) ? null! : row.Cases.First(x => x.IsNodeOpen).Map(),
@@ -125,7 +124,7 @@ namespace Server.EndPoint.Projects.Queries
 
                 Valves = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Valve>().Select(x => x.Map()).ToList(),
                 Electricals = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Electrical>().Select(x => x.Map()).ToList(),
-                Pipings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Isometric>().Select(x => x.Map()).ToList(),
+                Pipings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Pipe>().Select(x => x.Map()).ToList(),
                 Instruments = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Instrument>().Select(x => x.Map()).ToList(),
 
                 EHSs = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<EHS>().Select(x => x.Map()).ToList(),

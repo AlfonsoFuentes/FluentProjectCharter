@@ -27,6 +27,7 @@ public partial class Login
         else
         {
             await App.GetCurrentUser();
+            Navigation.NavigateTo("/");
         }
 
     }

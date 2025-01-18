@@ -11,12 +11,14 @@ namespace Server.EndPoint.Scopes.Queries
             {
                 app.MapPost(StaticClass.Scopes.EndPoint.GetById, async (GetScopeByIdRequest request, IQueryRepository Repository) =>
                 {
+                    
                     Func<IQueryable<Scope>, IIncludableQueryable<Scope, object>> Includes = x => x
                     .Include(x => x.Deliverables).ThenInclude(x => x.AcceptanceCriterias)
-                    .Include(x => x.Deliverables).ThenInclude(x => x.Requirements)
-                    .Include(x => x.Deliverables).ThenInclude(x => x.Assumptions)
+                    
                     .Include(x => x.Deliverables).ThenInclude(x => x.DeliverableRisks)
-                    .Include(x => x.Deliverables).ThenInclude(x => x.Constraints)
+                    //.Include(x => x.Deliverables).ThenInclude(x => x.Constraints)
+                    //.Include(x => x.Deliverables).ThenInclude(x => x.Requirements)
+                    //.Include(x => x.Deliverables).ThenInclude(x => x.Assumptions)
                     .Include(x => x.Deliverables).ThenInclude(x => x.Bennefits)
 
                     ;

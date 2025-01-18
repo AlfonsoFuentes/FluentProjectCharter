@@ -15,8 +15,23 @@ namespace Server.EndPoint.OrganizationStrategys.Commands
             {
                 app.MapPost(StaticClass.OrganizationStrategys.EndPoint.Delete, async (DeleteOrganizationStrategyRequest Data, IRepository Repository) =>
                 {
-                    var row = await Repository.GetByIdAsync<OrganizationStrategy>(Data.Id);
+                    Func<IQueryable<OrganizationStrategy>, IIncludableQueryable<OrganizationStrategy, object>>
+                     Includes = x => x.Include(x => x.Cases);
+
+                    Expression<Func<OrganizationStrategy, bool>> Criteria = x => x.Id == Data.Id;
+
+
+                    var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
+
+
                     if (row == null) { return Result.Fail(Data.NotFound); }
+
+                    foreach (var cases in row.Cases)
+                    {
+                        cases.OrganizationStrategyId = null;
+                        await Repository.UpdateAsync(cases);
+                    }
+
                     await Repository.RemoveAsync(row);
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.OrganizationStrategys.Cache.Key(row.Id));

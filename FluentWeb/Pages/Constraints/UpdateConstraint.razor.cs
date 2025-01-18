@@ -8,14 +8,13 @@ public partial class UpdateConstraint
 {
     UpdateConstrainstRequest Model = new();
    
-    [Parameter]
-    public Guid ProjectId { get; set; }
+   
     [Parameter]
     public Guid Id { get; set; }
     protected override async Task OnInitializedAsync()
     {
         var result = await GenericService.GetById<ConstrainstResponse, GetConstrainstByIdRequest>(
-            new GetConstrainstByIdRequest() { Id = Id, ProjectId= ProjectId });
+            new GetConstrainstByIdRequest() { Id = Id });
 
         if (result.Succeeded)
         {
@@ -23,13 +22,10 @@ public partial class UpdateConstraint
             {
                 Id = result.Data.Id,
                 Name = result.Data.Name,
-                ProjectId = ProjectId,
+                ProjectId = result.Data.ProjectId,
+
             };
         }
     }
-    private void CancelAsync()
-    {
-        Navigation.NavigateBack();
-
-    }
+    
 }

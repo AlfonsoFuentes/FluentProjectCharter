@@ -13,7 +13,7 @@ public partial class AssumptionList
     [CascadingParameter]
     public App App { get; set; }
     [Parameter]
-    public Guid DeliverableId { get; set; }
+    public Guid? DeliverableId { get; set; }
     [Parameter]
     public Guid ProjectId { get; set; }
     [Parameter]
@@ -27,14 +27,14 @@ public partial class AssumptionList
 
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateAssumption/{DeliverableId}/{ProjectId}");
+        Navigation.NavigateTo($"/CreateAssumption/{ProjectId}/{DeliverableId}");
         
     }
 
 
     void Edit(AssumptionResponse response)
     {
-        Navigation.NavigateTo($"/UpdateAssumption/{response.Id}/{ProjectId}");
+        Navigation.NavigateTo($"/UpdateAssumption/{response.Id}");
     }
     public async Task Delete(AssumptionResponse response)
     {

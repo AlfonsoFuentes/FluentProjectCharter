@@ -16,7 +16,7 @@ namespace Server.EndPoint.Requirements.Commands
             {
                 app.MapPost(StaticClass.Requirements.EndPoint.Create, async (CreateRequirementRequest Data, IRepository Repository) =>
                 {
-                    var row = Requirement.Create(Data.DeliverableId);
+                    var row = Requirement.Create(Data.ProjectId, Data.DeliverableId);
 
                     await Repository.AddAsync(row);
 

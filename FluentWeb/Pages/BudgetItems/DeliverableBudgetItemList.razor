@@ -5,47 +5,60 @@
     <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Budget items</strong></FluentLabel>
 
     <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
-       
+        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 2px">
+            <FluentGridItem xs="12" sm="6" md="4">
+                <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
 
 
-        <FluentButton Id="addA" OnClick="@(()=>AddNewBudgetItem(StaticClass.Alterations.PageName.Create))">A</FluentButton>
-        <FluentTooltip Anchor="addA" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Alteration</FluentTooltip>
+                    <FluentButton Id="addA" OnClick="@(()=>AddNewBudgetItem(StaticClass.Alterations.PageName.Create))">A</FluentButton>
+                    <FluentTooltip Anchor="addA" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Alteration</FluentTooltip>
 
-        <FluentButton Id="addB" OnClick="@(()=>AddNewBudgetItem(StaticClass.Foundations.PageName.Create))">B</FluentButton>
-        <FluentTooltip Anchor="addB" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Foundation</FluentTooltip>
+                    <FluentButton Id="addB" OnClick="@(()=>AddNewBudgetItem(StaticClass.Foundations.PageName.Create))">B</FluentButton>
+                    <FluentTooltip Anchor="addB" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Foundation</FluentTooltip>
 
-        <FluentButton Id="addC" OnClick="@(()=>AddNewBudgetItem(StaticClass.Structurals.PageName.Create))">C</FluentButton>
-        <FluentTooltip Anchor="addC" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Structural</FluentTooltip>
+                    <FluentButton Id="addC" OnClick="@(()=>AddNewBudgetItem(StaticClass.Structurals.PageName.Create))">C</FluentButton>
+                    <FluentTooltip Anchor="addC" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Structural</FluentTooltip>
 
-        <FluentButton Id="addD" OnClick="@(()=>AddNewBudgetItem(StaticClass.Equipments.PageName.Create))">D</FluentButton>
-        <FluentTooltip Anchor="addD" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Equipment</FluentTooltip>
+                    <FluentButton Id="addD" OnClick="@(()=>AddNewBudgetItem(StaticClass.Equipments.PageName.Create))">D</FluentButton>
+                    <FluentTooltip Anchor="addD" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Equipment</FluentTooltip>
+                </FluentStack>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="6" md="4">
+                <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+                    <FluentButton Id="addV" OnClick="@(()=>AddNewBudgetItem(StaticClass.Valves.PageName.Create))">V</FluentButton>
+                    <FluentTooltip Anchor="addV" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Valve</FluentTooltip>
 
-        <FluentButton Id="addV" OnClick="@(()=>AddNewBudgetItem(StaticClass.Valves.PageName.Create))">V</FluentButton>
-        <FluentTooltip Anchor="addV" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Valve</FluentTooltip>
+                    <FluentButton Id="addE" OnClick="@(()=>AddNewBudgetItem(StaticClass.Electricals.PageName.Create))">E</FluentButton>
+                    <FluentTooltip Anchor="addE" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Electrical</FluentTooltip>
 
-        <FluentButton Id="addE" OnClick="@(()=>AddNewBudgetItem(StaticClass.Electricals.PageName.Create))">E</FluentButton>
-        <FluentTooltip Anchor="addE" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Electrical</FluentTooltip>
+                    <FluentButton Id="addF" OnClick="@(()=>AddNewBudgetItem(StaticClass.Pipes.PageName.Create))">F</FluentButton>
+                    <FluentTooltip Anchor="addF" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Piping</FluentTooltip>
 
-        <FluentButton Id="addF" OnClick="@(()=>AddNewBudgetItem(StaticClass.Pipings.PageName.Create))">F</FluentButton>
-        <FluentTooltip Anchor="addF" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Piping</FluentTooltip>
+                    <FluentButton Id="addG" OnClick="@(()=>AddNewBudgetItem(StaticClass.Instruments.PageName.Create))">G</FluentButton>
+                    <FluentTooltip Anchor="addG" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Instruments</FluentTooltip>
+                </FluentStack>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="6" md="4">
+                <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+                    <FluentButton Id="addH" OnClick="@(()=>AddNewBudgetItem(StaticClass.EHSs.PageName.Create))">H</FluentButton>
+                    <FluentTooltip Anchor="addH" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add EHS</FluentTooltip>
 
-        <FluentButton Id="addG" OnClick="@(()=>AddNewBudgetItem(StaticClass.Instruments.PageName.Create))">G</FluentButton>
-        <FluentTooltip Anchor="addG" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Instruments</FluentTooltip>
+                    <FluentButton Id="addJ" OnClick="@(()=>AddNewBudgetItem(StaticClass.Paintings.PageName.Create))">J</FluentButton>
+                    <FluentTooltip Anchor="addJ" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Painting</FluentTooltip>
+                    <FluentButton Id="addJ" OnClick="@(()=>AddNewBudgetItem(StaticClass.Taxs.PageName.Create))">K</FluentButton>
+                    <FluentTooltip Anchor="addJ" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Taxes</FluentTooltip>
 
-        <FluentButton Id="addH" OnClick="@(()=>AddNewBudgetItem(StaticClass.EHSs.PageName.Create))">H</FluentButton>
-        <FluentTooltip Anchor="addH" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add EHS</FluentTooltip>
 
-        <FluentButton Id="addJ" OnClick="@(()=>AddNewBudgetItem(StaticClass.Paintings.PageName.Create))">J</FluentButton>
-        <FluentTooltip Anchor="addJ" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Painting</FluentTooltip>
+                    <FluentButton Id="addM" OnClick="@(()=>AddNewBudgetItem(StaticClass.Testings.PageName.Create))">M</FluentButton>
+                    <FluentTooltip Anchor="addM" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Testing</FluentTooltip>
+                    <FluentButton Id="addO" OnClick="@(()=>AddNewBudgetItem(StaticClass.EngineeringDesigns.PageName.Create))">O</FluentButton>
+                    <FluentTooltip Anchor="addO" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Engineering Design</FluentTooltip>
 
-        <FluentButton Id="addK" OnClick="@(()=>AddNewBudgetItem(StaticClass.Taxs.PageName.Create))">K</FluentButton>
-        <FluentTooltip Anchor="addK" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Taxes</FluentTooltip>
+                </FluentStack>
+            </FluentGridItem>
 
-        <FluentButton Id="addM" OnClick="@(()=>AddNewBudgetItem(StaticClass.Testings.PageName.Create))">M</FluentButton>
-        <FluentTooltip Anchor="addM" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Testing</FluentTooltip>
 
-        <FluentButton Id="addO" OnClick="@(()=>AddNewBudgetItem(StaticClass.EngineeringDesigns.PageName.Create))">O</FluentButton>
-        <FluentTooltip Anchor="addO" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Engineering Design</FluentTooltip>
+        </FluentGrid>
 
 
         <FluentSpacer />
@@ -60,8 +73,8 @@
                     GenerateHeader="GenerateHeaderOption.Sticky"
                     TGridItem="IBudgetItemResponse">
         <PropertyColumn Title="Nomenclatore" Property="@(c => c.Nomenclatore)" Width="15%" />
-        <PropertyColumn Title="Tag" Property="@(c => c.Tag)" Width="15%" />
-        <PropertyColumn Title="Name" Property="@(c => c.Name)" Width="40%" />
+        <PropertyColumn Title="Tag" Property="@(c => c.Tag)" Width="20%" />
+        <PropertyColumn Title="Name" Property="@(c => c.Name)" Width="35%" />
         <PropertyColumn Title="Budget, USD" Property="@(c => c.sBudget)" Tooltip="true" Width="15%" />
 
         <TemplateColumn Title="Actions" Align="@Align.End" Width="15%">
@@ -78,6 +91,8 @@
 </FluentStack>
 
 @code {
+    int Spacing = 1;
+    JustifyContent Justification = JustifyContent.FlexStart;
 
 
 

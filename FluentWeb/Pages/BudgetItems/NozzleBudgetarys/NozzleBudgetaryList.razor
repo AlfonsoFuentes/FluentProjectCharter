@@ -7,11 +7,14 @@
 
             <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
 
+                @if (IsAbleTodAdd)
+                {
+                    <FluentButton Id="addA" OnClick="@(()=>Add())" IconEnd="@(new Icons.Regular.Size20.Add())"></FluentButton>
+                    <FluentTooltip Anchor="addA" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Nozzle</FluentTooltip>
 
+                }
 
-                <FluentButton Id="addA" OnClick="@(()=>Add())" IconEnd="@(new Icons.Regular.Size20.Add())"></FluentButton>
-                <FluentTooltip Anchor="addA" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Nozzle</FluentTooltip>
-
+                
                 <FluentSpacer />
 
             </FluentStack>
