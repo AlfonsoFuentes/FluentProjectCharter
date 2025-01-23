@@ -8,6 +8,9 @@ using Shared.Models.BudgetItems.Nozzles.Responses;
 using Shared.Models.Templates.Equipments.Records;
 using Shared.Models.Templates.Equipments.Responses;
 using Shared.StaticClasses;
+using Microsoft.JSInterop;
+using System.Text.Json;
+
 
 namespace FluentWeb.Pages.BudgetItems.Equipments;
 public partial class UpdateEquipment
@@ -21,6 +24,7 @@ public partial class UpdateEquipment
     {
         await GetAllEquipmentTemplate();
         await GetBrands();
+
         var result = await GenericService.GetById<EquipmentResponse, GetEquipmentByIdRequest>(
             new GetEquipmentByIdRequest() { Id = Id, ProjectId = ProjectId });
 
@@ -42,16 +46,20 @@ public partial class UpdateEquipment
                 TagLetter = result.Data.TagLetter,
                 Type = result.Data.Type,
                 Nozzles = result.Data.Nozzles,
-
+                IsExisting = result.Data.IsExisting,
 
                 TagNumber = result.Data.TagNumber,
-                ShowDetails = result.Data.ShowDetails
+                ShowDetails = result.Data.ShowDetails,
+                ShowProvisionalTag = result.Data.ShowProvisionalTag,
+                ProvisionalTag = result.Data.ProvisionalTag,
 
 
             };
+            await LoadFromLocalStorage();
             SelectedBrand = Model.Brand;
         }
     }
+
     EquipmentTemplateResponseList EquipmentTemplateResponseList = new();
     async Task GetAllEquipmentTemplate()
     {
@@ -96,7 +104,18 @@ public partial class UpdateEquipment
     }
     void AddBrand()
     {
-        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
     }
-    
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? Model;
+    }
+
 }

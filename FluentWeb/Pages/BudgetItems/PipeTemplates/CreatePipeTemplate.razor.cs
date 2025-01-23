@@ -15,7 +15,7 @@ public partial class CreatePipeTemplate
     protected override async Task OnInitializedAsync()
     {
         await GetBrands();
-
+        await LoadFromLocalStorage();
 
     }
     async Task GetBrands()
@@ -28,6 +28,17 @@ public partial class CreatePipeTemplate
     }
     void AddBrand()
     {
-       Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
+    }
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? new();
     }
 }

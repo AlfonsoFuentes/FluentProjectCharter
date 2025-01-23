@@ -13,8 +13,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.11" />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.0" />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.0" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.3" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.3" />
 
 		<PackageReference Include="BlazorDownloadFile" Version="2.4.0.2" />
 		<PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
@@ -35,7 +35,6 @@
 		<PackageReference Include="System.Net.Http.Json" Version="8.0.1" />
 		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
 		<PackageReference Include="System.Text.Json" Version="8.0.5" />
-		<PackageReference Include="Z.Blazor.Diagrams" Version="3.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>

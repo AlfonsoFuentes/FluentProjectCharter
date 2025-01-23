@@ -1,4 +1,7 @@
-﻿@page "/CreateDeliverable/{ScopeId:guid}/{ProjectId:guid}"
+﻿@page "/CreateDeliverable/{ProjectId:guid}"
+@page "/CreateDeliverable/{ProjectId:guid}/{ScopeId:guid}"
+
+
 <CreateTemplate @ref=CreateForm TItem="CreateDeliverableRequest" @bind-Model="@Model"
                  Title="Create Deliverable">
     <Content>

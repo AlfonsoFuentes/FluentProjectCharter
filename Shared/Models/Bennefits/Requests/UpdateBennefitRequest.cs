@@ -6,7 +6,7 @@ namespace Shared.Models.Bennefits.Requests
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public Guid DeliverableId { get; set; }
+        public Guid ScopeId { get; set; }
         public string EndPointName => StaticClass.Bennefits.EndPoint.Update;
         public Guid ProjectId { get; set; }
         public override string Legend => Name;

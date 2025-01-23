@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.Deliverables.Responses;
 using Shared.Models.Requirements.Requests;
 using Shared.Models.Requirements.Responses;
+using Shared.Models.Scopes.Responses;
 using Web.Infrastructure.Managers.Generic;
 
 namespace FluentWeb.Pages.Requirements;
@@ -11,26 +11,37 @@ public partial class RequirementList
     [CascadingParameter]
     public App App { get; set; }
     [Parameter]
+    public ScopeResponse Parent { get; set; }
 
-    public Guid? DeliverableId { get; set; }
     [Parameter]
+    public Guid ParameterProjectId { get; set; }
 
-    public Guid ProjectId { get; set; }
+   
+    Guid ProjectId => Parent == null ? ParameterProjectId : Parent.ProjectId;
+    [Parameter]
+    public List<RequirementResponse> ParameterItems { get; set; } = new();
+    RequirementResponse currentRequirement =>
+ App.Project == null || App.Project.CurrentCase == null
+ || App.Project.CurrentCase.CurrentScope == null ? null :
+     FilteredItems.FirstOrDefault(x => x.Id == App.Project.CurrentCase.CurrentScope.CurrentRequirement!.Id);
+
+    public List<RequirementResponse> Items => Parent == null ? ParameterItems : Parent.Requirements;
+
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-
-
+    
     [Inject]
     private IGenericService Service { get; set; } = null!;
-    [Parameter]
-    [EditorRequired]
-    public List<RequirementResponse> Items { get; set; }
+
     string nameFilter;
     public List<RequirementResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
+    Guid? ParentId => Parent == null ? null : Parent.Id;
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateRequirement/{ProjectId}/{DeliverableId}");
+        Navigation.NavigateTo($"/CreateRequirement/{ProjectId}/{ParentId}");
+
+
 
     }
 

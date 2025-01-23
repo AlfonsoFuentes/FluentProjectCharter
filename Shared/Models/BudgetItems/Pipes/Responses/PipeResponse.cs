@@ -18,7 +18,7 @@ namespace Shared.Models.BudgetItems.Pipes.Responses
         public string UpadtePageName { get; set; } = StaticClass.Pipes.PageName.Update;
         public Guid DeliverableId { get; set; }
         public Guid ProjectId { get; set; }
-        public double Budget { get; set; }
+
         public double BudgetCalculated => MaterialQuantity * EquivalentLenghPrice + LaborDayPrice * LaborQuantity;
         public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
         public string Nomenclatore { get; set; } = string.Empty;
@@ -27,12 +27,12 @@ namespace Shared.Models.BudgetItems.Pipes.Responses
         public string TagNumber { get; set; } = string.Empty;
         public bool ShowDetails { get; set; } = false;
         public List<NozzleResponse> Nozzles { get; set; } = new();
-        public string Tag => $"{Diameter.Name}-{FluidCodeNameCode}-{TagNumber}-{Material.Name}-{InsulationCode}";
+        public string Tag => ShowDetails ? $"{Diameter.Name}-{FluidCodeNameCode}-{TagNumber}-{Material.Name}-{InsulationCode}" : string.Empty;
         double materialQuantity;
         double laborDayPrice;
         double equivalentLenghPrice;
         double laborQuantity;
-
+        public double Budget { get; set; }
 
         public double MaterialQuantity
         {
@@ -43,7 +43,8 @@ namespace Shared.Models.BudgetItems.Pipes.Responses
             set
             {
                 materialQuantity = value;
-                Budget = BudgetCalculated;
+                if (ShowDetails)
+                    Budget = BudgetCalculated;
             }
         }
         public double LaborDayPrice
@@ -52,7 +53,8 @@ namespace Shared.Models.BudgetItems.Pipes.Responses
             set
             {
                 laborDayPrice = value;
-                Budget = BudgetCalculated;
+                if (ShowDetails)
+                    Budget = BudgetCalculated;
             }
         }
         public double EquivalentLenghPrice
@@ -61,7 +63,8 @@ namespace Shared.Models.BudgetItems.Pipes.Responses
             set
             {
                 equivalentLenghPrice = value;
-                Budget = BudgetCalculated;
+                if (ShowDetails)
+                    Budget = BudgetCalculated;
             }
         }
         public double LaborQuantity
@@ -70,7 +73,8 @@ namespace Shared.Models.BudgetItems.Pipes.Responses
             set
             {
                 laborQuantity = value;
-                Budget = BudgetCalculated;
+                if (ShowDetails)
+                    Budget = BudgetCalculated;
             }
         }
         public NominalDiameterEnum Diameter { get; set; } = NominalDiameterEnum.None;
@@ -82,6 +86,7 @@ namespace Shared.Models.BudgetItems.Pipes.Responses
         public bool Insulation { get; set; }
         public string InsulationCode => Insulation ? "1" : "0";
         public PipeClassEnum PipeClass { get; set; } = PipeClassEnum.None;
+        public bool IsExisting { get; set; }
 
 
     }

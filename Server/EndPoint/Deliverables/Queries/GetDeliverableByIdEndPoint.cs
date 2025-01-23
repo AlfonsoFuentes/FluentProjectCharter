@@ -1,4 +1,4 @@
-﻿using Server.EndPoint.AcceptanceCriterias.Queries;
+﻿
 using Server.EndPoint.Alterations.Queries;
 using Server.EndPoint.EHSs.Queries;
 using Server.EndPoint.Electricals.Queries;
@@ -24,20 +24,14 @@ namespace Server.EndPoint.Deliverables.Queries
                 app.MapPost(StaticClass.Deliverables.EndPoint.GetById, async (GetDeliverableByIdRequest request, IQueryRepository Repository) =>
                 {
                     Func<IQueryable<Deliverable>, IIncludableQueryable<Deliverable, object>> Includes = x => x
-                    .Include(x => x.Bennefits)
-                    .Include(x => x.Constraints)
-                    .Include(x => x.DeliverableRisks)
-                    .Include(x => x.Requirements)
-                    .Include(x => x.Assumptions)
-                    .Include(x => x.AcceptanceCriterias)
-              
+                    .Include(x => x.BudgetItems)
 
 
                     ;
 
                     Expression<Func<Deliverable, bool>> Criteria = x => x.Id == request.Id;
 
-                    string CacheKey = StaticClass.SubDeliverables.Cache.GetById(request.Id);
+                    string CacheKey = StaticClass.Deliverables.Cache.GetById(request.Id);
                     var row = await Repository.GetAsync(Cache: CacheKey, Criteria: Criteria);
 
                     if (row == null)
@@ -60,24 +54,9 @@ namespace Server.EndPoint.Deliverables.Queries
                 Id = row.Id,
                 Name = row.Name,
                 ScopeId = row.ScopeId,
-
-                Requirements = row.Requirements == null || row.Requirements.Count == 0 ? new() : row.Requirements.Select(x => x.Map()).ToList(),
-
                 IsNodeOpen = row.IsNodeOpen,
                 Tab = row.Tab,
-
-                Assumptions = row.Assumptions == null || row.Assumptions.Count == 0 ? new() : row.Assumptions.Select(x => x.Map()).ToList(),
-
-                DeliverableRisks = row.DeliverableRisks == null || row.DeliverableRisks.Count == 0 ? new() :
-                row.DeliverableRisks.Select(x => x.Map(ProjectId)).ToList(),
-
-                Constrainsts = row.Constraints == null || row.Constraints.Count == 0 ? new() :
-                row.Constraints.Select(x => x.Map()).ToList(),
-
-                Bennefits = row.Bennefits == null || row.Bennefits.Count == 0 ? new() : row.Bennefits.Select(x => x.Map(ProjectId)).ToList(),
-
-                AcceptanceCriterias = row.AcceptanceCriterias == null || row.AcceptanceCriterias.Count == 0 ? new() :
-                row.AcceptanceCriterias.Select(x => x.Map(ProjectId)).ToList(),
+                Order = row.Order == 0 ? 1 : row.Order,
 
                 ProjectId = ProjectId,
 

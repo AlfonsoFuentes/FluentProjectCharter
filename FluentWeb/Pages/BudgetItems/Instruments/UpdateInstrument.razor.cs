@@ -49,9 +49,11 @@ public partial class UpdateInstrument
                 ShowDetails = result.Data.ShowDetails,
                 Reference = result.Data.Reference,
                 SubType = result.Data.SubType,
-                 
-
+                IsExisting = result.Data.IsExisting,
+                ShowProvisionalTag = result.Data.ShowProvisionalTag,
+                ProvisionalTag = result.Data.ProvisionalTag,
             };
+            await LoadFromLocalStorage();
             SelectedBrand = Model.Brand;
         }
     }
@@ -63,18 +65,7 @@ public partial class UpdateInstrument
             BrandsResponseList = result.Data;
         }
     }
-    void AddBrand()
-    {
-        //CreateTemporaryRequest temporaryRequest = new()
-        //{
-        //    Model = Model.Model,
-
-
-        //};
-        //var result = await GenericService.Create(temporaryRequest);
-
-        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
-    }
+   
     InstrumentTemplateResponseList InstrumentTemplateResponseList = new();
     async Task GetAllEquipmentTemplate()
     {
@@ -106,5 +97,20 @@ public partial class UpdateInstrument
         Model.Budget = response.Value;
         SelectedBrand = Model.Brand;
         StateHasChanged();
+    }
+    void AddBrand()
+    {
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
+    }
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? Model;
     }
 }

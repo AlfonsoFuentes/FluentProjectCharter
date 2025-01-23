@@ -1,4 +1,5 @@
-﻿using Shared.Models.Deliverables.Requests;
+﻿using Server.Repositories;
+using Shared.Models.Deliverables.Requests;
 
 namespace Server.EndPoint.Deliverables.Commands
 {
@@ -11,12 +12,19 @@ namespace Server.EndPoint.Deliverables.Commands
             {
                 app.MapPost(StaticClass.Deliverables.EndPoint.Create, async (CreateDeliverableRequest Data, IRepository Repository) =>
                 {
-                    var row = Deliverable.Create(Data.ScopeId);
+                   var lastorder = await Repository.Context.Set<Scope>().Include(x => x.Deliverables)
+                                    .Where(s => s.Id == Data.ScopeId)
+                                    .SelectMany(s => s.Deliverables)
+                                    .OrderByDescending(d => d.Order)
+                                    .FirstOrDefaultAsync();
+                    if (lastorder == null) return Result.Fail(Data.Fail);
+
+                    var row = Deliverable.Create(Data.ScopeId, lastorder.Order + 1);
 
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Deliverables.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Deliverables.Cache.Key(row.Id)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
                     return Result.EndPointResult(result,
@@ -38,5 +46,7 @@ namespace Server.EndPoint.Deliverables.Commands
         }
 
     }
+
+    
 
 }

@@ -13,15 +13,17 @@ public partial class DeliverableList
     public App App { get; set; }
     [Parameter]
     [EditorRequired]
-    public ScopeResponse Parent { get; set; } = new();
-    [Parameter]
-    [EditorRequired]
     public Func<Task> GetAll { get; set; }
 
-    DeliverableResponse currentDeliverable =>
- App.Project == null || App.Project.CurrentCase == null
- || App.Project.CurrentCase.CurrentScope == null ? null :
-     FilteredItems.FirstOrDefault(x => x.Id == App.Project.CurrentCase.CurrentScope.CurrentDeliverable!.Id);
+    [Parameter]
+    [EditorRequired]
+    public ScopeResponse Parent { get; set; } = new();
+
+
+        DeliverableResponse currentDeliverable =>
+     App.Project == null || App.Project.CurrentCase == null
+     || App.Project.CurrentCase.CurrentScope == null ? null :
+         FilteredItems.FirstOrDefault(x => x.Id == App.Project.CurrentCase.CurrentScope.CurrentDeliverable!.Id);
 
     public List<DeliverableResponse> Items => Parent == null ? new() : Parent.Deliverables;
     string nameFilter;
@@ -29,7 +31,7 @@ public partial class DeliverableList
 
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateDeliverable/{Parent.Id}/{Parent.ProjectId}");
+        Navigation.NavigateTo($"/CreateDeliverable/{Parent.ProjectId}/{Parent.Id}");
 
     }
 
@@ -38,7 +40,36 @@ public partial class DeliverableList
         Navigation.NavigateTo($"/UpdateDeliverable/{response.Id}/{Parent.ProjectId}");
     }
 
-   
+    async Task Up(DeliverableResponse response)
+    {
+        ChangeDeliverableOrderUpRequest request = new ChangeDeliverableOrderUpRequest()
+        {
+            Id = response.Id,
+            ScopeId = response.ScopeId,
+            ProjectId = response.ProjectId,
+
+        };
+        var result=await GenericService.Update(request);
+        if(result.Succeeded)
+        {
+            await GetAll();
+        }
+    }
+    async Task Down(DeliverableResponse response)
+    {
+        ChangeDeliverableOrderDowmRequest request = new()
+        {
+            Id = response.Id,
+            ScopeId = response.ScopeId,
+            ProjectId = response.ProjectId,
+        };
+        var result = await GenericService.Update(request);
+
+        if (result.Succeeded)
+        {
+            await GetAll();
+        }
+    }
     public async Task Delete(DeliverableResponse response)
     {
         var dialog = await DialogService.ShowWarningAsync($"Delete {response.Name}?");

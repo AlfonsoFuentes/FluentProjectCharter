@@ -27,15 +27,8 @@ namespace Shared.Models.Deliverables.Responses
 
         public Guid ScopeId { get; set; }
 
-        public List<AssumptionResponse> Assumptions { get; set; } = new();
-        public List<ConstrainstResponse> Constrainsts { get; set; } = new();
-        public List<RequirementResponse> Requirements { get; set; } = new();
-       
-        public List<DeliverableRiskResponse> DeliverableRisks { get; set; } = new();
-   
+        public int Order { get; set; }
 
-        public List<BennefitResponse> Bennefits { get; set; } = new();
-        public List<AcceptanceCriteriaResponse> AcceptanceCriterias { get; set; } = new();
         public List<AlterationResponse> Alterations { get; set; } = new();
         public List<FoundationResponse> Foundations { get; set; } = new();
         public List<StructuralResponse> Structurals { get; set; } = new();
@@ -54,7 +47,7 @@ namespace Shared.Models.Deliverables.Responses
             ..Pipings,..Instruments,..EHSs,..Paintings,..Taxes,..Testings,..EngineeringDesigns];
 
 
-        public bool IsNodeOpen { get; set; }
+  
         public string? Tab { get; set; } = string.Empty;
         public void Open()
         {
@@ -65,7 +58,7 @@ namespace Shared.Models.Deliverables.Responses
             IsNodeOpen = false;
         }
 
-      
+
 
         public string EndPointName => StaticClass.Deliverables.EndPoint.UpdateState;
     }

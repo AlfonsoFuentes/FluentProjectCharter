@@ -41,7 +41,7 @@ namespace Server.EndPoint.Equipments.Queries
         }
         public static EquipmentResponse Map(this Equipment row)
         {
-            return new()
+            EquipmentResponse result= new()
             {
                 Id = row.Id,
                 Name = row.Name,
@@ -59,11 +59,13 @@ namespace Server.EndPoint.Equipments.Queries
                 Type = row.EquipmentTemplate == null ? string.Empty : row.EquipmentTemplate.Type,
                 SubType = row.EquipmentTemplate == null ? string.Empty : row.EquipmentTemplate.SubType,
                 ShowDetails = row.EquipmentTemplate == null ? false : true,
-                Nozzles = row.Nozzles == null || row.Nozzles.Count == 0 ? new() : row.Nozzles.Select(x => x.Map()).ToList()
-
+                Nozzles = row.Nozzles == null || row.Nozzles.Count == 0 ? new() : row.Nozzles.Select(x => x.Map()).ToList(),
+                IsExisting = row.IsExisting,
+                ProvisionalTag = row.ProvisionalTag,
+                ShowProvisionalTag = !string.IsNullOrWhiteSpace(row.ProvisionalTag)
             };
 
-
+            return result;
         }
 
     }

@@ -15,24 +15,44 @@
                 </FluentGridItem>
                 <FluentGridItem xs="12" sm="12" md="6">
                 </FluentGridItem>
-                <FluentGridItem xs="12" sm="12" md="3">
+                <FluentGridItem xs="12" sm="12" md="6">
                     <NumberField @bind-Value="@Model.Budget" Label="Budget, USD" Validate="Form.ValidateAsync"></NumberField>
                     <ValidationMessage For="() => Model.Budget" style="color:red; font-size:x-small;" />
                 </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="6">
+                </FluentGridItem>
                 <FluentGridItem xs="12" sm="12" md="3">
-                    @if (Model.ShowDetails)
+                    <FluentSwitch Label="Show Details?" @bind-Value=Model.ShowDetails></FluentSwitch>
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="3">
+                    @if (!Model.ShowDetails)
+                    {
+                        <FluentSwitch Label="Show Provisional Tag?" @bind-Value=@Model.ShowProvisionalTag></FluentSwitch>
+                    }
+                    else
                     {
                         <FluentLabel><strong>Tag : @Model.Tag</strong></FluentLabel>
                         <ValidationMessage For="() => Model.Tag" style="color:red; font-size:x-small;" />
                     }
                 </FluentGridItem>
                 <FluentGridItem xs="12" sm="12" md="6">
+
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="3">
+                    @if (Model.ShowProvisionalTag && !Model.ShowDetails)
+                    {
+                        <TextBox Label="Tag"
+                                 @bind-Value=@Model.ProvisionalTag
+                                 Placeholder="Define name"
+                                 Validate="Form.ValidateAsync"></TextBox>
+                        <ValidationMessage For="() => Model.ProvisionalTag" style="color:red; font-size:x-small;" />
+
+                    }
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="9">
+
                 </FluentGridItem>
             </FluentGrid>
-
-            <FluentButton Appearance="Appearance.Accent" OnClick="@(()=>Model.ShowDetails=!Model.ShowDetails)">
-                @(Model.ShowDetails ? "Hide Details" : "Show Details")
-            </FluentButton>
 
 
             @if (Model.ShowDetails)
@@ -98,7 +118,9 @@
                                                       @bind-SelectedOption="@Model.SignalType" />
                                         <ValidationMessage For="() => Model.SignalType" style="color:red; font-size:x-small;" />
                                     </FluentGridItem>
-
+                                    <FluentGridItem xs="12">
+                                        <FluentSwitch Label="Is Existing?" @bind-Value=@Model.IsExisting></FluentSwitch>
+                                    </FluentGridItem>
 
 
                                 </FluentGrid>

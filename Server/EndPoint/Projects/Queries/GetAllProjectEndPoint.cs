@@ -24,30 +24,31 @@ namespace Server.EndPoint.Projects.Queries
                 {
                     Func<IQueryable<Project>, IIncludableQueryable<Project, object>> Includes = x => x
                      .Include(x => x.HighLevelRequirements)
-                     .Include(x => x.Requirements.Where(x => x.Deliverable == null))
-                     .Include(x => x.Assumptions.Where(x => x.Deliverable == null))
-                     .Include(x => x.Constrainsts.Where(x => x.Deliverable == null))
+                     .Include(x => x.Requirements.Where(x => x.Scope == null))
+                     .Include(x => x.Assumptions.Where(x => x.Scope == null))
+                     .Include(x => x.Constrainsts.Where(x => x.Scope == null))
                      .Include(x => x.StakeHolders).ThenInclude(x => x.RoleInsideProject!)
                      .Include(x => x.Manager)
                      .Include(x => x.Sponsor)
-                     .Include(x => x.Meetings)
+                     .Include(x => x.Meetings).ThenInclude(x => x.MeetingAttendants).ThenInclude(x => x.StakeHolder!)
+                     .Include(x => x.Meetings).ThenInclude(x => x.MeetingAgreements)
                      .Include(x => x.BudgetItems)
 
                      .Include(x => x.Cases).ThenInclude(x => x.OrganizationStrategy!)
-                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.AcceptanceCriterias)
-                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.DeliverableRisks)
-                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Requirements)
-                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Assumptions)
+                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.AcceptanceCriterias)
+                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.DeliverableRisks)
+                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Requirements)
+                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Assumptions)
+                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Constraints)
+                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Bennefits)
                      .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.BudgetItems)
-                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Constraints)
-                     .Include(x => x.Cases).ThenInclude(x => x.Scopes).ThenInclude(x => x.Deliverables).ThenInclude(x => x.Bennefits)
 
 
                     .Include(x => x.Cases).ThenInclude(x => x.BackGrounds)
                     .Include(x => x.Cases).ThenInclude(x => x.KnownRisks)
                     .Include(x => x.Cases).ThenInclude(x => x.SucessfullFactors)
                     .Include(x => x.Cases).ThenInclude(x => x.DecissionCriterias)
-                    .Include(x => x.Cases).ThenInclude(x => x.ExpertJudgements);
+                    .Include(x => x.Cases).ThenInclude(x => x.ExpertJudgements).ThenInclude(x => x.Expert!);
 
                     ;
 
@@ -74,7 +75,7 @@ namespace Server.EndPoint.Projects.Queries
 
 
         }
-        //TODO: Mapear las nuevas relaciones
+
         public static ProjectResponse Map(this Project row)
         {
             return new()

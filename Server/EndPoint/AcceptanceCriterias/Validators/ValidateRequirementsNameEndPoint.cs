@@ -11,7 +11,7 @@ namespace Server.EndPoint.AcceptanceCriterias.Validators
             {
                 app.MapPost(StaticClass.AcceptanceCriterias.EndPoint.Validate, async (ValidateAcceptanceCriteriaRequest Data, IQueryRepository Repository) =>
                 {
-                    Expression<Func<AcceptanceCriteria, bool>> CriteriaId = x => x.DeliverableId == Data.DeliverableId;
+                    Expression<Func<AcceptanceCriteria, bool>> CriteriaId = x => x.ScopeId == Data.ScopeId;
                     Func<AcceptanceCriteria, bool> CriteriaExist = x => Data.Id == null ?
                     x.Name.Equals(Data.Name) : x.Id != Data.Id.Value && x.Name.Equals(Data.Name);
                     string CacheKey = StaticClass.AcceptanceCriterias.Cache.GetAll;

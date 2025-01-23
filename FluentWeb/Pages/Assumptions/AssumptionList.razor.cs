@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.Cases.Responses;
 using Shared.Models.Assumptions.Requests;
 using Shared.Models.Assumptions.Responses;
-using Web.Infrastructure.Managers.Generic;
+using Shared.Models.Requirements.Responses;
 using Shared.Models.Scopes.Responses;
-using Shared.Models.Deliverables.Responses;
 
 namespace FluentWeb.Pages.Assumptions;
 #nullable disable
@@ -13,21 +11,32 @@ public partial class AssumptionList
     [CascadingParameter]
     public App App { get; set; }
     [Parameter]
-    public Guid? DeliverableId { get; set; }
+
+    public ScopeResponse Parent { get; set; } = null!;
+
     [Parameter]
-    public Guid ProjectId { get; set; }
+    public Guid ParameterProjectId { get; set; }
+
+    Guid ProjectId => Parent == null ? ParameterProjectId : Parent.ProjectId;
+    [Parameter]
+    public List<AssumptionResponse> ParameterItems { get; set; } = new();
+    AssumptionResponse currentAssumption =>
+ App.Project == null || App.Project.CurrentCase == null
+ || App.Project.CurrentCase.CurrentScope == null ? null :
+     FilteredItems.FirstOrDefault(x => x.Id == App.Project.CurrentCase.CurrentScope.CurrentAssumption!.Id);
+
+    public List<AssumptionResponse> Items => Parent == null ? ParameterItems : Parent.Assumptions;
+    
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public List<AssumptionResponse> Items { get; set; }
+    
     string nameFilter;
     public List<AssumptionResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
-
+    Guid? ParentId => Parent == null ? null : Parent.Id;
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateAssumption/{ProjectId}/{DeliverableId}");
+        Navigation.NavigateTo($"/CreateAssumption/{ProjectId}/{ParentId}");
         
     }
 

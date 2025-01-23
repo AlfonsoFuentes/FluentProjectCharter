@@ -14,13 +14,13 @@ namespace Shared.Models.BudgetItems.Equipments.Responses
 
         public Guid DeliverableId { get; set; }
         public Guid ProjectId { get; set; }
-            
+
         public double Budget { get; set; }
 
-       public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
+        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
 
         public string Nomenclatore { get; set; } = string.Empty;
-       
+
 
         public string UpadtePageName { get; set; } = StaticClass.Equipments.PageName.Update;
 
@@ -36,13 +36,16 @@ namespace Shared.Models.BudgetItems.Equipments.Responses
         public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
 
 
-        public string Tag => $"{TagLetter}-{TagNumber}";
+        public string Tag => ShowProvisionalTag ? ProvisionalTag : $"{TagLetter}-{TagNumber}" ;
 
         public string TagNumber { get; set; } = string.Empty;
         public bool ShowDetails { get; set; } = false;
         public List<NozzleResponse> Nozzles { get; set; } = new();
+        public bool IsExisting { get; set; }
+        public string ProvisionalTag { get; set; } = string.Empty;
+        public bool ShowProvisionalTag { get; set; } = false;
 
-      
-      
+
+
     }
 }

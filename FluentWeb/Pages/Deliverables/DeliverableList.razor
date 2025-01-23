@@ -1,10 +1,5 @@
-﻿
-
-
-
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:solid 1px lightgray;padding:6px; border-radius:5px;">
-    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Deliverables</strong></FluentLabel>
-    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+﻿<TemplatedList T="DeliverableResponse" FilteredItems="@FilteredItems" Title="Manage Deliverables" Context="context">
+    <MenuButtons>
         <FluentButton Id="addDel" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
         </FluentButton>
@@ -13,90 +8,53 @@
 
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-        @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
-        Placeholder="Search..." />
-    </FluentStack>
-    @foreach (var row in FilteredItems)
-    {
-        <FluentStack Orientation=" Orientation.Vertical" Style="border:solid 1px lightgray;padding:6px; border-radius:5px;">
-            <FluentStack Orientation=" Orientation.Horizontal">
-                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                <FluentSpacer />
-                <div>
-                    <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+        @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
+    </MenuButtons>
+    <Content>
+        <FluentLabel Typo="Typography.Body">@context.Order</FluentLabel>
+        <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</FluentLabel>
+    </Content>
+    <Buttons>
+        <FluentButton Id="@($"Up{context.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowUp())" OnClick="@(()=>Up(context))" Disabled="@(context.Order==1)"></FluentButton>
+        <FluentTooltip Anchor="@($"Up{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Up</FluentTooltip>
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                    <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+        <FluentButton Id="@($"Down{context.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowDown())" OnClick="@(()=>Down(context))" Disabled="@(context.Order==Parent.LastOrder)"></FluentButton>
+        <FluentTooltip Anchor="@($"Down{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Down</FluentTooltip>
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+        <FluentButton Id="@($"edit{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))">
 
-                    <FluentButton Id="@($"Show{row.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(row))">
+        </FluentButton>
+        <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+        <FluentButton Id="@($"delete{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))">
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="@($"Show{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
+        </FluentButton>
+        <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
-                </div>
-            </FluentStack>
-            @if (row.IsNodeOpen)
-            {
-                <FluentTabs ShowActiveIndicator="false" Style="width:100%" @bind-ActiveTabId=@row.Tab OnTabChange="HandleOnTabChange">
-                    <FluentTab Label="Requirements" Id="Requirements">
-                        <Content>
-                            <RequirementList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.Requirements"></RequirementList>
-                        </Content>
+        <FluentButton Id="@($"Show{context.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(context))">
 
-                    </FluentTab>
-                    <FluentTab Label="Assumptions" Id="Assumptions">
-                        <Content>
-                            <AssumptionList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.Assumptions"></AssumptionList>
-                        </Content>
+        </FluentButton>
+        <FluentTooltip Anchor="@($"Show{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
 
-                    </FluentTab>
-                    <FluentTab Label="Risks" Id="Risks">
-                        <Content>
-                            <DeliverableRiskList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.DeliverableRisks"></DeliverableRiskList>
-                        </Content>
+    </Buttons>
 
-                    </FluentTab>
-                    <FluentTab Label="Constrainsts" Id="Constrainsts">
-                        <Content>
-                            <ConstraintList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.Constrainsts"></ConstraintList>
-                        </Content>
+    <ContentNode>
+        <FluentTabs ShowActiveIndicator="false" Style="width:100%" @bind-ActiveTabId=@context.Tab OnTabChange="HandleOnTabChange">
 
-                    </FluentTab>
-                    <FluentTab Label="Bennefits" Id="Bennefits">
-                        <Content>
-                            <BennefitList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.Bennefits"></BennefitList>
-                        </Content>
+            <FluentTab Label="Budget Items" Id="BudgetItems">
+                <Content>
+                    <DeliverableBudgetItemList GetAll="GetAll" ProjectId="context.ProjectId" DeliverableId="context.Id" Items="context.BudgetItems"></DeliverableBudgetItemList>
+                </Content>
 
-                    </FluentTab>
-                    <FluentTab Label="Accpetance Criterias" Id="AcceptanceCriteria">
-                        <Content>
-                            <AcceptanceCriteriaList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.AcceptanceCriterias"></AcceptanceCriteriaList>
-                        </Content>
+            </FluentTab>
 
-                    </FluentTab>
-                    <FluentTab Label="Budget Items" Id="BudgetItems">
-                        <Content>
-                            <DeliverableBudgetItemList GetAll="GetAll" ProjectId="row.ProjectId" DeliverableId="row.Id" Items="row.BudgetItems"></DeliverableBudgetItemList>
-                        </Content>
-
-                    </FluentTab>
-                    
-                </FluentTabs>
-            }
-
-        </FluentStack>
-    }
+        </FluentTabs>
+    </ContentNode>
+</TemplatedList>
 
 
-
-</FluentStack>
 
 @code {
-
+  
     private async Task HandleOnTabChange(FluentTab tab)
     {
         if (App.Project == null || App.Project.CurrentCase == null || App.Project.CurrentCase.CurrentScope == null) return;
@@ -109,7 +67,7 @@
         StateHasChanged();
 
     }
- 
+
     public async Task Show(DeliverableResponse response)
     {
         if (App.Project == null || App.Project.CurrentCase == null || App.Project.CurrentCase.CurrentScope == null) return;
@@ -117,14 +75,17 @@
         if (App.Project.CurrentCase.CurrentScope.CurrentDeliverable == null)
         {
             App.Project.CurrentCase.CurrentScope.CurrentDeliverable = response;
+         
             response.Open();
             await GenericService.UpdateState(response);
 
         }
         else if (App.Project.CurrentCase.CurrentScope.CurrentDeliverable!.Id == response.Id)
         {
+       
             response.Close();
             App.Project.CurrentCase.CurrentScope.CurrentDeliverable = null!;
+
             await GenericService.UpdateState(response);
         }
         else
@@ -139,14 +100,17 @@
             App.Project.CurrentCase.CurrentScope.CurrentDeliverable = response;
 
             App.Project.CurrentCase.CurrentScope.CurrentDeliverable!.Open();
+        
             await GenericService.UpdateState(App.Project.CurrentCase.CurrentScope.CurrentDeliverable!);
         }
         StateHasChanged();
         if (App.Project.CurrentCase.CurrentScope.CurrentDeliverable != null)
         {
-            var result = await GenericService.GetById<DeliverableResponse, 
-            GetDeliverableByIdRequest>(new GetDeliverableByIdRequest() { 
-                Id = App.Project.CurrentCase.CurrentScope.CurrentDeliverable!.Id });
+            var result = await GenericService.GetById<DeliverableResponse,
+            GetDeliverableByIdRequest>(new GetDeliverableByIdRequest()
+                {
+                    Id = App.Project.CurrentCase.CurrentScope.CurrentDeliverable!.Id
+                });
 
             if (result.Succeeded)
             {
@@ -154,7 +118,7 @@
             }
 
         }
-       
+
 
     }
 

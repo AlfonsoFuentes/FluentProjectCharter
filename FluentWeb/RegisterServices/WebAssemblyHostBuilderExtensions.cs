@@ -1,6 +1,7 @@
 ﻿using FluentWeb.Authentications;
 using FluentWeb.Infrastructures.Identity.Account;
 using FluentWeb.Infrastructures.NotificacionService;
+using FluentWeb.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip;
@@ -54,6 +55,7 @@ namespace FluentWeb.RegisterServices
             builder.Services.AddScoped<ITooltipService, TooltipService>();
             builder.Services.CurrencyService();
             builder.Services.AddScoped<ISnackBar, SnackBar>();
+            builder.Services.AddScoped<IModelLocalStorage, ModelLocalStorage>();
 
             return builder;
         }

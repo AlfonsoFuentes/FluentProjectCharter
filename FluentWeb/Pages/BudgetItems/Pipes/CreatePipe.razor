@@ -132,7 +132,9 @@
                                         <FluentTooltip Anchor="addB" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Fluid</FluentTooltip>
 
                                     </FluentGridItem>
-
+                                    <FluentGridItem xs="12">
+                                        <FluentSwitch Label="Is Existing?" @bind-Value=@Model.IsExisting></FluentSwitch>
+                                    </FluentGridItem>
 
 
                                 </FluentGrid>

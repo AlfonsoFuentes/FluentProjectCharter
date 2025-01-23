@@ -15,7 +15,7 @@ public partial class CreateEquipmentTemplate
     protected override async Task OnInitializedAsync()
     {
         await GetBrands();
-
+        await LoadFromLocalStorage();
 
     }
     async Task GetBrands()
@@ -28,22 +28,17 @@ public partial class CreateEquipmentTemplate
     }
     void AddBrand()
     {
-        //CreateTemporaryRequest temporaryRequest = new()
-        //{
-        //    Model = Model.Model,
-        //    Reference = Model.Reference,
-        //    InternalMaterial = Model.InternalMaterial,
-        //    ExternalMaterial = Model.ExternalMaterial,
-        //    Value = Model.Value,
-        //    Type = Model.Type,
-        //    SubType = Model.SubType,
-        //    TagLetter = Model.TagLetter,
-        //    BrandTemplateId = Model.BrandResponse?.Id,
-        //    EquipmentTemplate = true,
-
-        //};
-        //var result = await GenericService.Create(temporaryRequest);
-
-        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
+    }
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? new();
     }
 }

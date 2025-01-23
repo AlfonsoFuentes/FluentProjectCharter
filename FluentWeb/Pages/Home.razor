@@ -1,128 +1,55 @@
 ﻿@page "/"
 
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%;height:100%;">
 
-    <FluentStack Orientation=" Orientation.Horizontal">
-        <div>
-            <FluentButton Id="createproject" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
+<TemplatedList T="ProjectResponse" FilteredItems="@FilteredItems" Title="Manage Projects" Context="context">
+    <MenuButtons>
+        <FluentButton Id="createproject" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
-            </FluentButton>
-            <FluentTooltip Anchor="createproject" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Create Project</FluentTooltip>
+        </FluentButton>
+        <FluentTooltip Anchor="createproject" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Create Project</FluentTooltip>
 
 
-        </div>
+
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-                      Placeholder="Search..." />
-    </FluentStack>
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
+    </MenuButtons>
+    <Content>
+        <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</FluentLabel>
+    </Content>
+    <Buttons>
+        <FluentButton Id="@($"editproject{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))">
 
-    @foreach (var row in FilteredItems)
-    {
-        <FluentStack Orientation=" Orientation.Vertical" Style="border:solid 1px lightgray;padding:6px; border-radius:5px;">
-            <FluentStack Orientation=" Orientation.Horizontal">
-                <FluentLabel Typo="Typography.H4" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                <FluentSpacer />
-                <div>
-                    <FluentButton Id="@($"editproject{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+        </FluentButton>
+        <FluentTooltip Anchor="@($"editproject{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="@($"editproject{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+        <FluentButton id="@($"pdfproject{context.Id}")" IconEnd="@(new Icons.Regular.Size20.DocumentPdf())" OnClick="@(()=>Export(context))"></FluentButton>
+        <FluentTooltip Anchor="@($"pdfproject{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Create PDF</FluentTooltip>
 
-                    <FluentButton id="@($"pdfproject{row.Id}")" IconEnd="@(new Icons.Regular.Size20.DocumentPdf())" OnClick="@(()=>Export(row))"></FluentButton>
-                    <FluentTooltip Anchor="@($"pdfproject{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Create PDF</FluentTooltip>
+        <FluentButton Id="@($"deleteproject{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))">
 
-                    <FluentButton Id="@($"deleteproject{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+        </FluentButton>
+        <FluentTooltip Anchor="@($"deleteproject{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="@($"deleteproject{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+        <FluentButton Id="@($"Showproject{context.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(context))">
 
-                    <FluentButton Id="@($"Showproject{row.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(row))">
+        </FluentButton>
+        <FluentTooltip Anchor="@($"Showproject{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="@($"Showproject{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
+    </Buttons>
 
-                </div>
-            </FluentStack>
-            @if (row.IsNodeOpen)
-            {
-                <FluentTabs ShowActiveIndicator="false" OnTabChange="HandleOnTabChange" @bind-ActiveTabId=@row.Tab Style="width:100%">
-                    <FluentTab Label="High Level Requirements" Id="HighLevel">
-                        <Content>
-                            <HighLevelRequirementList GetAll="UpdateAll" Parent="@row"></HighLevelRequirementList>
-                        </Content>
+    <ContentNode>
+        <ProjectTabs GetAll="UpdateAll" Parent="@context"></ProjectTabs>
 
-                    </FluentTab>
-                    <FluentTab Label="Stakeholders" Id="Stakeholders">
-                        <Content>
-                            <StakeHolderInsideProjectList GetAll="UpdateAll" Parent="@row"></StakeHolderInsideProjectList>
-                        </Content>
+    </ContentNode>
+</TemplatedList>
 
-                    </FluentTab>
-                    <FluentTab Label="Business cases" Id="Cases">
-                        <Content>
-                            <BussinesCaseList GetAll="UpdateAll" Parent="@row">
 
-                            </BussinesCaseList>
-                        </Content>
 
-                    </FluentTab>
-                    <FluentTab Label="Meetings" Id="Meetings">
-                        <Content>
-                            <MeetingList GetAll="UpdateAll" Parent="@row">
-
-                            </MeetingList>
-                        </Content>
-
-                    </FluentTab>
-                    <FluentTab Label="Requirements" Id="RequirementProject">
-                        <Content>
-                            <RequirementList GetAll="UpdateAll" Items="row.Requirements" ProjectId="row.Id"></RequirementList>
-                        </Content>
-
-                    </FluentTab>
-                    <FluentTab Label="Constrainst" Id="ConstrainstProject">
-                        <Content>
-                            <ConstraintList GetAll="UpdateAll" Items="row.Constrainsts" ProjectId="row.Id"></ConstraintList>
-                        </Content>
-
-                    </FluentTab>
-                    <FluentTab Label="Assumptions" Id="AssumptionsProject">
-                        <Content>
-                            <AssumptionList GetAll="UpdateAll" Items="row.Assumptions" ProjectId="row.Id"></AssumptionList>
-                        </Content>
-
-                    </FluentTab>
-                
-                   
-                    <FluentTab Label="Budget Items" Id="Budgetitems">
-                        <Content>
-                            <ProjectBudgetItemsList GetAll="UpdateAll" Parent="@row">
-
-                            </ProjectBudgetItemsList>
-                        </Content>
-
-                    </FluentTab>
-                </FluentTabs>
-
-            }
-        </FluentStack>
-    }
-
-</FluentStack>
-<PageTitle>Home</PageTitle>
 
 
 @code {
-    private async Task HandleOnTabChange(FluentTab tab)
-    {
-        if (App.ProjectList.CurrentProject != null)
-        {
-            App.ProjectList.CurrentProject.Tab = tab.Id;
-            await GenericService.UpdateState(App.ProjectList.CurrentProject);
-        }
 
-        StateHasChanged();
-    }
 
     public async Task Show(ProjectResponse response)
     {

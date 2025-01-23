@@ -122,6 +122,8 @@ namespace Server.EndPoint.Pipes.Commands
             row.Insulation = request.Insulation;
             row.LaborDayPrice = request.LaborDayPrice;
             row.EquivalentLenghPrice = request.EquivalentLenghPrice;
+            row.IsExisting = request.IsExisting;
+            
             return row;
         }
 

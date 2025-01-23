@@ -84,7 +84,7 @@ namespace Shared.Models.Projects.Reponses
         public string sTaxesBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", TaxesBudget);
         public string sTotalCapitalWithOutVAT => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalCapitalWithOutVAT);
 
-        public bool IsNodeOpen { get; set; }
+  
         public string? Tab { get; set; } = string.Empty;
         public void Open()
         {
@@ -96,6 +96,20 @@ namespace Shared.Models.Projects.Reponses
         }
         public CaseResponse? CurrentCase { get; set; }
         public MeetingResponse? CurrentMeeting { get; set; }
+
+        public List<StakeHolderResponse> ProjectExperts => GetUniqueExperts();
+        public List<StakeHolderResponse> StakeHoldersForSign => StakeHolders.Select(x => x.StakeHolder).ToList();
+
+        public List<StakeHolderResponse> ProjectSigninList => [Sponsor, Manager, .. StakeHoldersForSign, .. ProjectExperts];
+        public List<StakeHolderResponse> GetUniqueExperts()
+        {
+            return Cases
+                .SelectMany(c => c.ExpertJudgements)
+                .Where(ej => ej.Expert != null)
+                .Select(ej => ej.Expert!)
+                .Distinct()
+                .ToList();
+        }
 
     }
 }

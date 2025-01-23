@@ -20,6 +20,7 @@ public partial class CreateInstrument
     BrandResponseList BrandsResponseList { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
+        await LoadFromLocalStorage();
         Model.ProjectId = ProjectId;
         Model.DeliverableId = DeliverableId;
         await GetAllEquipmentTemplate();
@@ -33,18 +34,7 @@ public partial class CreateInstrument
             BrandsResponseList = result.Data;
         }
     }
-    void AddBrand()
-    {
-        //CreateTemporaryRequest temporaryRequest = new()
-        //{
-        //    Model = Model.Model,
-
-
-        //};
-        //var result = await GenericService.Create(temporaryRequest);
-
-        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
-    }
+   
     InstrumentTemplateResponseList InstrumentTemplateResponseList = new();
     async Task GetAllEquipmentTemplate()
     {
@@ -76,5 +66,20 @@ public partial class CreateInstrument
         Model.Budget = response.Value;
         SelectedBrand = Model.Brand;
         StateHasChanged();
+    }
+    void AddBrand()
+    {
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
+    }
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? new();
     }
 }

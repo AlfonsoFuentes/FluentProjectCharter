@@ -54,6 +54,21 @@
 
                     </FluentGridItem>
                     <FluentGridItem xs="12">
+                        <FluentSelect TOption="NominalDiameterEnum"
+                                      Label="Select Diameter"
+                                      Items="@NominalDiameterEnum.List"
+                                      Id="people-listbox"
+                                      Width="100%"
+                                      Height="350px"
+                                      @onchange=@ChangeDiameter
+                                      Placeholder="Make a selection..."
+                                      OptionValue="@(p => p.Name)"
+                                      OptionText="@(p => p.Name)"
+                                      @bind-Value="@Model.Diameter.Name"
+                                      @bind-SelectedOption="@Model.Diameter" />
+                        <ValidationMessage For="() => Model.Diameter" style="color:red; font-size:x-small;" />
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
                         <NumberField @bind-Value="@Model.Value" Label="Value, USD" Validate="Form.ValidateAsync">
 
                         </NumberField>
@@ -64,7 +79,21 @@
             </FluentGridItem>
             <FluentGridItem xs="12" sm="12" md="4">
                 <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px;width:100%; ">
-
+                    <FluentGridItem xs="12">
+                        <FluentSelect TOption="MaterialEnum"
+                                      Label="Select Material"
+                                      Items="@MaterialEnum.List"
+                                      Id="people-listbox"
+                                      Width="100%"
+                                      Height="350px"
+                                      @onchange=@ChangeMaterial
+                                      Placeholder="Make a selection..."
+                                      OptionValue="@(p => p.Name)"
+                                      OptionText="@(p => p.Name)"
+                                      @bind-Value="@Model.Material.Name"
+                                      @bind-SelectedOption="@Model.Material" />
+                        <ValidationMessage For="() => Model.Material" style="color:red; font-size:x-small;" />
+                    </FluentGridItem>
 
                     <FluentGridItem xs="12">
                         <FluentSelect TOption="ActuatorTypeEnum"
@@ -81,36 +110,8 @@
                                       @bind-SelectedOption="@Model.ActuatorType" />
                         <ValidationMessage For="() => Model.ActuatorType" style="color:red; font-size:x-small;" />
                     </FluentGridItem>
-                    <FluentGridItem xs="12">
-                        <FluentSelect TOption="MaterialEnum"
-                                      Label="Select Material"
-                                      Items="@MaterialEnum.List"
-                                      Id="people-listbox"
-                                      Width="100%"
-                                      Height="350px"
-                                      @onchange=@ChangeMaterial
-                                      Placeholder="Make a selection..."
-                                      OptionValue="@(p => p.Name)"
-                                      OptionText="@(p => p.Name)"
-                                      @bind-Value="@Model.Material.Name"
-                                      @bind-SelectedOption="@Model.Material" />
-                        <ValidationMessage For="() => Model.Material" style="color:red; font-size:x-small;" />
-                    </FluentGridItem>
-                    <FluentGridItem xs="12">
-                        <FluentSelect TOption="NominalDiameterEnum"
-                                      Label="Select Diameter"
-                                      Items="@NominalDiameterEnum.List"
-                                      Id="people-listbox"
-                                      Width="100%"
-                                      Height="350px"
-                                      @onchange=@ChangeDiameter
-                                      Placeholder="Make a selection..."
-                                      OptionValue="@(p => p.Name)"
-                                      OptionText="@(p => p.Name)"
-                                      @bind-Value="@Model.Diameter.Name"
-                                      @bind-SelectedOption="@Model.Diameter" />
-                        <ValidationMessage For="() => Model.Diameter" style="color:red; font-size:x-small;" />
-                    </FluentGridItem>
+
+
                 </FluentGrid>
 
 
@@ -178,7 +179,6 @@
                 <ValidationMessage For="() => Model.Nozzles" style="color:red; font-size:x-small;" />
             </FluentGridItem>
         </FluentGrid>
-
 
     </Content>
 
@@ -306,6 +306,12 @@
     {
         if (args == null) return;
         Model.ActuatorType = ActuatorTypeEnum.GetType(args!.Value!.ToString()!);
+        if (Model.ActuatorType.Id == ActuatorTypeEnum.Hand.Id)
+        {
+            Model.SignalType = SignalTypeEnum.NotApplicable;
+            Model.PositionerType = PositionerTypeEnum.Not_Applicable;
+            Model.FailType = FailTypeEnum.Not_Applicable;
+        }
         await Form.ValidateAsync();
     }
     async Task ChangePositioner(ChangeEventArgs args)

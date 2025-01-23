@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Shared.Models.AcceptanceCriterias.Responses;
 using System.Text;
 namespace Server.EndPoint.Projects.Exports
 {
@@ -25,7 +24,7 @@ namespace Server.EndPoint.Projects.Exports
                 if (path == null)
                 {
                     mesajes.Append("path not found");
-                
+
                     return;
                 }
                 Console.WriteLine(path);
@@ -41,7 +40,7 @@ namespace Server.EndPoint.Projects.Exports
             {
                 app.MapPost(StaticClass.Projects.EndPoint.Export, (ProjectGetAllExport request, [FromServices] IWebHostEnvironment host) =>
                 {
-             
+
                     mesajes.Append("Ingresado a exportar");
                     GetImageData(host);
 
@@ -93,9 +92,6 @@ namespace Server.EndPoint.Projects.Exports
                                 row.ConstantItem(100).Image(CPLogo);
                             }
 
-
-
-
                             row.RelativeItem().Column(col =>
                             {
                                 col.Item().AlignCenter().Text("Confidential").FontSize(14);
@@ -137,11 +133,11 @@ namespace Server.EndPoint.Projects.Exports
                             col1.Item().Element(InitialBudgetContent);
 
                             col1.Item().Element(HighLevelContent);
-
-                       
-
                             col1.Item().Element(StakeHoldersContent);
                             col1.Item().Element(BusinsesCaseContent);
+                            col1.Item().Element(ProjectRequirementsContent);
+                            col1.Item().Element(ProjectAssumptionContent);
+                            col1.Item().Element(ProjectConstrainstsContent);
 
                             col1.Item().LineHorizontal(0.5f);
 
@@ -257,7 +253,7 @@ namespace Server.EndPoint.Projects.Exports
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("A) High Level Requirements").FontSize(12).SemiBold();
+                            txt.Span("High Level Requirements").FontSize(12).SemiBold();
 
                         });
                     });
@@ -286,7 +282,7 @@ namespace Server.EndPoint.Projects.Exports
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("B) StakeHolders").FontSize(12).SemiBold();
+                            txt.Span("StakeHolders").FontSize(12).SemiBold();
 
                         });
                     });
@@ -303,7 +299,7 @@ namespace Server.EndPoint.Projects.Exports
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("C) Business Cases:").FontSize(12).SemiBold();
+                            txt.Span("Business Cases:").FontSize(12).SemiBold();
 
                         });
                     });
@@ -321,10 +317,80 @@ namespace Server.EndPoint.Projects.Exports
                     });
                 });
             }
+            void ProjectAssumptionContent(IContainer container)
+            {
+                if (response.Assumptions.Count == 0) return;
+                container.Column(col1 =>
+                {
 
+                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    {
+                        col2.Item().Text(txt =>
+                        {
+                            txt.Span("General Assumption:").FontSize(12).SemiBold();
+
+                        });
+                    });
+                  
+
+                    col1.Item().TranslateX(10).Column(col2 =>
+                    {
+                        GetAssumption(col2, response.Assumptions);
+
+                    });
+                });
+            }
+            void ProjectConstrainstsContent(IContainer container)
+            {
+                if (response.Constrainsts.Count == 0) return;
+                container.Column(col1 =>
+                {
+
+                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    {
+                        col2.Item().Text(txt =>
+                        {
+                            txt.Span("General Constrainsts:").FontSize(12).SemiBold();
+
+                        });
+                    });
+       
+
+                    col1.Item().TranslateX(10).Column(col2 =>
+                    {
+                        GetConstrainst(col2, response.Constrainsts);
+
+
+                    });
+                });
+            }
+            void ProjectRequirementsContent(IContainer container)
+            {
+                if (response.Requirements.Count == 0) return;
+                container.Column(col1 =>
+                {
+
+                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    {
+                        col2.Item().Text(txt =>
+                        {
+                            txt.Span("General Constrainsts:").FontSize(12).SemiBold();
+
+                        });
+                    });
+
+
+                    col1.Item().TranslateX(10).Column(col2 =>
+                    {
+                        GetRequirements(col2, response.Requirements);
+
+
+                    });
+                });
+            }
             void SignContent(IContainer container)
             {
-                
+
                 container.Column(col1 =>
                 {
 
@@ -476,6 +542,12 @@ namespace Server.EndPoint.Projects.Exports
 
                     });
                     col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetDeliverable(col4, row.Deliverables));
+                    col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetRequirements(col4, row.Requirements));
+                    col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetAssumption(col4, row.Assumptions));
+                    col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetConstrainst(col4, row.Constrainsts));
+                    col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetDeliverableRisk(col4, row.DeliverableRisks));
+                    col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetAcceptanceCriteria(col4, row.AcceptanceCriterias));
+                    col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetBennefits(col4, row.Bennefits));
 
                 }
 
@@ -496,11 +568,7 @@ namespace Server.EndPoint.Projects.Exports
                         txt.Span($"- {row.Name}").FontSize(10);
 
                     });
-                    col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetRequirements(col4, row.Requirements));
-                    col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetAssumption(col4, row.Assumptions));
-                    col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetDeliverableRisk(col4, row.DeliverableRisks));
-                    col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetConstrainst(col4, row.Constrainsts));
-                    col3.Item().TranslateX(25).PaddingBottom(5).Column(col4 => GetBennefits(col4, row.Bennefits));
+                   
 
                 }
 
@@ -606,6 +674,26 @@ namespace Server.EndPoint.Projects.Exports
 
                 return col3;
             }
+            ColumnDescriptor GetAcceptanceCriteria(ColumnDescriptor col3, List<AcceptanceCriteriaResponse> rows)
+            {
+                if (rows.Count == 0) return col3;
+                col3.Item().TranslateX(10).PaddingBottom(5).Text(txt =>
+                {
+                    txt.Span($"Acceptance Criterias: ").FontSize(10).SemiBold();
+                });
+                foreach (var row in rows)
+                {
+
+                    col3.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                    {
+                        txt.Span($"- {row.Name}").FontSize(10);
+
+                    });
+
+                }
+
+                return col3;
+            }
             TableDescriptor GetSign(TableDescriptor tabla)
             {
                 tabla.ColumnsDefinition(columns =>
@@ -627,19 +715,20 @@ namespace Server.EndPoint.Projects.Exports
 
                     header.Cell().Border(0.5f).BorderColor("#D9D9D9")
                    .Padding(4).Text("Sign").Bold();
-                   
+
                     header.Cell().Border(0.5f).BorderColor("#D9D9D9")
                     .Padding(4).Text("Sign date").Bold();
 
 
                 });
-                if (response.Sponsor != null)
+                
+                foreach (var expert in response.ProjectSigninList)
                 {
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                   .Padding(4).Text(response.Sponsor.Name).FontSize(10);
+                    .Padding(4).Text(expert.Name).FontSize(10);
 
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text("Sponsor").FontSize(10);
+                    .Padding(4).Text("Expert").FontSize(10);
 
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
                     .Padding(4).Text(string.Empty).FontSize(10);
@@ -647,51 +736,7 @@ namespace Server.EndPoint.Projects.Exports
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
                     .Padding(4).Text(string.Empty).FontSize(10);
                 }
-                if (response.Manager != null)
-                {
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                   .Padding(4).Text(response.Manager.Name).FontSize(10);
-
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text("Manager").FontSize(10);
-
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text(string.Empty).FontSize(10);
-
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text(string.Empty).FontSize(10);
-                }
-                foreach (var caseitem in response.Cases)
-                {
-                    foreach (var expert in caseitem.ExpertJudgements)
-                    {
-                        tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                        .Padding(4).Text(expert.Name).FontSize(10);
-
-                        tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                        .Padding(4).Text("Expert").FontSize(10);
-
-                        tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                        .Padding(4).Text(string.Empty).FontSize(10);
-                        
-                        tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                        .Padding(4).Text(string.Empty).FontSize(10);
-                    }
-                }
-                foreach (var stakeholder in response.StakeHolders)
-                {
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                        .Padding(4).Text(stakeholder.Name).FontSize(10);
-
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text(stakeholder.Role.Name).FontSize(10);
-
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text(string.Empty).FontSize(10);
-
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text(string.Empty).FontSize(10);
-                }
+               
                 return tabla;
             }
 
@@ -701,7 +746,7 @@ namespace Server.EndPoint.Projects.Exports
                 {
                     columns.RelativeColumn(2);
                     columns.RelativeColumn(2);
-                   
+
 
                 });
 
@@ -713,7 +758,7 @@ namespace Server.EndPoint.Projects.Exports
                     header.Cell()
                    .Padding(4).Text("Role").Bold();
 
-                   
+
 
 
                 });
@@ -725,7 +770,7 @@ namespace Server.EndPoint.Projects.Exports
                     tabla.Cell()
                     .Padding(4).Text("Sponsor").FontSize(10);
 
-                   
+
                 }
                 if (response.Manager != null)
                 {
@@ -735,14 +780,15 @@ namespace Server.EndPoint.Projects.Exports
                     tabla.Cell()
                     .Padding(4).Text("Manager").FontSize(10);
 
-                  
+
                 }
                 foreach (var caseitem in response.Cases)
                 {
+                    
                     foreach (var expert in caseitem.ExpertJudgements)
                     {
                         tabla.Cell()
-                        .Padding(4).Text(expert.Name).FontSize(10);
+                        .Padding(4).Text(expert.Expert!.Name).FontSize(10);
 
                         tabla.Cell()
                         .Padding(4).Text("Expert").FontSize(10);
@@ -757,7 +803,7 @@ namespace Server.EndPoint.Projects.Exports
                     tabla.Cell()
                     .Padding(4).Text(stakeholder.Role.Name).FontSize(10);
 
-                    
+
                 }
                 return tabla;
             }

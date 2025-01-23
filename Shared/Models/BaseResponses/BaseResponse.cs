@@ -6,7 +6,7 @@ namespace Shared.Models.BaseResponses
     {
         public string Name { get; set; } = string.Empty;
         public Guid Id { get; set; }
-        
+        public bool IsNodeOpen { get; set; }
         protected static bool EqualOperator(BaseResponse left, BaseResponse right)
         {
             if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))

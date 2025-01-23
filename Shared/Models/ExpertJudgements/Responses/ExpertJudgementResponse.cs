@@ -8,5 +8,6 @@ namespace Shared.Models.ExpertJudgements.Responses
 
         public Guid CaseId { get; set; }
         public StakeHolderResponse? Expert { get; set; }
+        public string ExpertName => Expert == null ? string.Empty : Expert.Name;
     }
 }

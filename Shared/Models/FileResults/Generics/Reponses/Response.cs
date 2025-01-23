@@ -14,6 +14,7 @@ namespace Shared.Models.FileResults.Generics.Reponses
     {
         Guid Id { get; set; }
         string Name { get; set; }
+        bool IsNodeOpen { get; set; }
     }
     public class Response<T> : BaseResponse where T : IResponse
     {

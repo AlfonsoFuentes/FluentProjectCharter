@@ -39,6 +39,7 @@ public partial class UpdatePipeTemplate
 
 
             };
+            await LoadFromLocalStorage();
             SelectedBrand = Model.Brand;
         }
     }
@@ -52,6 +53,17 @@ public partial class UpdatePipeTemplate
     }
     void AddBrand()
     {
-        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
+    }
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? Model;
     }
 }

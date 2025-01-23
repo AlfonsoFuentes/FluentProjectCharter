@@ -35,7 +35,12 @@ namespace Shared.Models.BudgetItems.Instruments.Responses
         public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
         public List<NozzleResponse> Nozzles { get; set; } = new();
         public string TagLetter { get; set; } = string.Empty;
-        public string Tag => $"{TagLetter}-{TagNumber}";
+        public string Tag => ShowProvisionalTag ? ProvisionalTag : $"{TagLetter}-{TagNumber}";
+
+      
         public bool ShowDetails { get; set; }
+        public bool IsExisting { get; set; }
+        public string ProvisionalTag { get; set; } = string.Empty;
+        public bool ShowProvisionalTag { get; set; } = false;
     }
 }

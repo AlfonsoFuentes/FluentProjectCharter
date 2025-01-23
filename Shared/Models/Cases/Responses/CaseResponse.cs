@@ -19,7 +19,7 @@ namespace Shared.Models.Cases.Responses
         //Determinacion de que esta motivando la necesidad de accion
         public List<BackGroundResponse> BackGrounds { get; set; } = new();
         //Enunciado situacional que documente el problema o la oportunidad
-        public bool IsNodeOpen { get; set; }
+
         public string? Tab { get; set; } = string.Empty;
 
         public ScopeResponse? CurrentScope { get; set; }

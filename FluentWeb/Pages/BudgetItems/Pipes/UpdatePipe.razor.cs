@@ -49,11 +49,12 @@ public partial class UpdatePipe
                 MaterialQuantity = result.Data.MaterialQuantity,
                 PipeClass = result.Data.PipeClass,
                 FluidCode = result.Data.FluidCode,
-
+                IsExisting=result.Data.IsExisting,  
 
 
 
             };
+            await LoadFromLocalStorage();
             SelectedBrand = Model.Brand;
             SelectedFluid = Model.FluidCodeName;
         }
@@ -79,6 +80,7 @@ public partial class UpdatePipe
         Model.Insulation = response.Insulation;
         Model.EquivalentLenghPrice = response.EquivalentLenghPrice;
         Model.Nozzles.ForEach(x => x.NominalDiameter = Model.Diameter);
+
         SelectedBrand = Model.Brand;
         StateHasChanged();
     }
@@ -101,11 +103,27 @@ public partial class UpdatePipe
     }
     void AddBrand()
     {
-        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
+    }
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? Model;
     }
     void AddFluidCode()
     {
-        Navigation.NavigateTo(StaticClass.EngineeringFluidCodes.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.EngineeringFluidCodes.PageName.Create);
+        });
+
+
     }
 
 }

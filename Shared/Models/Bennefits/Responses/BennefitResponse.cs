@@ -3,8 +3,7 @@
     public class BennefitResponse : BaseResponse
     {
 
-        //public Guid? SubDeliverableId { get; set; }
-        public Guid DeliverableId { get; set; }
+        public Guid ScopeId { get; set; }
         public Guid ProjectId { get; set; }
     }
 }

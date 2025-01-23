@@ -45,7 +45,8 @@ namespace Shared.Models.BudgetItems.Pipes.Requests
             set
             {
                 materialQuantity = value;
-                Budget = BudgetCalculated;
+                if (ShowDetails)
+                    Budget = BudgetCalculated;
             }
         }
         public double LaborDayPrice
@@ -54,7 +55,8 @@ namespace Shared.Models.BudgetItems.Pipes.Requests
             set
             {
                 laborDayPrice = value;
-                Budget = BudgetCalculated;
+                if (ShowDetails)
+                    Budget = BudgetCalculated;
             }
         }
         public double EquivalentLenghPrice
@@ -63,7 +65,8 @@ namespace Shared.Models.BudgetItems.Pipes.Requests
             set
             {
                 equivalentLenghPrice = value;
-                Budget = BudgetCalculated;
+                if (ShowDetails)
+                    Budget = BudgetCalculated;
             }
         }
         public double LaborQuantity
@@ -72,7 +75,8 @@ namespace Shared.Models.BudgetItems.Pipes.Requests
             set
             {
                 laborQuantity = value;
-                Budget = BudgetCalculated;
+                if (ShowDetails)
+                    Budget = BudgetCalculated;
             }
         }
         public NominalDiameterEnum Diameter { get; set; } = NominalDiameterEnum.None;
@@ -83,6 +87,7 @@ namespace Shared.Models.BudgetItems.Pipes.Requests
         public bool Insulation { get; set; }
         public string InsulationCode => Insulation ? "1" : "0";
         public PipeClassEnum PipeClass { get; set; } = PipeClassEnum.None;
+        public bool IsExisting { get; set; }
 
     }
 }

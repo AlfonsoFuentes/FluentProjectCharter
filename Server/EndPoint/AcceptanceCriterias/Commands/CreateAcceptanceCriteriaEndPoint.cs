@@ -11,7 +11,7 @@ namespace Server.EndPoint.AcceptanceCriterias.Commands
             {
                 app.MapPost(StaticClass.AcceptanceCriterias.EndPoint.Create, async (CreateAcceptanceCriteriaRequest Data, IRepository Repository) =>
                 {
-                    var row = AcceptanceCriteria.Create(Data.DeliverableId);
+                    var row = AcceptanceCriteria.Create(Data.ScopeId);
 
                     await Repository.AddAsync(row);
 

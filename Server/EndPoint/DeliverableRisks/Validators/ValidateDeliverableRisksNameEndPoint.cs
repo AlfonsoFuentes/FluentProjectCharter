@@ -11,7 +11,7 @@ namespace Server.EndPoint.DeliverableRisks.Validators
             {
                 app.MapPost(StaticClass.DeliverableRisks.EndPoint.Validate, async (ValidateDeliverableRiskRequest Data, IQueryRepository Repository) =>
                 {
-                    Expression<Func<DeliverableRisk, bool>> CriteriaId = x => x.DeliverableId == Data.DeliverableId;
+                    Expression<Func<DeliverableRisk, bool>> CriteriaId = x => x.ScopeId == Data.ScopeId;
                     Func<DeliverableRisk, bool> CriteriaExist = x => Data.Id == null ?
                     x.Name.Equals(Data.Name) : x.Id != Data.Id.Value && x.Name.Equals(Data.Name);
                     string CacheKey = StaticClass.DeliverableRisks.Cache.GetAll;

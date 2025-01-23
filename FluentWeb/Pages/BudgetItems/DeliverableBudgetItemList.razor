@@ -1,11 +1,6 @@
-﻿
-
-
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:1px solid lightgray;border-radius:5px; padding:4px;">
-    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Budget items</strong></FluentLabel>
-
-    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
-        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 2px">
+﻿<TemplatedList T="IBudgetItemResponse" FilteredItems="@FilteredItems" Title="@($"Manage {Title}")" Context="context">
+    <MenuButtons>
+        <FluentGrid AdaptiveRendering="true" Style="padding: 2px">
             <FluentGridItem xs="12" sm="6" md="4">
                 <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
 
@@ -59,41 +54,45 @@
 
 
         </FluentGrid>
-
-
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
-                      Placeholder="Search..." />
-    </FluentStack>
-    <FluentDataGrid Items="@FilteredItems.AsQueryable()"
-                    Virtualize="true"
-                    ItemSize="46"
-                    Style="width:100%"
-                    GenerateHeader="GenerateHeaderOption.Sticky"
-                    TGridItem="IBudgetItemResponse">
-        <PropertyColumn Title="Nomenclatore" Property="@(c => c.Nomenclatore)" Width="15%" />
-        <PropertyColumn Title="Tag" Property="@(c => c.Tag)" Width="20%" />
-        <PropertyColumn Title="Name" Property="@(c => c.Name)" Width="35%" />
-        <PropertyColumn Title="Budget, USD" Property="@(c => c.sBudget)" Tooltip="true" Width="15%" />
-
-        <TemplateColumn Title="Actions" Align="@Align.End" Width="15%">
-            <FluentButton Id="@($"edit{context.Id}")" aria-label="Edit item" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => EditBudgetItem(context))" />
-            <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-            <FluentButton Id="@($"delete{context.Id}")" aria-label="Delete item" IconEnd="@(new Icons.Regular.Size16.Delete())" OnClick="@(() => Delete(context))" />
-            <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
-
-        </TemplateColumn>
-    </FluentDataGrid>
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
+    </MenuButtons>
+    <Content>
+        <FluentGrid AdaptiveRendering="true" Style="width:100%" Justify="JustifyContent.FlexStart">
+            <FluentGridItem xs="8" sm="1">
+                <FluentLabel Typo="Typography.Body">@context.Nomenclatore</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="3" sm="2">
+                <FluentLabel Typo="Typography.Body">@context.Tag</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="8" sm="7">
+                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="2" sm="2">
+                <FluentLabel Typo="Typography.Body">@context.sBudget</FluentLabel>
+            </FluentGridItem>
+        </FluentGrid>
 
 
+    </Content>
+    <Buttons>
+        <FluentButton Id="@($"edit{context.Id}")" aria-label="Edit item" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => EditBudgetItem(context))" />
+        <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+        <FluentButton Id="@($"delete{context.Id}")" aria-label="Delete item" IconEnd="@(new Icons.Regular.Size16.Delete())" OnClick="@(() => Delete(context))" />
+        <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
-</FluentStack>
+    </Buttons>
+
+
+</TemplatedList>
+
+
+
 
 @code {
-    int Spacing = 1;
-    JustifyContent Justification = JustifyContent.FlexStart;
-
+   
+    string Title = "Budget items";
 
 
 }

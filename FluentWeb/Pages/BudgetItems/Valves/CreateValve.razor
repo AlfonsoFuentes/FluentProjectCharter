@@ -15,24 +15,44 @@
                 </FluentGridItem>
                 <FluentGridItem xs="12" sm="12" md="6">
                 </FluentGridItem>
-                <FluentGridItem xs="12" sm="12" md="3">
+                <FluentGridItem xs="12" sm="12" md="6">
                     <NumberField @bind-Value="@Model.Budget" Label="Budget, USD" Validate="Form.ValidateAsync"></NumberField>
                     <ValidationMessage For="() => Model.Budget" style="color:red; font-size:x-small;" />
                 </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="6">
+                </FluentGridItem>
                 <FluentGridItem xs="12" sm="12" md="3">
-                    @if (Model.ShowDetails)
+                    <FluentSwitch Label="Show Details?" @bind-Value=Model.ShowDetails></FluentSwitch>
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="3">
+                    @if (!Model.ShowDetails)
+                    {
+                        <FluentSwitch Label="Show Provisional Tag?" @bind-Value=@Model.ShowProvisionalTag></FluentSwitch>
+                    }
+                    else
                     {
                         <FluentLabel><strong>Tag : @Model.Tag</strong></FluentLabel>
                         <ValidationMessage For="() => Model.Tag" style="color:red; font-size:x-small;" />
                     }
                 </FluentGridItem>
                 <FluentGridItem xs="12" sm="12" md="6">
+
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="3">
+                    @if (Model.ShowProvisionalTag && !Model.ShowDetails)
+                    {
+                        <TextBox Label="Tag"
+                                 @bind-Value=@Model.ProvisionalTag
+                                 Placeholder="Define name"
+                                 Validate="Form.ValidateAsync"></TextBox>
+                        <ValidationMessage For="() => Model.ProvisionalTag" style="color:red; font-size:x-small;" />
+
+                    }
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="12" md="9">
+
                 </FluentGridItem>
             </FluentGrid>
-
-            <FluentButton Appearance="Appearance.Accent" OnClick="@(()=>Model.ShowDetails=!Model.ShowDetails)">
-                @(Model.ShowDetails ? "Hide Details" : "Show Details")
-            </FluentButton>
 
 
             @if (Model.ShowDetails)
@@ -108,13 +128,30 @@
                                                       @bind-SelectedOption="@Model.Diameter" />
                                         <ValidationMessage For="() => Model.Diameter" style="color:red; font-size:x-small;" />
                                     </FluentGridItem>
-
+                                    <FluentGridItem xs="12">
+                                        <FluentSwitch Label="Is Existing?" @bind-Value=@Model.IsExisting></FluentSwitch>
+                                    </FluentGridItem>
 
                                 </FluentGrid>
                             </FluentGridItem>
                             <FluentGridItem xs="12" sm="12" md="6">
                                 <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 4px;">
                                     <FluentGridItem xs="12">
+                                        <FluentGridItem xs="12">
+                                            <FluentSelect TOption="MaterialEnum"
+                                                          Label="Select Material"
+                                                          Items="@MaterialEnum.List"
+                                                          Id="people-listbox"
+                                                          Width="100%"
+                                                          Height="350px"
+                                                          @onchange=@ChangeMaterial
+                                                          Placeholder="Make a selection..."
+                                                          OptionValue="@(p => p.Name)"
+                                                          OptionText="@(p => p.Name)"
+                                                          @bind-Value="@Model.Material.Name"
+                                                          @bind-SelectedOption="@Model.Material" />
+                                            <ValidationMessage For="() => Model.Material" style="color:red; font-size:x-small;" />
+                                        </FluentGridItem>
                                         <FluentSelect TOption="ActuatorTypeEnum"
                                                       Label="Select Actuator Type"
                                                       Items="@ActuatorTypeEnum.List"
@@ -130,21 +167,7 @@
                                         <ValidationMessage For="() => Model.ActuatorType" style="color:red; font-size:x-small;" />
                                     </FluentGridItem>
 
-                                    <FluentGridItem xs="12">
-                                        <FluentSelect TOption="MaterialEnum"
-                                                      Label="Select Material"
-                                                      Items="@MaterialEnum.List"
-                                                      Id="people-listbox"
-                                                      Width="100%"
-                                                      Height="350px"
-                                                      @onchange=@ChangeMaterial
-                                                      Placeholder="Make a selection..."
-                                                      OptionValue="@(p => p.Name)"
-                                                      OptionText="@(p => p.Name)"
-                                                      @bind-Value="@Model.Material.Name"
-                                                      @bind-SelectedOption="@Model.Material" />
-                                        <ValidationMessage For="() => Model.Material" style="color:red; font-size:x-small;" />
-                                    </FluentGridItem>
+
                                     <FluentGridItem xs="12">
                                         <FluentSelect TOption="PositionerTypeEnum"
                                                       Label="Select Positioner Type"
@@ -319,6 +342,12 @@
     {
         if (args == null) return;
         Model.ActuatorType = ActuatorTypeEnum.GetType(args!.Value!.ToString()!);
+        if (Model.ActuatorType.Id == ActuatorTypeEnum.Hand.Id)
+        {
+            Model.SignalType = SignalTypeEnum.NotApplicable;
+            Model.PositionerType = PositionerTypeEnum.Not_Applicable;
+            Model.FailType = FailTypeEnum.Not_Applicable;
+        }
         await Form.ValidateAsync();
     }
     async Task ChangeDiameter(ChangeEventArgs args)

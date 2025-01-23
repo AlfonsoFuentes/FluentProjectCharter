@@ -19,7 +19,7 @@ namespace Web.Infrastructure.Validators.BudgetItems.Pipings
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).WithMessage("Budget must be defined!");
+            RuleFor(x => x.Budget).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
 
             RuleFor(x => x.MaterialQuantity).GreaterThan(0).When(x => x.ShowDetails).WithMessage("Equivalent lenght must be defined!");
             RuleFor(x => x.LaborQuantity).GreaterThan(0).When(x => x.ShowDetails).WithMessage("#Labor days must be defined!");
@@ -123,8 +123,7 @@ namespace Web.Infrastructure.Validators.BudgetItems.Pipings
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).WithMessage("Budget must be defined!");
-
+            RuleFor(x => x.Budget).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
             RuleFor(x => x.MaterialQuantity).GreaterThan(0).When(x => x.ShowDetails).WithMessage("Equivalent lenght must be defined!");
             RuleFor(x => x.LaborQuantity).GreaterThan(0).When(x => x.ShowDetails).WithMessage("#Labor days must be defined!");
 

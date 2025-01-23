@@ -38,6 +38,9 @@ namespace Shared.Models.BudgetItems.Instruments.Requests
         public string TagLetter => $"{Type.Letter}{SubType.Letter}";
         public bool ShowDetails {  get; set; }
         public string Tag => $"{TagLetter}-{TagNumber}";
+        public string ProvisionalTag { get; set; } = string.Empty;
+        public bool ShowProvisionalTag { get; set; } = false;
+        public bool IsExisting { get; set; }
 
     }
 }

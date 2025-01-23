@@ -7,7 +7,7 @@ namespace Shared.Models.Bennefits.Validators
     {
         public Guid? Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public Guid DeliverableId { get; set; }
+        public Guid ScopeId { get; set; }
 
         public string EndPointName => StaticClass.Bennefits.EndPoint.Validate;
 

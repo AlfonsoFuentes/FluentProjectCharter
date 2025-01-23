@@ -26,7 +26,7 @@ namespace Web.Infrastructure.Validators.AcceptanceCriterias
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
+                ScopeId = request.ScopeId,
 
             };
             var result = await Service.Validate(validate);
@@ -54,7 +54,7 @@ namespace Web.Infrastructure.Validators.AcceptanceCriterias
             ValidateAcceptanceCriteriaRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
+                ScopeId = request.ScopeId,
                 Id = request.Id
 
             };

@@ -10,9 +10,9 @@ namespace Server.Database.Configurations
         {
             builder.HasKey(ci => ci.Id);
 
-            builder.HasOne(x => x.Deliverable)
+            builder.HasOne(x => x.Scope)
            .WithMany(t => t.Assumptions)
-           .HasForeignKey(e => e.DeliverableId)
+           .HasForeignKey(e => e.ScopeId)
            .OnDelete(DeleteBehavior.NoAction);
 
         }

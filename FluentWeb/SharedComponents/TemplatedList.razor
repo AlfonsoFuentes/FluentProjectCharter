@@ -1,0 +1,41 @@
+﻿@typeparam T
+<FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:solid 1px lightgray;padding:6px; border-radius:5px;">
+    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>@Title</strong></FluentLabel>
+    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+        @MenuButtons
+    </FluentStack>
+    <FluentStack Orientation="Orientation.Vertical" Style="border:1px solid lightgray;border-radius:5px; padding:4px;width:100%">
+
+        @foreach (var context in FilteredItems)
+        {
+            <FluentGrid AdaptiveRendering="true" Style="width:100%; border:1px solid lightgray;border-radius:5px; padding:4px;">
+                <FluentGridItem xs="12" sm="10" Style="width:100%">
+                    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center"
+                                 HorizontalAlignment="HorizontalAlignment.Start" Style="width:100%">
+                        @Content(context)
+                    </FluentStack>
+                </FluentGridItem>
+                <FluentGridItem xs="12" sm="2" Style="width:100%">
+                    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.End">
+                        @Buttons(context)
+                    </FluentStack>
+                </FluentGridItem>
+            </FluentGrid>
+
+            if (context.IsNodeOpen && ContentNode != null)
+                @ContentNode(context)
+
+
+        }
+    </FluentStack>
+</FluentStack>
+
+
+
+
+
+
+@code {
+
+
+}

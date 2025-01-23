@@ -1,5 +1,6 @@
 ﻿using Server.EndPoint.Deliverables.Queries;
 using Shared.Models.Scopes.Records;
+using Server.EndPoint.AcceptanceCriterias.Queries;
 
 namespace Server.EndPoint.Scopes.Queries
 {
@@ -11,16 +12,15 @@ namespace Server.EndPoint.Scopes.Queries
             {
                 app.MapPost(StaticClass.Scopes.EndPoint.GetById, async (GetScopeByIdRequest request, IQueryRepository Repository) =>
                 {
-                    
-                    Func<IQueryable<Scope>, IIncludableQueryable<Scope, object>> Includes = x => x
-                    .Include(x => x.Deliverables).ThenInclude(x => x.AcceptanceCriterias)
-                    
-                    .Include(x => x.Deliverables).ThenInclude(x => x.DeliverableRisks)
-                    //.Include(x => x.Deliverables).ThenInclude(x => x.Constraints)
-                    //.Include(x => x.Deliverables).ThenInclude(x => x.Requirements)
-                    //.Include(x => x.Deliverables).ThenInclude(x => x.Assumptions)
-                    .Include(x => x.Deliverables).ThenInclude(x => x.Bennefits)
 
+                    Func<IQueryable<Scope>, IIncludableQueryable<Scope, object>> Includes = x => x
+                    .Include(x => x.AcceptanceCriterias)
+                    .Include(x => x.DeliverableRisks)
+                    .Include(x => x.Constraints)
+                    .Include(x => x.Requirements)
+                    .Include(x => x.Assumptions)
+                    .Include(x => x.Bennefits)
+                    .Include(x => x.Deliverables).ThenInclude(x => x.BudgetItems)
                     ;
 
                     Expression<Func<Scope, bool>> Criteria = x => x.Id == request.Id;
@@ -51,11 +51,26 @@ namespace Server.EndPoint.Scopes.Queries
                 Tab = row.Tab,
 
                 Deliverables = row.Deliverables == null || row.Deliverables.Count == 0 ? new() :
-                row.Deliverables.Select(x => x.Map(ProjectId)).ToList(),
+                row.Deliverables.OrderBy(x => x.Order).Select(x => x.Map(ProjectId)).ToList(),
 
                 CurrentDeliverable = row.Deliverables == null || row.Deliverables.Count == 0 ||
-                row.Deliverables.All(x => x.IsNodeOpen == false) ? null! :
-                row.Deliverables.First(x => x.IsNodeOpen == true).Map(ProjectId)
+                row.Deliverables.OrderBy(x => x.Order).All(x => x.IsNodeOpen == false) ? null! :
+                row.Deliverables.OrderBy(x => x.Order).First(x => x.IsNodeOpen == true).Map(ProjectId),
+
+                Requirements = row.Requirements == null || row.Requirements.Count == 0 ? new() : row.Requirements.Select(x => x.Map()).ToList(),
+
+                Assumptions = row.Assumptions == null || row.Assumptions.Count == 0 ? new() : row.Assumptions.Select(x => x.Map()).ToList(),
+
+                DeliverableRisks = row.DeliverableRisks == null || row.DeliverableRisks.Count == 0 ? new() :
+                row.DeliverableRisks.Select(x => x.Map(ProjectId)).ToList(),
+
+                Constrainsts = row.Constraints == null || row.Constraints.Count == 0 ? new() :
+                row.Constraints.Select(x => x.Map()).ToList(),
+
+                Bennefits = row.Bennefits == null || row.Bennefits.Count == 0 ? new() : row.Bennefits.Select(x => x.Map(ProjectId)).ToList(),
+
+                AcceptanceCriterias = row.AcceptanceCriterias == null || row.AcceptanceCriterias.Count == 0 ? new() :
+                row.AcceptanceCriterias.Select(x => x.Map(ProjectId)).ToList(),
             };
         }
 

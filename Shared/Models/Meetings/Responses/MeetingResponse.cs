@@ -8,11 +8,12 @@ namespace Shared.Models.Meetings.Responses
     {
         public Guid ProjectId { get; set; }
         public DateTime? DateofMeeting { get; set; }
+        public string sDateOfMeeting=>DateofMeeting==null?string.Empty:DateofMeeting.Value.ToString("d");
         public string MeetingType { get; set; } = string.Empty;
         public string Subject { get; set; } = string.Empty;
         public List<MeetingAttendantResponse> Attendants { get; set; } = new();
         public List<MeetingAgreementResponse> Agreements { get; set; } = new();
-        public bool IsNodeOpen { get; set; }
+ 
         public string? Tab { get; set; } = string.Empty;
         public void Open()
         {

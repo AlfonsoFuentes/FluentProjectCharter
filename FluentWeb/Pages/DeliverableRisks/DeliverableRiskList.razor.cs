@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.Cases.Responses;
 using Shared.Models.DeliverableRisks.Requests;
 using Shared.Models.DeliverableRisks.Responses;
-using Web.Infrastructure.Managers.Generic;
 using Shared.Models.Scopes.Responses;
-using Shared.Models.Deliverables.Responses;
-using Shared.Models.Assumptions.Responses;
 
 namespace FluentWeb.Pages.DeliverableRisks;
 #nullable disable
@@ -15,24 +11,29 @@ public partial class DeliverableRiskList
     public App App { get; set; }
     [Parameter]
     [EditorRequired]
-    public Guid DeliverableId { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Guid ProjectId { get; set; }
+    public ScopeResponse Parent { get; set; } = new();
+
+
+    DeliverableRiskResponse currentDeliverableRisk =>
+ App.Project == null || App.Project.CurrentCase == null
+ || App.Project.CurrentCase.CurrentScope == null ? null :
+     FilteredItems.FirstOrDefault(x => x.Id == App.Project.CurrentCase.CurrentScope.CurrentDeliverableRisk!.Id);
+
+    public List<DeliverableRiskResponse> Items => Parent == null ? new(): Parent.DeliverableRisks;
+  
+
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
 
 
-    [Parameter]
-    [EditorRequired]
-    public List<DeliverableRiskResponse> Items { get; set; }
+ 
     string nameFilter;
     public List<DeliverableRiskResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
 
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateDeliverableRisk/{DeliverableId}/{ProjectId}");
+        Navigation.NavigateTo($"/CreateDeliverableRisk/{Parent.ProjectId}/{Parent.Id}");
 
     }
 
@@ -40,7 +41,7 @@ public partial class DeliverableRiskList
 
     void Edit(DeliverableRiskResponse response)
     {
-        Navigation.NavigateTo($"/UpdateDeliverableRisk/{response.Id}/{ProjectId}");
+        Navigation.NavigateTo($"/UpdateDeliverableRisk/{response.Id}");
     }
     public async Task Delete(DeliverableRiskResponse response)
     {
@@ -56,7 +57,7 @@ public partial class DeliverableRiskList
             {
                 Id = response.Id,
                 Name = response.Name,
-                ProjectId = ProjectId,
+                ProjectId = Parent.ProjectId,
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

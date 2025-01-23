@@ -1,4 +1,5 @@
 ﻿using Server.Database.Contracts;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Database.Entities
 {
@@ -19,6 +20,17 @@ namespace Server.Database.Entities
                 CaseId = CaseId,
             };
         }
+        public List<DeliverableRisk> DeliverableRisks { get; set; } = new();
+        public List<Bennefit> Bennefits { get; set; } = new();
+        public List<AcceptanceCriteria> AcceptanceCriterias { get; set; } = new();
+
+
+        [ForeignKey("DeliverableId")]
+        public List<Requirement> Requirements { get; set; } = new();
+        [ForeignKey("DeliverableId")]
+        public List<Assumption> Assumptions { get; set; } = new();
+        [ForeignKey("DeliverableId")]
+        public List<Constrainst> Constraints { get; set; } = new();
 
     }
 }

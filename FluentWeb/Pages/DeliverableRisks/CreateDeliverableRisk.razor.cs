@@ -9,15 +9,11 @@ public partial class CreateDeliverableRisk
     [Parameter]
     public Guid ProjectId { get; set; }
     [Parameter]
-    public Guid DeliverableId { get; set; }
+    public Guid ScopeId { get; set; }
     protected override void OnInitialized()
     {
         Model.ProjectId = ProjectId;
-        Model.DeliverableId = DeliverableId;
+        Model.ScopeId = ScopeId;
     }
-    private void CancelAsync()
-    {
-        Navigation.NavigateBack();
-
-    }
+  
 }

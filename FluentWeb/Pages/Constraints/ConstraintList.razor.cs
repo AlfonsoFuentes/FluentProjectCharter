@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Shared.Models.Assumptions.Responses;
 using Shared.Models.Constrainsts.Requests;
 using Shared.Models.Constrainsts.Responses;
-using Shared.Models.Deliverables.Responses;
-using Web.Infrastructure.Managers.Generic;
+using Shared.Models.Scopes.Responses;
 
 namespace FluentWeb.Pages.Constraints;
 #nullable disable
@@ -12,24 +11,32 @@ public partial class ConstraintList
     [CascadingParameter]
     public App App { get; set; }
     [Parameter]
+    public ScopeResponse Parent { get; set; } = null!;
 
-    public Guid? DeliverableId { get; set; }
     [Parameter]
+    public Guid ParameterProjectId { get; set; }
 
-    public Guid ProjectId { get; set; }
+    Guid ProjectId => Parent == null ? ParameterProjectId : Parent.ProjectId;
     [Parameter]
-    [EditorRequired]
+    public List<ConstrainstResponse> ParameterItems { get; set; } = new();
+
+    ConstrainstResponse currentConstraint =>
+ App.Project == null || App.Project.CurrentCase == null
+ || App.Project.CurrentCase.CurrentScope == null ? null :
+     FilteredItems.FirstOrDefault(x => x.Id == App.Project.CurrentCase.CurrentScope.CurrentConstrainst!.Id);
+
+    public List<ConstrainstResponse> Items => Parent == null ? ParameterItems : Parent.Constrainsts;
+  
+    [Parameter]
     public Func<Task> GetAll { get; set; }
+    Guid? ParentId => Parent == null ? null : Parent.Id;
 
 
-    [Parameter]
-    [EditorRequired]
-    public List<ConstrainstResponse> Items { get; set; }
     string nameFilter;
     public List<ConstrainstResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateConstrainst/{ProjectId}/{DeliverableId}");
+        Navigation.NavigateTo($"/CreateConstrainst/{ProjectId}/{ParentId}");
 
     }
 

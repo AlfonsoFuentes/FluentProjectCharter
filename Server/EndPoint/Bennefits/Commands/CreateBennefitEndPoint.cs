@@ -15,7 +15,7 @@ namespace Server.EndPoint.Bennefits.Commands
             {
                 app.MapPost(StaticClass.Bennefits.EndPoint.Create, async (CreateBennefitRequest Data, IRepository Repository) =>
                 {
-                    var row = Bennefit.Create(Data.DeliverableId);
+                    var row = Bennefit.Create(Data.ScopeId);
 
                     await Repository.AddAsync(row);
 

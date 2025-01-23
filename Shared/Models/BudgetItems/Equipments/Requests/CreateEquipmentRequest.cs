@@ -35,8 +35,11 @@ namespace Shared.Models.BudgetItems.Equipments.Requests
 
         public string TagNumber { get; set; } = string.Empty;
         public string Tag => $"{TagLetter}-{TagNumber}";
+        public string ProvisionalTag {  get; set; } = string.Empty;
         public bool ShowDetails { get; set; } = false;
+        public bool ShowProvisionalTag { get; set; } = false;
         public List<NozzleResponse> Nozzles { get; set; } = new();
+        public bool IsExisting { get; set; }
 
     }
 }

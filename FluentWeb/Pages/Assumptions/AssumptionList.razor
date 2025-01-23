@@ -1,49 +1,37 @@
-﻿
-
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:1px solid lightgray;border-radius:5px; padding:4px;">
-    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Assumptions</strong></FluentLabel>
-    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
-        <FluentButton Id="addAssup" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
+﻿<TemplatedList T="AssumptionResponse" FilteredItems="@FilteredItems" Title="@($"Manage {Title}")" Context="context">
+    <MenuButtons>
+        <FluentButton Id="addReqm" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
         </FluentButton>
-        <FluentTooltip Anchor="addAssup" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Assumption</FluentTooltip>
+        <FluentTooltip Anchor="addReqm" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>@($"Add {Title}")</FluentTooltip>
 
-      
+
+
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
-                      Placeholder="Search..." />
-    </FluentStack>
-    @foreach (var row in FilteredItems)
-    {
-        <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
+        @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
+    </MenuButtons>
+    <Content>
+        <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</FluentLabel>
+    </Content>
+    <Buttons>
+        <FluentButton Id="@($"edit{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))">
 
-            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-            <FluentSpacer />
-            <div>
-                <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+        </FluentButton>
+        <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+        <FluentButton Id="@($"delete{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))">
 
-                </FluentButton>
-                <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+        </FluentButton>
+        <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
-                </FluentButton>
-                <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+    </Buttons>
 
 
-            </div>
-        </FluentStack>
+</TemplatedList>
 
 
-    }
-
-
-
-
-</FluentStack>
 
 @code {
-
-
+    string Title = "Assumptions";
 
 }

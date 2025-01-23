@@ -185,9 +185,6 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DeliverableId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -201,13 +198,16 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ScopeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliverableId");
+                    b.HasIndex("ScopeId");
 
                     b.ToTable("AcceptanceCriterias");
                 });
@@ -246,15 +246,18 @@ namespace Server.Migrations
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ScopeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliverableId");
-
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("ScopeId");
 
                     b.ToTable("Assumptions");
                 });
@@ -316,9 +319,6 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DeliverableId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -332,13 +332,16 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ScopeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliverableId");
+                    b.HasIndex("ScopeId");
 
                     b.ToTable("Bennefits");
                 });
@@ -1149,15 +1152,18 @@ namespace Server.Migrations
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ScopeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliverableId");
-
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("ScopeId");
 
                     b.ToTable("Constrainsts");
                 });
@@ -1235,6 +1241,9 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("ScopeId")
                         .HasColumnType("uniqueidentifier");
 
@@ -1267,9 +1276,6 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("DeliverableId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -1283,13 +1289,16 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("ScopeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliverableId");
+                    b.HasIndex("ScopeId");
 
                     b.ToTable("DeliverableRisks");
                 });
@@ -1850,6 +1859,9 @@ namespace Server.Migrations
                     b.Property<Guid?>("ResponsibleId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ScopeId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1860,13 +1872,13 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliverableId");
-
                     b.HasIndex("ProjectId");
 
                     b.HasIndex("RequestedById");
 
                     b.HasIndex("ResponsibleId");
+
+                    b.HasIndex("ScopeId");
 
                     b.ToTable("Requirements");
                 });
@@ -2062,6 +2074,9 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("DeliverableId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -2086,6 +2101,8 @@ namespace Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DeliverableId");
 
                     b.HasIndex("ProjectId");
 
@@ -2306,6 +2323,13 @@ namespace Server.Migrations
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem", b =>
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<bool>("IsExisting")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProvisionalTag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TagLetter")
                         .IsRequired()
@@ -2612,31 +2636,31 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.AcceptanceCriteria", b =>
                 {
-                    b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
+                    b.HasOne("Server.Database.Entities.Scope", "Scope")
                         .WithMany("AcceptanceCriterias")
-                        .HasForeignKey("DeliverableId")
+                        .HasForeignKey("ScopeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Deliverable");
+                    b.Navigation("Scope");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Assumption", b =>
                 {
-                    b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
-                        .WithMany("Assumptions")
-                        .HasForeignKey("DeliverableId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("Assumptions")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Deliverable");
+                    b.HasOne("Server.Database.Entities.Scope", "Scope")
+                        .WithMany("Assumptions")
+                        .HasForeignKey("ScopeId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Project");
+
+                    b.Navigation("Scope");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BackGround", b =>
@@ -2652,13 +2676,13 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.Bennefit", b =>
                 {
-                    b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
+                    b.HasOne("Server.Database.Entities.Scope", "Scope")
                         .WithMany("Bennefits")
-                        .HasForeignKey("DeliverableId")
+                        .HasForeignKey("ScopeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Deliverable");
+                    b.Navigation("Scope");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.BudgetItem", b =>
@@ -2817,20 +2841,20 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.Constrainst", b =>
                 {
-                    b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
-                        .WithMany("Constraints")
-                        .HasForeignKey("DeliverableId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("Constrainsts")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Deliverable");
+                    b.HasOne("Server.Database.Entities.Scope", "Scope")
+                        .WithMany("Constraints")
+                        .HasForeignKey("ScopeId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Project");
+
+                    b.Navigation("Scope");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.DecissionCriteria", b =>
@@ -2857,13 +2881,13 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.DeliverableRisk", b =>
                 {
-                    b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
+                    b.HasOne("Server.Database.Entities.Scope", "Scope")
                         .WithMany("DeliverableRisks")
-                        .HasForeignKey("DeliverableId")
+                        .HasForeignKey("ScopeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Deliverable");
+                    b.Navigation("Scope");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ExpertJudgement", b =>
@@ -2999,11 +3023,6 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.Requirement", b =>
                 {
-                    b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
-                        .WithMany("Requirements")
-                        .HasForeignKey("DeliverableId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("Requirements")
                         .HasForeignKey("ProjectId")
@@ -3020,13 +3039,18 @@ namespace Server.Migrations
                         .HasForeignKey("ResponsibleId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.Navigation("Deliverable");
+                    b.HasOne("Server.Database.Entities.Scope", "Scope")
+                        .WithMany("Requirements")
+                        .HasForeignKey("ScopeId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Project");
 
                     b.Navigation("RequestedBy");
 
                     b.Navigation("Responsible");
+
+                    b.Navigation("Scope");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Scope", b =>
@@ -3063,6 +3087,11 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.WBSComponent", b =>
                 {
+                    b.HasOne("Server.Database.Entities.Deliverable", "Deliverable")
+                        .WithMany("WBSComponents")
+                        .HasForeignKey("DeliverableId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("WBSComponents")
                         .HasForeignKey("ProjectId")
@@ -3073,6 +3102,8 @@ namespace Server.Migrations
                         .WithMany("SubComponents")
                         .HasForeignKey("SubComponentRelationId")
                         .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Deliverable");
 
                     b.Navigation("Project");
 
@@ -3182,19 +3213,9 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.Deliverable", b =>
                 {
-                    b.Navigation("AcceptanceCriterias");
-
-                    b.Navigation("Assumptions");
-
-                    b.Navigation("Bennefits");
-
                     b.Navigation("BudgetItems");
 
-                    b.Navigation("Constraints");
-
-                    b.Navigation("DeliverableRisks");
-
-                    b.Navigation("Requirements");
+                    b.Navigation("WBSComponents");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Meeting", b =>
@@ -3239,7 +3260,19 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.Scope", b =>
                 {
+                    b.Navigation("AcceptanceCriterias");
+
+                    b.Navigation("Assumptions");
+
+                    b.Navigation("Bennefits");
+
+                    b.Navigation("Constraints");
+
+                    b.Navigation("DeliverableRisks");
+
                     b.Navigation("Deliverables");
+
+                    b.Navigation("Requirements");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.StakeHolder", b =>

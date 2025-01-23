@@ -18,11 +18,15 @@ namespace Web.Infrastructure.Validators.Instruments
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).WithMessage("Budget must be defined!");
+            RuleFor(x => x.Budget).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
             RuleFor(x => x.TagLetter).NotEmpty().When(x => x.ShowDetails)
               .WithMessage("Tag Letter must be defined!");
             RuleFor(x => x.Type).NotEmpty().When(x => x.ShowDetails)
            .WithMessage("Variable must be defined!");
+
+
+            RuleFor(x => x.ProvisionalTag).NotEmpty().When(x => x.ShowProvisionalTag && !x.ShowDetails)
+            .WithMessage("Tag must be defined!");
 
             RuleFor(x => x.SubType).NotEmpty().When(x => x.ShowDetails)
         .WithMessage("Modifier Variable must be defined!");
@@ -59,9 +63,15 @@ namespace Web.Infrastructure.Validators.Instruments
             RuleFor(x => x.TagNumber).NotEmpty().When(x => x.ShowDetails)
                 .WithMessage("Tag Number must be defined!");
 
-            RuleFor(x => x.Tag).NotEmpty().When(x => x.ShowDetails)
+            RuleFor(x => x.Tag)
                 .MustAsync(ReviewIfTagExist)
+                .When(x => x.ShowDetails && !x.ShowProvisionalTag)
                .WithMessage(x => $"{x.Tag} already exist");
+
+            RuleFor(x => x.ProvisionalTag)
+                .MustAsync(ReviewIfTagExist)
+                .When(x => !x.ShowDetails && x.ShowProvisionalTag)
+               .WithMessage(x => $"{x.ProvisionalTag} already exist");
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
                 .When(x => !string.IsNullOrEmpty(x.Name))
@@ -83,13 +93,12 @@ namespace Web.Infrastructure.Validators.Instruments
             var result = await Service.Validate(validate);
             return !result;
         }
-        async Task<bool> ReviewIfTagExist(CreateInstrumentRequest request, string name, CancellationToken cancellationToken)
+        async Task<bool> ReviewIfTagExist(CreateInstrumentRequest request, string tag, CancellationToken cancellationToken)
         {
             ValidateInstrumentTagRequest validate = new()
             {
-                Name = name,
-
-                Tag = request.Tag,
+        
+                Tag = tag,
                 ProjectId = request.ProjectId,
 
 
@@ -131,11 +140,14 @@ namespace Web.Infrastructure.Validators.Instruments
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).WithMessage("Budget must be defined!");
+            RuleFor(x => x.Budget).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
             RuleFor(x => x.TagLetter).NotEmpty().When(x => x.ShowDetails)
               .WithMessage("Tag Letter must be defined!");
             RuleFor(x => x.Type).NotEmpty().When(x => x.ShowDetails)
              .WithMessage("Variable must be defined!");
+
+            RuleFor(x => x.ProvisionalTag).NotEmpty().When(x => x.ShowProvisionalTag && !x.ShowDetails)
+            .WithMessage("Tag must be defined!");
 
             RuleFor(x => x.SubType).NotEmpty().When(x => x.ShowDetails)
         .WithMessage("Modifier Variable must be defined!");
@@ -169,10 +181,15 @@ namespace Web.Infrastructure.Validators.Instruments
             RuleFor(x => x.TagNumber).NotEmpty().When(x => x.ShowDetails)
                 .WithMessage("Tag Number must be defined!");
 
+            RuleFor(x => x.Tag)
+               .MustAsync(ReviewIfTagExist)
+               .When(x => x.ShowDetails && !x.ShowProvisionalTag)
+              .WithMessage(x => $"{x.Tag} already exist");
 
-            RuleFor(x => x.Tag).NotEmpty().When(x => x.ShowDetails)
+            RuleFor(x => x.ProvisionalTag)
                 .MustAsync(ReviewIfTagExist)
-               .WithMessage(x => $"{x.Tag} already exist");
+                .When(x => !x.ShowDetails && x.ShowProvisionalTag)
+               .WithMessage(x => $"{x.ProvisionalTag} already exist");
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
                 .When(x => !string.IsNullOrEmpty(x.Name))
@@ -193,13 +210,13 @@ namespace Web.Infrastructure.Validators.Instruments
             var result = await Service.Validate(validate);
             return !result;
         }
-        async Task<bool> ReviewIfTagExist(UpdateInstrumentRequest request, string name, CancellationToken cancellationToken)
+        async Task<bool> ReviewIfTagExist(UpdateInstrumentRequest request, string tag, CancellationToken cancellationToken)
         {
             ValidateInstrumentTagRequest validate = new()
             {
-                Name = name,
+      
                 Id = request.Id,
-                Tag = request.Tag,
+                Tag = tag,
                 ProjectId = request.ProjectId,
 
 

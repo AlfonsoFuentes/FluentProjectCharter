@@ -1,0 +1,43 @@
+﻿<FluentTabs ShowActiveIndicator="false" Style="width:100%" OnTabChange="HandleOnTabChange" @bind-ActiveTabId=@Parent.Tab>
+    <FluentTab Label="Backgrounds" Id="Backgrounds">
+        <Content>
+            <BackGroundList GetAll="GetAll" Parent="@App.Project.CurrentCase"></BackGroundList>
+        </Content>
+
+    </FluentTab>
+
+    <FluentTab Label="Expert Judgement" Id="Expert">
+        <Content>
+            <ExpertJudgementList GetAll="GetAll" Parent="@App.Project.CurrentCase"></ExpertJudgementList>
+        </Content>
+
+    </FluentTab>
+    <FluentTab Label="Scope" Id="Scope">
+        <Content>
+            <ScopeList GetAll="GetAll" Parent="@App.Project.CurrentCase"></ScopeList>
+        </Content>
+
+    </FluentTab>
+    <FluentTab Label="Known risks" Id="Known">
+        <Content>
+            <KnownRiskList GetAll="GetAll" Parent="@App.Project.CurrentCase"></KnownRiskList>
+        </Content>
+
+    </FluentTab>
+    <FluentTab Label="Sucessfull factors" Id="Sucessfull">
+        <Content>
+            <SucessfullFactorList GetAll="GetAll" Parent="@App.Project.CurrentCase"></SucessfullFactorList>
+        </Content>
+
+    </FluentTab>
+    <FluentTab Label="Decission criterias" Id="Decission">
+        <Content>
+            <DecissionCriteriaList GetAll="GetAll" Parent="@App.Project.CurrentCase"></DecissionCriteriaList>
+        </Content>
+
+    </FluentTab>
+</FluentTabs>
+
+@code {
+  
+}

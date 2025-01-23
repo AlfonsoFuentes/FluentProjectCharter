@@ -8,8 +8,8 @@ namespace Server.Database.Entities
 
         public Project Project { get; set; } = null!;
         public Guid ProjectId { get; set; }
-        public Deliverable? Deliverable { get; set; } = null!;
-        public Guid? DeliverableId { get; set; }
+        public Scope? Scope { get; set; } = null!;
+        public Guid? ScopeId { get; set; }
         public string Name { set; get; } = string.Empty;
         public string Type {  set; get; } = string.Empty;
         public StakeHolder? RequestedBy { get; set; }
@@ -18,12 +18,12 @@ namespace Server.Database.Entities
         public Guid? ResponsibleId { get; set; }
         public DateTime? DueDate { get; set; }
         public string Priority {  set; get; } = string.Empty;
-        public static Requirement Create(Guid ProjectId, Guid? DeliverableId)
+        public static Requirement Create(Guid ProjectId, Guid? ScopeId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
-                DeliverableId = DeliverableId,
+                ScopeId = ScopeId,
                 ProjectId = ProjectId,
             };
         }

@@ -4,7 +4,7 @@
     {
 
       
-        public Guid? DeliverableId { get; set; }
+        public Guid? ScopeId { get; set; }
         public Guid ProjectId { get; set; }
 
     }

@@ -37,7 +37,7 @@
             {
                 Id = row.Id,
                 Name = row.Name,
-                DeliverableId = row.DeliverableId ?? null,
+                ScopeId = row.ScopeId ?? null,
 
                 ProjectId = row.ProjectId,
 

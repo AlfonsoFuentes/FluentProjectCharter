@@ -51,9 +51,12 @@ public partial class UpdateValve
                 Nozzles = result.Data.Nozzles,
 
                 ShowDetails = result.Data.ShowDetails,
-
+                IsExisting= result.Data.IsExisting,
+                ShowProvisionalTag = result.Data.ShowProvisionalTag,
+                ProvisionalTag = result.Data.ProvisionalTag,
 
             };
+            await LoadFromLocalStorage();
             SelectedBrand = Model.Brand;
         }
     }
@@ -65,18 +68,7 @@ public partial class UpdateValve
             BrandsResponseList = result.Data;
         }
     }
-    void AddBrand()
-    {
-        //CreateTemporaryRequest temporaryRequest = new()
-        //{
-        //    Model = Model.Model,
-
-
-        //};
-        //var result = await GenericService.Create(temporaryRequest);
-
-        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
-    }
+  
     ValveTemplateResponseList ValveTemplateResponseList = new();
     async Task GetAllEquipmentTemplate()
     {
@@ -110,5 +102,20 @@ public partial class UpdateValve
         Model.Budget = response.Value;
         SelectedBrand = Model.Brand;
         StateHasChanged();
+    }
+    void AddBrand()
+    {
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
+    }
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? Model;
     }
 }

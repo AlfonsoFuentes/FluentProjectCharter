@@ -11,35 +11,28 @@ namespace Server.Database.Entities
         public Scope Scope { get; set; } = null!;
         public Guid ScopeId { get; set; }
         public string Name { get; set; } = string.Empty;
-      
-        public List<DeliverableRisk> DeliverableRisks { get; set; } = new();
-   
-        public List<Bennefit> Bennefits { get; set; } = new();
-        public List<AcceptanceCriteria> AcceptanceCriterias { get; set; } = new();
+        public int Order { get; set; }
         public bool IsNodeOpen { get; set; }
         public string? Tab { get; set; } = string.Empty;
 
-        public static Deliverable Create(Guid ScopeId)
+        public static Deliverable Create(Guid ScopeId, int order)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ScopeId = ScopeId,
+                Order = order,
             };
         }
 
-        [ForeignKey("DeliverableId")]
-        public List<Requirement> Requirements { get; set; } = new();
-        [ForeignKey("DeliverableId")]
-        public List<Assumption> Assumptions { get; set; } = new();
-        [ForeignKey("DeliverableId")]
-        public List<Constrainst> Constraints { get; set; } = new();
+
 
         [ForeignKey("DeliverableId")]
         public List<BudgetItem> BudgetItems { get; set; } = new();
 
-        //[ForeignKey("DeliverableId")]
-        //public List<ProcessFlowDiagram> ProcessFlowDiagrams { get; set; } = new();
+        [ForeignKey("DeliverableId")]
+        public List<WBSComponent> WBSComponents { get; set; } = new();
+
 
     }
 }

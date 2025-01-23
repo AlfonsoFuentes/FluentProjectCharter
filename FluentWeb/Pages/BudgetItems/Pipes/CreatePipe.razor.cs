@@ -29,6 +29,7 @@ public partial class CreatePipe
         Model.DeliverableId = DeliverableId;
         Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Inlet });
         Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet });
+        await LoadFromLocalStorage();
     }
 
     PipeTemplateResponseList PipeTemplateResponseList = new();
@@ -74,10 +75,26 @@ public partial class CreatePipe
     }
     void AddBrand()
     {
-        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
+    }
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? new();
     }
     void AddFluidCode()
     {
-        Navigation.NavigateTo(StaticClass.EngineeringFluidCodes.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.EngineeringFluidCodes.PageName.Create);
+        });
+
+       
     }
 }

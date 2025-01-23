@@ -126,8 +126,9 @@ namespace Server.EndPoint.Equipments.Commands
             row.Name = request.Name;
             row.TagLetter = request.ShowDetails ? request.TagLetter : string.Empty;
             row.TagNumber = request.TagNumber;
-
+            row.IsExisting = request.IsExisting;
             row.Budget = request.Budget;
+            row.ProvisionalTag = request.ProvisionalTag;
             return row;
         }
 

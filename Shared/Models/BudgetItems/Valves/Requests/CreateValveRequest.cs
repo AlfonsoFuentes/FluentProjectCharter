@@ -37,10 +37,13 @@ namespace Shared.Models.BudgetItems.Valves.Requests
         public ValveTypesEnum Type { get; set; } = ValveTypesEnum.None;
         public string TagNumber { get; set; } = string.Empty;
         public string Tag => $"{TagLetter}-{TagNumber}";
+        public string ProvisionalTag { get; set; } = string.Empty;
         public string TagLetter => $"{PositionerType.Letter}{Type.Letter}";
         public BrandResponse BrandResponse { get; set; } = new();
         public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
         public List<NozzleResponse> Nozzles { get; set; } = new();
         public bool ShowDetails { get; set; } = false;
+        public bool ShowProvisionalTag { get; set; } = false;
+        public bool IsExisting { get; set; }
     }
 }

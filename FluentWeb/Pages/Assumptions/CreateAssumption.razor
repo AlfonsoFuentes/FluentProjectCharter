@@ -1,5 +1,5 @@
 ﻿@page "/CreateAssumption/{ProjectId:guid}"
-@page "/CreateAssumption/{ProjectId:guid}/{DeliverableId:guid}"
+@page "/CreateAssumption/{ProjectId:guid}/{ScopeId:guid}"
 <CreateTemplate @ref=CreateForm TItem="CreateAssumptionRequest" @bind-Model="@Model"
                 Title="Create Assumption">
     <Content>

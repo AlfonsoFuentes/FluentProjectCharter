@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Shared.Models.Brands.Records;
 using Shared.Models.Brands.Responses;
+using Shared.Models.BudgetItems.Equipments.Requests;
 using Shared.Models.Templates.Equipments.Records;
 using Shared.Models.Templates.Equipments.Requests;
 using Shared.Models.Templates.Equipments.Responses;
@@ -41,9 +42,11 @@ public partial class UpdateEquipmentTemplate
 
 
             };
+            await LoadFromLocalStorage();
             SelectedBrand = Model.Brand;
         }
     }
+    
     async Task GetBrands()
     {
         var result = await GenericService.GetAll<BrandResponseList, BrandGetAll>(new BrandGetAll());
@@ -54,6 +57,17 @@ public partial class UpdateEquipmentTemplate
     }
     void AddBrand()
     {
-        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
+    }
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? Model;
     }
 }

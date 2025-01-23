@@ -1,11 +1,10 @@
 ﻿using Shared.Enums.BudgetItemTypes;
+using Shared.Models.FileResults.Generics.Reponses;
 
 namespace Shared.Models.BudgetItems
 {
-    public interface IBudgetItemResponse
+    public interface IBudgetItemResponse : IResponse
     {
-        Guid Id { get; set; }
-        string Name { get; set; }
         string Nomenclatore { get; set; }
         double Budget { get; }
         string sBudget { get; }

@@ -135,7 +135,8 @@ namespace Server.EndPoint.Valves.Commands
             row.TagNumber = request.TagNumber;
         
             row.Budget = request.Budget;
-
+            row.IsExisting=request.IsExisting;
+            row.ProvisionalTag = request.ProvisionalTag;
             return row;
         }
 

@@ -63,8 +63,9 @@ namespace Server.EndPoint.Instruments.Queries
                 Nozzles = row.Nozzles == null || row.Nozzles.Count == 0 ? new() : row.Nozzles.Select(x => x.Map()).ToList(),
                 SignalType = row.InstrumentTemplate == null ? SignalTypeEnum.None : SignalTypeEnum.GetType(row.InstrumentTemplate.SignalType),
                 TagLetter = row.TagLetter,
-
-
+                IsExisting = row.IsExisting,
+                ProvisionalTag = row.ProvisionalTag,
+                ShowProvisionalTag =!string.IsNullOrWhiteSpace(row.ProvisionalTag)
             };
 
 

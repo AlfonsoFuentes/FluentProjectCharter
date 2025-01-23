@@ -1,89 +1,39 @@
-﻿@using Shared.Models.Cases.Records
-@using Shared.Models.Cases.Responses
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%;height:100%;border:1px solid lightgray;border-radius:5px; padding:4px;">
-    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage busines cases</strong></FluentLabel>
-    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+﻿<TemplatedList T="CaseResponse" FilteredItems="@FilteredItems" Title="Manage Busines Cases" Context="context">
+    <MenuButtons>
         <FluentButton Id="addcase" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
         </FluentButton>
         <FluentTooltip Anchor="addcase" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Case</FluentTooltip>
 
-
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
-                      Placeholder="Search..." />
-    </FluentStack>
-    @foreach (var row in FilteredItems)
-    {
-        <FluentStack Orientation=" Orientation.Vertical" Style="border:solid 1px lightgray;padding:6px; border-radius:5px;">
-            <FluentStack Orientation=" Orientation.Horizontal">
-                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                <FluentSpacer />
-                <div>
-                    <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
+    </MenuButtons>
+    <Content>
+        <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</FluentLabel>
+    </Content>
+    <Buttons>
+        <FluentButton Id="@($"edit{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))">
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                    <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+        </FluentButton>
+        <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+        <FluentButton Id="@($"delete{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))">
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+        </FluentButton>
+        <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
-                    <FluentButton Id="@($"Show{row.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(row))"></FluentButton>
-                    <FluentTooltip Anchor="@($"Show{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
+        <FluentButton Id="@($"Show{context.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(context))"></FluentButton>
+        <FluentTooltip Anchor="@($"Show{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
 
+    </Buttons>
 
-                </div>
-            </FluentStack>
-            @if (row.IsNodeOpen)
-            {
-                <FluentTabs ShowActiveIndicator="false" Style="width:100%" OnTabChange="HandleOnTabChange" @bind-ActiveTabId=@row.Tab>
-                    <FluentTab Label="Backgrounds" Id="Backgrounds">
-                        <Content>
-                            <BackGroundList GetAll="GetAll" Parent="@App.Project.CurrentCase"></BackGroundList>
-                        </Content>
+    <ContentNode>
+        <BusinessCasesTab GetAll="GetAll" Parent="@context"></BusinessCasesTab>
 
-                    </FluentTab>
-
-                    <FluentTab Label="Expert Judgement" Id="Expert">
-                        <Content>
-                            <ExpertJudgementList GetAll="GetAll" Parent="@App.Project.CurrentCase"></ExpertJudgementList>
-                        </Content>
-
-                    </FluentTab>
-                    <FluentTab Label="Scope" Id="Scope">
-                        <Content>
-                            <ScopeList GetAll="GetAll" Parent="@App.Project.CurrentCase"></ScopeList>
-                        </Content>
-
-                    </FluentTab>
-                    <FluentTab Label="Known risks" Id="Known">
-                        <Content>
-                            <KnownRiskList GetAll="GetAll" Parent="@App.Project.CurrentCase"></KnownRiskList>
-                        </Content>
-
-                    </FluentTab>
-                    <FluentTab Label="Sucessfull factors" Id="Sucessfull">
-                        <Content>
-                            <SucessfullFactorList GetAll="GetAll" Parent="@App.Project.CurrentCase"></SucessfullFactorList>
-                        </Content>
-
-                    </FluentTab>
-                    <FluentTab Label="Decission criterias" Id="Decission">
-                        <Content>
-                            <DecissionCriteriaList GetAll="GetAll" Parent="@App.Project.CurrentCase"></DecissionCriteriaList>
-                        </Content>
-
-                    </FluentTab>
-                </FluentTabs>
-            }
-
-        </FluentStack>
-    }
+    </ContentNode>
+</TemplatedList>
 
 
-</FluentStack>
 
 
 @code {
@@ -107,13 +57,13 @@
         }
         else
         {
-        
+
             if (currentCase != null)
             {
                 currentCase.Close();
                 await GenericService.UpdateState(currentCase);
             }
-                  
+
             App.Project.CurrentCase = response;
 
             App.Project.CurrentCase.Open();
@@ -132,18 +82,6 @@
         }
         StateHasChanged();
 
-    }
-    private async Task HandleOnTabChange(FluentTab tab)
-    {
-        if (App.Project == null) return;
-        if (App.Project.CurrentCase != null)
-        {
-            App.Project.CurrentCase.Tab = tab.Id;
-            await GenericService.UpdateState(App.Project.CurrentCase);
-        }
-
-
-        StateHasChanged();
     }
 
 }

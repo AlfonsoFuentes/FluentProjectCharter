@@ -18,7 +18,11 @@ namespace Web.Infrastructure.Validators.Valves
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).WithMessage("Budget must be defined!");
+            RuleFor(x => x.Budget).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
+
+
+            RuleFor(x => x.ProvisionalTag).NotEmpty().When(x => x.ShowProvisionalTag && !x.ShowDetails)
+            .WithMessage("Tag must be defined!");
 
             RuleFor(x => x.Model).NotEmpty().When(x => x.ShowDetails)
             .WithMessage("Model must be defined!");
@@ -72,9 +76,15 @@ namespace Web.Infrastructure.Validators.Valves
             RuleFor(x => x.TagNumber).NotEmpty().When(x => x.ShowDetails)
                 .WithMessage("Tag Number must be defined!");
 
-            RuleFor(x => x.Tag).NotEmpty().When(x => x.ShowDetails)
+            RuleFor(x => x.Tag)
                 .MustAsync(ReviewIfTagExist)
+                .When(x => x.ShowDetails && !x.ShowProvisionalTag)
                .WithMessage(x => $"{x.Tag} already exist");
+
+            RuleFor(x => x.ProvisionalTag)
+                .MustAsync(ReviewIfTagExist)
+                .When(x => !x.ShowDetails && x.ShowProvisionalTag)
+               .WithMessage(x => $"{x.ProvisionalTag} already exist");
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
                 .When(x => !string.IsNullOrEmpty(x.Name))
@@ -96,13 +106,12 @@ namespace Web.Infrastructure.Validators.Valves
             var result = await Service.Validate(validate);
             return !result;
         }
-        async Task<bool> ReviewIfTagExist(CreateValveRequest request, string name, CancellationToken cancellationToken)
+        async Task<bool> ReviewIfTagExist(CreateValveRequest request, string tag, CancellationToken cancellationToken)
         {
             ValidateValveTagRequest validate = new()
             {
-                Name = name,
 
-                Tag = request.Tag,
+                Tag = tag,
                 ProjectId = request.ProjectId,
 
 
@@ -153,9 +162,12 @@ namespace Web.Infrastructure.Validators.Valves
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).WithMessage("Budget must be defined!");
+            RuleFor(x => x.Budget).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
             RuleFor(x => x.Model).NotEmpty().When(x => x.ShowDetails)
           .WithMessage("Model must be defined!");
+
+            RuleFor(x => x.ProvisionalTag).NotEmpty().When(x => x.ShowProvisionalTag && !x.ShowDetails)
+            .WithMessage("Tag must be defined!");
 
             RuleFor(x => x.Material).NotEqual(MaterialEnum.None).When(x => x.ShowDetails)
            .WithMessage("Material must be defined!");
@@ -207,9 +219,15 @@ namespace Web.Infrastructure.Validators.Valves
             RuleFor(x => x.TagNumber).NotEmpty().When(x => x.ShowDetails)
                 .WithMessage("Tag Number must be defined!");
 
-            RuleFor(x => x.Tag).NotEmpty().When(x => x.ShowDetails)
+            RuleFor(x => x.Tag)
                 .MustAsync(ReviewIfTagExist)
+                .When(x => x.ShowDetails && !x.ShowProvisionalTag)
                .WithMessage(x => $"{x.Tag} already exist");
+
+            RuleFor(x => x.ProvisionalTag)
+                .MustAsync(ReviewIfTagExist)
+                .When(x => !x.ShowDetails && x.ShowProvisionalTag)
+               .WithMessage(x => $"{x.ProvisionalTag} already exist");
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
                 .When(x => !string.IsNullOrEmpty(x.Name))
@@ -230,15 +248,13 @@ namespace Web.Infrastructure.Validators.Valves
             var result = await Service.Validate(validate);
             return !result;
         }
-        async Task<bool> ReviewIfTagExist(UpdateValveRequest request, string name, CancellationToken cancellationToken)
+        async Task<bool> ReviewIfTagExist(UpdateValveRequest request, string tag, CancellationToken cancellationToken)
         {
             ValidateValveTagRequest validate = new()
             {
-                Name = name,
-
-                Tag = request.Tag,
+                Tag = tag,
                 ProjectId = request.ProjectId,
-
+                Id = request.Id,
 
             };
             var result = await Service.Validate(validate);

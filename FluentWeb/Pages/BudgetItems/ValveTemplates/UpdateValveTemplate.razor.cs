@@ -43,6 +43,7 @@ public partial class UpdateValveTemplate
                 
 
             };
+            await LoadFromLocalStorage();
             SelectedBrand = Model.Brand;
         }
     }
@@ -56,6 +57,17 @@ public partial class UpdateValveTemplate
     }
     void AddBrand()
     {
-        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
+    }
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? Model;
     }
 }

@@ -1,43 +1,48 @@
 ﻿@page "/StakeHolders"
 
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%">
-    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
-        <FluentButton Id="addstakh" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
+<TemplatedList T="StakeHolderResponse" FilteredItems="@FilteredItems" Title="@($"Manage {Title}")" Context="context">
+    <MenuButtons>
+        <FluentButton Id="add" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
         </FluentButton>
-        <FluentTooltip Anchor="addstakh" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add StakeHolder</FluentTooltip>
+        <FluentTooltip Anchor="add" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>@($"Add {Title}")</FluentTooltip>
 
-        <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage StakeHolders</strong></FluentLabel>
+
+
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
-                      Placeholder="Search..." />
-    </FluentStack>
-    @foreach (var row in FilteredItems)
-    {
-        <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
-            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-            <FluentSpacer />
-            <div>
-                <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
-
-                </FluentButton>
-                <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
-
-                </FluentButton>
-                <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
+    </MenuButtons>
+    <Content>
+        <FluentGrid AdaptiveRendering="true" Style="width:100%" Justify="JustifyContent.FlexStart">
+            <FluentGridItem xs="6" sm="6">
+                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="6" sm="6">
+                <FluentLabel Typo="Typography.Body">@context.Area</FluentLabel>
+            </FluentGridItem>
+        </FluentGrid>
 
 
-            </div>
-        </FluentStack>
+    </Content>
+    <Buttons>
+        <FluentButton Id="@($"edit{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))">
 
-    }
+        </FluentButton>
+        <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+        <FluentButton Id="@($"delete{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))">
+
+        </FluentButton>
+        <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+
+    </Buttons>
 
 
-</FluentStack>
+</TemplatedList>
+
 
 @code {
 
+    string Title = "StakeHolders";
 
 }

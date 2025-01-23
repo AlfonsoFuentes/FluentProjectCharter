@@ -36,12 +36,17 @@ namespace Shared.Models.BudgetItems.Valves.Responses
         public ValveTypesEnum Type { get; set; } = ValveTypesEnum.None;
 
         public string TagNumber { get; set; } = string.Empty;
-        public string Tag => $"{TagLetter}-{TagNumber}";
-   
+        public string Tag => ShowProvisionalTag ? ProvisionalTag : $"{TagLetter}-{TagNumber}";
+
+        
+
         public string TagLetter { get; set; } = string.Empty;
         public BrandResponse BrandResponse { get; set; } = new();
         public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
         public List<NozzleResponse> Nozzles { get; set; } = new();
         public bool ShowDetails { get; set; } = false;
+        public bool IsExisting { get; set; }
+        public string ProvisionalTag {  get; set; } = string.Empty;
+        public bool ShowProvisionalTag { get; set; } = false;
     }
 }

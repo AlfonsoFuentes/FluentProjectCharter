@@ -1,54 +1,41 @@
-﻿@using Shared.Models.Scopes.Records
-@using Shared.Models.Scopes.Responses
+﻿
 
 
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:solid 1px lightgray;padding:6px; border-radius:5px;">
-    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Scopes</strong></FluentLabel>
-    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+<TemplatedList T="ScopeResponse" FilteredItems="@FilteredItems" Title="Manage Scopes" Context="context">
+    <MenuButtons>
         <FluentButton Id="addScop" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
         </FluentButton>
         <FluentTooltip Anchor="addScop" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Scope</FluentTooltip>
-
-      
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
-                      Placeholder="Search..." />
-    </FluentStack>
-    @foreach (var row in FilteredItems)
-    {
-        <FluentStack Orientation=" Orientation.Vertical" Style="border:solid 1px lightgray;padding:6px; border-radius:5px;">
-            <FluentStack Orientation=" Orientation.Horizontal">
-                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-                <FluentSpacer />
-                <div>
-                    <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
+    </MenuButtons>
+    <Content>
+        <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</FluentLabel>
+    </Content>
+    <Buttons>
+        <FluentButton Id="@($"edit{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))">
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                    <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
+        </FluentButton>
+        <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+        <FluentButton Id="@($"delete{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))">
 
-                    </FluentButton>
-                    <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+        </FluentButton>
+        <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
-                    <FluentButton Id="@($"Show{row.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(row))"></FluentButton>
-                    <FluentTooltip Anchor="@($"Show{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
+        <FluentButton Id="@($"Show{context.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(context))"></FluentButton>
+        <FluentTooltip Anchor="@($"Show{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
 
-                </div>
-            </FluentStack>
-            @if (row.IsNodeOpen)
-            {
-                <DeliverableList Parent="@App.Project.CurrentCase!.CurrentScope" GetAll="GetAll"></DeliverableList>
-            }
+    </Buttons>
 
-        </FluentStack>
-    }
+    <ContentNode>
+        <ScopeTabs GetAll="GetAll" Parent="@context"></ScopeTabs>
+     
 
+    </ContentNode>
+</TemplatedList>
 
-
-
-</FluentStack>
 
 @code {
 
@@ -97,5 +84,16 @@
         }
         StateHasChanged();
     }
+    private async Task HandleOnTabChange(FluentTab tab)
+    {
+        if (App.Project == null || App.Project.CurrentCase == null || App.Project.CurrentCase.CurrentScope == null) return;
+        if (App.Project.CurrentCase.CurrentScope!= null)
+        {
+            App.Project.CurrentCase.CurrentScope.Tab = tab.Id;
+            await GenericService.UpdateState(App.Project.CurrentCase.CurrentScope);
+        }
 
+        StateHasChanged();
+
+    }
 }

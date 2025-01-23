@@ -5,7 +5,7 @@ namespace Shared.Models.Deliverables.Records
 {
     public class GetAllDeliverableRequest : GetByIdMessageResponse, IGetAll
     {
-        public string EndPointName => StaticClass.SubDeliverables.EndPoint.GetAll;
+        public string EndPointName => StaticClass.Deliverables.EndPoint.GetAll;
         public Guid DeliverableId { get; set; }
         public Guid ProjectId { get; set; }
 

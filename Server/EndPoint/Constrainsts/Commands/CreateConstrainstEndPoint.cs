@@ -11,7 +11,7 @@ namespace Server.EndPoint.Constrainsts.Commands
             {
                 app.MapPost(StaticClass.Constrainsts.EndPoint.Create, async (CreateConstrainstRequest Data, IRepository Repository) =>
                 {
-                    var row = Constrainst.Create(Data.ProjectId, Data.DeliverableId);
+                    var row = Constrainst.Create(Data.ProjectId, Data.ScopeId);
 
                     await Repository.AddAsync(row);
 

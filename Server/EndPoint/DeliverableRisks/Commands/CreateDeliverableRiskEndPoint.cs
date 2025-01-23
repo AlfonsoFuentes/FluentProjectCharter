@@ -11,7 +11,7 @@ namespace Server.EndPoint.DeliverableRisks.Commands
             {
                 app.MapPost(StaticClass.DeliverableRisks.EndPoint.Create, async (CreateDeliverableRiskRequest Data, IRepository Repository) =>
                 {
-                    var row = DeliverableRisk.Create(Data.DeliverableId);
+                    var row = DeliverableRisk.Create(Data.ScopeId);
 
                     await Repository.AddAsync(row);
 

@@ -17,14 +17,14 @@
         public static SignalTypeEnum ModBus = Create(4, "Mod Bus");
         public static SignalTypeEnum DeviceNet = Create(5, "Device Net");
         public static SignalTypeEnum Hart = Create(6, "HART");
-        public static SignalTypeEnum NoSignal = Create(7, "No Signal");
+        public static SignalTypeEnum NotApplicable = Create(7, "Not Applicable");
         public static List<SignalTypeEnum> List = new List<SignalTypeEnum>()
         {
-            None,mA_4_20, VDC24, VAC110,Ethernet, ModBus, DeviceNet, Hart, NoSignal
+            None,mA_4_20, VDC24, VAC110,Ethernet, ModBus, DeviceNet, Hart, NotApplicable
         };
         public static List<SignalTypeEnum> ListForValves = new List<SignalTypeEnum>()
         {
-            None,mA_4_20, VDC24, VAC110
+            None,mA_4_20, VDC24, VAC110,NotApplicable, 
         };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;
 

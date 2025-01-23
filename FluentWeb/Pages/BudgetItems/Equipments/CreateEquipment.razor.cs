@@ -1,4 +1,6 @@
+using FluentWeb.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Shared.Models.Brands.Records;
 using Shared.Models.Brands.Responses;
 using Shared.Models.BudgetItems.Equipments.Requests;
@@ -6,6 +8,8 @@ using Shared.Models.BudgetItems.Nozzles.Responses;
 using Shared.Models.Templates.Equipments.Records;
 using Shared.Models.Templates.Equipments.Responses;
 using Shared.StaticClasses;
+using System.Text.Json;
+#nullable disable
 
 namespace FluentWeb.Pages.BudgetItems.Equipments;
 public partial class CreateEquipment
@@ -15,14 +19,17 @@ public partial class CreateEquipment
     public Guid ProjectId { get; set; }
     [Parameter]
     public Guid DeliverableId { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
         await GetAllEquipmentTemplate();
         await GetBrands();
+        await LoadFromLocalStorage();
+        SelectedBrand = Model.Brand;
         Model.ProjectId = ProjectId;
         Model.DeliverableId = DeliverableId;
+
     }
+   
 
     EquipmentTemplateResponseList EquipmentTemplateResponseList = new();
     async Task GetAllEquipmentTemplate()
@@ -71,7 +78,18 @@ public partial class CreateEquipment
     }
     void AddBrand()
     {
-        Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo(StaticClass.Brands.PageName.Create);
+        });
     }
-   
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Model);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Model = await _localModelStorage.LoadFromLocalStorage(Model) ?? new();
+    }
+
 }

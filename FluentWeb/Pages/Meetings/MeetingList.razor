@@ -1,71 +1,51 @@
-﻿
-
-
-<FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:1px solid lightgray;border-radius:5px; padding:4px;">
-    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>Manage Meetings</strong></FluentLabel>
-    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+﻿<TemplatedList T="MeetingResponse" FilteredItems="@FilteredItems" Title="@($"Manage {Title}")" Context="context">
+    <MenuButtons>
         <FluentButton Id="addmeeting" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
         </FluentButton>
-        <FluentTooltip Anchor="addmeeting" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Meeting</FluentTooltip>
+        <FluentTooltip Anchor="addmeeting" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>@($"Add {Title}")"</FluentTooltip>
 
-       
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())"
-                      Placeholder="Search..." />
-    </FluentStack>
-    @foreach (var row in FilteredItems)
-    {
-        <FluentStack Orientation="Orientation.Horizontal" Style="border:1px solid lightgray;border-radius:5px; padding:4px;" VerticalAlignment="VerticalAlignment.Center">
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
+    </MenuButtons>
+    <Content>
+        <FluentGrid AdaptiveRendering="true" Style="width:100%" Justify="JustifyContent.FlexStart">
+            <FluentGridItem xs="12" sm="7">
+                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="2">
+                <FluentLabel Typo="Typography.Body">@context.MeetingType</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="3">
+                <FluentLabel Typo="Typography.Body">@context.sDateOfMeeting</FluentLabel>
+            </FluentGridItem>
 
-            <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word;">@row.Name</FluentLabel>
-            <FluentLabel Style="overflow-wrap: break-word;">@row.DateofMeeting!.Value.ToString("d")</FluentLabel>
-            <FluentLabel Style="overflow-wrap: break-word;">@row.MeetingType</FluentLabel>
-
-            <FluentSpacer />
-            <div>
-                <FluentButton Id="@($"edit{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(row))">
-
-                </FluentButton>
-                <FluentTooltip Anchor="@($"edit{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-                <FluentButton Id="@($"delete{row.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(row))">
-
-                </FluentButton>
-                <FluentTooltip Anchor="@($"delete{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
-
-                <FluentButton Id="@($"Show{row.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(row))"></FluentButton>
-                <FluentTooltip Anchor="@($"Show{row.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
+        </FluentGrid>
 
 
+    </Content>
+    <Buttons>
+        <FluentButton Id="@($"edit{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))"></FluentButton>
+        <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+       
+        <FluentButton Id="@($"delete{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))"></FluentButton>
+        <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+        
 
-            </div>
-        </FluentStack>
-        @if (row.IsNodeOpen)
-        {
-            <FluentTabs ShowActiveIndicator="false" Style="width:100%" OnTabChange="HandleOnTabChange" @bind-ActiveTabId=@row.Tab>
-                <FluentTab Label="Meeting Attendants" Id="Attendants">
-                    <Content>
-                      <MeetingAttendantList GetAll="GetAll" Parent="row"></MeetingAttendantList>
-                    </Content>
+        <FluentButton Id="@($"Show{context.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(context))"></FluentButton>
+        <FluentTooltip Anchor="@($"Show{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
+    </Buttons>
+    <ContentNode>
+        <MeetinTabs GetAll="GetAll" Parent="context"></MeetinTabs>
+    </ContentNode>
 
-                </FluentTab>
-                <FluentTab Label="Meeting Agreements" Id="Agreements">
-                    <Content>
-                        <MeetingAgreementList  GetAll="GetAll" Parent="row"></MeetingAgreementList>
-                    </Content>
-
-                </FluentTab>
-            </FluentTabs>
-        }
-
-    }
+</TemplatedList>
 
 
-</FluentStack>
 
 @code {
-
+    string Title = "Meeting";
     public async Task Show(MeetingResponse response)
     {
         if (App.ProjectList.CurrentProject == null) return;

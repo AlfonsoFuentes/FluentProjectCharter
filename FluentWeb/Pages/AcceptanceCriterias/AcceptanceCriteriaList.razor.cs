@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.Deliverables.Responses;
 using Shared.Models.AcceptanceCriterias.Requests;
 using Shared.Models.AcceptanceCriterias.Responses;
+using Shared.Models.Scopes.Responses;
 using Web.Infrastructure.Managers.Generic;
 
 namespace FluentWeb.Pages.AcceptanceCriterias;
@@ -11,11 +11,12 @@ public partial class AcceptanceCriteriaList
     [CascadingParameter]
     public App App { get; set; }
     [Parameter]
+
     [EditorRequired]
-    public Guid DeliverableId { get; set; }
-    [Parameter]
-    [EditorRequired]
-    public Guid ProjectId { get; set; }
+    public ScopeResponse Parent { get; set; } = new();
+
+    public List<AcceptanceCriteriaResponse> Items => Parent == null ? new() : Parent.AcceptanceCriterias;
+
     [Parameter]
     [EditorRequired]
     public Func<Task> GetAll { get; set; }
@@ -23,20 +24,18 @@ public partial class AcceptanceCriteriaList
 
     [Inject]
     private IGenericService Service { get; set; } = null!;
-    [Parameter]
-    [EditorRequired]
-    public List<AcceptanceCriteriaResponse> Items { get; set; }
+  
     string nameFilter;
     public List<AcceptanceCriteriaResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items : Items.Where(x => x.Name.ToLower().Contains(nameFilter)).ToList();
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateAcceptanceCriteria/{DeliverableId}/{ProjectId}");
+        Navigation.NavigateTo($"/CreateAcceptanceCriteria/{Parent.ProjectId}/{Parent.Id}");
 
     }
 
     void Edit(AcceptanceCriteriaResponse response)
     {
-        Navigation.NavigateTo($"/UpdateAcceptanceCriteria/{response.Id}/{ProjectId}");
+        Navigation.NavigateTo($"/UpdateAcceptanceCriteria/{response.Id}/{Parent.ProjectId}");
     }
     public async Task Delete(AcceptanceCriteriaResponse response)
     {
@@ -52,7 +51,7 @@ public partial class AcceptanceCriteriaList
             {
                 Id = response.Id,
                 Name = response.Name,
-                ProjectId = ProjectId,
+                ProjectId = Parent.ProjectId,
             };
             var resultDelete = await Service.Delete(request);
             if (resultDelete.Succeeded)
