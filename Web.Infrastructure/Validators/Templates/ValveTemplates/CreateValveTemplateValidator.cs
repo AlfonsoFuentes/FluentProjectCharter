@@ -1,14 +1,12 @@
-﻿using Shared.Enums.Materials;
+﻿using Shared.Enums.ConnectionTypes;
+using Shared.Enums.DiameterEnum;
+using Shared.Enums.Materials;
+using Shared.Enums.NozzleTypes;
+using Shared.Enums.ValvesEnum;
+using Shared.Models.Templates.NozzleTemplates;
 using Shared.Models.Templates.Valves.Requests;
 using Shared.Models.Templates.Valves.Validators;
-using Shared.Models.Templates.NozzleTemplates;
 using Web.Infrastructure.Managers.Generic;
-using FluentValidation;
-using Shared.Enums.ValvesEnum;
-using Shared.Enums.DiameterEnum;
-using Shared.Enums.NozzleTypes;
-using Shared.Models.BudgetItems.Nozzles.Responses;
-using Shared.Enums.ConnectionTypes;
 
 namespace Web.Infrastructure.Validators.Templates.ValveTemplates
 {

@@ -8,7 +8,7 @@
             {
                 app.MapPost(StaticClass.Bennefits.EndPoint.GetById, async (GetBennefitByIdRequest request, IQueryRepository Repository) =>
                 {
-                   
+
                     Expression<Func<Bennefit, bool>> Criteria = x => x.Id == request.Id;
 
                     string CacheKey = StaticClass.Bennefits.Cache.GetById(request.Id);
@@ -19,22 +19,23 @@
                         return Result.Fail(request.NotFound);
                     }
 
-                    var response = row.Map(request.ProjectId);
+                    var response = row.Map();
                     return Result.Success(response);
 
                 });
             }
         }
 
-        public static BennefitResponse Map(this Bennefit row, Guid ProjectId)
+        public static BennefitResponse Map(this Bennefit row)
         {
             return new()
             {
                 Id = row.Id,
                 Name = row.Name,
-                ScopeId = row.ScopeId,
-          
-                ProjectId = ProjectId,
+                ProjectId = row.ProjectId,
+                Order = row.Order,
+                StartId = row.StartId,
+                PlanningId = row.PlanningId,
             };
         }
 

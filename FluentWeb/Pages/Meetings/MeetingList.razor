@@ -1,4 +1,4 @@
-﻿<TemplatedList T="MeetingResponse" FilteredItems="@FilteredItems" Title="@($"Manage {Title}")" Context="context">
+﻿@* <TemplatedList T="MeetingResponse" FilteredItems="@FilteredItems" Title="@($"Manage {Title}")" Context="context">
     <MenuButtons>
         <FluentButton Id="addmeeting" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
@@ -28,61 +28,28 @@
     <Buttons>
         <FluentButton Id="@($"edit{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))"></FluentButton>
         <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
-       
+
         <FluentButton Id="@($"delete{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))"></FluentButton>
         <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
-        
+
 
         <FluentButton Id="@($"Show{context.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(context))"></FluentButton>
         <FluentTooltip Anchor="@($"Show{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
     </Buttons>
     <ContentNode>
-        <MeetinTabs GetAll="GetAll" Parent="context"></MeetinTabs>
+        @if (App.CurrentMeeting != null && App.CurrentMeeting.Id == context.Id)
+        {
+            <MeetinTabs GetAll="GetAll" Parent="@App.CurrentMeeting"></MeetinTabs>
+        }
+        
     </ContentNode>
 
-</TemplatedList>
+</TemplatedList> *@
 
 
 
 @code {
-    string Title = "Meeting";
-    public async Task Show(MeetingResponse response)
-    {
-        if (App.ProjectList.CurrentProject == null) return;
-        if (App.ProjectList.CurrentProject.CurrentMeeting == null)
-        {
-            App.ProjectList.CurrentProject.CurrentMeeting = response;
-            response.Open();
-            await GenericService.UpdateState(response);
+    // string Title = "Meeting";
+  
 
-        }
-        else if (App.ProjectList.CurrentProject.CurrentMeeting.Id == response.Id)
-        {
-            response.Close();
-            App.ProjectList.CurrentProject.CurrentMeeting = null!;
-            await GenericService.UpdateState(response);
-        }
-        else
-        {
-            App.ProjectList.CurrentProject.CurrentMeeting.Close();
-            await GenericService.UpdateState(App.ProjectList.CurrentProject.CurrentMeeting);
-            App.ProjectList.CurrentProject.CurrentMeeting = response;
-
-            response.Open();
-            await GenericService.UpdateState(response);
-        }
-        StateHasChanged();
-
-    }
-    private async Task HandleOnTabChange(FluentTab tab)
-    {
-        if (App.ProjectList.CurrentProject == null) return;
-        if (App.ProjectList.CurrentProject.CurrentMeeting != null)
-        {
-            App.ProjectList.CurrentProject.CurrentMeeting.Tab = tab.Id;
-            await GenericService.UpdateState(App.ProjectList.CurrentProject.CurrentMeeting);
-        }
-
-        StateHasChanged();
-    }
 }

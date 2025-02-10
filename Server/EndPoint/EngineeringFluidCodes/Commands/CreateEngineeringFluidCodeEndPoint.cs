@@ -3,7 +3,7 @@
 
 using Server.Database.Entities;
 using Server.EndPoint.EngineeringFluidCodes.Queries;
-using Shared.Models.OrganizationStrategies.Requests;
+using Shared.Models.EngineeringFluidCodes.Requests;
 using System.Threading;
 
 namespace Server.EndPoint.EngineeringFluidCodes.Commands

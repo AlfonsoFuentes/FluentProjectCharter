@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.Cases.Responses;
-using Shared.Models.Projects.Reponses;
 using Shared.Models.StakeHolders.Requests;
 using Shared.Models.StakeHolders.Responses;
 using Web.Infrastructure.Managers.Generic;

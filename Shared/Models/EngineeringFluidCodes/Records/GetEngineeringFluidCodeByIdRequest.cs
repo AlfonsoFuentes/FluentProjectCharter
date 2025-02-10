@@ -1,7 +1,7 @@
 ﻿using Shared.Models.FileResults.Generics.Records;
 using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.OrganizationStrategies.Records
+namespace Shared.Models.EngineeringFluidCodes.Records
 {
 
     public class GetEngineeringFluidCodeByIdRequest : GetByIdMessageResponse, IGetById

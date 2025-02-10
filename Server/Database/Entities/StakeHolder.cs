@@ -17,7 +17,7 @@ namespace Server.Database.Entities
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
-     
+
         public string Area { get; set; } = string.Empty;
 
         [ForeignKey("ExpertId")]
@@ -27,6 +27,29 @@ namespace Server.Database.Entities
         public List<Requirement> RequirementRequestedBys { get; set; } = new();
         [ForeignKey("ResponsibleId")]
         public List<Requirement> RequirementResponsibles { get; set; } = new();
+        public static StakeHolder CreateStart(Guid ProjectId, Guid StartId)
+        {
+            return new()
+            {
+                Id = Guid.NewGuid(),
+
+                StartId = StartId,
+
+            };
+        }
+        public static StakeHolder CreatePlanning(Guid ProjectId, Guid PlanningId)
+        {
+            return new()
+            {
+                Id = Guid.NewGuid(),
+
+
+
+                PlanningId = PlanningId
+            };
+        }
+       public Guid? StartId { get; set; }
+        public Guid? PlanningId { get; set; }
         public static StakeHolder Create()
         {
             return new()
@@ -36,6 +59,6 @@ namespace Server.Database.Entities
             };
         }
         public RoleInsideProject? RoleInsideProject { get; set; } = null!;
-        public Guid? RoleInsideProjectId {  get; set; }
+        public Guid? RoleInsideProjectId { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Shared.Enums.StakeHolderTypes;
-using Shared.Models.StakeHolders.Requests;
+using Shared.Models.StakeHolderInsideProjects.Requests;
 
 namespace Web.Infrastructure.Validators.BackGrounds
 {

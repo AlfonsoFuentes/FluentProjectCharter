@@ -3,9 +3,9 @@ using Shared.Enums.ConnectionTypes;
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
-using Shared.Models.BudgetItems.Equipments.Requests;
-using Shared.Models.BudgetItems.Equipments.Validators;
-using Shared.Models.BudgetItems.Nozzles.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Equipments.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Equipments.Validators;
+using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Shared.Models.Templates.NozzleTemplates;
 using Web.Infrastructure.Managers.Generic;
 
@@ -77,8 +77,8 @@ namespace Web.Infrastructure.Validators.BudgetItems.Equipments
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
                 ProjectId = request.ProjectId,
+
 
 
             };
@@ -91,7 +91,6 @@ namespace Web.Infrastructure.Validators.BudgetItems.Equipments
             {
                 Tag = tag,
                 ProjectId = request.ProjectId,
-
 
             };
             var result = await Service.Validate(validate);
@@ -183,9 +182,9 @@ namespace Web.Infrastructure.Validators.BudgetItems.Equipments
             ValidateEquipmentRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+              
 
             };
             var result = await Service.Validate(validate);
@@ -199,7 +198,6 @@ namespace Web.Infrastructure.Validators.BudgetItems.Equipments
                 Id = request.Id,
                 Tag = tag,
                 ProjectId = request.ProjectId,
-
 
             };
             var result = await Service.Validate(validate);

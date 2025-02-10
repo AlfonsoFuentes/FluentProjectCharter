@@ -47,70 +47,8 @@ namespace Shared.StaticClasses
             public static string Received = "received";
             public static string ChangeStatus = "changed status";
         }
-        public static class Temporarys
-        {
-            public static string ClassLegend = "Temporarys";
-            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
-            public static class EndPoint
-            {
-                public static string Create = $"{ClassName}/{Actions.Create}";
-
-                public static string Update = $"{ClassName}/{Actions.Update}";
-                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
-                public static string GetById = $"{ClassName}/{Actions.GetById}";
-                public static string Delete = $"{ClassName}/{Actions.Delete}";
-                public static string Export = $"{ClassName}/{Actions.Export}";
-                public static string Validate = $"{ClassName}/{Actions.Validate}";
-            }
-            public static class Cache
-            {
-
-                public static string[] Key(Guid BrandId) => new[] { GetAll, GetById(BrandId) };
-                public static string GetAll => $"GetAll-{ClassName}";
-                public static string GetById(Guid BrandId) => $"GetById-{ClassName}-{BrandId}";
-            }
-            public static class PageName
-            {
-                public static string Create = $"Create{ClassName}";
-                public static string Update = $"Update{ClassName}";
-                public static string GetAll = $"GetAll{ClassName}";
-
-            }
-
-
-        }
-        public static class WBSs
-        {
-            public static string ClassLegend = "WBS";
-            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
-            public static class EndPoint
-            {
-                public static string Create = $"{ClassName}/{Actions.Create}";
-
-                public static string Update = $"{ClassName}/{Actions.Update}";
-                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
-                public static string GetById = $"{ClassName}/{Actions.GetById}";
-                public static string Delete = $"{ClassName}/{Actions.Delete}";
-                public static string Export = $"{ClassName}/{Actions.Export}";
-                public static string Validate = $"{ClassName}/{Actions.Validate}";
-            }
-            public static class Cache
-            {
-
-                public static string[] Key(Guid BrandId) => new[] { GetAll, GetById(BrandId) };
-                public static string GetAll => $"GetAll-{ClassName}";
-                public static string GetById(Guid BrandId) => $"GetById-{ClassName}-{BrandId}";
-            }
-            public static class PageName
-            {
-                public static string Create = $"Create{ClassName}";
-                public static string Update = $"Update{ClassName}";
-                public static string GetAll = $"GetAll{ClassName}";
-
-            }
-
-
-        }
+       
+     
         public static class EngineeringFluidCodes
         {
             public static string ClassLegend = "Engineering Fluid Code";
@@ -209,7 +147,7 @@ namespace Shared.StaticClasses
         }
         public static class Nozzles
         {
-            public static string ClassLegend = "Equipment Template";
+            public static string ClassLegend = "Nozzle";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
@@ -344,19 +282,26 @@ namespace Shared.StaticClasses
                 public static string Create = $"{ClassName}/{Actions.Create}";
                 public static string UpdateState = $"{ClassName}/{Actions.Update}State";
                 public static string Update = $"{ClassName}/{Actions.Update}";
+                public static string UpdateName = $"{ClassName}/{Actions.Update}Name";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string UpdateDatabase = $"{ClassName}/{Actions.GetAll}UpdateDatabase";
+                public static string GetAllTreeView = $"{ClassName}/{Actions.GetAll}TreeView";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
+                public static string GetCompleteById = $"{ClassName}/{Actions.GetById}Complete";
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
-                public static string Export = $"{ClassName}/{Actions.Export}";
-                //public static string Export = "ExportProject";
+                public static string ProjectCharter = $"{ClassName}/{Actions.Export}Charter";
+                public static string ProjectPlann = $"{ClassName}/{Actions.Export}Plann";
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Validate = $"{ClassName}/{Actions.Validate}";
             }
             public static class Cache
             {
 
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
+                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id), GetCompleteById(Id) };
                 public static string GetAll => $"GetAll-{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
+                public static string GetCompleteById(Guid Id) => $"GetCompleteById-{ClassName}-{Id}";
             }
             public static class PageName
             {
@@ -368,57 +313,54 @@ namespace Shared.StaticClasses
 
 
         }
-        public static class AppStates
+        public static class Apps
         {
-            public static string ClassLegend = "AppState";
+            public static string ClassLegend = "App";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
-                public static string Update = $"{ClassName}/{Actions.Update}";
-                public static string UpdateActiveProject = $"{ClassName}/{Actions.Update}ActiveProject";
-                public static string UpdateProjectTab = $"{ClassName}/{Actions.Update}ProjectTab";
-                public static string UpdateProjectCase = $"{ClassName}/{Actions.Update}ProjectCase";
-                public static string UpdateProjectMeeting = $"{ClassName}/{Actions.Update}ProjectMeeting";
-                public static string UpdateCaseTab = $"{ClassName}/{Actions.Update}CaseTab";
-                public static string UpdateMeetingTab = $"{ClassName}/{Actions.Update}MeetingTab";
-                public static string UpdateCaseScope = $"{ClassName}/{Actions.Update}CaseScope";
-                public static string UpdateScopeTab = $"{ClassName}/{Actions.Update}ScopeTab";
-                public static string UpdateScopeDeliverable = $"{ClassName}/{Actions.Update}ScopeDeliverable";
-                public static string UpdateDeliverableTab = $"{ClassName}/{Actions.Update}DeliverableTab";
                 public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string UpdateState = $"{ClassName}/{Actions.Update}State";
+                public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
-                public static string Delete = $"{ClassName}/{Actions.Delete}";
-                public static string Export = $"{ClassName}/{Actions.Export}";
-                public static string Validate = $"{ClassName}/{Actions.Validate}";
+                public static string UpdateDatabase = $"{ClassName}/{Actions.GetAll}UpdateDatabase";
+                public static string GetAllTreeView = $"{ClassName}/{Actions.GetAll}TreeView";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
-                public static string GetByIdInitial = $"{ClassName}/{Actions.GetById}Initial";
-
+                public static string GetCompleteById = $"{ClassName}/{Actions.GetById}Complete";
+                public static string Delete = $"{ClassName}/{Actions.Delete}";
+                public static string ProjectCharter = $"{ClassName}/{Actions.Export}Charter";
+                public static string ProjectPlann = $"{ClassName}/{Actions.Export}Plann";
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
+                public static string Validate = $"{ClassName}/{Actions.Validate}";
             }
             public static class Cache
             {
 
-                public static List<string> Key(Guid Id) => new() {
-                    GetAll,
-                    GetById(Id)};
+                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id), GetCompleteById(Id) };
                 public static string GetAll => $"GetAll-{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
+                public static string GetCompleteById(Guid Id) => $"GetCompleteById-{ClassName}-{Id}";
             }
             public static class PageName
             {
                 public static string Create = $"Create{ClassName}";
                 public static string Update = $"Update{ClassName}";
                 public static string GetAll = $"GetAll{ClassName}";
-
+                public static string Complete = $"Complete{ClassName}";
             }
 
 
         }
-        public static class Cases
+
+        public static class Objectives
         {
-            public static string ClassLegend = "Business Case";
+            public static string ClassLegend = "Objectives";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Create = $"{ClassName}/{Actions.Create}";
                 public static string UpdateState = $"{ClassName}/{Actions.Update}State";
                 public static string Update = $"{ClassName}/{Actions.Update}";
@@ -445,40 +387,7 @@ namespace Shared.StaticClasses
 
 
         }
-        public static class HighLevelRequirements
-        {
-            public static string ClassLegend = "High Level Requirment";
-            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
-            public static class EndPoint
-            {
-                public static string Create = $"{ClassName}/{Actions.Create}";
-
-                public static string Update = $"{ClassName}/{Actions.Update}";
-                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
-                public static string GetById = $"{ClassName}/{Actions.GetById}";
-                public static string Delete = $"{ClassName}/{Actions.Delete}";
-                public static string Export = $"{ClassName}/{Actions.Export}";
-                public static string Validate = $"{ClassName}/{Actions.Validate}";
-            }
-            public static class Cache
-            {
-
-                public static List<string> Key(Guid Id) => new() {
-                    GetAll,
-                    GetById(Id)};
-                public static string GetAll => $"GetAll-{ClassName}";
-                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
-            }
-            public static class PageName
-            {
-                public static string Create = $"Create{ClassName}";
-                public static string Update = $"Update{ClassName}";
-                public static string GetAll = $"GetAll{ClassName}";
-
-            }
-
-
-        }
+     
         public static class Assumptions
         {
             public static string ClassLegend = "Assumption";
@@ -486,7 +395,8 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
@@ -514,12 +424,13 @@ namespace Shared.StaticClasses
 
         public static class BackGrounds
         {
-            public static string ClassLegend = "BackGround";
+            public static string ClassLegend = "Background";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
@@ -551,7 +462,8 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
@@ -583,71 +495,6 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-
-                public static string Update = $"{ClassName}/{Actions.Update}";
-                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
-                public static string GetById = $"{ClassName}/{Actions.GetById}";
-                public static string Delete = $"{ClassName}/{Actions.Delete}";
-                public static string Export = $"{ClassName}/{Actions.Export}";
-                public static string Validate = $"{ClassName}/{Actions.Validate}";
-            }
-            public static class Cache
-            {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
-                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
-            }
-            public static class PageName
-            {
-                public static string Create = $"Create{ClassName}";
-                public static string Update = $"Update{ClassName}";
-                public static string GetAll = $"GetAll{ClassName}";
-
-            }
-
-
-        }
-        public static class DecissionCriterias
-        {
-            public static string ClassLegend = "Decission Criteria";
-            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
-            public static class EndPoint
-            {
-                public static string Create = $"{ClassName}/{Actions.Create}";
-
-                public static string Update = $"{ClassName}/{Actions.Update}";
-                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
-                public static string GetById = $"{ClassName}/{Actions.GetById}";
-                public static string Delete = $"{ClassName}/{Actions.Delete}";
-                public static string Export = $"{ClassName}/{Actions.Export}";
-                public static string Validate = $"{ClassName}/{Actions.Validate}";
-            }
-            public static class Cache
-            {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
-                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
-            }
-            public static class PageName
-            {
-                public static string Create = $"Create{ClassName}";
-                public static string Update = $"Update{ClassName}";
-                public static string GetAll = $"GetAll{ClassName}";
-
-            }
-
-
-        }
-        public static class Deliverables
-        {
-            public static string ClassLegend = "Deliverable";
-            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
-            public static class EndPoint
-            {
-                public static string Create = $"{ClassName}/{Actions.Create}";
-                public static string UpdateState = $"{ClassName}/{Actions.Update}State";
                 public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
                 public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Update = $"{ClassName}/{Actions.Update}";
@@ -674,15 +521,93 @@ namespace Shared.StaticClasses
 
 
         }
-   
-        public static class DeliverableRisks
+     
+        public static class Deliverables
         {
-            public static string ClassLegend = "Deliverable Risk";
+            public static string ClassLegend = "Deliverable";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string UpdateState = $"{ClassName}/{Actions.Update}State";
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
+                public static string Update = $"{ClassName}/{Actions.Update}";
+                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string GetAllProject = $"{ClassName}/{Actions.GetAll}Project";
+                public static string GetById = $"{ClassName}/{Actions.GetById}";
+                public static string Delete = $"{ClassName}/{Actions.Delete}";
+                public static string Export = $"{ClassName}/{Actions.Export}";
+                public static string Validate = $"{ClassName}/{Actions.Validate}";
+            }
+            public static class Cache
+            {
 
+                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
+                public static string GetAll => $"GetAll-{ClassName}";
+                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
+            }
+            public static class PageName
+            {
+                public static string Create = $"Create{ClassName}";
+                public static string Update = $"Update{ClassName}";
+                public static string GetAll = $"GetAll{ClassName}";
+
+            }
+
+
+        }
+        public static class Milestones
+        {
+            public static string ClassLegend = "Milestone";
+            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
+            public static class EndPoint
+            {
+                public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string UpdateState = $"{ClassName}/{Actions.Update}State";
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
+                public static string UpdateRight = $"{ClassName}/{Actions.Update}Right";
+                public static string UpdateLeft = $"{ClassName}/{Actions.Update}Left";
+                public static string Update = $"{ClassName}/{Actions.Update}";
+                public static string UpdateName = $"{ClassName}/{Actions.Update}Name";
+                public static string UpdateAllDates = $"{ClassName}/{Actions.Update}AllDates";
+                public static string UpdateDependency = $"{ClassName}/{Actions.Update}Dependency";
+                public static string UpdateDependencyType = $"{ClassName}/{Actions.Update}DependencyType";
+                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string GetAllProject = $"{ClassName}/{Actions.GetAll}Project";
+                public static string GetById = $"{ClassName}/{Actions.GetById}";
+                public static string Delete = $"{ClassName}/{Actions.Delete}";
+                public static string Export = $"{ClassName}/{Actions.Export}";
+                public static string Validate = $"{ClassName}/{Actions.Validate}";
+            }
+            public static class Cache
+            {
+
+                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
+                public static string GetAll => $"GetAll-{ClassName}";
+                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
+            }
+            public static class PageName
+            {
+                public static string Create = $"Create{ClassName}";
+                public static string Update = $"Update{ClassName}";
+                public static string GetAll = $"GetAll{ClassName}";
+
+            }
+
+
+        }
+       
+        public static class KnownRisks
+        {
+            public static string ClassLegend = "Known Risk";
+            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
+            public static class EndPoint
+            {
+                public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
@@ -707,14 +632,147 @@ namespace Shared.StaticClasses
 
 
         }
-        public static class KnownRisks
+        public static class LearnedLessons
         {
-            public static string ClassLegend = "Known Risk";
+            public static string ClassLegend = "Learned Lesson";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
+                public static string Update = $"{ClassName}/{Actions.Update}";
+                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string GetById = $"{ClassName}/{Actions.GetById}";
+                public static string Delete = $"{ClassName}/{Actions.Delete}";
+                public static string Export = $"{ClassName}/{Actions.Export}";
+                public static string Validate = $"{ClassName}/{Actions.Validate}";
+            }
+            public static class Cache
+            {
 
+                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
+                public static string GetAll => $"GetAll-{ClassName}";
+                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
+            }
+            public static class PageName
+            {
+                public static string Create = $"Create{ClassName}";
+                public static string Update = $"Update{ClassName}";
+                public static string GetAll = $"GetAll{ClassName}";
+
+            }
+
+
+        }
+        public static class Qualitys
+        {
+            public static string ClassLegend = "Quality";
+            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
+            public static class EndPoint
+            {
+                public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
+                public static string Update = $"{ClassName}/{Actions.Update}";
+                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string GetById = $"{ClassName}/{Actions.GetById}";
+                public static string Delete = $"{ClassName}/{Actions.Delete}";
+                public static string Export = $"{ClassName}/{Actions.Export}";
+                public static string Validate = $"{ClassName}/{Actions.Validate}";
+            }
+            public static class Cache
+            {
+
+                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
+                public static string GetAll => $"GetAll-{ClassName}";
+                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
+            }
+            public static class PageName
+            {
+                public static string Create = $"Create{ClassName}";
+                public static string Update = $"Update{ClassName}";
+                public static string GetAll = $"GetAll{ClassName}";
+
+            }
+
+
+        }
+        public static class Acquisitions
+        {
+            public static string ClassLegend = "Acquisition";
+            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
+            public static class EndPoint
+            {
+                public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
+                public static string Update = $"{ClassName}/{Actions.Update}";
+                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string GetById = $"{ClassName}/{Actions.GetById}";
+                public static string Delete = $"{ClassName}/{Actions.Delete}";
+                public static string Export = $"{ClassName}/{Actions.Export}";
+                public static string Validate = $"{ClassName}/{Actions.Validate}";
+            }
+            public static class Cache
+            {
+
+                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
+                public static string GetAll => $"GetAll-{ClassName}";
+                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
+            }
+            public static class PageName
+            {
+                public static string Create = $"Create{ClassName}";
+                public static string Update = $"Update{ClassName}";
+                public static string GetAll = $"GetAll{ClassName}";
+
+            }
+
+
+        }
+        public static class Communications
+        {
+            public static string ClassLegend = "Communication";
+            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
+            public static class EndPoint
+            {
+                public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
+                public static string Update = $"{ClassName}/{Actions.Update}";
+                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string GetById = $"{ClassName}/{Actions.GetById}";
+                public static string Delete = $"{ClassName}/{Actions.Delete}";
+                public static string Export = $"{ClassName}/{Actions.Export}";
+                public static string Validate = $"{ClassName}/{Actions.Validate}";
+            }
+            public static class Cache
+            {
+
+                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
+                public static string GetAll => $"GetAll-{ClassName}";
+                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
+            }
+            public static class PageName
+            {
+                public static string Create = $"Create{ClassName}";
+                public static string Update = $"Update{ClassName}";
+                public static string GetAll = $"GetAll{ClassName}";
+
+            }
+
+
+        }
+        public static class Resources
+        {
+            public static string ClassLegend = "Resource";
+            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
+            public static class EndPoint
+            {
+                public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
@@ -745,6 +803,8 @@ namespace Shared.StaticClasses
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Create = $"{ClassName}/{Actions.Create}";
                 public static string UpdateState = $"{ClassName}/{Actions.Update}State";
                 public static string Update = $"{ClassName}/{Actions.Update}";
@@ -806,7 +866,7 @@ namespace Shared.StaticClasses
         }
         public static class MeetingAgreements
         {
-            public static string ClassLegend = "Meeting Attendant Suggestion";
+            public static string ClassLegend = "Meeting Attendant Agreement";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
@@ -843,7 +903,8 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
@@ -868,38 +929,7 @@ namespace Shared.StaticClasses
 
 
         }
-        public static class OrganizationStrategys
-        {
-            public static string ClassLegend = "Organtization Strategy";
-            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
-            public static class EndPoint
-            {
-                public static string Create = $"{ClassName}/{Actions.Create}";
-
-                public static string Update = $"{ClassName}/{Actions.Update}";
-                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
-                public static string GetById = $"{ClassName}/{Actions.GetById}";
-                public static string Delete = $"{ClassName}/{Actions.Delete}";
-                public static string Export = $"{ClassName}/{Actions.Export}";
-                public static string Validate = $"{ClassName}/{Actions.Validate}";
-            }
-            public static class Cache
-            {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
-                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
-            }
-            public static class PageName
-            {
-                public static string Create = $"Create{ClassName}";
-                public static string Update = $"Update{ClassName}";
-                public static string GetAll = $"GetAll{ClassName}";
-
-            }
-
-
-        }
+    
         public static class AcceptanceCriterias
         {
             public static string ClassLegend = "Acceptance Criterias";
@@ -907,7 +937,8 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
@@ -939,7 +970,8 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
@@ -970,6 +1002,8 @@ namespace Shared.StaticClasses
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Create = $"{ClassName}/{Actions.Create}";
                 public static string UpdateState = $"{ClassName}/{Actions.Update}State";
                 public static string Update = $"{ClassName}/{Actions.Update}";
@@ -981,7 +1015,7 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
+               
                 public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
                 public static string GetAll => $"GetAll-{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
@@ -1003,16 +1037,15 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-                public static string CreateInsideProject = $"{ClassName}/{Actions.Create}InsideProject";
+     
 
                 public static string Update = $"{ClassName}/{Actions.Update}";
-                public static string UpdateInsideProject = $"{ClassName}/{Actions.Update}InsideProject";
+ 
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
-                public static string GetByIdInsideProject = $"{ClassName}/{Actions.GetById}InsideProject";
-
+     
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
-                public static string DeleteInsideProject = $"{ClassName}/{Actions.Delete}InsideProject";
+      
                 public static string Export = $"{ClassName}/{Actions.Export}";
                 public static string Validate = $"{ClassName}/{Actions.Validate}";
             }
@@ -1033,14 +1066,15 @@ namespace Shared.StaticClasses
 
 
         }
-        public static class SucessfullFactors
+        public static class StakeHolderInsideProjects
         {
-            public static string ClassLegend = "Succesfull factor";
-            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
+            public static string ClassLegend = "Stakeholder Inside Project";
+            public static string ClassName => "StakeProject";
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-
+                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
+                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
@@ -1067,7 +1101,7 @@ namespace Shared.StaticClasses
         }
         public static class BudgetItems
         {
-            public static string ClassLegend = "Electricals";
+            public static string ClassLegend = "Budget Items";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
@@ -1077,6 +1111,9 @@ namespace Shared.StaticClasses
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
+                public static string DeleteGroup = $"{ClassName}/{Actions.Delete}DeleteGroup";
+                public static string MoveGroup = $"{ClassName}/{Actions.Delete}MoveGroup";
+                public static string CopyGroup = $"{ClassName}/{Actions.Delete}CopyGroup";
                 public static string Export = $"{ClassName}/{Actions.Export}";
                 public static string Validate = $"{ClassName}/{Actions.Validate}";
             }
@@ -1099,7 +1136,7 @@ namespace Shared.StaticClasses
         }
         public static class Alterations
         {
-            public static string ClassLegend = "Electricals";
+            public static string ClassLegend = "Alteration";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
@@ -1487,7 +1524,7 @@ namespace Shared.StaticClasses
         }
         public static class EngineeringDesigns
         {
-            public static string ClassLegend = "Engineering";
+            public static string ClassLegend = "Engineering Design";
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {

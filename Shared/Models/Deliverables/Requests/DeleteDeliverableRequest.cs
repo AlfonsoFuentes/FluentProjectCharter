@@ -8,6 +8,7 @@ namespace Shared.Models.Deliverables.Requests
         public override string Legend => Name;
 
         public override string ClassName => StaticClass.Deliverables.ClassName;
+
         public Guid ProjectId { get; set; }
         public Guid Id { get; set; }
 

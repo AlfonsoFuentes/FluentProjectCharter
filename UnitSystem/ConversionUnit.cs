@@ -135,6 +135,30 @@ namespace UnitSystem
         }
 
     }
+    public class MilestoneDuration : Amount
+    {
+        public MilestoneDuration() : this(0)
+        {
+
+        }
+        public MilestoneDuration(double dvalue) : base(dvalue, MilestoneDurationUnits.Day)
+        {
+
+        }
+        public MilestoneDuration(double dvalue, UnitMeasure u) : base(dvalue, u)
+        {
+
+        }
+        public MilestoneDuration(UnitMeasure u) : this(0, u)
+        {
+
+        }
+        public MilestoneDuration(double dvalue, string u) : base(dvalue, u)
+        {
+
+        }
+
+    }
     public class Velocity : Amount
     {
         public Velocity() : this(0)

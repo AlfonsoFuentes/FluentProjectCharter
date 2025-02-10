@@ -14,14 +14,23 @@ namespace Server.EndPoint.MeetingsGroup.Meetings.Commands
                     if (row == null) { return Result.Fail(Data.NotFound); }
                     await Repository.RemoveAsync(row);
 
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Meetings.Cache.Key(row.Id)];
+                    var cache = GetCacheKeys(row);
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+                    await Repository.RemoveAsync(row);
+
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
                 });
+            }
+            private string[] GetCacheKeys(Meeting row)
+            {
+                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
+                    StaticClass.Meetings.Cache.GetAll
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
     }

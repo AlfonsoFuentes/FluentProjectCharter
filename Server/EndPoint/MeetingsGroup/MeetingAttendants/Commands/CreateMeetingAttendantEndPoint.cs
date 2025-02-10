@@ -1,4 +1,5 @@
-﻿using Shared.Models.MeetingAttendants.Requests;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Shared.Models.MeetingAttendants.Requests;
 
 namespace Server.EndPoint.MeetingsGroup.MeetingAttendants.Commands
 {
@@ -14,19 +15,27 @@ namespace Server.EndPoint.MeetingsGroup.MeetingAttendants.Commands
 
                     await Repository.AddAsync(row);
 
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Meetings.Cache.Key(row.Id)];
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row,Data.ProjectId));
 
-                    await ReviewStakeHolderInProject(Data,Repository);
+                    await ReviewStakeHolderInProject(Data, Repository);
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
-
-
                 });
 
 
+            }
+
+
+            private string[] GetCacheKeys(MeetingAttendant row, Guid ProjectId)
+            {
+                List<string> cacheKeys = [
+                       .. StaticClass.Projects.Cache.Key(ProjectId),
+                    .. StaticClass.Meetings.Cache.Key(row.MeetingId),
+                    .. StaticClass.MeetingAttendants.Cache.Key(row.Id)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
             async Task ReviewStakeHolderInProject(CreateMeetingAttendantRequest Data, IRepository Repository)
             {

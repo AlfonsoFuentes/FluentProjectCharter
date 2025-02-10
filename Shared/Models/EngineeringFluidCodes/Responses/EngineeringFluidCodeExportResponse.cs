@@ -1,4 +1,4 @@
-﻿namespace Shared.Models.OrganizationStrategies.Responses
+﻿namespace Shared.Models.EngineeringFluidCodes.Responses
 {
     public class EngineeringFluidCodeExportResponse
     {

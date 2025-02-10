@@ -10,32 +10,32 @@ namespace Server.Database.Configurations
         {
             builder.HasKey(ci => ci.Id);
 
-            builder.HasMany(x => x.Deliverables)
-         .WithOne(t => t.Scope)
-         .HasForeignKey(e => e.ScopeId)
-        .IsRequired()
-         .OnDelete(DeleteBehavior.Cascade);
+        //    builder.HasMany(x => x.Deliverables)
+        // .WithOne(t => t.Scope)
+        // .HasForeignKey(e => e.ScopeId)
+        //.IsRequired()
+        // .OnDelete(DeleteBehavior.Cascade);
 
 
 
-            builder.HasMany(x => x.DeliverableRisks)
-           .WithOne(t => t.Scope)
-           .HasForeignKey(e => e.ScopeId)
-       .IsRequired()
-           .OnDelete(DeleteBehavior.Cascade);
+       //     builder.HasMany(x => x.DeliverableRisks)
+       //    .WithOne(t => t.Scope)
+       //    .HasForeignKey(e => e.ScopeId)
+       //.IsRequired()
+       //    .OnDelete(DeleteBehavior.Cascade);
 
 
-            builder.HasMany(x => x.Bennefits)
-            .WithOne(t => t.Scope)
-            .HasForeignKey(e => e.ScopeId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
+           // builder.HasMany(x => x.Bennefits)
+           // .WithOne(t => t.Scope)
+           // .HasForeignKey(e => e.ScopeId)
+           // .IsRequired()
+           // .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(x => x.AcceptanceCriterias)
-           .WithOne(t => t.Scope)
-           .HasForeignKey(e => e.ScopeId)
-           .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
+           // builder.HasMany(x => x.AcceptanceCriterias)
+           //.WithOne(t => t.Scope)
+           //.HasForeignKey(e => e.ScopeId)
+           //.IsRequired()
+           // .OnDelete(DeleteBehavior.Cascade);
         }
 
     }

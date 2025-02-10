@@ -9,7 +9,7 @@ namespace Shared.Models.ExpertJudgements.Requests
         public override string Legend => Name;
         public StakeHolderResponse? Expert { get; set; }
         public override string ClassName => StaticClass.ExpertJudgements.ClassName;
-        public Guid ProjectId { get; set; }
+     
         public Guid Id { get; set; }
 
         public string EndPointName => StaticClass.ExpertJudgements.EndPoint.Delete;

@@ -1,0 +1,30 @@
+﻿@page "/UpdateFoundations/{Id:guid}"
+
+@using Shared.Models.BudgetItems.IndividualItems.Foundations.Requests
+
+
+
+<EditTemplate @ref=EditForm TItem="UpdateFoundationRequest" @bind-Model=@Model
+              Title="Edit Foundation">
+    <Content>
+        <TextBox Label="Name"
+                 @bind-Value=@Model.Name
+                 Placeholder="Define name"
+                 Validate="EditForm.ValidateAsync"></TextBox>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+
+        <NumberField @bind-Value="@Model.UnitaryCost" Label="Unitary Cost, USD" Validate="EditForm.ValidateAsync">
+
+        </NumberField>
+        <ValidationMessage For="() => Model.UnitaryCost" style="color:red; font-size:x-small;" />
+
+        <NumberField @bind-Value="@Model.Quantity" Label="Quantity" Validate="EditForm.ValidateAsync"></NumberField>
+
+        <FluentLabel Typo="Typography.Body">Budget: @Model.sBudget</FluentLabel>
+    </Content>
+
+</EditTemplate>
+
+@code {
+    EditTemplate<UpdateFoundationRequest> EditForm = null!;
+}

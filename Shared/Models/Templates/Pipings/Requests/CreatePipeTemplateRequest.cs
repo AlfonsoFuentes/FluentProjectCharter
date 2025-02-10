@@ -4,7 +4,7 @@ using Shared.Models.Brands.Responses;
 using Shared.Models.FileResults.Generics.Request;
 using Shared.Models.Templates.NozzleTemplates;
 
-namespace Shared.Models.Templates.Pipes.Requests
+namespace Shared.Models.Templates.Pipings.Requests
 {
     public class CreatePipeTemplateRequest : CreateMessageResponse, IRequest
     {

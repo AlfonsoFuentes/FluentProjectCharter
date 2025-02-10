@@ -1,5 +1,8 @@
 ﻿
 
+using Server.EndPoint.MeetingsGroup.MeetingAgreements.Queries;
+using Server.EndPoint.MeetingsGroup.MeetingAttendants.Queries;
+
 namespace Server.EndPoint.MeetingsGroup.Meetings.Queries
 {
     public static class GetMeetingByIdEndPoint
@@ -10,10 +13,11 @@ namespace Server.EndPoint.MeetingsGroup.Meetings.Queries
             {
                 app.MapPost(StaticClass.Meetings.EndPoint.GetById, async (GetMeetingByIdRequest request, IQueryRepository Repository) =>
                 {
-                    Func<IQueryable<Meeting>, IIncludableQueryable<Meeting, object>> Includes = x =>
-                    x.Include(x => x.MeetingAttendants).
-                  Include(x => x.MeetingAgreements)
-                    ;
+                    Func<IQueryable<Meeting>, IIncludableQueryable<Meeting, object>> Includes = x => x
+                    .Where(x => x.Id == request.Id)
+                    .Include(x => x.MeetingAttendants).ThenInclude(x => x.StakeHolder!)
+                    .Include(x => x.MeetingAgreements)
+
 
                     ;
 
@@ -43,14 +47,13 @@ namespace Server.EndPoint.MeetingsGroup.Meetings.Queries
                 MeetingType = row.MeetingType,
                 Subject = row.Subject,
                 ProjectId = row.ProjectId,
-                IsNodeOpen=row.IsNodeOpen,
-                Tab = row.Tab,  
+               
                 Attendants = row.MeetingAttendants == null || row.MeetingAttendants.Count == 0 ? new() :
                 row.MeetingAttendants.Select(x => x.Map(row.ProjectId)).ToList(),
 
                 Agreements = row.MeetingAgreements == null || row.MeetingAgreements.Count == 0 ? new() :
                 row.MeetingAgreements.Select(x => x.Map(row.ProjectId)).ToList(),
-
+                Order = row.Order,
 
             };
         }

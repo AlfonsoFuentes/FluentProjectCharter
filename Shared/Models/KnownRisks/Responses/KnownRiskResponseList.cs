@@ -1,6 +1,8 @@
-﻿namespace Shared.Models.KnownRisks.Responses
+﻿using Shared.Models.FileResults.Generics.Reponses;
+
+namespace Shared.Models.KnownRisks.Responses
 {
-    public class KnownRiskResponseList
+    public class KnownRiskResponseList : IResponseAll
     {
         public List<KnownRiskResponse> Items { get; set; } = new();
     }

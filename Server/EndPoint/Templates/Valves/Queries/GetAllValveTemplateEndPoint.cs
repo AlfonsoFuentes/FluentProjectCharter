@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Templates.Valves.Records;
 using Shared.Models.Templates.Valves.Responses;
 
-namespace Server.EndPoint.ValveTemplates.Queries
+namespace Server.EndPoint.Templates.Valves.Queries
 {
     public static class GetAllValveTemplateEndPoint
     {
@@ -11,9 +11,9 @@ namespace Server.EndPoint.ValveTemplates.Queries
             {
                 app.MapPost(StaticClass.ValveTemplates.EndPoint.GetAll, async (ValveTemplateGetAll request, IQueryRepository Repository) =>
                 {
-                    Func<IQueryable<ValveTemplate>, IIncludableQueryable<ValveTemplate, object>>Includes = x => x
+                    Func<IQueryable<ValveTemplate>, IIncludableQueryable<ValveTemplate, object>> Includes = x => x
                     .Include(x => x.NozzleTemplates)
-                    .Include(x=>x.BrandTemplate!)
+                    .Include(x => x.BrandTemplate!)
                      ;
 
                     string CacheKey = StaticClass.ValveTemplates.Cache.GetAll;

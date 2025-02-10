@@ -14,8 +14,6 @@ namespace Server.Database.Contracts
         public DateTime CreatedOn { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? DeletedOnUtc { get; set; }
-
-
-
+        public int Order { get; set; }
     }
 }

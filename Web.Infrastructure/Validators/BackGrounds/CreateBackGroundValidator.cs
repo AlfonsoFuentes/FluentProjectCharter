@@ -25,7 +25,7 @@ namespace Web.Infrastructure.Validators.BackGrounds
             ValidateBackGroundRequest validate = new()
             {
                 Name = name,
-                CaseId = request.CaseId,
+                ProjectId = request.ProjectId,
 
             };
             var result = await Service.Validate(validate);
@@ -53,7 +53,7 @@ namespace Web.Infrastructure.Validators.BackGrounds
             ValidateBackGroundRequest validate = new()
             {
                 Name = name,
-                CaseId = request.CaseId,
+                ProjectId = request.ProjectId,
                 Id = request.Id
 
             };

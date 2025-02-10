@@ -2,10 +2,9 @@
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
-using Shared.Models.BudgetItems.Nozzles.Responses;
-using Shared.Models.Templates.Pipes.Requests;
-using Shared.Models.Templates.Pipes.Validators;
 using Shared.Models.Templates.NozzleTemplates;
+using Shared.Models.Templates.Pipings.Requests;
+using Shared.Models.Templates.Pipings.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.Templates.PipeTemplates

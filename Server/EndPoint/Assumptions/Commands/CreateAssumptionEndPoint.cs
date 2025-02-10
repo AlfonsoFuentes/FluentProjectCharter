@@ -16,14 +16,18 @@ namespace Server.EndPoint.Assumptions.Commands
             {
                 app.MapPost(StaticClass.Assumptions.EndPoint.Create, async (CreateAssumptionRequest Data, IRepository Repository) =>
                 {
-                    var row = Assumption.Create(Data.ProjectId,Data.ScopeId);
+                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
+                        return Result.Fail();
+                    var lastorder = await Repository.GetLastOrderAsync<Assumption, Project>(Data.ProjectId);
+
+                    var row = Assumption.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
 
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Assumptions.Cache.Key(row.Id)];
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
 
 
                     return Result.EndPointResult(result,
@@ -34,6 +38,14 @@ namespace Server.EndPoint.Assumptions.Commands
                 });
 
 
+            }
+            private string[] GetCacheKeys(Assumption row)
+            {
+                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
+
+                    .. StaticClass.Assumptions.Cache.Key(row.Id)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 

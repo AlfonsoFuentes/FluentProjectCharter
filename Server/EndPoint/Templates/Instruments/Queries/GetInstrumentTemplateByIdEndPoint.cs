@@ -1,15 +1,16 @@
-﻿
-
-using Server.EndPoint.Brands.Queries;
+﻿using Server.EndPoint.Brands.Queries;
+using Server.EndPoint.Templates.Instruments.Queries;
 using Shared.Enums.ConnectionTypes;
 using Shared.Enums.DiameterEnum;
+using Shared.Enums.Instruments;
 using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
+using Shared.Enums.ValvesEnum;
 using Shared.Models.Templates.Instruments.Records;
 using Shared.Models.Templates.Instruments.Responses;
 using Shared.Models.Templates.NozzleTemplates;
 
-namespace Server.EndPoint.InstrumentTemplates.Queries
+namespace Server.EndPoint.Templates.Instruments.Queries
 {
     public static class GetInstrumentTemplateByIdEndPoint
     {
@@ -54,7 +55,7 @@ namespace Server.EndPoint.InstrumentTemplates.Queries
                 Model = row.Model,
                 Reference = row.Reference,
                 SubType = ModifierVariableInstrumentEnum.GetTypeByName(row.SubType),
-               
+
                 Type = VariableInstrumentEnum.GetTypeByName(row.Type),
                 Value = row.Value,
                 SignalType = SignalTypeEnum.GetType(row.SignalType),

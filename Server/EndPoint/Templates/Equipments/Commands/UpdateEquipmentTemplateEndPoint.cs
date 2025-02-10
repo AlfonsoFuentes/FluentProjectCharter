@@ -1,8 +1,7 @@
-﻿using Shared.Models.OrganizationStrategies.Requests;
-using Shared.Models.Templates.Equipments.Requests;
+﻿using Shared.Models.Templates.Equipments.Requests;
 using Shared.Models.Templates.NozzleTemplates;
 
-namespace Server.EndPoint.EquipmentTemplates.Commands
+namespace Server.EndPoint.Templates.Equipments.Commands
 {
     public static class UpdateEquipmentTemplateEndPoint
     {

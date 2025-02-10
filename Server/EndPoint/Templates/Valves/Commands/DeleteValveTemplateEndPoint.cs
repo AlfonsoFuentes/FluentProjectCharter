@@ -1,12 +1,6 @@
-﻿
+﻿using Shared.Models.Templates.Valves.Requests;
 
-
-
-using Server.Database.Entities;
-using Shared.Models.OrganizationStrategies.Requests;
-using Shared.Models.Templates.Valves.Requests;
-
-namespace Server.EndPoint.ValveTemplates.Commands
+namespace Server.EndPoint.Templates.Valves.Commands
 {
     public static class DeleteValveTemplateEndPoint
     {
@@ -18,9 +12,9 @@ namespace Server.EndPoint.ValveTemplates.Commands
                 {
                     Func<IQueryable<ValveTemplate>, IIncludableQueryable<ValveTemplate, object>> Includes = x => x
                     .Include(x => x.Valves);
-                    Expression<Func<ValveTemplate, bool>> Criteria = x =>x.Id == Data.Id;
+                    Expression<Func<ValveTemplate, bool>> Criteria = x => x.Id == Data.Id;
 
-                    var row = await Repository.GetAsync(Criteria:Criteria,Includes:Includes);
+                    var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
 
                     if (row == null) { return Result.Fail(Data.NotFound); }
                     foreach (var item in row.Valves)

@@ -1,4 +1,4 @@
-﻿using Shared.Models.OrganizationStrategies.Validators;
+﻿using Shared.Models.EngineeringFluidCodes.Validators;
 
 namespace Server.EndPoint.EngineeringFluidCodes.Validators
 {

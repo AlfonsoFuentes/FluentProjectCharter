@@ -15,15 +15,23 @@ namespace Server.EndPoint.Constrainsts.Commands
                     if (row == null) { return Result.Fail(Data.NotFound); }
                     await Repository.UpdateAsync(row);
                     Data.Map(row);
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(row.ProjectId), .. StaticClass.Constrainsts.Cache.Key(row.Id)];
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
-
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
+
                 });
+
+
+            }
+            private string[] GetCacheKeys(Constrainst row)
+            {
+                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
+                 
+                    .. StaticClass.Constrainsts.Cache.Key(row.Id)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 

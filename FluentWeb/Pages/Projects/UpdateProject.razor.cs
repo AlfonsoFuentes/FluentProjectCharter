@@ -26,8 +26,7 @@ public partial class UpdateProject
                 Id = result.Data.Id,
                 Name = result.Data.Name,
                 ProjectNeedType = result.Data.ProjectNeedType,
-                InitialBudget = result.Data.InitialBudget,
-                ProjectDescription = result.Data.ProjectDescription,
+               
                 Manager = result.Data.Manager,
                 Sponsor = result.Data.Sponsor,
                 InitialProjectDate = result.Data.InitialProjectDate,

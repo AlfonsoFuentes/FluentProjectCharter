@@ -9,8 +9,9 @@ using Shared.Models.Templates.Valves.Records;
 using Shared.Models.Templates.Valves.Responses;
 using Shared.Models.Templates.NozzleTemplates;
 using Shared.Enums.ValvesEnum;
+using Server.EndPoint.Templates.Valves.Queries;
 
-namespace Server.EndPoint.ValveTemplates.Queries
+namespace Server.EndPoint.Templates.Valves.Queries
 {
     public static class GetValveTemplateByIdEndPoint
     {
@@ -53,7 +54,7 @@ namespace Server.EndPoint.ValveTemplates.Queries
                 Material = MaterialEnum.GetType(row.Material),
                 Model = row.Model,
                 ActuatorType = ActuatorTypeEnum.GetType(row.ActuatorType),
-                Type =ValveTypesEnum.GetTypeByName(row.Type),
+                Type = ValveTypesEnum.GetTypeByName(row.Type),
                 Diameter = NominalDiameterEnum.GetType(row.Diameter),
                 FailType = FailTypeEnum.GetType(row.FailType),
                 HasFeedBack = row.HasFeedBack,

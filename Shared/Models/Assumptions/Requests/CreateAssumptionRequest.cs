@@ -4,6 +4,9 @@ namespace Shared.Models.Assumptions.Requests
 {
     public class CreateAssumptionRequest : CreateMessageResponse, IRequest
     {
+        public Guid? StartId { get; set; }
+        public Guid? PlanningId { get; set; }
+       
         public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;
         public Guid? ScopeId { get; set; }

@@ -1,0 +1,78 @@
+﻿
+@*
+<TemplatedList T="IBudgetItemResponse" FilteredItems="@FilteredItems" Title="@($"Manage {Title}")" Context="context">
+    <MenuButtons>
+          <FluentGrid AdaptiveRendering="true" Style="padding: 4px;width:100%; ">
+
+
+           <FluentGridItem xs="12" sm="12" md="2">
+                <FluentLabel Typo="Typography.H6"><strong>Expenses, USD</strong></FluentLabel>
+                <FluentLabel Typo="Typography.H6">@Parent.sTotalExpenses</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="2">
+                <FluentLabel Typo="Typography.H6"><strong>Capital, USD</strong></FluentLabel>
+                <FluentLabel Typo="Typography.H6">@Parent.sTotalCapital</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="2">
+                <FluentLabel Typo="Typography.H6"><strong>Capital (w/o VAT), USD</strong></FluentLabel>
+                <FluentLabel Typo="Typography.H6">@Parent.sTotalCapitalWithOutVAT</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="2">
+                <FluentLabel Typo="Typography.H6"><strong>Engineering, USD</strong></FluentLabel>
+                <FluentLabel Typo="Typography.H6">@Parent.sEngineeringBudget</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="2">
+                <FluentLabel Typo="Typography.H6"><strong>Contingency, USD</strong></FluentLabel>
+                <FluentLabel Typo="Typography.H6">@Parent.sContingenyBudget</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="2">
+                <FluentLabel Typo="Typography.H6"><strong>Total Taxes, USD</strong></FluentLabel>
+                <FluentLabel Typo="Typography.H6">@Parent.sTaxesBudget</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="12" md="6">
+                <FluentLabel Typo="Typography.H6"><strong>Total Budget, USD</strong></FluentLabel>
+                <FluentLabel Typo="Typography.H6">@Parent.sTotalBudget</FluentLabel>
+            </FluentGridItem>
+        </FluentGrid>
+        <FluentSpacer />
+        <FluentSearch @bind-Value="@nameFilter"
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
+    </MenuButtons>
+    <Content>
+        <FluentGrid AdaptiveRendering="true" Style="width:100%" Justify="JustifyContent.FlexStart">
+            <FluentGridItem xs="9" sm="1">
+                <FluentLabel Typo="Typography.Body">@context.Nomenclatore</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="2" sm="2">
+                <FluentLabel Typo="Typography.Body">@context.Tag</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="9" sm="7">
+                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="1" sm="2">
+                <FluentLabel Typo="Typography.Body">@context.sBudget</FluentLabel>
+            </FluentGridItem>
+        </FluentGrid>
+
+
+    </Content>
+    <Buttons>
+        <FluentButton Id="@($"edit{context.Id}")" aria-label="Edit item" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => EditBudgetItem(context))" />
+        <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+        <FluentButton Id="@($"delete{context.Id}")" aria-label="Delete item" IconEnd="@(new Icons.Regular.Size16.Delete())" OnClick="@(() => Delete(context))" />
+        <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+
+    </Buttons>
+
+
+</TemplatedList>
+
+ *@
+
+
+@code {
+
+    string Title = "Budget items";
+
+
+}

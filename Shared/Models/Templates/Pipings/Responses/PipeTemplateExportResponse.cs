@@ -1,4 +1,4 @@
-﻿namespace Shared.Models.Templates.Pipes.Responses
+﻿namespace Shared.Models.Templates.Pipings.Responses
 {
     public class PipeTemplateExportResponse
     {

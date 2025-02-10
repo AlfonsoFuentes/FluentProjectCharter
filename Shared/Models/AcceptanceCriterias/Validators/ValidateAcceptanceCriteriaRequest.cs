@@ -7,7 +7,7 @@ namespace Shared.Models.AcceptanceCriterias.Validators
     {
         public Guid? Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public Guid ScopeId { get; set; }
+        public Guid ProjectId { get; set; }
 
         public string EndPointName => StaticClass.AcceptanceCriterias.EndPoint.Validate;
 

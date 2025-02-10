@@ -1,15 +1,14 @@
-﻿
-
-using Server.EndPoint.Brands.Queries;
+﻿using Server.EndPoint.Brands.Queries;
+using Server.EndPoint.Templates.Pipes.Queries;
 using Shared.Enums.ConnectionTypes;
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
-using Shared.Models.Templates.Pipes.Records;
-using Shared.Models.Templates.Pipes.Responses;
 using Shared.Models.Templates.NozzleTemplates;
+using Shared.Models.Templates.Pipings.Records;
+using Shared.Models.Templates.Pipings.Responses;
 
-namespace Server.EndPoint.PipeTemplates.Queries
+namespace Server.EndPoint.Templates.Pipes.Queries
 {
     public static class GetPipeTemplateByIdEndPoint
     {
@@ -60,6 +59,6 @@ namespace Server.EndPoint.PipeTemplates.Queries
 
             };
         }
-       
+
     }
 }

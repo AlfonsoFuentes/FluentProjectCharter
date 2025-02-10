@@ -12,13 +12,13 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments
         public Guid? EquipmentTemplateId { get; set; }
 
 
-        public static Equipment Create(Guid ProjectId, Guid DeliverableId)
+        public static Equipment Create(Guid ProjectId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                DeliverableId = DeliverableId,
+              
             };
         }
 

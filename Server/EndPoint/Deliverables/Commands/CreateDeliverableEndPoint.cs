@@ -12,29 +12,32 @@ namespace Server.EndPoint.Deliverables.Commands
             {
                 app.MapPost(StaticClass.Deliverables.EndPoint.Create, async (CreateDeliverableRequest Data, IRepository Repository) =>
                 {
-                   var lastorder = await Repository.Context.Set<Scope>().Include(x => x.Deliverables)
-                                    .Where(s => s.Id == Data.ScopeId)
-                                    .SelectMany(s => s.Deliverables)
-                                    .OrderByDescending(d => d.Order)
-                                    .FirstOrDefaultAsync();
-                    if (lastorder == null) return Result.Fail(Data.Fail);
+                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
+                        return Result.Fail();
+                    var lastorder = await Repository.GetLastOrderAsync<Deliverable, Project>(Data.ProjectId);
 
-                    var row = Deliverable.Create(Data.ScopeId, lastorder.Order + 1);
+                    var row = Deliverable.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
 
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Deliverables.Cache.Key(row.Id)];
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
 
                 });
-
-
+            }
+            private string[] GetCacheKeys(Deliverable row)
+            {
+                List<string> cacheKeys = [
+                  
+                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
+                    .. StaticClass.Deliverables.Cache.Key(row.Id)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 
@@ -42,11 +45,12 @@ namespace Server.EndPoint.Deliverables.Commands
         static Deliverable Map(this CreateDeliverableRequest request, Deliverable row)
         {
             row.Name = request.Name;
+          
             return row;
         }
 
     }
 
-    
+
 
 }

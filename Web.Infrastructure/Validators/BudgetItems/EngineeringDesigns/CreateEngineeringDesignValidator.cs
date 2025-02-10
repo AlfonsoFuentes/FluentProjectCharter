@@ -1,5 +1,5 @@
-﻿using Shared.Models.BudgetItems.EngineeringDesigns.Requests;
-using Shared.Models.BudgetItems.EngineeringDesigns.Validators;
+﻿using Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Requests;
+using Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.EngineeringDesigns
@@ -27,8 +27,8 @@ namespace Web.Infrastructure.Validators.EngineeringDesigns
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
                 ProjectId = request.ProjectId,
+
 
 
             };
@@ -58,9 +58,9 @@ namespace Web.Infrastructure.Validators.EngineeringDesigns
             ValidateEngineeringDesignRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+        
 
             };
             var result = await Service.Validate(validate);

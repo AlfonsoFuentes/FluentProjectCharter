@@ -1,4 +1,4 @@
-﻿namespace Shared.Enums.Materials
+﻿namespace Shared.Enums.ValvesEnum
 {
     public class ActuatorTypeEnum : ValueObject
     {

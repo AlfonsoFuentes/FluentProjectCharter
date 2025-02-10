@@ -7,17 +7,22 @@ namespace Server.Database.Entities
         public string TenantId { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
 
-        public Scope Scope { get; set; } = null!;
-        public Guid ScopeId { get; set; }
+        public Project Project { get; set; } = null!;
+        public Guid ProjectId { get; set; }
 
-   
-        public static AcceptanceCriteria Create(Guid ScopeId)
+
+        public static AcceptanceCriteria Create(Guid ProjectId, Guid? StartId, Guid? PlanningId, int Order)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
-                ScopeId = ScopeId,
+                StartId = StartId,
+                ProjectId = ProjectId,
+                Order = Order,
+                PlanningId = PlanningId,
             };
         }
+        public Guid? StartId { get; set; }
+        public Guid? PlanningId { get; set; }
     }
 }

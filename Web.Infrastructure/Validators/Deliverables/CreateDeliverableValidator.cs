@@ -25,7 +25,7 @@ namespace Web.Infrastructure.Validators.Deliverables
             ValidateDeliverableRequest validate = new()
             {
                 Name = name,
-                ScopeId = request.ScopeId,
+                ProjectId = request.ProjectId,
 
 
             };
@@ -54,7 +54,7 @@ namespace Web.Infrastructure.Validators.Deliverables
             ValidateDeliverableRequest validate = new()
             {
                 Name = name,
-                ScopeId = request.ScopeId,
+                ProjectId = request.ProjectId,
                 Id = request.Id
 
             };

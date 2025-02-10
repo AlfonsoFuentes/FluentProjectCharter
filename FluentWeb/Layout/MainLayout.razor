@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using FluentWeb.Pages.Authentication
+@inherits LayoutComponentBase
+
 
 <FluentLayout>
     <FluentHeader>
@@ -12,10 +14,8 @@
             <AuthorizeView>
                 <NotAuthorized>
                     <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Center"
-                                 VerticalGap="2" VerticalAlignment="VerticalAlignment.Center" Style="padding:4px" >
-                        <div>
-                            @Body
-                        </div>
+                                 VerticalGap="2" VerticalAlignment="VerticalAlignment.Center" Style="padding:4px">
+                        @Body
                     </FluentStack>
 
 

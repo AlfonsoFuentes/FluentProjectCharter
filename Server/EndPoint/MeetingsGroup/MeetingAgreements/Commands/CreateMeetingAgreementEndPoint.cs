@@ -15,9 +15,7 @@ namespace Server.EndPoint.MeetingsGroup.MeetingAgreements.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Meetings.Cache.Key(row.Id)];
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row,Data.ProjectId));
 
                     return Result.EndPointResult(result,
                         Data.Succesfully,
@@ -25,8 +23,15 @@ namespace Server.EndPoint.MeetingsGroup.MeetingAgreements.Commands
 
 
                 });
-
-
+            }
+            private string[] GetCacheKeys(MeetingAgreement row, Guid ProjectId)
+            {
+                List<string> cacheKeys = [
+                    .. StaticClass.Projects.Cache.Key(ProjectId),
+                    .. StaticClass.Meetings.Cache.Key(row.MeetingId),
+                    .. StaticClass.MeetingAgreements.Cache.Key(row.Id)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 
@@ -34,7 +39,7 @@ namespace Server.EndPoint.MeetingsGroup.MeetingAgreements.Commands
         static MeetingAgreement Map(this CreateMeetingAgreementRequest request, MeetingAgreement row)
         {
             row.Name = request.Name;
-   
+
 
             return row;
         }

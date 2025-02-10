@@ -2,7 +2,7 @@
 
 namespace Shared.Models.Brands.Records
 {
-    public class BrandGetAll() : IGetAll
+    public class BrandGetAll : IGetAll
     {
         public string EndPointName => StaticClass.Brands.EndPoint.GetAll;
     }

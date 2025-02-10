@@ -1,11 +1,11 @@
-﻿using FluentValidation;
-using Shared.Enums.ConnectionTypes;
+﻿using Shared.Enums.ConnectionTypes;
 using Shared.Enums.DiameterEnum;
+using Shared.Enums.Instruments;
 using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
-using Shared.Models.BudgetItems.Instruments.Requests;
-using Shared.Models.BudgetItems.Instruments.Validators;
-using Shared.Models.BudgetItems.Nozzles.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Instruments.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Instruments.Validators;
+using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.Instruments
@@ -85,8 +85,8 @@ namespace Web.Infrastructure.Validators.Instruments
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
                 ProjectId = request.ProjectId,
+
 
 
             };
@@ -97,7 +97,7 @@ namespace Web.Infrastructure.Validators.Instruments
         {
             ValidateInstrumentTagRequest validate = new()
             {
-        
+
                 Tag = tag,
                 ProjectId = request.ProjectId,
 
@@ -202,9 +202,9 @@ namespace Web.Infrastructure.Validators.Instruments
             ValidateInstrumentRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+
 
             };
             var result = await Service.Validate(validate);
@@ -214,7 +214,7 @@ namespace Web.Infrastructure.Validators.Instruments
         {
             ValidateInstrumentTagRequest validate = new()
             {
-      
+
                 Id = request.Id,
                 Tag = tag,
                 ProjectId = request.ProjectId,

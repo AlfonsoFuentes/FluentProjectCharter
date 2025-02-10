@@ -1,6 +1,15 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.Cases.Responses;
+
+using Shared.Models.Deliverables.Records;
+using Shared.Models.Deliverables.Responses;
+using Shared.Models.Meetings.Responses;
+using Shared.Models.Milestones.Records;
+using Shared.Models.Milestones.Responses;
+using Shared.Models.Projects.Records;
 using Shared.Models.Projects.Reponses;
+using Shared.Models.Scopes.Records;
+using Shared.Models.Scopes.Responses;
+using Web.Infrastructure.Managers.Projects;
 using Web.Infrastructure.Services.Currencies;
 
 namespace FluentWeb;
@@ -11,22 +20,18 @@ public partial class App
     [Inject]
     public IRate _CurrencyService { get; set; }
     public ConversionRate RateList { get; set; }
-    public ProjectResponseList ProjectList { get; set; } = new();
 
-    public ProjectResponse Project => ProjectList.CurrentProject;
-  
-
+    public Guid ProjectId { get; set; }
     protected override async Task OnInitializedAsync()
     {
 
         RateList = await _CurrencyService.GetRates(DateTime.UtcNow);
 
-
-
     }
 
     public async Task GetCurrentUser()
     {
+
         var state = await _stateProvider.GetAuthenticationStateAsync();
         if (state.User.Identity.IsAuthenticated && state != new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())))
         {
@@ -42,5 +47,8 @@ public partial class App
     public char FSN => CurrentUser == null || SurName == null ? ' ' : SurName.Length == 0 ? ' ' : SurName[0];
     public string Initials => CurrentUser == null ? string.Empty : $"{FN}{FSN}";
     public string FullName => CurrentUser == null ? string.Empty : $"{Name} {SurName}";
+
+   
+
 
 }

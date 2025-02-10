@@ -15,7 +15,10 @@ public partial class Login
     }
     private TokenRequest _registerUserModel = new();
 
-
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
     private async Task SubmitAsync()
     {
         var result = await _authenticationManager.Login(_registerUserModel);
@@ -26,7 +29,7 @@ public partial class Login
         }
         else
         {
-            await App.GetCurrentUser();
+            //await App.GetCurrentUser();
             Navigation.NavigateTo("/");
         }
 

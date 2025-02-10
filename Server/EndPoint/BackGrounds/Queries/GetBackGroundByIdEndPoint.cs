@@ -25,20 +25,20 @@ namespace Server.EndPoint.BackGrounds.Queries
                         return Result.Fail(request.NotFound);
                     }
 
-                    var response = row.Map(request.ProjectId);
+                    var response = row.Map();
                     return Result.Success(response);
 
                 });
             }
         }
-        public static BackGroundResponse Map(this BackGround row, Guid ProjectId)
+        public static BackGroundResponse Map(this BackGround row)
         {
             return new()
             {
                 Id = row.Id,
                 Name = row.Name,
-                CaseId = row.CaseId,
-                ProjectId = ProjectId,
+                ProjectId = row.ProjectId,
+                Order = row.Order,
             };
         }
 

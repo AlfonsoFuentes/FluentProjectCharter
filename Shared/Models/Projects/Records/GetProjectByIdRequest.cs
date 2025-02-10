@@ -5,7 +5,7 @@ using Shared.StaticClasses;
 
 namespace Shared.Models.Projects.Records
 {
-  
+
     public class GetProjectByIdRequest : GetByIdMessageResponse, IGetById
     {
        

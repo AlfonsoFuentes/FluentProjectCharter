@@ -4,7 +4,9 @@ namespace Shared.Models.Deliverables.Requests
 {
     public class CreateDeliverableRequest : CreateMessageResponse, IRequest
     {
-        public Guid ScopeId { get; set; }
+        public Guid? StartId { get; set; }
+        public Guid? PlanningId { get; set; }
+      
         public string Name { get; set; } = string.Empty;
         public string EndPointName => StaticClass.Deliverables.EndPoint.Create;
         public Guid ProjectId { get; set; }

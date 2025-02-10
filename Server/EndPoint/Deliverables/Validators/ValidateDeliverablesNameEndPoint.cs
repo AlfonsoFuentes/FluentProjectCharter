@@ -11,7 +11,7 @@ namespace Server.EndPoint.Deliverables.Validators
             {
                 app.MapPost(StaticClass.Deliverables.EndPoint.Validate, async (ValidateDeliverableRequest Data, IQueryRepository Repository) =>
                 {
-                    Expression<Func<Deliverable, bool>> CriteriaId = x => x.ScopeId == Data.ScopeId;
+                    Expression<Func<Deliverable, bool>> CriteriaId = x => x.ProjectId == Data.ProjectId;
                     
                     Func<Deliverable, bool> CriteriaExist = x => Data.Id == null ?
 

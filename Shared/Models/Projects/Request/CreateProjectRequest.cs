@@ -10,8 +10,7 @@ namespace Shared.Models.Projects.Request
     public class CreateProjectRequest : CreateMessageResponse, IRequest
     {
         public string Name { get; set; } = string.Empty;
-        public double InitialBudget { get; set; }
-        public string ProjectDescription { get; set; } = string.Empty;
+      
         public string EndPointName => StaticClass.Projects.EndPoint.Create;
         public ProjectNeedTypeEnum ProjectNeedType { get; set; }= ProjectNeedTypeEnum.None;
         public override string Legend => Name;

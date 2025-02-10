@@ -12,7 +12,7 @@ namespace Server.EndPoint.KnownRisks.Queries
                 app.MapPost(StaticClass.KnownRisks.EndPoint.GetById, async (GetKnownRiskByIdRequest request, IQueryRepository Repository) =>
                 {
                     //Func<IQueryable<KnownRisk>, IIncludableQueryable<KnownRisk, object>> Includes = x => null!
-               
+
                     //;
 
                     Expression<Func<KnownRisk, bool>> Criteria = x => x.Id == request.Id;
@@ -25,20 +25,22 @@ namespace Server.EndPoint.KnownRisks.Queries
                         return Result.Fail(request.NotFound);
                     }
 
-                    var response = row.Map(request.ProjectId);
+                    var response = row.Map();
                     return Result.Success(response);
 
                 });
             }
         }
-        public static KnownRiskResponse Map(this KnownRisk row, Guid ProjectId)
+        public static KnownRiskResponse Map(this KnownRisk row)
         {
             return new()
             {
                 Id = row.Id,
                 Name = row.Name,
-                CaseId = row.CaseId,
-                ProjectId = ProjectId,
+                ProjectId = row.ProjectId,
+                Order = row.Order,
+                StartId = row.StartId,
+                PlanningId = row.PlanningId,
             };
         }
 

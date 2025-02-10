@@ -16,15 +16,19 @@ namespace Server.EndPoint.BackGrounds.Commands
             {
                 app.MapPost(StaticClass.BackGrounds.EndPoint.Create, async (CreateBackGroundRequest Data, IRepository Repository) =>
                 {
-                    var row = BackGround.Create(Data.CaseId);
+                    var lastorder = await Repository.GetLastOrderAsync<BackGround, Project>(Data.ProjectId);
+
+
+                    BackGround row = BackGround.Create(Data.ProjectId, lastorder);
+
 
                     await Repository.AddAsync(row);
 
-                    Data.Map(row);
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.BackGrounds.Cache.Key(row.Id)];
+                    row.Name = Data.Name;
+                    List<string> cache = [.. StaticClass.Projects.Cache.Key(row.ProjectId), .. StaticClass.BackGrounds.Cache.Key(row.Id)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
-                  
+
 
                     return Result.EndPointResult(result,
                         Data.Succesfully,
@@ -37,12 +41,6 @@ namespace Server.EndPoint.BackGrounds.Commands
             }
         }
 
-
-        static BackGround Map(this CreateBackGroundRequest request, BackGround row)
-        {
-            row.Name = request.Name;
-            return row;
-        }
 
     }
 

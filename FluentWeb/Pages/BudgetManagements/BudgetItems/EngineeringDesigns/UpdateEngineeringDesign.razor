@@ -1,0 +1,26 @@
+﻿@page "/UpdateEngineeringDesigns/{Id:guid}"
+
+@using Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Requests
+
+
+
+<EditTemplate @ref=EditForm TItem="UpdateEngineeringDesignRequest" @bind-Model=@Model
+              Title="Edit Engineering Design">
+    <Content>
+        <TextBox Label="Name"
+                 @bind-Value=@Model.Name
+                 Placeholder="Define name"
+                 Validate="EditForm.ValidateAsync"></TextBox>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+
+   
+        <NumberField @bind-Value="@Model.Budget" Label="Budget, USD" Validate="EditForm.ValidateAsync"></NumberField>
+        <ValidationMessage For="() => Model.Budget" style="color:red; font-size:x-small;" />
+   
+    </Content>
+
+</EditTemplate>
+
+@code {
+    EditTemplate<UpdateEngineeringDesignRequest> EditForm = null!;
+}

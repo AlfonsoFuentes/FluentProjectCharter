@@ -12,16 +12,26 @@ namespace Server.EndPoint.MeetingsGroup.MeetingAttendants.Commands
                 {
                     var row = await Repository.GetByIdAsync<MeetingAttendant>(Data.Id);
                     if (row == null) { return Result.Fail(Data.NotFound); }
+
+
+                    var cache = GetCacheKeys(row, Data.ProjectId);
+
                     await Repository.RemoveAsync(row);
 
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.MeetingAttendants.Cache.Key(row.Id)];
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
                 });
+            }
+            private string[] GetCacheKeys(MeetingAttendant row, Guid ProjectId)
+            {
+                List<string> cacheKeys = [
+                     .. StaticClass.Projects.Cache.Key(ProjectId),
+                    .. StaticClass.Meetings.Cache.Key(row.MeetingId)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
     }

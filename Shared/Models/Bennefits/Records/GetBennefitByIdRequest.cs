@@ -5,7 +5,7 @@ namespace Shared.Models.Bennefits.Records
 {
    public class GetBennefitByIdRequest : GetByIdMessageResponse, IGetById
     {
-        public Guid ProjectId { get; set; }
+       
         public Guid Id { get; set; }
         public string EndPointName => StaticClass.Bennefits.EndPoint.GetById;
         public override string ClassName => StaticClass.Bennefits.ClassName;

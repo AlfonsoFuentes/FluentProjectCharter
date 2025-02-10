@@ -5,7 +5,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings
     public class Pipe : EngineeringItem
     {
         [NotMapped]
-        public override string Tag => PipeTemplate == null ? string.Empty : $"{Diameter}-{FluidCodeCode}-{TagNumber}-{Material}-{InsulationCode}";
+        public new string Tag => PipeTemplate == null ? string.Empty : $"{Diameter}-{FluidCodeCode}-{TagNumber}-{Material}-{InsulationCode}";
         public override string Letter { get; set; } = "F";
 
        
@@ -17,13 +17,13 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings
         [NotMapped]
         public string InsulationCode => Insulation ? "1" : "0";
         public List<IsometricItem> IsometricItems { get; set; } = new List<IsometricItem>();
-        public static Pipe Create(Guid ProjectId, Guid DeliverableId)
+        public static Pipe Create(Guid ProjectId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                DeliverableId = DeliverableId,
+           
             };
         }
         public PipeTemplate? PipeTemplate { get; set; } = null!;

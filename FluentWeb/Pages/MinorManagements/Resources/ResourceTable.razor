@@ -1,0 +1,101 @@
+﻿@page "/Resources/{ProjectId:guid}/{Id:guid}/{IdType}"
+@using Shared.Models.Resources.Responses
+
+
+<FluentStack Orientation="Orientation.Vertical" Width="100%" HorizontalAlignment="HorizontalAlignment.Start" VerticalAlignment="VerticalAlignment.Top">
+    <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center">
+        <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowStepBack())" OnClick="@Navigation.NavigateBack" ToolTip="Go Back"></IconButton>
+        <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@AddNew" ToolTip="Add New" Disabled="@(CreateRow!=null)"></IconButton>
+        <IconButton IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@Delete" Disabled="@(SelectedRow==null)" ToolTip="Delete"></IconButton>
+        <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowUp())" OnClick="@Up" Disabled="@DisableUpButton" ToolTip="Up"></IconButton>
+        <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowDown())" OnClick="@Down" Disabled="@DisableDownButton" ToolTip="Down"></IconButton>
+
+        <FluentSpacer />
+        <FluentLabel Typo="Typography.Body">Selected: @CurrentRowName</FluentLabel>
+        <FluentSearch type="search"  Autofocus=true @bind-Value=@nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Name..." />
+
+    </FluentStack>
+    <FluentDataGrid id="defaultGrid"
+                    Items=Items.AsQueryable()
+                    TGridItem=ResourceResponse
+                    OnRowClick="HandleRowClick"
+                    OnRowDoubleClick="HandleRowDoubleClick"
+                    AutoFit="true"
+                    Pagination="@pagination"
+                    DisplayMode="DataGridDisplayMode.Table"
+                    MultiLine="true"
+                    RowSize="@DataGridRowSize.Medium" Style="width:100%">
+
+
+        <TemplateColumn Title="Name" Width="100%">
+            @if (context == CreateRow)
+            {
+                <FluentTextArea Spellcheck="true"
+                                Resize="TextAreaResize.Vertical"
+                                @bind-Value=@CreateRow.Name
+                                Immediate="true"
+                                Style="width: 100%;" />
+
+
+            }
+            else if (EditRow == context)
+            {
+                <FluentTextArea Spellcheck="true"
+                                Resize="TextAreaResize.Vertical"
+                                @bind-Value=@context.Name
+                                Immediate="true"
+                                Style="width: 100%;" />
+            }
+            else
+            {
+                @context.Name
+
+
+
+            }
+
+        </TemplateColumn>
+        <TemplateColumn Width="100%">
+            @if (CreateRow == context)
+            {
+                <FluentStack Orientation="Orientation.Horizontal">
+                    <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@Create" ToolTip="Save" Disabled="@DisableSaveButton(context)"></IconButton>
+                    <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelCreate" ToolTip="Cancel"></IconButton>
+                </FluentStack>
+
+            }
+            else if (EditRow == context)
+            {
+                <FluentStack Orientation="Orientation.Horizontal">
+                    <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@(()=>Update(context))" ToolTip="Save" Disabled="@DisableSaveButton(context)"></IconButton>
+                    <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelEdit" ToolTip="Cancel"></IconButton>
+                </FluentStack>
+            }
+
+        </TemplateColumn>
+
+    </FluentDataGrid>
+
+</FluentStack>
+
+
+@code {
+    PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+    
+    private void HandleNameFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
+        {
+            nameFilter = value;
+        }
+    }
+
+    private void HandleClear()
+    {
+        if (string.IsNullOrWhiteSpace(nameFilter))
+        {
+            nameFilter = string.Empty;
+        }
+    }
+   
+}

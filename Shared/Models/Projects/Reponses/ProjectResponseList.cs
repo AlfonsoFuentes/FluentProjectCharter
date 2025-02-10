@@ -1,8 +1,13 @@
-﻿namespace Shared.Models.Projects.Reponses
+﻿using Shared.Models.FileResults.Generics.Reponses;
+
+namespace Shared.Models.Projects.Reponses
 {
-    public class ProjectResponseList
+    public class ProjectResponseList : IResponseAll
     {
-        public ProjectResponse? CurrentProject { get; set; } = null!;
+        public Guid? SelectedProjectId { get; set; }
         public List<ProjectResponse> Items { get; set; } = new();
+        public int LastOrder => Items.Count == 0 ? 1 : Items.MaxBy(x => x.Order)!.Order;
+
+
     }
 }

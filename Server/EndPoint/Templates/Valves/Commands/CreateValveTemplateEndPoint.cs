@@ -1,13 +1,8 @@
-﻿
-
-
-using Server.Database.Entities;
-using Server.EndPoint.ValveTemplates.Queries;
-using Shared.Models.OrganizationStrategies.Requests;
+﻿using Server.EndPoint.Templates.Valves.Commands;
+using Server.EndPoint.Templates.Valves.Queries;
 using Shared.Models.Templates.Valves.Requests;
-using System.Threading;
 
-namespace Server.EndPoint.ValveTemplates.Commands
+namespace Server.EndPoint.Templates.Valves.Commands
 {
 
     public static class CreateValveTemplateEndPoint
@@ -23,7 +18,7 @@ namespace Server.EndPoint.ValveTemplates.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                  
+
                     var response = row.Map();
                     foreach (var nozzle in Data.Nozzles)
                     {

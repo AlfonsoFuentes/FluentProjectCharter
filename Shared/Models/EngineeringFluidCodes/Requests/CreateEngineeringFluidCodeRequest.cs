@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.OrganizationStrategies.Requests
+namespace Shared.Models.EngineeringFluidCodes.Requests
 {
     public class CreateEngineeringFluidCodeRequest : CreateMessageResponse, IRequest
     {

@@ -2,7 +2,6 @@
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
-using Shared.Models.BudgetItems.Nozzles.Responses;
 using Shared.Models.Templates.Equipments.Requests;
 using Shared.Models.Templates.Equipments.Validators;
 using Shared.Models.Templates.NozzleTemplates;

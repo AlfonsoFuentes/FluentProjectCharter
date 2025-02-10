@@ -14,7 +14,7 @@ namespace Web.Infrastructure.Validators.Projects
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.ProjectDescription).NotEmpty().WithMessage("Project Description must be defined!");
+            
             RuleFor(x => x.ProjectNeedType).Must(ReviewProjecNeedType).WithMessage("Type must be defined!");
             RuleFor(x => x.Status).Must(ReviewProjeStatus).WithMessage("Status must be defined!");
             RuleFor(x => x.PercentageContingency).GreaterThan(0).WithMessage("%Contingency must be defined!");
@@ -35,9 +35,6 @@ namespace Web.Infrastructure.Validators.Projects
             ValidateProjectRequest validate = new()
             {
                 Name = name,
-
-
-
             };
             var result = await Service.Validate(validate);
             return !result;
@@ -61,7 +58,7 @@ namespace Web.Infrastructure.Validators.Projects
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.ProjectDescription).NotEmpty().WithMessage("Project Description must be defined!");
+          
             RuleFor(x => x.ProjectNeedType).Must(ReviewProjecNeedType).WithMessage("Type must be defined!");
             RuleFor(x => x.Sponsor).NotNull().WithMessage("Sponsor must be defined!");
             RuleFor(x => x.Manager).NotNull().WithMessage("Manager must be defined!");

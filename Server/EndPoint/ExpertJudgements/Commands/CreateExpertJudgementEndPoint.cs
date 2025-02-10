@@ -11,22 +11,30 @@ namespace Server.EndPoint.ExpertJudgements.Commands
             {
                 app.MapPost(StaticClass.ExpertJudgements.EndPoint.Create, async (CreateExpertJudgementRequest Data, IRepository Repository) =>
                 {
-                    var row = ExpertJudgement.Create(Data.CaseId);
+                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
+                        return Result.Fail();
+                    var lastorder = await Repository.GetLastOrderAsync<ExpertJudgement, Project>(Data.ProjectId);
+
+                    var row = ExpertJudgement.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
 
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.ExpertJudgements.Cache.Key(row.Id)];
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
 
                 });
-
-
+            }
+            private string[] GetCacheKeys(ExpertJudgement row)
+            {
+                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
+                    .. StaticClass.ExpertJudgements.Cache.Key(row.Id)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 

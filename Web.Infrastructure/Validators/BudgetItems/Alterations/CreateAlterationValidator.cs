@@ -1,5 +1,5 @@
-﻿using Shared.Models.BudgetItems.Alterations.Requests;
-using Shared.Models.BudgetItems.Alterations.Validators;
+﻿using Shared.Models.BudgetItems.IndividualItems.Alterations.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Alterations.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.Alterations
@@ -28,8 +28,8 @@ namespace Web.Infrastructure.Validators.Alterations
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
                 ProjectId = request.ProjectId,
+           
 
 
             };
@@ -59,9 +59,9 @@ namespace Web.Infrastructure.Validators.Alterations
             ValidateAlterationRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+          
 
             };
             var result = await Service.Validate(validate);

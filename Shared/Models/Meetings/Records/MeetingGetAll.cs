@@ -1,4 +1,11 @@
-﻿namespace Shared.Models.Meetings.Records
+﻿using Shared.Models.FileResults.Generics.Records;
+
+namespace Shared.Models.Meetings.Records
 {
-    public record MeetingGetAll();
+    public class MeetingGetAll : IGetAll
+    {
+        
+        public string EndPointName => StaticClass.Meetings.EndPoint.GetAll;
+        public Guid ProjectId { get; set; }
+    }
 }

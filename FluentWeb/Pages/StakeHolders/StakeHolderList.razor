@@ -11,7 +11,7 @@
 
         <FluentSpacer />
         <FluentSearch @bind-Value="@nameFilter"
-                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
+        @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
     </MenuButtons>
     <Content>
         <FluentGrid AdaptiveRendering="true" Style="width:100%" Justify="JustifyContent.FlexStart">
@@ -42,7 +42,7 @@
 
 
 @code {
-
+   
     string Title = "StakeHolders";
 
 }

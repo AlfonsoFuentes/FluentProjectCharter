@@ -3,8 +3,9 @@
     public class RequirementResponse : BaseResponse
     {
 
-      
-        public Guid? ScopeId { get; set; }
+
+        public Guid? StartId { get; set; }
+        public Guid? PlanningId { get; set; }
         public Guid ProjectId { get; set; }
 
     }

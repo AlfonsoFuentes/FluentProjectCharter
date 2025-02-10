@@ -28,8 +28,8 @@ namespace Web.Infrastructure.Validators.Testings
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
                 ProjectId = request.ProjectId,
+
 
 
             };
@@ -59,9 +59,9 @@ namespace Web.Infrastructure.Validators.Testings
             ValidateTestingRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+               
 
             };
             var result = await Service.Validate(validate);

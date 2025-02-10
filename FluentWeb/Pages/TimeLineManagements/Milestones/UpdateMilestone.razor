@@ -1,0 +1,37 @@
+﻿<EditTemplate @ref=Form TItem="UpdateMilestoneRequest" @bind-Model="@Model"
+              Title="Create Milestone">
+    <Content>
+        <FluentGrid AdaptiveRendering="true" Style="width:100%">
+            <FluentGridItem xs="12" sm="12">
+                <TextArea Label="Name"
+                          @bind-Value=@Model.Name
+                          Placeholder="Define name"
+                          Validate="Form.ValidateAsync"></TextArea>
+                <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+            </FluentGridItem>
+
+            <FluentGridItem xs="12" sm="2">
+                <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="3" Width="100%">
+                    <FluentDatePicker Label="Start Date" AriaLabel="To" @bind-Value="@Model.StartDate" DoubleClickToDate="@Model.StartDate" />
+                    <ValidationMessage For="() => Model.StartDate" style="color:red; font-size:x-small;" />
+                </FluentStack>
+
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="2">
+                <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="3" Width="100%">
+                    <FluentDatePicker Label="Start Date" AriaLabel="To" @bind-Value="@Model.EndDate" DoubleClickToDate="@Model.EndDate" />
+                    <ValidationMessage For="() => Model.EndDate" style="color:red; font-size:x-small;" />
+                </FluentStack>
+
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="2">
+                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@Model.Duration</FluentLabel>
+            </FluentGridItem>
+        </FluentGrid>
+    </Content>
+
+</EditTemplate>
+
+@code {
+    EditTemplate<UpdateMilestoneRequest> Form = null!;
+}

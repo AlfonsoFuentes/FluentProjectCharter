@@ -12,16 +12,25 @@ namespace Server.EndPoint.Requirements.Commands
                 {
                     var row = await Repository.GetByIdAsync<Requirement>(Data.Id);
                     if (row == null) { return Result.Fail(Data.NotFound); }
+
+                    var cache = GetCacheKeys(row);
+
                     await Repository.RemoveAsync(row);
-
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Requirements.Cache.Key(row.Id)];
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
                 });
+            }
+            private string[] GetCacheKeys(Requirement row)
+            {
+                List<string> cacheKeys = [
+                ..StaticClass.Projects.Cache.Key(row.ProjectId),
+             StaticClass.Requirements.Cache.GetAll
+
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 

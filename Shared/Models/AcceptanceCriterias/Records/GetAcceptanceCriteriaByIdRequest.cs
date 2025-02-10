@@ -5,7 +5,7 @@ namespace Shared.Models.AcceptanceCriterias.Records
 {
    public class GetAcceptanceCriteriaByIdRequest : GetByIdMessageResponse, IGetById
     {
-        public Guid ProjectId { get; set; }
+       
         public Guid Id { get; set; }
         public string EndPointName => StaticClass.AcceptanceCriterias.EndPoint.GetById;
         public override string ClassName => StaticClass.AcceptanceCriterias.ClassName;

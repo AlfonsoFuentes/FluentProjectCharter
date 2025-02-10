@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Templates.Equipments.Records;
 using Shared.Models.Templates.Equipments.Responses;
 
-namespace Server.EndPoint.EquipmentTemplates.Queries
+namespace Server.EndPoint.Templates.Equipments.Queries
 {
     public static class GetAllEquipmentTemplateEndPoint
     {
@@ -11,9 +11,9 @@ namespace Server.EndPoint.EquipmentTemplates.Queries
             {
                 app.MapPost(StaticClass.EquipmentTemplates.EndPoint.GetAll, async (EquipmentTemplateGetAll request, IQueryRepository Repository) =>
                 {
-                    Func<IQueryable<EquipmentTemplate>, IIncludableQueryable<EquipmentTemplate, object>>Includes = x => x
+                    Func<IQueryable<EquipmentTemplate>, IIncludableQueryable<EquipmentTemplate, object>> Includes = x => x
                     .Include(x => x.NozzleTemplates)
-                    .Include(x=>x.BrandTemplate!)
+                    .Include(x => x.BrandTemplate!)
                      ;
 
                     string CacheKey = StaticClass.EquipmentTemplates.Cache.GetAll;

@@ -11,22 +11,35 @@ namespace Server.EndPoint.Scopes.Commands
             {
                 app.MapPost(StaticClass.Scopes.EndPoint.Create, async (CreateScopeRequest Data, IRepository Repository) =>
                 {
-                    var row = Scope.Create(Data.CaseId);
+                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
+                        return Result.Fail();
+                    var lastorder = await Repository.GetLastOrderAsync<Scope, Project>(Data.ProjectId);
+
+                    var row = Scope.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
 
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Scopes.Cache.Key(row.Id)];
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
-
-
                 });
 
 
+            }
+
+
+            private string[] GetCacheKeys(Scope row)
+            {
+                List<string> cacheKeys = [
+
+                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
+                    .. StaticClass.Scopes.Cache.Key(row.Id)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 
@@ -34,6 +47,7 @@ namespace Server.EndPoint.Scopes.Commands
         static Scope Map(this CreateScopeRequest request, Scope row)
         {
             row.Name = request.Name;
+  
             return row;
         }
 

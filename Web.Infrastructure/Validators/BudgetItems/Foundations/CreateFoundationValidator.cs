@@ -1,5 +1,5 @@
-﻿using Shared.Models.BudgetItems.Foundations.Requests;
-using Shared.Models.BudgetItems.Foundations.Validators;
+﻿using Shared.Models.BudgetItems.IndividualItems.Foundations.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Foundations.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.Foundations
@@ -28,8 +28,8 @@ namespace Web.Infrastructure.Validators.Foundations
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
                 ProjectId = request.ProjectId,
+
 
 
             };
@@ -59,9 +59,9 @@ namespace Web.Infrastructure.Validators.Foundations
             ValidateFoundationRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+   
 
             };
             var result = await Service.Validate(validate);

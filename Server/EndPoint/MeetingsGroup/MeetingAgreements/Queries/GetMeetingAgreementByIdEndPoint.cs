@@ -2,7 +2,7 @@
 using Shared.Models.MeetingAgreements.Records;
 using Shared.Models.MeetingAgreements.Responses;
 
-namespace Server.EndPoint.MeetingAgreementsGroup.MeetingAgreements.Queries
+namespace Server.EndPoint.MeetingsGroup.MeetingAgreements.Queries
 {
     public static class GetMeetingAgreementByIdEndPoint
     {

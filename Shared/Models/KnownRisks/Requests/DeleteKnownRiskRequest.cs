@@ -8,7 +8,7 @@ namespace Shared.Models.KnownRisks.Requests
         public override string Legend => Name;
 
         public override string ClassName => StaticClass.KnownRisks.ClassName;
-        public Guid ProjectId { get; set; }
+      
         public Guid Id { get; set; }
 
         public string EndPointName => StaticClass.KnownRisks.EndPoint.Delete;

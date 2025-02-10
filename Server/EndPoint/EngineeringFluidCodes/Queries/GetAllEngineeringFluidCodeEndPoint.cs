@@ -1,4 +1,7 @@
-﻿namespace Server.EndPoint.EngineeringFluidCodes.Queries
+﻿using Shared.Models.EngineeringFluidCodes.Records;
+using Shared.Models.EngineeringFluidCodes.Responses;
+
+namespace Server.EndPoint.EngineeringFluidCodes.Queries
 {
     public static class GetAllEngineeringFluidCodeEndPoint
     {

@@ -1,7 +1,7 @@
 ﻿using Shared.Enums.ExportFiles;
-using Shared.Models.Templates.Pipes.Responses;
+using Shared.Models.Templates.Pipings.Responses;
 
-namespace Shared.Models.Templates.Pipes.Exports
+namespace Shared.Models.Templates.Pipings.Exports
 {
     public record PipeTemplateGetAllExport(ExportFileType FileType, List<PipeTemplateResponse> query);
 }

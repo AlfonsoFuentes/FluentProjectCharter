@@ -1,9 +1,10 @@
-﻿using Server.EndPoint.Projects.Queries;
+﻿using Server.EndPoint.MeetingsGroup.MeetingAttendants.Queries;
+using Server.EndPoint.Projects.Queries;
 using Server.EndPoint.StakeHolders.Queries;
 using Shared.Models.MeetingAttendants.Records;
 using Shared.Models.MeetingAttendants.Responses;
 
-namespace Server.EndPoint.MeetingAttendantsGroup.MeetingAttendants.Queries
+namespace Server.EndPoint.MeetingsGroup.MeetingAttendants.Queries
 {
     public static class GetMeetingAttendantByIdEndPoint
     {

@@ -1,6 +1,8 @@
-﻿namespace Shared.Models.AcceptanceCriterias.Responses
+﻿using Shared.Models.FileResults.Generics.Reponses;
+
+namespace Shared.Models.AcceptanceCriterias.Responses
 {
-    public class AcceptanceCriteriaResponseList
+    public class AcceptanceCriteriaResponseList : IResponseAll
     {
         public List<AcceptanceCriteriaResponse> Items { get; set; } = new();
     }

@@ -1,7 +1,6 @@
-﻿using Shared.Models.OrganizationStrategies.Validators;
-using Shared.Models.Templates.Pipes.Validators;
+﻿using Shared.Models.Templates.Pipings.Validators;
 
-namespace Server.EndPoint.PipeTemplates.Validators
+namespace Server.EndPoint.Templates.Pipes.Validators
 {
     public static class ValidatePipeTemplatesNameEndPoint
     {
@@ -23,8 +22,8 @@ namespace Server.EndPoint.PipeTemplates.Validators
                     x.Insulation == Data.Insulation &&
                     x.Class.Equals(Data.Class) &&
                     x.Brand.Equals(Data.Brand) &&
-                    x.Diameter.Equals(Data.Diameter) 
-                    
+                    x.Diameter.Equals(Data.Diameter)
+
 
 
 

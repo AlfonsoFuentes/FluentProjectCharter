@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Templates.NozzleTemplates;
 using Shared.Models.Templates.Valves.Requests;
 
-namespace Server.EndPoint.ValveTemplates.Commands
+namespace Server.EndPoint.Templates.Valves.Commands
 {
     public static class UpdateValveTemplateEndPoint
     {
@@ -85,11 +85,11 @@ namespace Server.EndPoint.ValveTemplates.Commands
             row.Diameter = request.Diameter.Name;
             row.ActuatorType = request.ActuatorType.Name;
             row.FailType = request.FailType.Name;
-            row.Material=request.Material.Name;
+            row.Material = request.Material.Name;
             row.PositionerType = request.PositionerType.Name;
             row.SignalType = request.SignalType.Name;
-          
- 
+
+
             return row;
         }
         static NozzleTemplate Map(this NozzleTemplateResponse request, NozzleTemplate row)

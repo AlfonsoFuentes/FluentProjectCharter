@@ -9,8 +9,7 @@ namespace Shared.Models.Projects.Request
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public double InitialBudget { get; set; }
-        public string ProjectDescription { get; set; } = string.Empty;
+
         public string EndPointName => StaticClass.Projects.EndPoint.Update;
         public ProjectNeedTypeEnum ProjectNeedType { get; set; } = ProjectNeedTypeEnum.None;
         public override string Legend => Name;

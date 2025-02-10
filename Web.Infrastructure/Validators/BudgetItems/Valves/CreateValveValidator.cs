@@ -3,7 +3,7 @@ using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
 using Shared.Enums.ValvesEnum;
-using Shared.Models.BudgetItems.Nozzles.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Shared.Models.BudgetItems.Valves.Requests;
 using Shared.Models.BudgetItems.Valves.Validators;
 using Web.Infrastructure.Managers.Generic;
@@ -98,8 +98,8 @@ namespace Web.Infrastructure.Validators.Valves
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
                 ProjectId = request.ProjectId,
+
 
 
             };
@@ -113,7 +113,6 @@ namespace Web.Infrastructure.Validators.Valves
 
                 Tag = tag,
                 ProjectId = request.ProjectId,
-
 
             };
             var result = await Service.Validate(validate);
@@ -240,9 +239,9 @@ namespace Web.Infrastructure.Validators.Valves
             ValidateValveRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+                
 
             };
             var result = await Service.Validate(validate);
@@ -253,9 +252,9 @@ namespace Web.Infrastructure.Validators.Valves
             ValidateValveTagRequest validate = new()
             {
                 Tag = tag,
-                ProjectId = request.ProjectId,
+                
                 Id = request.Id,
-
+                ProjectId = request.ProjectId,
             };
             var result = await Service.Validate(validate);
             return !result;

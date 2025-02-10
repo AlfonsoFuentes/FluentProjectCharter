@@ -1,4 +1,4 @@
-﻿using Shared.Models.OrganizationStrategies.Requests;
+﻿using Shared.Models.EngineeringFluidCodes.Requests;
 
 namespace Server.EndPoint.EngineeringFluidCodes.Commands
 {

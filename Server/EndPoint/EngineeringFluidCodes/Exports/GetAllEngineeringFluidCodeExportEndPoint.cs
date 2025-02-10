@@ -1,5 +1,5 @@
-﻿using Shared.Models.OrganizationStrategies.Exports;
-using Shared.Models.OrganizationStrategies.Responses;
+﻿using Shared.Models.EngineeringFluidCodes.Exports;
+using Shared.Models.EngineeringFluidCodes.Responses;
 
 namespace Server.EndPoint.EngineeringFluidCodes.Exports
 {

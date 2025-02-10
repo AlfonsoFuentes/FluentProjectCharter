@@ -1,48 +1,96 @@
 ﻿@page "/"
+@using FluentWeb.Pages.Tabs
 
+@attribute [Authorize]
+<FluentStack Orientation="Orientation.Vertical" Width="100%">
+    <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center">
 
-<TemplatedList T="ProjectResponse" FilteredItems="@FilteredItems" Title="Manage Projects" Context="context">
-    <MenuButtons>
-        <FluentButton Id="createproject" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
+        <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@AddNew" ToolTip="Add New" Disabled="@(CreateRow!=null)"></IconButton>
+        <IconButton IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@Edit" Disabled="@(SelectedRow==null)" ToolTip="Edit"></IconButton>
+        <IconButton IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@Delete" Disabled="@(SelectedRow==null)" ToolTip="Delete"></IconButton>
 
-        </FluentButton>
-        <FluentTooltip Anchor="createproject" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Create Project</FluentTooltip>
+        @if (CurrentCompleteRow == null)
+        {
+            <IconButton IconEnd="@(new Icons.Regular.Size20.SelectAllOn())" OnClick="@Show" ToolTip="Show Complete Project"></IconButton>
+            <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowUp())" OnClick="@Up" Disabled="@DisableUpButton" ToolTip="Up"></IconButton>
+            <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowDown())" OnClick="Down" Disabled="@DisableDownButton" ToolTip="Down"></IconButton>
+        }
+        else
+        {
+            <IconButton IconEnd="@(new Icons.Regular.Size20.SelectAllOff())" OnClick="@UnShow" ToolTip="Hide Complete Project"></IconButton>
+        }
 
 
 
         <FluentSpacer />
-        <FluentSearch @bind-Value="@nameFilter"
-                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
-    </MenuButtons>
-    <Content>
-        <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</FluentLabel>
-    </Content>
-    <Buttons>
-        <FluentButton Id="@($"editproject{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))">
+        <FluentLabel Typo="Typography.Body">Selected: @CurrentRowName</FluentLabel>
+        <FluentSearch type="search" Autofocus=true @bind-Value=nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Name..." />
 
-        </FluentButton>
-        <FluentTooltip Anchor="@($"editproject{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
+    </FluentStack>
+    <FluentDataGrid id="defaultGrid"
+                    Items=FilteredItems.AsQueryable()
+                    TGridItem="ProjectResponse"
+                    OnRowClick="HandleRowClick"
+                    OnRowDoubleClick="HandleRowDoubleClick"
+                    AutoFit="true"
+                    Pagination="@pagination"
+                    DisplayMode="DataGridDisplayMode.Table"
+                    MultiLine="true"
+                    RowSize="@DataGridRowSize.Medium" Style="width:100%">
+        <TemplateColumn Title="Name" Width="100%">
+            @if (context == CreateRow)
+            {
+                <FluentTextArea Spellcheck="true"
+                                Resize="TextAreaResize.Vertical"
+                                @bind-Value=@CreateRow.Name
+                                Immediate="true"
+                                Style="width: 100%;" />
 
-        <FluentButton id="@($"pdfproject{context.Id}")" IconEnd="@(new Icons.Regular.Size20.DocumentPdf())" OnClick="@(()=>Export(context))"></FluentButton>
-        <FluentTooltip Anchor="@($"pdfproject{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Create PDF</FluentTooltip>
 
-        <FluentButton Id="@($"deleteproject{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))">
+            }
+            else if (EditRow == context)
+            {
+                <FluentTextArea Spellcheck="true"
+                                Resize="TextAreaResize.Vertical"
+                                @bind-Value=@context.Name
+                                Immediate="true"
+                                Style="width: 100%;" />
+            }
+            else
+            {
+                @context.Name
 
-        </FluentButton>
-        <FluentTooltip Anchor="@($"deleteproject{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
-        <FluentButton Id="@($"Showproject{context.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(context))">
+            }
 
-        </FluentButton>
-        <FluentTooltip Anchor="@($"Showproject{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
+        </TemplateColumn>
+        <TemplateColumn Width="100%">
+            @if (CreateRow == context)
+            {
+                <FluentStack Orientation="Orientation.Horizontal">
+                    <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@Create" ToolTip="Save" Disabled="@DisableSaveButton(context)"></IconButton>
+                    <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelCreate" ToolTip="Cancel"></IconButton>
+                </FluentStack>
 
-    </Buttons>
+            }
+            else if (EditRow == context)
+            {
+                <FluentStack Orientation="Orientation.Horizontal">
+                    <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@(()=>Update(context))" ToolTip="Save" Disabled="@DisableSaveButton(context)"></IconButton>
+                    <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelEdit" ToolTip="Cancel"></IconButton>
+                </FluentStack>
+            }
 
-    <ContentNode>
-        <ProjectTabs GetAll="UpdateAll" Parent="@context"></ProjectTabs>
+        </TemplateColumn>
 
-    </ContentNode>
-</TemplatedList>
+    </FluentDataGrid>
+    @if (CurrentCompleteRow != null)
+    {
+        <MainPageSelectedProject Project="@CurrentCompleteRow"></MainPageSelectedProject>
+        
+    }
+</FluentStack>
+
 
 
 
@@ -50,36 +98,32 @@
 
 @code {
 
+   
 
-    public async Task Show(ProjectResponse response)
+
+    PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+
+ 
+
+    private void HandleNameFilter(ChangeEventArgs args)
     {
-        if (App.ProjectList.CurrentProject == null)
+        if (args.Value is string value)
         {
-            App.ProjectList.CurrentProject = response;
-            response.Open();
-            await GenericService.UpdateState(response);
-
+            nameFilter = value;
         }
-        else if (App.ProjectList.CurrentProject.Id == response.Id)
-        {
-            response.Close();
-            App.ProjectList.CurrentProject = null!;
-            await GenericService.UpdateState(response);
-        }
-        else
-        {
-            App.ProjectList.CurrentProject.Close();
-            await GenericService.UpdateState(App.ProjectList.CurrentProject);
-            App.ProjectList.CurrentProject = response;
-
-            response.Open();
-            await GenericService.UpdateState(response);
-        }
-
-
-
-
-
     }
 
+    private void HandleClear()
+    {
+        if (string.IsNullOrWhiteSpace(nameFilter))
+        {
+            nameFilter = string.Empty;
+        }
+    }
+
+
+
+
 }
+
+

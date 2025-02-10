@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Records;
 
-namespace Shared.Models.Templates.Pipes.Records
+namespace Shared.Models.Templates.Pipings.Records
 {
     public class PipeTemplateGetAll : IGetAll
     {

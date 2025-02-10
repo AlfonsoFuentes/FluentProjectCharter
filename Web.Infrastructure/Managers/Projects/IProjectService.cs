@@ -8,10 +8,9 @@ namespace Web.Infrastructure.Managers.Projects
     {
         Task<IResult<ProjectResponse>> GetById(Guid Id);
         Task<IResult<ProjectResponseList>> GetAll();
-        Task<IResult<FileResult>> ExportPDF(ProjectResponse query);
-
-        //Task<IResult<FileResult>> Export(ExportFileType fileType, List<ProjectResponse> query);
-
+        Task<IResult<FileResult>> ExportProjectCharter(ProjectResponse query);
+        Task<IResult<FileResult>> ExportProjectPlann(ProjectResponse query);
+        Task<IResult<ProjectResponseList>> UpdateDatabase();
     }
     public class ProjectService : IProjectService
     {
@@ -29,12 +28,23 @@ namespace Web.Infrastructure.Managers.Projects
             var result = await http.PostAsJsonAsync(StaticClass.Projects.EndPoint.GetAll, new ProjectGetAll());
             return await result.ToResult<ProjectResponseList>();
         }
+        public async Task<IResult<ProjectResponseList>> UpdateDatabase()
+        {
+            var result = await http.PostAsJsonAsync(StaticClass.Projects.EndPoint.UpdateDatabase, new ProjectGetAll());
+            return await result.ToResult<ProjectResponseList>();
+        }
 
-
-        public async Task<IResult<FileResult>> ExportPDF(ProjectResponse query)
+        public async Task<IResult<FileResult>> ExportProjectCharter(ProjectResponse query)
         {
 
-            var result = await http.PostAsJsonAsync(StaticClass.Projects.EndPoint.Export, new ProjectGetAllExport(ExportFileType.pdf, query));
+            var result = await http.PostAsJsonAsync(StaticClass.Projects.EndPoint.ProjectCharter, new ProjectGetAllExport(ExportFileType.pdf, query.Id));
+            return await result.ToResult<FileResult>();
+
+        }
+        public async Task<IResult<FileResult>> ExportProjectPlann(ProjectResponse query)
+        {
+
+            var result = await http.PostAsJsonAsync(StaticClass.Projects.EndPoint.ProjectPlann, new ProjectGetAllExport(ExportFileType.pdf, query.Id));
             return await result.ToResult<FileResult>();
 
         }

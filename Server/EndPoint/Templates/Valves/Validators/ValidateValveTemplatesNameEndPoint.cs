@@ -1,7 +1,6 @@
-﻿using Shared.Models.OrganizationStrategies.Validators;
-using Shared.Models.Templates.Valves.Validators;
+﻿using Shared.Models.Templates.Valves.Validators;
 
-namespace Server.EndPoint.ValveTemplates.Validators
+namespace Server.EndPoint.Templates.Valves.Validators
 {
     public static class ValidateValveTemplatesNameEndPoint
     {
@@ -24,12 +23,12 @@ namespace Server.EndPoint.ValveTemplates.Validators
                     x.Type.Equals(Data.Type) &&
                     x.ActuatorType.Equals(Data.ActuadorType) &&
                     x.Diameter.Equals(Data.Diameter) &&
-                    x.HasFeedBack== Data.HasFeedBack &&
+                    x.HasFeedBack == Data.HasFeedBack &&
                     x.PositionerType.Equals(Data.PositionerType) &&
                     x.Brand.Equals(Data.Brand) &&
                     x.Model.Equals(Data.Model) &&
-                    x.TagLetter.Equals(Data.TagLetter) 
-              
+                    x.TagLetter.Equals(Data.TagLetter)
+
                     : x.Id != Data.Id.Value &&
                    x.Material.Equals(Data.Material) &&
                     x.SignalType.Equals(Data.SignalType) &&

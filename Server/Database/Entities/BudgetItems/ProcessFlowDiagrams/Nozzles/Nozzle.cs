@@ -24,7 +24,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles
         public string ThicknessUnit { get; set; } = string.Empty;
         public string InnerDiameterUnit { get; set; } = string.Empty;
         public string HeightUnit { get; set; } = string.Empty;
-        public int Order { get; set; }
+
 
         public static Nozzle Create(Guid EngineeringItemId)
         {

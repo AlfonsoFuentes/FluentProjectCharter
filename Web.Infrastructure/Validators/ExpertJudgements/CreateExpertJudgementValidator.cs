@@ -57,8 +57,10 @@ namespace Web.Infrastructure.Validators.ExpertJudgements
             ValidateExpertJudgementRequest validate = new()
             {
                 Name = name,
+
+                Id = request.Id,
                 ProjectId = request.ProjectId,
-                Id = request.Id
+
 
             };
             var result = await Service.Validate(validate);

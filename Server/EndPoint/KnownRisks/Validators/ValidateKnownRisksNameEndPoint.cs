@@ -11,7 +11,7 @@ namespace Server.EndPoint.KnownRisks.Validators
             {
                 app.MapPost(StaticClass.KnownRisks.EndPoint.Validate, async (ValidateKnownRiskRequest Data, IQueryRepository Repository) =>
                 {
-                    Expression<Func<KnownRisk, bool>> CriteriaId = x => x.CaseId == Data.CaseId;
+                    Expression<Func<KnownRisk, bool>> CriteriaId = x => x.ProjectId == Data.ProjectId;
                     Func<KnownRisk, bool> CriteriaExist = x => Data.Id == null ?
                     x.Name.Equals(Data.Name) : x.Id != Data.Id.Value && x.Name.Equals(Data.Name);
                     string CacheKey = StaticClass.KnownRisks.Cache.GetAll;

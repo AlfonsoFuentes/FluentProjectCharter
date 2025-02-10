@@ -11,7 +11,7 @@ namespace Server.EndPoint.Scopes.Validators
             {
                 app.MapPost(StaticClass.Scopes.EndPoint.Validate, async (ValidateScopeRequest Data, IQueryRepository Repository) =>
                 {
-                    Expression<Func<Scope, bool>> CriteriaId = x => x.CaseId == Data.CaseId;
+                    Expression<Func<Scope, bool>> CriteriaId = x => x.ProjectId == Data.ProjectId;
                     Func<Scope, bool> CriteriaExist = x => Data.Id == null ?
                     x.Name.Equals(Data.Name) : x.Id != Data.Id.Value && x.Name.Equals(Data.Name);
                     string CacheKey = StaticClass.Scopes.Cache.GetAll;

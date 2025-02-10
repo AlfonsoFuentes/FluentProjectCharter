@@ -1,12 +1,12 @@
 ﻿
 
 
-<FluentTextArea
-    Label="@Label"
-    @bind-Value="@Value"
+<FluentTextArea Label="@Label"
+                @bind-Value="@Value"
                 Style="width: 100%;"
                 Placeholder="@PlaceHolder"
                 Rows="@Rows"
+                Resize="TextAreaResize.Vertical"
                 @oninput=@((args) => OnValueChange(args.Value!.ToString()!))
                 Disabled="@Disable" />
 

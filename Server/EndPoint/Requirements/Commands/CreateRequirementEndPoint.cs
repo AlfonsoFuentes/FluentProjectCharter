@@ -1,9 +1,4 @@
-﻿
-
-
-using Server.Database.Entities;
-using Shared.Models.Requirements.Requests;
-using System.Threading;
+﻿using Shared.Models.Requirements.Requests;
 
 namespace Server.EndPoint.Requirements.Commands
 {
@@ -16,14 +11,19 @@ namespace Server.EndPoint.Requirements.Commands
             {
                 app.MapPost(StaticClass.Requirements.EndPoint.Create, async (CreateRequirementRequest Data, IRepository Repository) =>
                 {
-                    var row = Requirement.Create(Data.ProjectId, Data.ScopeId);
+                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
+                        return Result.Fail();
+                    var lastorder = await Repository.GetLastOrderAsync<Requirement, Project>(Data.ProjectId);
+
+                    var row = Requirement.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
 
                     await Repository.AddAsync(row);
 
-                    Data.Map(row);
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Requirements.Cache.Key(row.Id)];
+                    row.Name = Data.Name;
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+
+
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
 
                     return Result.EndPointResult(result,
                         Data.Succesfully,
@@ -33,6 +33,14 @@ namespace Server.EndPoint.Requirements.Commands
                 });
 
 
+            }
+            private string[] GetCacheKeys(Requirement row)
+            {
+                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
+           
+                    .. StaticClass.Requirements.Cache.Key(row.Id)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 

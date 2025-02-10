@@ -1,9 +1,7 @@
-﻿using Shared.Models.OrganizationStrategies.Exports;
-using Shared.Models.OrganizationStrategies.Responses;
-using Shared.Models.Templates.Pipes.Exports;
-using Shared.Models.Templates.Pipes.Responses;
+﻿using Shared.Models.Templates.Pipings.Exports;
+using Shared.Models.Templates.Pipings.Responses;
 
-namespace Server.EndPoint.PipeTemplates.Exports
+namespace Server.EndPoint.Templates.Pipes.Exports
 {
     public static class GetAllPipeTemplateExportEndPoint
     {

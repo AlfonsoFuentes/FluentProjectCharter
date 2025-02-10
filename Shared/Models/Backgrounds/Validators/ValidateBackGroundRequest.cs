@@ -7,7 +7,7 @@ namespace Shared.Models.Backgrounds.Validators
     {
         public Guid? Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public Guid CaseId { get; set; }
+        public Guid ProjectId { get; set; }
 
         public string EndPointName => StaticClass.BackGrounds.EndPoint.Validate;
 

@@ -6,31 +6,28 @@ namespace Server.Database.Entities
     public class Scope : AuditableEntity<Guid>, ITenantEntity
     {
         public string TenantId { get; set; } = string.Empty;
-        public Case Case { get; set; } = null!;
-        public Guid CaseId { get; set; }
+
+        public Project Project { get; set; } = null!;
+        public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;
-        public List<Deliverable> Deliverables { get; set; } = new();
-        public bool IsNodeOpen { get; set; }
-        public string? Tab { get; set; } = string.Empty;
-        public static Scope Create(Guid CaseId)
+
+
+        public static Scope Create(Guid ProjectId, Guid? StartId, Guid? PlanningId, int Order)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
-                CaseId = CaseId,
+                StartId = StartId,
+                ProjectId = ProjectId,
+                Order = Order,
+                PlanningId = PlanningId,
             };
         }
-        public List<DeliverableRisk> DeliverableRisks { get; set; } = new();
-        public List<Bennefit> Bennefits { get; set; } = new();
-        public List<AcceptanceCriteria> AcceptanceCriterias { get; set; } = new();
 
 
-        [ForeignKey("DeliverableId")]
-        public List<Requirement> Requirements { get; set; } = new();
-        [ForeignKey("DeliverableId")]
-        public List<Assumption> Assumptions { get; set; } = new();
-        [ForeignKey("DeliverableId")]
-        public List<Constrainst> Constraints { get; set; } = new();
+        public Guid? StartId { get; set; }
+        public Guid? PlanningId { get; set; }
+
 
     }
 }

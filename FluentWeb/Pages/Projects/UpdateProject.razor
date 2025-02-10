@@ -13,12 +13,7 @@
                 <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
             </FluentGridItem>
             <FluentGridItem xs="12" sm="12" md="6">
-                <TextArea Label="Project Description"
-                          @bind-Value=@Model.ProjectDescription
-                          Placeholder="Define Project Description"
-                          Rows="3"
-                          Validate="Form.ValidateAsync"></TextArea>
-                <ValidationMessage For="() => Model.ProjectDescription" style="color:red; font-size:x-small;" />
+               
             </FluentGridItem>
             <FluentGridItem xs="12" sm="12" md="4">
                 <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
@@ -129,9 +124,7 @@
                         </FluentStack>
                     </FluentGridItem>
                     <FluentGridItem xs="12">
-                        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="3" Width="100%">
-                            <FluentNumberField @bind-Value=@Model.InitialBudget Placeholder="Define Initial Budget" Label="Initial Budget, USD"></FluentNumberField>
-                        </FluentStack>
+                      
                     </FluentGridItem>
                 </FluentGrid>
             </FluentGridItem>

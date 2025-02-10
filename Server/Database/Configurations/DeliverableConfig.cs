@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
 namespace Server.Database.Configurations
@@ -9,10 +10,16 @@ namespace Server.Database.Configurations
         {
             builder.HasKey(ci => ci.Id);
 
-           
-           
 
-         
+
+            //builder.HasMany(x => x.Milestones)
+            //    .WithOne(t => t.Deliverable)
+            //    .HasForeignKey(e => e.DeliverableId)
+            //    .IsRequired()
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+
+
         }
 
     }

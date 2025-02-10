@@ -15,29 +15,30 @@
             _tenantId = currentUserService.Email;
             _cache = cache;
         }
+        public DbSet<App> Apps { get; set; } = null!;
         public DbSet<Project> Projects { get; set; } = null!;
-        public DbSet<Case> Cases { get; set; } = null!;
+  
         public DbSet<BackGround> BackGrounds { get; set; } = null!;
         public DbSet<StakeHolder> StakeHolders { get; set; } = null!;
         public DbSet<Scope> Scopes { get; set; } = null!;
-        public DbSet<OrganizationStrategy> OrganizationStrategies { get; set; } = null!;
-        public DbSet<KnownRisk> KnownRisks { get; set; } = null!;
-        public DbSet<SucessfullFactor> SucessfullFactors { get; set; } = null!;
-        public DbSet<DecissionCriteria> DecissionCriterias { get; set; } = null!;
+        public DbSet<Objective> Objectives { get; set; } = null!;
+        public DbSet<Bennefit> Bennefits { get; set; }
+        public DbSet<AcceptanceCriteria> AcceptanceCriterias { get; set; }
+        public DbSet<KnownRisk> KnownRisks { get; set; }
         public DbSet<Deliverable> Deliverables { get; set; } = null!;
         public DbSet<Requirement> Requirements { get; set; } = null!;
         public DbSet<Assumption> Assumptions { get; set; } = null!;
-        public DbSet<DeliverableRisk> DeliverableRisks { get; set; } = null!;
+
         public DbSet<Constrainst> Constrainsts { get; set; } = null!;
-        public DbSet<Bennefit> Bennefits { get; set; } = null!;
+
         public DbSet<ExpertJudgement> ExpertJudgements { get; set; } = null!;
-        public DbSet<HighLevelRequirement> HighLevelRequirements { get; set; } = null!;
+
         public DbSet<RoleInsideProject> RoleInsideProjects { get; set; } = null!;
         public DbSet<Meeting> Meetings { get; set; } = null!;
         public DbSet<MeetingAttendant> MeetingAttendants { get; set; } = null!;
         public DbSet<MeetingAgreement> MeetingAgreements { get; set; } = null!;
         public DbSet<LearnedLesson> LearnedLessons { get; set; } = null!;
-        public DbSet<IssueLog> IssueLogs { get; set; } = null!;
+
 
         public DbSet<Alteration> Alterations { get; set; } = null!;
         public DbSet<EHS> EHSs { get; set; } = null!;
@@ -46,11 +47,11 @@
         public DbSet<Painting> Paintings { get; set; } = null!;
         public DbSet<Structural> Structurals { get; set; } = null!;
         public DbSet<Testing> Testings { get; set; } = null!;
-     
+
         public DbSet<EngineeringDesign> Engineerings { get; set; } = null!;
         public DbSet<Tax> Taxes { get; set; } = null!;
         public DbSet<TaxesItem> TaxesItems { get; set; } = null!;
-        //public DbSet<ProcessFlowDiagram> ProcessFlowDiagrams { get; set; } = null!;
+
         public DbSet<Equipment> Equipments { get; set; } = null!;
         public DbSet<Instrument> Instruments { get; set; } = null!;
         public DbSet<Valve> Valves { get; set; } = null!;
@@ -71,42 +72,50 @@
         public DbSet<PipingAccesoryImage> PipingAccesoryImages { get; set; } = null!;
         public DbSet<PipingConnectionType> PipingConnectionTypes { get; set; } = null!;
         public DbSet<PipingAccesoryCodeBrand> PipingAccesoryCodeBrands { get; set; } = null!;
-        public DbSet<AcceptanceCriteria> AcceptanceCriterias { get; set; } = null!;
-        public DbSet<WBSComponent> WBSComponents { get; set; } = null!;
-        public DbSet<Temporary> Temporarys { get; set; } = null!;
+
+        public DbSet<Milestone> Milestones { get; set; } = null!;
+
+        public DbSet<Quality> Qualitys { get; set; } = null!;
+        public DbSet<Communication> Communications { get; set; } = null!;
+        public DbSet<Resource> Resources { get; set; } = null!;
+
+        public DbSet<Acquisition> Acquisitions { get; set; } = null!;
         void ConfiguerQueryFilters(ModelBuilder builder)
         {
-
+            builder.Entity<App>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Project>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<Case>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<Objective>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<BackGround>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<StakeHolder>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<Scope>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<OrganizationStrategy>().HasQueryFilter(p => p.IsDeleted == false);
+            builder.Entity<Bennefit>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<KnownRisk>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<SucessfullFactor>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<DecissionCriteria>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<AcceptanceCriteria>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+
             builder.Entity<Deliverable>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-          
+            builder.Entity<Quality>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<Communication>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<Resource>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<Acquisition>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Requirement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Assumption>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<DeliverableRisk>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+
             builder.Entity<Constrainst>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<Bennefit>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+
             builder.Entity<ExpertJudgement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<HighLevelRequirement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-        
+
             builder.Entity<Meeting>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<MeetingAttendant>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<MeetingAgreement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<IssueLog>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+
             builder.Entity<BudgetItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
 
             builder.Entity<TaxesItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
 
             builder.Entity<IsometricItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<AcceptanceCriteria>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<WBSComponent>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+
+            builder.Entity<Milestone>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+
             builder.Entity<Nozzle>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
 
             builder.Entity<BudgetItem>().UseTpcMappingStrategy();
@@ -114,6 +123,7 @@
             builder.Entity<Template>().UseTpcMappingStrategy();
 
             builder.Entity<Brand>().HasQueryFilter(p => p.IsDeleted == false);
+
 
             builder.Entity<RoleInsideProject>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<LearnedLesson>().HasQueryFilter(p => p.IsDeleted == false);
@@ -126,7 +136,7 @@
             builder.Entity<PipingAccesoryCodeBrand>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<PipingConnectionType>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<PipingAccesoryImage>().HasQueryFilter(p => p.IsDeleted == false);
-            builder.Entity<Temporary>().HasQueryFilter(p => p.IsDeleted == false);
+
 
         }
 
@@ -163,6 +173,7 @@
         {
             var result = await SaveChangesAsync();
 
+            if (cacheKeys == null) return result;
 
             foreach (var cacheKey in cacheKeys)
             {

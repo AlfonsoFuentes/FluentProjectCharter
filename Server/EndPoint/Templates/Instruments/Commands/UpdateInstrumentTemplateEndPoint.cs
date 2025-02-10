@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Templates.Instruments.Requests;
 using Shared.Models.Templates.NozzleTemplates;
 
-namespace Server.EndPoint.InstrumentTemplates.Commands
+namespace Server.EndPoint.Templates.Instruments.Commands
 {
     public static class UpdateInstrumentTemplateEndPoint
     {

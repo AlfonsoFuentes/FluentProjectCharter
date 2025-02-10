@@ -4,9 +4,10 @@ namespace Shared.Models.ExpertJudgements.Responses
 {
     public class ExpertJudgementResponse : BaseResponse
     {
-        public Guid ProjectId { get; set; }
+        public Guid? StartId { get; set; }
+        public Guid? PlanningId { get; set; }
 
-        public Guid CaseId { get; set; }
+        public Guid ProjectId { get; set; }
         public StakeHolderResponse? Expert { get; set; }
         public string ExpertName => Expert == null ? string.Empty : Expert.Name;
     }

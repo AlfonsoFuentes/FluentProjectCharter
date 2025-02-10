@@ -1,10 +1,4 @@
-﻿
-
-
-using Server.Database.Entities;
-using System.Threading;
-
-namespace Server.EndPoint.Projects.Commands
+﻿namespace Server.EndPoint.Projects.Commands
 {
 
     public static class CreateProjectEndPoint
@@ -13,13 +7,24 @@ namespace Server.EndPoint.Projects.Commands
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.Projects.EndPoint.Create, async (CreateProjectRequest Data, IRepository Repository) =>
+                app.MapPost(StaticClass.Projects.EndPoint.Create, async (CreateProjectRequest Data, IRepository Repository, IQueryRepository queryRepository) =>
                 {
-                    var row = Project.Create();
+                    var projects = await queryRepository.GetAllAsync<Project>(Cache: StaticClass.Projects.Cache.GetAll);
 
+                    int lastorder = projects == null || projects.Count == 0 ? 1 : projects.MaxBy(x => x.Order)!.Order + 1;
+
+
+
+                    var row = Project.Create(lastorder);
+                    row.Name = Data.Name;
+                    row.StartId = Guid.NewGuid();
+                    row.PlanningId = Guid.NewGuid();
+                    row.ExecutingId = Guid.NewGuid();
+                    row.MonitoringId = Guid.NewGuid();
+                    row.ClosingId = Guid.NewGuid();
                     await Repository.AddAsync(row);
 
-                    Data.Map(row);
+
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.Projects.Cache.Key(row.Id));
 
                     return Result.EndPointResult(result,
@@ -31,23 +36,24 @@ namespace Server.EndPoint.Projects.Commands
 
 
             }
+
         }
 
 
         static Project Map(this CreateProjectRequest request, Project row)
         {
             row.Name = request.Name;
-            row.ProjectNeedType=request.ProjectNeedType.Name;
-            row.InitialBudget=request.InitialBudget;
-            row.ProjectDescription=request.ProjectDescription;
-            row.ManagerId=request.Manager==null?null:request.Manager.Id;
-            row.SponsorId=request.Sponsor==null?null:request.Sponsor.Id;
-            row.Version0Date = request.InitialProjectDate == null ? null : request.InitialProjectDate.Value;
+            row.ProjectNeedType = request.ProjectNeedType.Name;
+
+            row.ManagerId = request.Manager == null ? null : request.Manager.Id;
+            row.SponsorId = request.Sponsor == null ? null : request.Sponsor.Id;
+            row.StartDate = request.InitialProjectDate;
             row.Status = request.Status.Name;
-            row.PercentageEngineering = request.PercentageEngineering;  
+            row.PercentageEngineering = request.PercentageEngineering;
             row.PercentageContingency = request.PercentageContingency;
             row.PercentageTaxProductive = request.PercentageTaxProductive;
             row.IsProductiveAsset = request.IsProductiveAsset;
+
             return row;
         }
 

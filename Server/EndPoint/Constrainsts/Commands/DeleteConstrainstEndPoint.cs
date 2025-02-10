@@ -17,16 +17,27 @@ namespace Server.EndPoint.Constrainsts.Commands
                 {
                     var row = await Repository.GetByIdAsync<Constrainst>(Data.Id);
                     if (row == null) { return Result.Fail(Data.NotFound); }
+
+                    var cachekeys = GetCacheKeys(row);
+                    
                     await Repository.RemoveAsync(row);
 
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Constrainsts.Cache.Key(row.Id)];
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+                  
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cachekeys);
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
                 });
+            }
+
+            private string[] GetCacheKeys(Constrainst row)
+            {
+                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
+                  StaticClass.Constrainsts.Cache.GetAll
+
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 

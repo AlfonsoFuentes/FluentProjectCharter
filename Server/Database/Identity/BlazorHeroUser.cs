@@ -35,5 +35,6 @@ namespace Server.Database.Identity
         }
 
         public string? CreatedByUserName { get; set; }
+        public int Order { get; set; }
     }
 }

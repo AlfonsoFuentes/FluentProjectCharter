@@ -1,6 +1,6 @@
-﻿using Shared.Models.Templates.Pipes.Requests;
+﻿using Shared.Models.Templates.Pipings.Requests;
 
-namespace Server.EndPoint.PipeTemplates.Commands
+namespace Server.EndPoint.Templates.Pipes.Commands
 {
     public static class UpdatePipeTemplateEndPoint
     {
@@ -27,24 +27,24 @@ namespace Server.EndPoint.PipeTemplates.Commands
 
                 });
             }
-           
+
         }
 
 
         static PipeTemplate Map(this UpdatePipeTemplateRequest request, PipeTemplate row)
         {
             row.BrandTemplateId = request.BrandResponse!.Id;
-            row.Diameter=request.Diameter.Name;
-            row.Class=request.Class.Name;
-            row.EquivalentLenghPrice=request.EquivalentLenghPrice;
-            row.LaborDayPrice=request.LaborDayPrice;
-            row.Insulation=request.Insulation;
-            row.Material=request.Material.Name;
-            
+            row.Diameter = request.Diameter.Name;
+            row.Class = request.Class.Name;
+            row.EquivalentLenghPrice = request.EquivalentLenghPrice;
+            row.LaborDayPrice = request.LaborDayPrice;
+            row.Insulation = request.Insulation;
+            row.Material = request.Material.Name;
+
 
             return row;
         }
-        
+
     }
 
 }

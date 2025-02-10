@@ -8,10 +8,10 @@ namespace Shared.Models.ExpertJudgements.Validators
     {
         public Guid? Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public Guid CaseId { get; set; }
+        public Guid ProjectId { get; set; }
         public StakeHolderResponse? Expert {  get; set; }
         public string EndPointName => StaticClass.ExpertJudgements.EndPoint.Validate;
-        public Guid ProjectId {  get; set; }
+     
         public override string Legend => Name;
 
         public override string ClassName => StaticClass.ExpertJudgements.ClassName;

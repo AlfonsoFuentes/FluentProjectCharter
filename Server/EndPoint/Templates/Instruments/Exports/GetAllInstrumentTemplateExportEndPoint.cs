@@ -1,9 +1,7 @@
-﻿using Shared.Models.OrganizationStrategies.Exports;
-using Shared.Models.OrganizationStrategies.Responses;
-using Shared.Models.Templates.Instruments.Exports;
+﻿using Shared.Models.Templates.Instruments.Exports;
 using Shared.Models.Templates.Instruments.Responses;
 
-namespace Server.EndPoint.InstrumentTemplates.Exports
+namespace Server.EndPoint.Templates.Instruments.Exports
 {
     public static class GetAllInstrumentTemplateExportEndPoint
     {

@@ -1,0 +1,72 @@
+﻿
+<div class="custom-table-responsive">
+    <table class="custom-table milestone-table">
+        <thead>
+            <tr>
+                <th>Order</th>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Elapse</th>
+                <th>Relation</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var milestone in Items)
+            {
+                <MilestoneRow Model="@milestone" SelectedRowChanged="@SelectedRowChanged"
+                              IndentLevel="0"
+                              SelectedRow="@SelectedRow"
+                              AllItems="@AllItems"
+                              ChangeName="ChangeName"
+                              ChangeStartDate="ChangeStartDate"
+                              ChangeEndDate="ChangeEndDate"
+                              ChangeDuration="ChangeDuration"
+                              ChangeDependency="ChangeDependency"
+                              ChangeDependencyType="ChangeDependencyType" />
+
+            }
+        </tbody>
+    </table>
+</div>
+<style>
+    .custom-table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        max-height: 80vh; /* Ajustar la altura máxima del contenedor */
+        position: relative; /* Asegurar que el contenedor sea el contenedor de referencia para elementos posicionados absolutamente */
+    }
+
+    /* Estilos generales para la tabla */
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+    }
+
+        .custom-table th,
+        .custom-table td {
+            border: 1px solid #ddd;
+            padding: 2px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .custom-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        /* Estilo para filas principales y subfilas */
+        .custom-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .custom-table tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+</style>
+@code {
+
+}

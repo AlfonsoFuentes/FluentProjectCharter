@@ -10,12 +10,16 @@ namespace Server.Database.Configurations.BudgetItems
         {
 
 
-            builder.HasOne(x => x.Deliverable)
-            .WithMany(t => t.BudgetItems)
-            .HasForeignKey(e => e.DeliverableId)
-            .OnDelete(DeleteBehavior.NoAction);
+            //builder.HasOne(x => x.Deliverable)
+            //.WithMany(t => t.BudgetItems)
+            //.HasForeignKey(e => e.DeliverableId)
+            //.OnDelete(DeleteBehavior.NoAction);
 
-          
+           // builder.HasOne(x => x.Milestone)
+           //.WithMany(t => t.BudgetItems)
+           //.HasForeignKey(e => e.MilestoneId)
+           //.OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

@@ -11,23 +11,31 @@ namespace Server.EndPoint.MeetingsGroup.Meetings.Commands
             {
                 app.MapPost(StaticClass.Meetings.EndPoint.Create, async (CreateMeetingRequest Data, IRepository Repository) =>
                 {
-                    var row = Meeting.Create(Data.ProjectId);
+                    var lastorder = await Repository.GetLastOrderAsync<Meeting, Project>(Data.ProjectId);
+                    var row = Meeting.Create(Data.ProjectId, lastorder);
 
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Meetings.Cache.Key(row.Id)];
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
-
+              
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
-
-
                 });
 
 
+            }
+
+
+            private string[] GetCacheKeys(Meeting row)
+            {
+                List<string> cacheKeys = [
+                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
+                    .. StaticClass.Meetings.Cache.Key(row.Id)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 

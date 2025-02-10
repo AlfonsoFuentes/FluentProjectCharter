@@ -5,6 +5,7 @@ namespace Shared.Models.MeetingAttendants.Requests
 {
     public class CreateMeetingAttendantRequest : CreateMessageResponse, IRequest
     {
+        
         public Guid MeetingId { get; set; }
         public StakeHolderResponse? StakeHolder { get; set; } = null!;
         public string StakeHolderName => StakeHolder == null ? string.Empty : StakeHolder.Name;

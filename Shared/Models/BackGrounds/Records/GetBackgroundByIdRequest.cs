@@ -5,7 +5,7 @@ namespace Shared.Models.Backgrounds.Records
 {
    public class GetBackgroundByIdRequest : GetByIdMessageResponse, IGetById
     {
-        public Guid ProjectId { get; set; }
+        
         public Guid Id { get; set; }
         public string EndPointName => StaticClass.BackGrounds.EndPoint.GetById;
         public override string ClassName => StaticClass.BackGrounds.ClassName;

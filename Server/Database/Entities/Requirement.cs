@@ -8,25 +8,29 @@ namespace Server.Database.Entities
 
         public Project Project { get; set; } = null!;
         public Guid ProjectId { get; set; }
-        public Scope? Scope { get; set; } = null!;
-        public Guid? ScopeId { get; set; }
+
         public string Name { set; get; } = string.Empty;
-        public string Type {  set; get; } = string.Empty;
+        public string Type { set; get; } = string.Empty;
         public StakeHolder? RequestedBy { get; set; }
         public Guid? RequestedById { get; set; }
         public StakeHolder? Responsible { get; set; }
         public Guid? ResponsibleId { get; set; }
         public DateTime? DueDate { get; set; }
-        public string Priority {  set; get; } = string.Empty;
-        public static Requirement Create(Guid ProjectId, Guid? ScopeId)
+        public string Priority { set; get; } = string.Empty;
+        public static Requirement Create(Guid ProjectId, Guid? StartId, Guid? PlanningId, int Order)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
-                ScopeId = ScopeId,
+                StartId = StartId,
                 ProjectId = ProjectId,
+                Order = Order,
+                PlanningId = PlanningId,
             };
         }
-        
+
+        public Guid? StartId { get; set; }
+        public Guid? PlanningId { get; set; }
+
     }
 }

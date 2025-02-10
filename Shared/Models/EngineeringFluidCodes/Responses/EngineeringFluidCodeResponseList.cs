@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Reponses;
 
-namespace Shared.Models.OrganizationStrategies.Responses
+namespace Shared.Models.EngineeringFluidCodes.Responses
 {
     public class EngineeringFluidCodeResponseList : IResponseAll
     {

@@ -1,4 +1,4 @@
-﻿namespace Shared.Enums.Materials
+﻿namespace Shared.Enums.ValvesEnum
 {
     public class SignalTypeEnum : ValueObject
     {
@@ -24,7 +24,7 @@
         };
         public static List<SignalTypeEnum> ListForValves = new List<SignalTypeEnum>()
         {
-            None,mA_4_20, VDC24, VAC110,NotApplicable, 
+            None,mA_4_20, VDC24, VAC110,NotApplicable,
         };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;
 

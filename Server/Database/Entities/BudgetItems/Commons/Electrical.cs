@@ -6,13 +6,13 @@
         public override string Letter { get; set; } = "E";
         public double UnitaryCost { get; set; }
         public double Quantity { get; set; }
-        public static Electrical Create(Guid ProjectId, Guid DeliverableId)
+        public static Electrical Create(Guid ProjectId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                DeliverableId = DeliverableId,
+         
             };
         }
     }

@@ -3,7 +3,7 @@ using Shared.Enums.Materials;
 using Shared.Models.Brands.Responses;
 using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.Templates.Pipes.Requests
+namespace Shared.Models.Templates.Pipings.Requests
 {
     public class UpdatePipeTemplateRequest : UpdateMessageResponse, IRequest
     {

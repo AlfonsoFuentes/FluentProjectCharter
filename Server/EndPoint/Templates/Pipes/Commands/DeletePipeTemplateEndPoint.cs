@@ -1,12 +1,6 @@
-﻿
+﻿using Shared.Models.Templates.Pipings.Requests;
 
-
-
-using Server.Database.Entities;
-using Shared.Models.OrganizationStrategies.Requests;
-using Shared.Models.Templates.Pipes.Requests;
-
-namespace Server.EndPoint.PipeTemplates.Commands
+namespace Server.EndPoint.Templates.Pipes.Commands
 {
     public static class DeletePipeTemplateEndPoint
     {

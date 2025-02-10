@@ -1,9 +1,7 @@
-﻿using Shared.Models.OrganizationStrategies.Exports;
-using Shared.Models.OrganizationStrategies.Responses;
-using Shared.Models.Templates.Equipments.Exports;
+﻿using Shared.Models.Templates.Equipments.Exports;
 using Shared.Models.Templates.Equipments.Responses;
 
-namespace Server.EndPoint.EquipmentTemplates.Exports
+namespace Server.EndPoint.Templates.Equipments.Exports
 {
     public static class GetAllEquipmentTemplateExportEndPoint
     {

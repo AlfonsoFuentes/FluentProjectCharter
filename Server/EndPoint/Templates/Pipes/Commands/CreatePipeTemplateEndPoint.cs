@@ -1,13 +1,8 @@
-﻿
+﻿using Server.EndPoint.Templates.Pipes.Commands;
+using Server.EndPoint.Templates.Pipes.Queries;
+using Shared.Models.Templates.Pipings.Requests;
 
-
-using Server.Database.Entities;
-using Server.EndPoint.PipeTemplates.Queries;
-using Shared.Models.OrganizationStrategies.Requests;
-using Shared.Models.Templates.Pipes.Requests;
-using System.Threading;
-
-namespace Server.EndPoint.PipeTemplates.Commands
+namespace Server.EndPoint.Templates.Pipes.Commands
 {
 
     public static class CreatePipeTemplateEndPoint
@@ -23,9 +18,9 @@ namespace Server.EndPoint.PipeTemplates.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                  
+
                     var response = row.Map();
-                    
+
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.PipeTemplates.Cache.Key(row.Id));
 
                     return Result.EndPointResult(response, result,

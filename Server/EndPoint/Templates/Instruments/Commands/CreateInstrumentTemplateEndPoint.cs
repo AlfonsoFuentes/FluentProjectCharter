@@ -1,7 +1,8 @@
-﻿using Server.EndPoint.InstrumentTemplates.Queries;
+﻿using Server.EndPoint.Templates.Instruments.Commands;
+using Server.EndPoint.Templates.Instruments.Queries;
 using Shared.Models.Templates.Instruments.Requests;
 
-namespace Server.EndPoint.InstrumentTemplates.Commands
+namespace Server.EndPoint.Templates.Instruments.Commands
 {
 
     public static class CreateInstrumentTemplateEndPoint
@@ -17,7 +18,7 @@ namespace Server.EndPoint.InstrumentTemplates.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                  
+
                     var response = row.Map();
                     foreach (var nozzle in Data.Nozzles)
                     {

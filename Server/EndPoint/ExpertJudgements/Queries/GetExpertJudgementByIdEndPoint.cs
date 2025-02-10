@@ -26,22 +26,24 @@ namespace Server.EndPoint.ExpertJudgements.Queries
                         return Result.Fail(request.NotFound);
                     }
 
-                    var response = row.Map(request.ProjectId);
+                    var response = row.Map();
                     return Result.Success(response);
 
                 });
             }
         }
 
-        public static ExpertJudgementResponse Map(this ExpertJudgement row, Guid ProjectId)
+        public static ExpertJudgementResponse Map(this ExpertJudgement row)
         {
             return new()
             {
                 Id = row.Id,
                 Name = row.Name,
-                CaseId = row.CaseId,
+                ProjectId = row.ProjectId,
                 Expert = row.Expert == null ? null! : row.Expert.Map(),
-                ProjectId = ProjectId,
+                Order = row.Order,
+                StartId = row.StartId,
+                PlanningId = row.PlanningId,
             };
         }
 

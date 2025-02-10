@@ -1,0 +1,27 @@
+﻿@page "/CreateEngineeringDesigns/{ProjectId:guid}"
+
+@using Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Requests
+<CreateTemplate @ref=CreateForm TItem="CreateEngineeringDesignRequest" @bind-Model="@Model"
+                Title="Create Engineering Design">
+    <Content>
+        <TextBox Label="Name"
+                  @bind-Value=@Model.Name
+                  Placeholder="Define name"
+                  Validate="CreateForm.ValidateAsync"></TextBox>
+        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+
+           
+        <NumberField @bind-Value="@Model.Budget" Label="Unitary Cost, USD" Validate="CreateForm.ValidateAsync">
+           
+        </NumberField>
+        <ValidationMessage For="() => Model.Budget" style="color:red; font-size:x-small;" />
+
+       
+    </Content>
+
+</CreateTemplate>
+
+@code {
+    CreateTemplate<CreateEngineeringDesignRequest> CreateForm = null!;
+
+}

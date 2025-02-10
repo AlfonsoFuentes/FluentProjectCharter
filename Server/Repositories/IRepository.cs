@@ -21,7 +21,9 @@ namespace Server.Repositories
         Task<List<T>> GetAllAsync<T>(Func<IQueryable<T>, IIncludableQueryable<T, object>> Includes = null!,
             Expression<Func<T, bool>> Criteria = null!,
             Expression<Func<T, object>> OrderBy = null!) where T : class, IAuditableEntity;
-
+        Task<int> GetLastOrderAsync<TEntity, TParent>(Guid parentId)
+            where TEntity : class, IAuditableEntity
+            where TParent : class, IAuditableEntity<Guid>;
     }
     public class Repository : IRepository
     {
@@ -117,6 +119,32 @@ namespace Server.Repositories
                 query = query.OrderBy(OrderBy);
             }
             return await query.ToListAsync();
+        }
+
+        public async Task<int> GetLastOrderAsync<TEntity, TParent>(Guid parentId)
+              where TEntity : class, IAuditableEntity
+              where TParent : class, IAuditableEntity<Guid>
+        {
+            try
+            {
+                var items = await Context.Set<TParent>()
+                     .Include(p => EF.Property<IEnumerable<TEntity>>(p, typeof(TEntity).Name + "s"))
+                     .AsNoTracking()
+                     .AsSplitQuery()
+                     .Where(p => p.Id == parentId)
+                     .SelectMany(p => EF.Property<IEnumerable<TEntity>>(p, typeof(TEntity).Name + "s"))
+                     .ToListAsync();
+
+
+                return items == null || items.Count == 0 ? 1 : items.Max(x => x.Order) + 1;
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+
+            }
+            return 1;
+
         }
 
     }

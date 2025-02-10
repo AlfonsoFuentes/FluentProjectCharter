@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.Templates.Pipes.Requests
+namespace Shared.Models.Templates.Pipings.Requests
 {
     public class DeletePipeTemplateRequest : DeleteMessageResponse, IRequest
     {

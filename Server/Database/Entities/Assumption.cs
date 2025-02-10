@@ -8,21 +8,24 @@ namespace Server.Database.Entities
 
         public Project Project { get; set; } = null!;
         public Guid ProjectId { get; set; }
-        public Scope? Scope { get; set; } = null!;
-        public Guid? ScopeId { get; set; }
+  
 
 
         public string Name { set; get; } = string.Empty;
 
-        public static Assumption Create(Guid ProjectId, Guid? ScopeId)
+        public static Assumption Create(Guid ProjectId, Guid? StartId, Guid? PlanningId, int Order)
         {
-            return new Assumption()
+            return new()
             {
                 Id = Guid.NewGuid(),
-                ScopeId = ScopeId,
+                StartId = StartId,
                 ProjectId = ProjectId,
+                Order = Order,
+                PlanningId = PlanningId,
             };
         }
+        public Guid? StartId { get; set; }
+        public Guid? PlanningId { get; set; }
     }
-   
+
 }

@@ -1,5 +1,6 @@
-﻿using Shared.Enums.Materials;
-using Shared.Enums.NozzleTypes;
+﻿using Shared.Enums.Instruments;
+using Shared.Enums.Materials;
+using Shared.Enums.ValvesEnum;
 using Shared.Models.Brands.Responses;
 using Shared.Models.Templates.NozzleTemplates;
 

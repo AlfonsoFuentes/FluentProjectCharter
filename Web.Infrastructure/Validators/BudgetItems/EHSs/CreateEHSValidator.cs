@@ -1,5 +1,5 @@
-﻿using Shared.Models.BudgetItems.EHSs.Requests;
-using Shared.Models.BudgetItems.EHSs.Validators;
+﻿using Shared.Models.BudgetItems.IndividualItems.EHSs.Requests;
+using Shared.Models.BudgetItems.IndividualItems.EHSs.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.EHSs
@@ -28,8 +28,8 @@ namespace Web.Infrastructure.Validators.EHSs
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
                 ProjectId = request.ProjectId,
+
 
 
             };
@@ -59,9 +59,9 @@ namespace Web.Infrastructure.Validators.EHSs
             ValidateEHSRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+               
 
             };
             var result = await Service.Validate(validate);

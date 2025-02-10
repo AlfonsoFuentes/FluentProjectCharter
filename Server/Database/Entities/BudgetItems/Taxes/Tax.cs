@@ -7,13 +7,14 @@
         public double Percentage { get; set; }
         public ICollection<TaxesItem> TaxesItems { get; set; } = new List<TaxesItem>();
        
-        public static Tax Create(Guid ProjectId, Guid DeliverableId)
+        public static Tax Create(Guid ProjectId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                DeliverableId = DeliverableId,
+               
+               
             };
         }
     }

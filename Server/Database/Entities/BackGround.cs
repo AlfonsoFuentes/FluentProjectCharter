@@ -5,16 +5,20 @@ namespace Server.Database.Entities
     public class BackGround : AuditableEntity<Guid>, ITenantEntity
     {
         public string TenantId { get; set; } = string.Empty;
-        public Case Case { get; set; } = null!;
-        public Guid CaseId { get; set; }
+
+        public Project Project { get; set; } = null!;
+        public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;
-        public static BackGround Create(Guid CaseId)
+        public static BackGround Create(Guid ProjectId, int Order)
         {
             return new BackGround()
             {
                 Id = Guid.NewGuid(),
-                CaseId = CaseId,
+                ProjectId = ProjectId,
+                Order = Order,
+             
             };
         }
+    
     }
 }

@@ -4,8 +4,8 @@ namespace Shared.Models.Backgrounds.Requests
 {
     public class UpdateBackGroundRequest : UpdateMessageResponse, IRequest
     {
+      
         public Guid ProjectId { get; set; }
-        public Guid CaseId { get; set; }
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
 

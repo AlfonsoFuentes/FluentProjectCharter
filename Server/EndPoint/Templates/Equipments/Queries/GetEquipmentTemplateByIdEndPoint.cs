@@ -1,6 +1,5 @@
-﻿
-
-using Server.EndPoint.Brands.Queries;
+﻿using Server.EndPoint.Brands.Queries;
+using Server.EndPoint.Templates.Equipments.Queries;
 using Shared.Enums.ConnectionTypes;
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
@@ -9,7 +8,7 @@ using Shared.Models.Templates.Equipments.Records;
 using Shared.Models.Templates.Equipments.Responses;
 using Shared.Models.Templates.NozzleTemplates;
 
-namespace Server.EndPoint.EquipmentTemplates.Queries
+namespace Server.EndPoint.Templates.Equipments.Queries
 {
     public static class GetEquipmentTemplateByIdEndPoint
     {

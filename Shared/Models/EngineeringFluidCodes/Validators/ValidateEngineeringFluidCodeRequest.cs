@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.OrganizationStrategies.Validators
+namespace Shared.Models.EngineeringFluidCodes.Validators
 {
     public class ValidateEngineeringFluidCodeRequest : ValidateMessageResponse, IRequest
     {

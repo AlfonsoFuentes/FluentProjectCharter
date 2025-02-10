@@ -17,17 +17,25 @@ namespace Server.EndPoint.ExpertJudgements.Commands
                 {
                     var row = await Repository.GetByIdAsync<ExpertJudgement>(Data.Id);
                     if (row == null) { return Result.Fail(Data.NotFound); }
+
+
+                    var cache = GetCacheKeys(row);
+
                     await Repository.RemoveAsync(row);
-
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.ExpertJudgements.Cache.Key(row.Id)];
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
 
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
                 });
+            }
+            private string[] GetCacheKeys(ExpertJudgement row)
+            {
+                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
+                    StaticClass.ExpertJudgements.Cache.GetAll
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 

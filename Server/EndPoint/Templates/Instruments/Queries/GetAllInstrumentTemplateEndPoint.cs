@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Templates.Instruments.Records;
 using Shared.Models.Templates.Instruments.Responses;
 
-namespace Server.EndPoint.InstrumentTemplates.Queries
+namespace Server.EndPoint.Templates.Instruments.Queries
 {
     public static class GetAllInstrumentTemplateEndPoint
     {
@@ -11,9 +11,9 @@ namespace Server.EndPoint.InstrumentTemplates.Queries
             {
                 app.MapPost(StaticClass.InstrumentTemplates.EndPoint.GetAll, async (InstrumentTemplateGetAll request, IQueryRepository Repository) =>
                 {
-                    Func<IQueryable<InstrumentTemplate>, IIncludableQueryable<InstrumentTemplate, object>>Includes = x => x
+                    Func<IQueryable<InstrumentTemplate>, IIncludableQueryable<InstrumentTemplate, object>> Includes = x => x
                     .Include(x => x.NozzleTemplates)
-                    .Include(x=>x.BrandTemplate!)
+                    .Include(x => x.BrandTemplate!)
                      ;
 
                     string CacheKey = StaticClass.InstrumentTemplates.Cache.GetAll;

@@ -8,7 +8,7 @@ namespace Shared.Models.Backgrounds.Requests
         public override string Legend => Name;
 
         public override string ClassName => StaticClass.BackGrounds.ClassName;
-        public Guid ProjectId { get; set; }
+ 
         public Guid Id { get; set; }
 
         public string EndPointName => StaticClass.BackGrounds.EndPoint.Delete;

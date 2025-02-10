@@ -1,12 +1,6 @@
-﻿
+﻿using Shared.Models.Templates.Instruments.Requests;
 
-
-
-using Server.Database.Entities;
-using Shared.Models.OrganizationStrategies.Requests;
-using Shared.Models.Templates.Instruments.Requests;
-
-namespace Server.EndPoint.InstrumentTemplates.Commands
+namespace Server.EndPoint.Templates.Instruments.Commands
 {
     public static class DeleteInstrumentTemplateEndPoint
     {

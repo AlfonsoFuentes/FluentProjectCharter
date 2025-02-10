@@ -1,8 +1,10 @@
-﻿namespace Shared.Models.Meetings.Responses
+﻿using Shared.Models.FileResults.Generics.Reponses;
+
+namespace Shared.Models.Meetings.Responses
 {
-    public class MeetingResponseList
+    public class MeetingResponseList : IResponseAll
     {
-        public MeetingResponse CurrentMeeting { get; set; } = null!;
+
         public List<MeetingResponse> Items { get; set; } = new();
     }
 }

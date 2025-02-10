@@ -10,10 +10,12 @@
                 {
                     var row = await Repository.GetByIdAsync<Bennefit>(Data.Id);
                     if (row == null) { return Result.Fail(Data.NotFound); }
+
+
+                    List<string> cache = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
+                    StaticClass.Bennefits.Cache.GetAll];
+
                     await Repository.RemoveAsync(row);
-
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Bennefits.Cache.Key(row.Id)];
-
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
                     return Result.EndPointResult(result,
                         Data.Succesfully,

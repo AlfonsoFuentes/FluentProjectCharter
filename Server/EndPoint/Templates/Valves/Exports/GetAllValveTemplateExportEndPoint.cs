@@ -1,7 +1,7 @@
 ﻿using Shared.Models.Templates.Valves.Exports;
 using Shared.Models.Templates.Valves.Responses;
 
-namespace Server.EndPoint.ValveTemplates.Exports
+namespace Server.EndPoint.Templates.Valves.Exports
 {
     public static class GetAllValveTemplateExportEndPoint
     {

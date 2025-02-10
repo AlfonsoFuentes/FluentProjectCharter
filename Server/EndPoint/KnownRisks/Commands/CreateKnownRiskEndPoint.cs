@@ -16,22 +16,33 @@ namespace Server.EndPoint.KnownRisks.Commands
             {
                 app.MapPost(StaticClass.KnownRisks.EndPoint.Create, async (CreateKnownRiskRequest Data, IRepository Repository) =>
                 {
-                    var row = KnownRisk.Create(Data.CaseId);
+                    if (!Data.StartId.HasValue && !Data.PlanningId.HasValue)
+                        return Result.Fail();
+                    var lastorder = await Repository.GetLastOrderAsync<KnownRisk, Project>(Data.ProjectId);
+
+                    var row = KnownRisk.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+
 
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.KnownRisks.Cache.Key(row.Id)];
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
+
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
 
                 });
-
-
+            }
+            private string[] GetCacheKeys(KnownRisk row)
+            {
+                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
+                    .. StaticClass.KnownRisks.Cache.Key(row.Id)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
         }
 

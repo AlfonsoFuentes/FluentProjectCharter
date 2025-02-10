@@ -1,7 +1,6 @@
-﻿using Shared.Models.OrganizationStrategies.Validators;
-using Shared.Models.Templates.Equipments.Validators;
+﻿using Shared.Models.Templates.Equipments.Validators;
 
-namespace Server.EndPoint.EquipmentTemplates.Validators
+namespace Server.EndPoint.Templates.Equipments.Validators
 {
     public static class ValidateEquipmentTemplatesNameEndPoint
     {

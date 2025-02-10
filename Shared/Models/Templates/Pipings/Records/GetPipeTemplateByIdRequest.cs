@@ -1,7 +1,7 @@
 ﻿using Shared.Models.FileResults.Generics.Records;
 using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.Templates.Pipes.Records
+namespace Shared.Models.Templates.Pipings.Records
 {
 
     public class GetPipeTemplateByIdRequest : GetByIdMessageResponse, IGetById

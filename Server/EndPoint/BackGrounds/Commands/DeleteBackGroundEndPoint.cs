@@ -19,7 +19,7 @@ namespace Server.EndPoint.BackGrounds.Commands
                     if (row == null) { return Result.Fail(Data.NotFound); }
                     await Repository.RemoveAsync(row);
 
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.BackGrounds.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.Projects.Cache.Key(row.ProjectId),StaticClass.BackGrounds.Cache.GetAll];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

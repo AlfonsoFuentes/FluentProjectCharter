@@ -3,11 +3,11 @@ using Shared.Enums.ConnectionTypes;
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
-using Shared.Models.BudgetItems.Pipes.Requests;
-using Shared.Models.BudgetItems.Pipes.Validators;
-using Shared.Models.BudgetItems.Nozzles.Responses;
 using Shared.Models.Templates.NozzleTemplates;
 using Web.Infrastructure.Managers.Generic;
+using Shared.Models.BudgetItems.IndividualItems.Pipes.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Pipes.Validators;
+using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 
 namespace Web.Infrastructure.Validators.BudgetItems.Pipings
 {
@@ -73,8 +73,8 @@ namespace Web.Infrastructure.Validators.BudgetItems.Pipings
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
                 ProjectId = request.ProjectId,
+
 
 
 
@@ -86,11 +86,10 @@ namespace Web.Infrastructure.Validators.BudgetItems.Pipings
         {
             ValidatePipeTagRequest validate = new()
             {
-                Name = name,
-
+              
                 Tag = request.Tag,
-                ProjectId = request.ProjectId,
 
+                ProjectId = request.ProjectId,
 
             };
             var result = await Service.Validate(validate);
@@ -175,9 +174,9 @@ namespace Web.Infrastructure.Validators.BudgetItems.Pipings
             ValidatePipeRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+              
 
             };
             var result = await Service.Validate(validate);
@@ -187,11 +186,11 @@ namespace Web.Infrastructure.Validators.BudgetItems.Pipings
         {
             ValidatePipeTagRequest validate = new()
             {
-                Name = name,
+               
                 Id = request.Id,
                 Tag = request.Tag,
-                ProjectId = request.ProjectId,
 
+                ProjectId = request.ProjectId,
 
             };
             var result = await Service.Validate(validate);

@@ -1,7 +1,7 @@
 ﻿#nullable disable
 namespace UnitSystem
 {
-  
+
     public class Amount :
         ICloneable,
         IComparable,
@@ -824,6 +824,7 @@ namespace UnitSystem
             return (this - PhysicsConstant.ManometricPressure).ConvertedTo(unit).Value;
 
         }
+        public string ValueUnit => $"{GetValue(unit)} {Unit.Name}";
     }
 
 }

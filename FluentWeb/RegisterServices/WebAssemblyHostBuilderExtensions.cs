@@ -12,7 +12,6 @@ using Web.Infrastructure.Services.Client;
 using Web.Infrastructure.Services.Currencies;
 
 
-
 namespace FluentWeb.RegisterServices
 {
 
@@ -47,7 +46,7 @@ namespace FluentWeb.RegisterServices
                 {
                     client.DefaultRequestHeaders.AcceptLanguage.Clear();
                     client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName);
-                    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+                    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); // Fix: Use builder.HostEnvironment.BaseAddress
                 })
                 .AddHttpMessageHandler<AuthenticationHeaderHandler>();
             builder.Services.AddHttpClientInterceptor();
@@ -111,6 +110,5 @@ namespace FluentWeb.RegisterServices
 
             return services;
         }
-
     }
 }

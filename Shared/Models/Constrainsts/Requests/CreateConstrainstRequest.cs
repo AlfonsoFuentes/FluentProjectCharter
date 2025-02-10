@@ -4,7 +4,9 @@ namespace Shared.Models.Constrainsts.Requests
 {
     public class CreateConstrainstRequest : CreateMessageResponse, IRequest
     {
-        public Guid? ScopeId { get; set; }
+        public Guid? StartId { get; set; }
+        public Guid? PlanningId { get; set; }
+       
         public string Name { get; set; } = string.Empty;
         public Guid ProjectId { get; set; }
         public string EndPointName => StaticClass.Constrainsts.EndPoint.Create;

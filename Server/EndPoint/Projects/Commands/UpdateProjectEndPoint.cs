@@ -28,11 +28,10 @@
         {
             row.Name = request.Name;
             row.ProjectNeedType = request.ProjectNeedType.Name;
-            row.InitialBudget = request.InitialBudget;
-            row.ProjectDescription = request.ProjectDescription;
+          
             row.ManagerId = request.Manager == null ? null : request.Manager.Id;
             row.SponsorId = request.Sponsor == null ? null : request.Sponsor.Id;
-            row.Version0Date = request.InitialProjectDate == null ? null : request.InitialProjectDate.Value;
+            row.StartDate = request.InitialProjectDate == null ? null : request.InitialProjectDate.Value;
             row.Status = request.Status.Name;
             row.ProjectNumber = request.ProjectNumber;
             row.PercentageEngineering = request.PercentageEngineering;

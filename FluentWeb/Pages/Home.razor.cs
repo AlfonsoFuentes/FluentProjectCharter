@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.FluentUI.AspNetCore.Components;
+using Shared.Models.Apps.Requests;
+using Shared.Models.Backgrounds.Responses;
+using Shared.Models.Projects.Mappers;
+using Shared.Models.Projects.Records;
 using Shared.Models.Projects.Reponses;
 using Shared.Models.Projects.Request;
-using Web.Infrastructure.Managers.Projects;
 
 namespace FluentWeb.Pages;
 #nullable disable
@@ -10,51 +14,101 @@ public partial class Home
     [CascadingParameter]
     public App App { get; set; }
 
-    [Inject]
-    private IProjectService Service { get; set; }
 
-    ProjectResponseList Response => App.ProjectList;
+
     string nameFilter { get; set; } = string.Empty;
     Func<ProjectResponse, bool> fiterexpresion => x =>
        x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase);
-    public List<ProjectResponse> FilteredItems => Response.Items.Count == 0 ? new() :
-        Response.Items.Where(fiterexpresion).ToList();
+    public List<ProjectResponse> FilteredItems => ProjectList.Items.Count == 0 ? new() : ProjectList.Items.Where(fiterexpresion).ToList();
 
+    public ProjectResponseList ProjectList { get; set; } = new();
+    bool DisableSaveButton(ProjectResponse model)
+    {
+        return string.IsNullOrEmpty(model.Name) ? true : false;
+
+    }
+    string CurrentRowName => SelectedRow == null ? string.Empty : Truncate(SelectedRow.Name, 30);
+    private string Truncate(string value, int maxLength)
+    {
+        if (string.IsNullOrEmpty(value)) return value;
+        return value.Length <= maxLength ? value : value.Substring(0, maxLength) + "...";
+    }
+    ProjectResponse CreateRow { get; set; }
+    ProjectResponse SelectedRow { get; set; }
+    ProjectResponse EditRow { get; set; }
+    ProjectResponse CurrentCompleteRow { get; set; }
+    bool DisableUpButton => SelectedRow == null ? true : SelectedRow.Order == 1;
+    bool DisableDownButton => SelectedRow == null ? true : SelectedRow.Order == ProjectList.LastOrder;
     protected override async Task OnInitializedAsync()
     {
-        await UpdateAll();
-       
+        await GetAll();
+
     }
-    async Task UpdateAll()
+    public async Task GetAll()
     {
 
-        var result = await Service.GetAll();
+        var result = await GenericService.GetAll<ProjectResponseList, ProjectGetAll>(new ProjectGetAll());
         if (result.Succeeded)
         {
-            App.ProjectList = result.Data;
-    
-            StateHasChanged();
+            ProjectList = result.Data;
+            SelectedRow = SelectedRow == null ? null : ProjectList.Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
+            CurrentCompleteRow = ProjectList.SelectedProjectId.HasValue ? ProjectList.Items.FirstOrDefault(x => x.Id == ProjectList.SelectedProjectId.Value) : null;
         }
+
     }
-
-   
-
     public void AddNew()
     {
-        Navigation.NavigateTo("/CreateProject");
+        CreateRow = new();
+        EditRow = null!;
+        ProjectList.Items.Add(CreateRow);
     }
-
-
-    public void Edit(ProjectResponse Response)
+    public async Task Create()
     {
-        Navigation.NavigateTo($"/UpdateProject/{Response.Id}");
+        if (CreateRow == null) return;
+
+        var result = await GenericService.Create(CreateRow.ToCreate());
+        if (result.Succeeded)
+        {
+            CreateRow = null;
+            await GetAll();
+
+        }
     }
-
-
-
-    public async Task Delete(ProjectResponse response)
+    void CancelCreate()
     {
-        var dialog = await DialogService.ShowWarningAsync($"Delete {response.Name}?");
+        if (CreateRow == null) return;
+
+        ProjectList.Items.Remove(CreateRow);
+        CreateRow = null;
+    }
+    void CancelEdit()
+    {
+        if (EditRow == null) return;
+        EditRow = null;
+    }
+    public void Edit()
+    {
+        if (SelectedRow != null)
+            Navigation.NavigateTo($"/UpdateProject/{SelectedRow.Id}");
+    }
+    private void HandleRowClick(FluentDataGridRow<ProjectResponse> row)
+    {
+        SelectedRow = row.Item == null ? null : SelectedRow == null ? row.Item : SelectedRow.Id == row.Item.Id ? SelectedRow : row.Item;
+
+        EditRow = EditRow == null ? null : SelectedRow == null ? null : EditRow.Id != SelectedRow.Id ? null : EditRow;
+
+
+    }
+    private void HandleRowDoubleClick(FluentDataGridRow<ProjectResponse> row)
+    {
+        EditRow = row.Item == null ? null : SelectedRow == null ? row.Item : SelectedRow.Id == row.Item.Id ? SelectedRow : row.Item;
+
+        CancelCreate();
+    }
+    public async Task Delete()
+    {
+        if (SelectedRow == null) return;
+        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -64,13 +118,13 @@ public partial class Home
         {
             DeleteProjectRequest request = new()
             {
-                Id = response.Id,
-                Name = response.Name,
+                Id = SelectedRow.Id,
+                Name = SelectedRow.Name,
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)
             {
-                await UpdateAll();
+                await GetAll();
                 _snackBar.ShowSuccess(resultDelete.Messages);
 
 
@@ -82,29 +136,120 @@ public partial class Home
         }
 
     }
-    public async Task Export(ProjectResponse response)
+    async Task Show()
     {
-        var resultExport = await Service.ExportPDF(response);
-        if (resultExport.Succeeded)
+        if (SelectedRow == null) return;
+        CurrentCompleteRow = SelectedRow;
+        CreateUpdateAppRequest model = new()
         {
-
-            Console.WriteLine(resultExport.Message);
-            var downloadresult = await blazorDownloadFileService.DownloadFile(resultExport.Data.ExportFileName,
-              resultExport.Data.Data, contentType: resultExport.Data.ContentType);
-            if (downloadresult.Succeeded)
-            {
-                _snackBar.ShowSuccess($"Project Charter for {response.Name} exported succesfully");
-
-            }
-            else
-            {
-                _snackBar.ShowError($"Project Charter for {response.Name} not exported succesfully");
-            }
-        }
-        else
+            ProjectId = SelectedRow.Id,
+        };
+        var result = await GenericService.Update(model);
+        if (result.Succeeded)
         {
-            _snackBar.ShowError($"Project Charter for {response.Name} not created succesfully");
+            await GetAll();
+
         }
     }
+    async Task UnShow()
+    {
+
+        CurrentCompleteRow = null;
+        CreateUpdateAppRequest model = new()
+        {
+            ProjectId = null,
+        };
+        var result = await GenericService.Update(model);
+        if (result.Succeeded)
+        {
+            await GetAll();
+        }
+    }
+
+    async Task Up()
+    {
+        if (SelectedRow == null) return;
+
+
+        var result = await GenericService.Update(SelectedRow.ToUp());
+        if (result.Succeeded)
+        {
+            await GetAll();
+        }
+    }
+    async Task Down()
+    {
+        if (SelectedRow == null) return;
+
+        var result = await GenericService.Update(SelectedRow.ToDown());
+
+        if (result.Succeeded)
+        {
+            await GetAll();
+        }
+    }
+
+    async Task Update(ProjectResponse model)
+    {
+
+        var result = await GenericService.Update(model.ToUpdateName());
+        if (result.Succeeded)
+        {
+
+            await GetAll();
+            EditRow = null!;
+        }
+    }
+
+    //public async Task ExportProjectCharter(ProjectResponse response)
+    //{
+
+    //    var resultExport = await Service.ExportProjectCharter(response);
+    //    if (resultExport.Succeeded)
+    //    {
+
+    //        Console.WriteLine(resultExport.Message);
+    //        var downloadresult = await blazorDownloadFileService.DownloadFile(resultExport.Data.ExportFileName,
+    //          resultExport.Data.Data, contentType: resultExport.Data.ContentType);
+    //        if (downloadresult.Succeeded)
+    //        {
+    //            _snackBar.ShowSuccess($"Project Charter for {response.Name} exported succesfully");
+
+    //        }
+    //        else
+    //        {
+    //            _snackBar.ShowError($"Project Charter for {response.Name} not exported succesfully");
+    //        }
+    //    }
+    //    else
+    //    {
+    //        _snackBar.ShowError($"Project Charter for {response.Name} not created succesfully");
+    //    }
+    //}
+    //public async Task ExportProjectPlan(ProjectResponse response)
+    //{
+
+    //    var resultExport = await Service.ExportProjectPlann(response);
+    //    if (resultExport.Succeeded)
+    //    {
+
+    //        Console.WriteLine(resultExport.Message);
+    //        var downloadresult = await blazorDownloadFileService.DownloadFile(resultExport.Data.ExportFileName,
+    //          resultExport.Data.Data, contentType: resultExport.Data.ContentType);
+    //        if (downloadresult.Succeeded)
+    //        {
+    //            _snackBar.ShowSuccess($"Project Charter for {response.Name} exported succesfully");
+
+    //        }
+    //        else
+    //        {
+    //            _snackBar.ShowError($"Project Charter for {response.Name} not exported succesfully");
+    //        }
+    //    }
+    //    else
+    //    {
+    //        _snackBar.ShowError($"Project Charter for {response.Name} not created succesfully");
+    //    }
+    //}
 
 }

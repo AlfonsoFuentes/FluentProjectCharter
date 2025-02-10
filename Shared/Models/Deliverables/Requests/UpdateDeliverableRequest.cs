@@ -4,7 +4,7 @@ namespace Shared.Models.Deliverables.Requests
 {
     public class UpdateDeliverableRequest : UpdateMessageResponse, IRequest
     {
-        public Guid ScopeId { get; set; }
+     
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public Guid ProjectId { get; set; }

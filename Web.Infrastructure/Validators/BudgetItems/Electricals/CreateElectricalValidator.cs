@@ -1,5 +1,5 @@
-﻿using Shared.Models.BudgetItems.Electricals.Requests;
-using Shared.Models.BudgetItems.Electricals.Validators;
+﻿using Shared.Models.BudgetItems.IndividualItems.Electricals.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Electricals.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.Electricals
@@ -28,8 +28,8 @@ namespace Web.Infrastructure.Validators.Electricals
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
                 ProjectId = request.ProjectId,
+
 
 
             };
@@ -59,9 +59,9 @@ namespace Web.Infrastructure.Validators.Electricals
             ValidateElectricalRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+        
 
             };
             var result = await Service.Validate(validate);

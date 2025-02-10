@@ -1,5 +1,5 @@
-﻿using Shared.Models.OrganizationStrategies.Requests;
-using Shared.Models.OrganizationStrategies.Validators;
+﻿using Shared.Models.EngineeringFluidCodes.Requests;
+using Shared.Models.EngineeringFluidCodes.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.EngineeringFluidCodes

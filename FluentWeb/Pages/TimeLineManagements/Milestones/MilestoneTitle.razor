@@ -1,0 +1,31 @@
+﻿<div class="milestone-row">
+    <div class="grid-item"><FluentLabel Typo="Typography.Body"><strong>Order</strong></FluentLabel></div>
+    <div class="grid-item"><FluentLabel Typo="Typography.Body"><strong>Name</strong></FluentLabel></div>
+    <div class="grid-item"><FluentLabel Typo="Typography.Body"><strong>Start Date</strong></FluentLabel></div>
+    <div class="grid-item"><FluentLabel Typo="Typography.Body"><strong>End Date</strong></FluentLabel></div>
+    <div class="grid-item"><FluentLabel Typo="Typography.Body"><strong>Duration</strong></FluentLabel></div>
+    <div class="grid-item"><FluentLabel Typo="Typography.Body"><strong>Related</strong></FluentLabel></div>
+    <div class="grid-item"><FluentLabel Typo="Typography.Body"><strong>Type</strong></FluentLabel></div>
+
+</div>
+
+
+<style>
+    .milestone-row {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr); /* Ajusta el número de columnas según sea necesario */
+        gap: 10px;
+        width: 100%;
+    }
+
+    .selected-row {
+        background-color: #f0f0f0; /* Color de fondo para la fila seleccionada */
+    }
+
+    .grid-item {
+        margin: 5px;
+    }
+</style>
+@code {
+  
+}

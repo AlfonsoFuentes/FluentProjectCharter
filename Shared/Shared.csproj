@@ -14,4 +14,10 @@
     <ProjectReference Include="..\UnitSystem\UnitSystem.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\StakeHolderInsideProjects\Exports\" />
+    <Folder Include="Models\StakeHolderInsideProjects\Validators\" />
+    <Folder Include="Models\StakeHolders\Mappers\" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,5 @@
-﻿using Shared.Models.BudgetItems.Paintings.Requests;
-using Shared.Models.BudgetItems.Paintings.Validators;
+﻿using Shared.Models.BudgetItems.IndividualItems.Paintings.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Paintings.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.Paintings
@@ -28,8 +28,8 @@ namespace Web.Infrastructure.Validators.Paintings
             {
                 Name = name,
 
-                DeliverableId = request.DeliverableId,
                 ProjectId = request.ProjectId,
+
 
 
             };
@@ -59,9 +59,9 @@ namespace Web.Infrastructure.Validators.Paintings
             ValidatePaintingRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+               
 
             };
             var result = await Service.Validate(validate);

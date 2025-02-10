@@ -25,7 +25,7 @@ namespace Web.Infrastructure.Validators.Bennefits
             ValidateBennefitRequest validate = new()
             {
                 Name = name,
-                ScopeId = request.ScopeId,
+                ProjectId = request.ProjectId,
 
             };
             var result = await Service.Validate(validate);
@@ -53,7 +53,7 @@ namespace Web.Infrastructure.Validators.Bennefits
             ValidateBennefitRequest validate = new()
             {
                 Name = name,
-                ScopeId = request.ScopeId,
+                ProjectId = request.ProjectId,
                 Id = request.Id
 
             };

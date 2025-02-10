@@ -35,34 +35,43 @@ namespace Server.Repositories
          Expression<Func<T, bool>> Criteria = null!,
         Expression<Func<T, object>> OrderBy = null!) where T : class, IAuditableEntity
         {
-            var cache = $"{Cache}-{_tenantId}";
-            var rows = await Context.GetOrAddCacheAsync(cache, async () =>
+            try
             {
-
-                var query = Context.Set<T>()
-
-                  .AsNoTracking()
-                 .AsSplitQuery()
-                 .AsQueryable();
-
-
-                if (Includes != null)
-                {
-                    query = Includes(query);
-                }
-                if (Criteria != null)
+                var cache = $"{Cache}-{_tenantId}";
+                var rows = await Context.GetOrAddCacheAsync(cache, async () =>
                 {
 
-                    query = query.Where(Criteria);
-                }
+                    var query = Context.Set<T>()
 
-                if (OrderBy != null)
-                {
-                    query = query.OrderBy(OrderBy);
-                }
-                return await query.FirstOrDefaultAsync();
-            });
-            return rows;
+                      .AsNoTracking()
+                     .AsSplitQuery()
+                     .AsQueryable();
+
+
+                    if (Includes != null)
+                    {
+                        query = Includes(query);
+                    }
+                    if (Criteria != null)
+                    {
+
+                        query = query.Where(Criteria);
+                    }
+
+                    if (OrderBy != null)
+                    {
+                        query = query.OrderBy(OrderBy);
+                    }
+                    return await query.FirstOrDefaultAsync();
+                });
+                return rows;
+            }
+            catch (Exception ex)
+            {
+                string e = ex.Message;  
+            }
+            return null!;
+           
         }
 
         public async Task<List<T>> GetAllAsync<T>(string Cache,
@@ -70,7 +79,7 @@ namespace Server.Repositories
            Expression<Func<T, bool>> Criteria = null!,
           Expression<Func<T, object>> OrderBy = null!) where T : class, IAuditableEntity
         {
-            //var cache = typeof(T).GetInterfaces().Any(x => x == typeof(ITenantEntity)) ? $"{Cache}-{_tenantId}" : Cache;
+           
             var cache = $"{Cache}-{_tenantId}";
             var rows = await Context.GetOrAddCacheAsync(cache, async () =>
             {
@@ -143,5 +152,6 @@ namespace Server.Repositories
 
             return result;
         }
+        
     }
 }

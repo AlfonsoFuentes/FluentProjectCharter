@@ -14,15 +14,7 @@ namespace Shared.Models.Meetings.Responses
         public List<MeetingAttendantResponse> Attendants { get; set; } = new();
         public List<MeetingAgreementResponse> Agreements { get; set; } = new();
  
-        public string? Tab { get; set; } = string.Empty;
-        public void Open()
-        {
-            IsNodeOpen = true;
-        }
-        public void Close()
-        {
-            IsNodeOpen = false;
-        }
+       
 
         public string EndPointName => StaticClass.Meetings.EndPoint.UpdateState;
     }

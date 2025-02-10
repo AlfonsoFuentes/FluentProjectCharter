@@ -51,10 +51,9 @@ namespace Web.Infrastructure.Validators.Taxs
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
 
-
-            //RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
-            //    .When(x => !string.IsNullOrEmpty(x.Name))
-            //    .WithMessage(x => $"{x.Name} already exist");
+            RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
+                          .When(x => !string.IsNullOrEmpty(x.Name))
+                          .WithMessage(x => $"{x.Name} already exist");
 
         }
 
@@ -63,9 +62,9 @@ namespace Web.Infrastructure.Validators.Taxs
             ValidateTaxRequest validate = new()
             {
                 Name = name,
-                DeliverableId = request.DeliverableId,
-                Id = request.Id,
                 ProjectId = request.ProjectId,
+                Id = request.Id,
+ 
 
             };
             var result = await Service.Validate(validate);

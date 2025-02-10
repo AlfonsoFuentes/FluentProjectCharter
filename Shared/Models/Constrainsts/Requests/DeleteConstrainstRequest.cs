@@ -6,7 +6,7 @@ namespace Shared.Models.Constrainsts.Requests
     {
         public string Name { get; set; } = string.Empty;
         public override string Legend => Name;
-        public Guid ProjectId { get; set; }
+
         public override string ClassName => StaticClass.Constrainsts.ClassName;
 
         public Guid Id { get; set; }

@@ -1,7 +1,7 @@
 ﻿using Shared.Models.MeetingAttendants.Validators;
 using Shared.Models.Backgrounds.Validators;
 
-namespace Server.EndPoint.MeetingAttendantsGroup.MeetingAttendants.Validators
+namespace Server.EndPoint.MeetingsGroup.MeetingAttendants.Validators
 {
     public static class ValidateMeetingAttendantsNameEndPoint
     {

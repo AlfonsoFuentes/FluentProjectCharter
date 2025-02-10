@@ -10,30 +10,23 @@ namespace Server.EndPoint.Deliverables.Commands
             {
                 app.MapPost(StaticClass.Deliverables.EndPoint.Delete, async (DeleteDeliverableRequest Data, IRepository Repository) =>
                 {
-                    Func<IQueryable<Deliverable>, IIncludableQueryable<Deliverable, object>> Includes = x => x
-                .Include(x => x.BudgetItems);
+                    Func<IQueryable<Deliverable>, IIncludableQueryable<Deliverable, object>> Includes = x => null!;
+        
 
                     Expression<Func<Deliverable, bool>> Criteria = x => x.Id == Data.Id;
 
 
-                    var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
+                    var row = await Repository.GetAsync(Criteria: Criteria);
 
 
                     if (row == null) { return Result.Fail(Data.NotFound); }
-
-                    foreach (var rowitem in row.BudgetItems)
-                    {
-                        rowitem.DeliverableId = null;
-                        await Repository.RemoveAsync(rowitem);
-                    }
-                    var scopeid = row.ScopeId;
+                   
                     await Repository.RemoveAsync(row);
 
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.Deliverables.Cache.Key(row.Id)];
+                    var cache = GetCacheKeys(row);
+                  
 
-                    await ReorderDeliverable(row.Id, scopeid, Repository);
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
 
 
                     return Result.EndPointResult(result,
@@ -42,24 +35,16 @@ namespace Server.EndPoint.Deliverables.Commands
 
                 });
             }
-            async Task ReorderDeliverable(Guid RowId, Guid ScopeId, IRepository Repository)
+            private string[] GetCacheKeys(Deliverable row)
             {
-
-                Expression<Func<Deliverable, bool>> Criteria = x => x.ScopeId == ScopeId && x.Id != RowId;
-                Expression<Func<Deliverable, object>> OrderBy = x => x.Order;
-
-                var Deliverable = await Repository.GetAllAsync(Criteria: Criteria, OrderBy: x => x.Order);
-
-                int order = 1;
-                foreach (var row in Deliverable)
-                {
-                    row.Order = order;
-                    await Repository.UpdateAsync(row);
-                    order++;
-
-                }
-
+                List<string> cacheKeys = [
+                    
+                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
+                    .. StaticClass.Deliverables.Cache.Key(row.Id)
+                ];
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
+            
 
 
 

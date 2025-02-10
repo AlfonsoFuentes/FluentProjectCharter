@@ -1,13 +1,8 @@
-﻿
-
-
-using Server.Database.Entities;
-using Server.EndPoint.EquipmentTemplates.Queries;
-using Shared.Models.OrganizationStrategies.Requests;
+﻿using Server.EndPoint.Templates.Equipments.Commands;
+using Server.EndPoint.Templates.Equipments.Queries;
 using Shared.Models.Templates.Equipments.Requests;
-using System.Threading;
 
-namespace Server.EndPoint.EquipmentTemplates.Commands
+namespace Server.EndPoint.Templates.Equipments.Commands
 {
 
     public static class CreateEquipmentTemplateEndPoint
@@ -23,7 +18,7 @@ namespace Server.EndPoint.EquipmentTemplates.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                  
+
                     var response = row.Map();
                     foreach (var nozzle in Data.Nozzles)
                     {
@@ -59,7 +54,7 @@ namespace Server.EndPoint.EquipmentTemplates.Commands
             row.BrandTemplateId = request.BrandResponse!.Id;
             row.SubType = request.SubType;
             row.Type = request.Type;
-            
+
 
             return row;
         }

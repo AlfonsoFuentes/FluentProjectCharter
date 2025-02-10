@@ -25,6 +25,7 @@ namespace UnitSystem
         public static readonly UnitType LineSpeed = new UnitType("LineSpeed");
         public static readonly UnitType EA = new UnitType("EA");
         public static readonly UnitType Case = new UnitType("Case");
+        public static readonly UnitType Day = new UnitType("day");
     }
     [UnitDefinitionClass]
     public static class UnitLessUnits
@@ -153,6 +154,16 @@ namespace UnitSystem
         public static readonly UnitMeasure Day = new UnitMeasure("day", "d", 24.0 * Hour, "Time");
         public static readonly UnitMeasure Month = new UnitMeasure("Month", "mo", 24.0 * Day, "Time");
 
+        public static readonly UnitMeasure Year = new UnitMeasure("Year", "Y", 12 * Month, "Time");
+    }
+    [UnitDefinitionClass]
+    public static class MilestoneDurationUnits
+    {
+        
+        
+        public static readonly UnitMeasure Day = new UnitMeasure("day", "d", SIUnitTypes.Day, "Time");
+        public static readonly UnitMeasure Month = new UnitMeasure("Month", "mo", 24.0 * Day, "Time");
+        public static readonly UnitMeasure Weeks = new UnitMeasure("Month", "w", 7 * Day, "Time");
         public static readonly UnitMeasure Year = new UnitMeasure("Year", "Y", 12 * Month, "Time");
     }
 

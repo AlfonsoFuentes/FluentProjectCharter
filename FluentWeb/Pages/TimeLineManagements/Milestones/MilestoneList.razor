@@ -1,0 +1,48 @@
+﻿@page "/Milestones/{ProjectId:guid}/{Id:guid}/{IdType}"
+ <FluentStack Orientation="Orientation.Vertical" Style="width:100%;border:solid 1px lightgray;padding:6px; border-radius:5px;">
+    <FluentLabel Typo="Typography.Subject" Style="overflow-wrap: break-word;"><strong>@Title</strong></FluentLabel>
+    <FluentStack Orientation=" Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="6">
+
+        <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowStepBack())" OnClick="@Navigation.NavigateBack" ToolTip="Go Back"></IconButton>
+        <FluentButton Id="addDel" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@(()=>AddTask())"></FluentButton>
+        <FluentTooltip Anchor="addDel" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Milestone</FluentTooltip>
+
+
+        <FluentButton Id="delete" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete())" Disabled="@DisableOthersButton"></FluentButton>
+        <FluentTooltip Anchor="delete" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
+
+        <FluentButton Id="up" IconEnd="@(new Icons.Regular.Size20.ArrowUp())" OnClick="@(()=>Up())" Disabled="@DisableUpButton"></FluentButton>
+        <FluentTooltip Anchor="up" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Up</FluentTooltip>
+
+        <FluentButton Id="Down" IconEnd="@(new Icons.Regular.Size20.ArrowDown())" OnClick="@(()=>Down())" Disabled="@DisableDownButton"></FluentButton>
+        <FluentTooltip Anchor="Down" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Down</FluentTooltip>
+
+        <FluentButton Id="left" IconEnd="@(new Icons.Regular.Size20.ArrowLeft())" OnClick="@(()=>Left())" Disabled="@DisableLeftButton"></FluentButton>
+        <FluentTooltip Anchor="left" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Left</FluentTooltip>
+
+        <FluentButton Id="rigth" IconEnd="@(new Icons.Regular.Size20.ArrowRight())" OnClick="@(()=>Rigth())" Disabled="@DisableRigthButton"></FluentButton>
+        <FluentTooltip Anchor="rigth" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Right</FluentTooltip>
+
+
+
+    </FluentStack>
+    <MilestoneTable SelectedRow=@SelectedRow
+                    SelectedRowChanged="OnSelectRow"
+                    AllItems="@AllItems"
+                    GetAll="GetAll"
+                    ChangeName="UpdateName"
+                    ChangeStartDate="UpdateStartDate"
+                    ChangeEndDate="UpdateEndDate"
+                    ChangeDuration="UpdateDuration"
+                    ChangeDependency="UpdateDependency"
+                    ChangeDependencyType="UpdateDependencyType"></MilestoneTable>
+
+   
+
+</FluentStack>
+
+
+
+@code {
+     string Title = "Manage Milestones";
+}

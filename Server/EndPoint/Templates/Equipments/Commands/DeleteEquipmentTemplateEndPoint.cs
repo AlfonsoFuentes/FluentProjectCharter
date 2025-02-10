@@ -1,12 +1,6 @@
-﻿
+﻿using Shared.Models.Templates.Equipments.Requests;
 
-
-
-using Server.Database.Entities;
-using Shared.Models.OrganizationStrategies.Requests;
-using Shared.Models.Templates.Equipments.Requests;
-
-namespace Server.EndPoint.EquipmentTemplates.Commands
+namespace Server.EndPoint.Templates.Equipments.Commands
 {
     public static class DeleteEquipmentTemplateEndPoint
     {
@@ -18,9 +12,9 @@ namespace Server.EndPoint.EquipmentTemplates.Commands
                 {
                     Func<IQueryable<EquipmentTemplate>, IIncludableQueryable<EquipmentTemplate, object>> Includes = x => x
                     .Include(x => x.Equipments);
-                    Expression<Func<EquipmentTemplate, bool>> Criteria = x =>x.Id == Data.Id;
+                    Expression<Func<EquipmentTemplate, bool>> Criteria = x => x.Id == Data.Id;
 
-                    var row = await Repository.GetAsync(Criteria:Criteria,Includes:Includes);
+                    var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
 
                     if (row == null) { return Result.Fail(Data.NotFound); }
                     foreach (var item in row.Equipments)

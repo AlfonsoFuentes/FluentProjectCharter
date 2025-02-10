@@ -1,6 +1,8 @@
-﻿namespace Shared.Models.ExpertJudgements.Responses
+﻿using Shared.Models.FileResults.Generics.Reponses;
+
+namespace Shared.Models.ExpertJudgements.Responses
 {
-    public class ExpertJudgementResponseList
+    public class ExpertJudgementResponseList : IResponseAll
     {
         public List<ExpertJudgementResponse> Items { get; set; } = new();
     }
