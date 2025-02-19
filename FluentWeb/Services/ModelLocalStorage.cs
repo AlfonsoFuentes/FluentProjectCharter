@@ -21,6 +21,16 @@ namespace FluentWeb.Services
             }
             return default;
         }
+        public async Task<T?> LoadFromLocalStorage<T>(string type)
+        {
+            var jsonModel = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", type);
+            if (!string.IsNullOrEmpty(jsonModel))
+            {
+                await RemoveFromLocalStorage(type);
+                return JsonSerializer.Deserialize<T>(jsonModel);
+            }
+            return default;
+        }
 
         public async Task SaveToLocalStorage<T>(T model)
         {

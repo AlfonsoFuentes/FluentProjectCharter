@@ -24,6 +24,8 @@ namespace Server.Repositories
         Task<int> GetLastOrderAsync<TEntity, TParent>(Guid parentId)
             where TEntity : class, IAuditableEntity
             where TParent : class, IAuditableEntity<Guid>;
+
+        Task<List<T>> ExecuteQueryAsync<T>(string sql, object parameters = null!) where T : class, IAuditableEntity;
     }
     public class Repository : IRepository
     {
@@ -147,5 +149,11 @@ namespace Server.Repositories
 
         }
 
+        public async Task<List<T>> ExecuteQueryAsync<T>(string sql, object parameters = null!) where T : class, IAuditableEntity
+        {
+            return await Context.Set<T>()
+                .FromSqlRaw(sql, parameters)
+                .ToListAsync();
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Server.EndPoint.Requirements.Queries
+﻿using Server.Database.Entities.ProjectManagements;
+
+namespace Server.EndPoint.Requirements.Queries
 {
     public static class GetRequirementByIdEndPoint
     {

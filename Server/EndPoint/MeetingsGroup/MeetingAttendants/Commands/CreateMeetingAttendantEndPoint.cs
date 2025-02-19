@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Server.Database.Entities.ProjectManagements;
 using Shared.Models.MeetingAttendants.Requests;
 
 namespace Server.EndPoint.MeetingsGroup.MeetingAttendants.Commands
@@ -31,7 +32,7 @@ namespace Server.EndPoint.MeetingsGroup.MeetingAttendants.Commands
             private string[] GetCacheKeys(MeetingAttendant row, Guid ProjectId)
             {
                 List<string> cacheKeys = [
-                       .. StaticClass.Projects.Cache.Key(ProjectId),
+                     
                     .. StaticClass.Meetings.Cache.Key(row.MeetingId),
                     .. StaticClass.MeetingAttendants.Cache.Key(row.Id)
                 ];
@@ -69,7 +70,7 @@ namespace Server.EndPoint.MeetingsGroup.MeetingAttendants.Commands
                     await Repository.UpdateAsync(stakeholder);
                 }
 
-                List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.StakeHolders.Cache.Key(stakeholder.Id)];
+                List<string> cache = [ .. StaticClass.StakeHolders.Cache.Key(stakeholder.Id)];
 
                 var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
             }

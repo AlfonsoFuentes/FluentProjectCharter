@@ -1,4 +1,5 @@
-﻿using Shared.Models.Backgrounds.Validators;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Backgrounds.Validators;
 using Shared.Models.StakeHolders.Validators;
 
 namespace Server.EndPoint.StakeHolders.Vallidators

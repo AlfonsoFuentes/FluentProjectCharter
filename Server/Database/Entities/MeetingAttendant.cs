@@ -1,4 +1,5 @@
 ﻿using Server.Database.Contracts;
+using Server.Database.Entities.ProjectManagements;
 
 namespace Server.Database.Entities
 {

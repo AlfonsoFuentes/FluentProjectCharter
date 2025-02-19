@@ -41,7 +41,7 @@ namespace Server.EndPoint.MeetingsGroup.Meetings.Commands
             private string[] GetCacheKeys(Meeting row)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
+                   
 
                     .. StaticClass.Meetings.Cache.Key(row.Id)
                 ];

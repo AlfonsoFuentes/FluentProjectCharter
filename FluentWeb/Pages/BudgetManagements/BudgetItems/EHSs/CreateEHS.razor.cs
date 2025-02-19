@@ -12,9 +12,9 @@ public partial class CreateEHS
     public Guid ProjectId { get; set; }
     protected override void OnInitialized()
     {
-       
+
 
         Model.ProjectId = ProjectId;
     }
-   
+
 }

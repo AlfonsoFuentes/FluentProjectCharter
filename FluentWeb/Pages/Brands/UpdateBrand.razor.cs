@@ -22,9 +22,9 @@ public partial class UpdateBrand
             {
                 Id = result.Data.Id,
                 Name = result.Data.Name,
-               
+
             };
         }
     }
-   
+
 }

@@ -1,5 +1,6 @@
 ﻿using Shared.Models.Requirements.Validators;
 using Shared.Models.Backgrounds.Validators;
+using Server.Database.Entities.ProjectManagements;
 
 namespace Server.EndPoint.Requirements.Validators
 {

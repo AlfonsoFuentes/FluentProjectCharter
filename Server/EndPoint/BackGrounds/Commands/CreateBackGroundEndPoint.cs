@@ -1,7 +1,4 @@
-﻿
-
-
-using Server.Database.Entities;
+﻿using Server.Database.Entities.ProjectManagements;
 using Shared.Models.Backgrounds.Requests;
 using System.Threading;
 
@@ -25,7 +22,7 @@ namespace Server.EndPoint.BackGrounds.Commands
                     await Repository.AddAsync(row);
 
                     row.Name = Data.Name;
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(row.ProjectId), .. StaticClass.BackGrounds.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.BackGrounds.Cache.Key(row.Id)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

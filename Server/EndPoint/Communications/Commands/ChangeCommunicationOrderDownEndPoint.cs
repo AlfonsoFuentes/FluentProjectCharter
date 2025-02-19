@@ -1,4 +1,5 @@
-﻿using Shared.Models.Communications.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Communications.Mappers;
 
 namespace Server.EndPoint.Communications.Commands
 {
@@ -47,7 +48,7 @@ namespace Server.EndPoint.Communications.Commands
             private string[] GetCacheKeys(Communication row, Guid ProjectId)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(ProjectId),
+                
                
                     .. StaticClass.Communications.Cache.Key(row.Id)
                 ];

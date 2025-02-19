@@ -7,8 +7,15 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
+	  <Content Remove="SharedComponents\EditableSelectField.razor" />
 	  <Content Remove="wwwroot\Assets\CPLogo.png" />
 	  <Content Remove="wwwroot\Assets\PMLogo.png" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <EmbeddedResource Include="SharedComponents\EditableSelectField.razor">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -27,11 +34,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.12" />
 		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.12" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.12" />
-		<PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.12.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		
+
 		<PackageReference Include="SvgPathProperties" Version="1.1.2" />
 		<PackageReference Include="System.Net.Http.Json" Version="8.0.1" />
 		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
@@ -46,7 +49,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Pages\StakeHolders\" />
-	  <Folder Include="wwwroot\js\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -59,7 +61,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Update="wwwroot\JavaScript.js">
+	  <Content Update="SharedComponents\EditableDateField.razor">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\js\JavaScript.js">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>

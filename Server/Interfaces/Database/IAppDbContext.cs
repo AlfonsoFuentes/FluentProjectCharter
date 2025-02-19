@@ -1,4 +1,6 @@
-﻿using static Shared.StaticClasses.StaticClass;
+﻿using Server.Database.Entities.ProjectManagements;
+using Server.Database.Entities.PurchaseOrders;
+using static Shared.StaticClasses.StaticClass;
 
 namespace Server.Interfaces.Database
 {
@@ -67,6 +69,10 @@ namespace Server.Interfaces.Database
         DbSet<Communication> Communications { get; set; }
         DbSet<Resource> Resources { get; set; }
         DbSet<Acquisition> Acquisitions { get; set; }
+        DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        DbSet<Supplier> Suppliers { get; set; }
+        DbSet<Engineering> EngineeringSalarys { get; set; }
+        DbSet<Contingency> Contingencys { get; set; }
 
         Task<int> SaveChangesAndRemoveCacheAsync(params string[] cacheKeys);
         Task<T> GetOrAddCacheAsync<T>(string key, Func<Task<T>> addItemFactory);

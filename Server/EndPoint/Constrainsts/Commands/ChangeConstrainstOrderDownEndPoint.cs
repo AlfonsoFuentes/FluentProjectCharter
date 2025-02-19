@@ -1,4 +1,5 @@
-﻿using Shared.Models.Constrainsts.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Constrainsts.Mappers;
 
 namespace Server.EndPoint.Constrainsts.Commands
 {
@@ -47,8 +48,7 @@ namespace Server.EndPoint.Constrainsts.Commands
             private string[] GetCacheKeys(Constrainst row, Guid ProjectId)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(ProjectId),
-               
+                                
                     .. StaticClass.Constrainsts.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

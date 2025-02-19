@@ -1,4 +1,5 @@
-﻿using Shared.Models.StakeHolders.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.StakeHolders.Requests;
 
 namespace Server.EndPoint.StakeHolders.Commands
 {

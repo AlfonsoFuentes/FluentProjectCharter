@@ -189,3 +189,52 @@ code {
     background-color: #f0f0f0;
     border: 1px solid #d3d3d3;
 }
+.column-labelorder {
+    width: 5%;
+}
+
+.column-name {
+    width: 35%;
+}
+
+.column-date {
+    width: 10%;
+}
+
+.column-duration {
+    width: 8%;
+}
+
+.column-type {
+    width: 10%;
+}
+
+.column-dependencies {
+    width: 12%;
+}
+
+.column-actions {
+    width: 10%;
+}
+
+.soft-border {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 1px;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.active-row {
+    background-color: #f0f8ff;
+    transition: background-color 0.3s ease;
+}
+.recursive-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/* Estilo para las filas */
+.recursive-table-row {
+    border: none;
+}

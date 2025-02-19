@@ -45,7 +45,7 @@ public partial class UpdateEquipmentTemplate
             SelectedBrand = Model.Brand;
         }
     }
-    
+
     async Task GetBrands()
     {
         var result = await GenericService.GetAll<BrandResponseList, BrandGetAll>(new BrandGetAll());

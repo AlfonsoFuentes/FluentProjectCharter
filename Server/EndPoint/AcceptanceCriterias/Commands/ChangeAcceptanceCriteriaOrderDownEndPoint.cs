@@ -1,4 +1,5 @@
-﻿using Shared.Models.AcceptanceCriterias.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.AcceptanceCriterias.Mappers;
 
 namespace Server.EndPoint.AcceptanceCriterias.Commands
 {
@@ -47,8 +48,6 @@ namespace Server.EndPoint.AcceptanceCriterias.Commands
             private string[] GetCacheKeys(AcceptanceCriteria row, Guid ProjectId)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(ProjectId),
-               
                     .. StaticClass.AcceptanceCriterias.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

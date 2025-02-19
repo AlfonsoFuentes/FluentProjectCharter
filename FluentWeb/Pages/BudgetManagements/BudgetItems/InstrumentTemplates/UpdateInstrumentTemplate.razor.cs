@@ -37,7 +37,7 @@ public partial class UpdateInstrumentTemplate
                 Value = result.Data.Value,
                 Nozzles = result.Data.Nozzles,
                 SubType = result.Data.SubType,
-                
+
 
 
             };

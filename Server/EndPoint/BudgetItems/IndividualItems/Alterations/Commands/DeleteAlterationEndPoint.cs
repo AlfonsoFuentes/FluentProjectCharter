@@ -24,12 +24,10 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Commands
 
                 });
             }
-            private string[] GetCacheKeys(BudgetItem alteration)
+            private string[] GetCacheKeys(BudgetItem row)
             {
                 List<string> cacheKeys = [
-                ..StaticClass.Projects.Cache.Key(alteration.ProjectId),
-
-                    StaticClass.BudgetItems.Cache.GetAll
+                ..StaticClass.BudgetItems.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

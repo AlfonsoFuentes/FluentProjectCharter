@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Enums.MilestoneRelationTypes;
+using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.Milestones.Records;
 using Shared.Models.Milestones.Requests;
 using Shared.Models.Milestones.Responses;
-using Shared.Models.Projects.Reponses;
 
 namespace FluentWeb.Pages.TimeLineManagements.Milestones;
 #nullable disable
@@ -420,7 +419,7 @@ public partial class MilestoneList
 
             DependencyId = dependencyModel == null ? null : dependencyModel.Id,
             Id = task.Id,
-            DependencyType = MilestoneRelationTypeEnum.FinishStart.Name,
+            DependencyType = TasksRelationTypeEnum.FinishStart.Name,
 
 
         };
@@ -438,7 +437,7 @@ public partial class MilestoneList
     }
 
     // Método para actualizar el tipo de dependencia
-    private async Task UpdateDependencyType(MilestoneResponse task, MilestoneRelationTypeEnum type)
+    private async Task UpdateDependencyType(MilestoneResponse task, TasksRelationTypeEnum type)
     {
 
 

@@ -13,7 +13,7 @@ public partial class CreateInstrumentTemplate
     {
         await GetBrands();
         await LoadFromLocalStorage();
-       
+
     }
     async Task GetBrands()
     {

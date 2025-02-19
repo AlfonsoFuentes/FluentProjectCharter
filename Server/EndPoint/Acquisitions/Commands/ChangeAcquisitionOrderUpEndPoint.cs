@@ -1,4 +1,5 @@
-﻿using Shared.Models.Acquisitions.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Acquisitions.Mappers;
 
 namespace Server.EndPoint.Acquisitions.Commands
 {
@@ -41,8 +42,7 @@ namespace Server.EndPoint.Acquisitions.Commands
             private string[] GetCacheKeys(Acquisition row)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
-           
+                             
                     .. StaticClass.Acquisitions.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

@@ -1,4 +1,5 @@
-﻿using Shared.Models.Communications.Records;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Communications.Records;
 using Shared.Models.Communications.Responses;
 
 namespace Server.EndPoint.Communications.Queries

@@ -1,4 +1,5 @@
-﻿using Shared.Models.KnownRisks.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.KnownRisks.Mappers;
 
 namespace Server.EndPoint.KnownRisks.Commands
 {
@@ -47,8 +48,7 @@ namespace Server.EndPoint.KnownRisks.Commands
             private string[] GetCacheKeys(KnownRisk row, Guid ProjectId)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(ProjectId),
-               
+                                
                     .. StaticClass.KnownRisks.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

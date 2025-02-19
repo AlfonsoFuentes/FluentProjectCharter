@@ -1,4 +1,5 @@
-﻿using Shared.Models.Qualitys.Records;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Qualitys.Records;
 using Shared.Models.Qualitys.Responses;
 
 namespace Server.EndPoint.Qualitys.Queries

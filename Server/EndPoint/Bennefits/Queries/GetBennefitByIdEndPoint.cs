@@ -1,4 +1,6 @@
-﻿namespace Server.EndPoint.Bennefits.Queries
+﻿using Server.Database.Entities.ProjectManagements;
+
+namespace Server.EndPoint.Bennefits.Queries
 {
     public static class GetBennefitByIdEndPoint
     {

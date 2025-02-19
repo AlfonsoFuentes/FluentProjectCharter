@@ -1,5 +1,8 @@
-﻿using Server.Database.Contracts;
+﻿using DocumentFormat.OpenXml.Office.CoverPageProps;
+using Server.Database.Contracts;
 using Server.Database.Entities.BudgetItems.Taxes;
+using Server.Database.Entities.ProjectManagements;
+using Server.Database.Entities.PurchaseOrders;
 using Shared.Models.BudgetItems;
 using System.ComponentModel.DataAnnotations.Schema;
 using static Shared.StaticClasses.StaticClass;
@@ -21,8 +24,15 @@ namespace Server.Database.Entities.BudgetItems
         [NotMapped]
         public string Nomenclatore => $"{Letter}{Order}";
         public string Name { get; set; } = string.Empty;
-   
 
+        public Deliverable? Deliverable { get; set; } = null!;
+        public Guid? DeliverableId { get; set; }
+
+        [ForeignKey("BudgetItemId")]
+        public List<PurchaseOrderItem> PurchaseOrderItems { get; set; } = new();
+
+        [NotMapped]
+        public string NomenclatoreName => $"{Nomenclatore}-{Name}";
     }
 
 }

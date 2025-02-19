@@ -1,4 +1,5 @@
-﻿using Shared.Models.Resources.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Resources.Mappers;
 
 namespace Server.EndPoint.Resources.Commands
 {
@@ -35,7 +36,7 @@ namespace Server.EndPoint.Resources.Commands
 
 
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row, Data.ProjectId));
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
 
                     return Result.EndPointResult(result,
                         Data.Succesfully,
@@ -44,10 +45,10 @@ namespace Server.EndPoint.Resources.Commands
 
                 });
             }
-            private string[] GetCacheKeys(Resource row, Guid ProjectId)
+            private string[] GetCacheKeys(Resource row)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(ProjectId),
+                  
                
                     .. StaticClass.Resources.Cache.Key(row.Id)
                 ];

@@ -27,7 +27,7 @@ namespace Server.EndPoint.MeetingsGroup.MeetingAgreements.Commands
             private string[] GetCacheKeys(MeetingAgreement row, Guid ProjectId)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(ProjectId),
+                 
                     .. StaticClass.Meetings.Cache.Key(row.MeetingId),
                     .. StaticClass.MeetingAgreements.Cache.Key(row.Id)
                 ];

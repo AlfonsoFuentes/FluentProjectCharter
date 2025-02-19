@@ -1,4 +1,5 @@
-﻿@using Shared.Enums.MilestoneRelationTypes
+﻿@using Shared.Enums.TasksRelationTypeTypes
+
 @* MilestoneRow.razor *@
 <tr style="background-color: @BackgroundColor;" @onclick=@(()=>OnClick(Model))>
     <td style="padding-left: @(IndentLevel * 20)px;">
@@ -31,7 +32,7 @@
     <td>
         <div class="select-container">
             <select value="@Model.DependencyType.Name" @onchange="HandleDependencyTypeChange" class="custom-select">
-                @foreach (var relationType in MilestoneRelationTypeEnum.List)
+                @foreach (var relationType in TasksRelationTypeEnum.List)
                 {
                     <option value="@relationType.Name">@relationType.Name</option>
                 }
@@ -82,7 +83,7 @@
     {
         var newValue = e!.Value!.ToString();
 
-        await OnChangeDependency(Model, newValue);
+        await OnChangeDependency(Model, newValue!);
     }
 
     private async Task HandleDependencyTypeChange(ChangeEventArgs e)
@@ -90,4 +91,5 @@
 
         await OnChangeDependencyType(Model, e);
     }
+
 }

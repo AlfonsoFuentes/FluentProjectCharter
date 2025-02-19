@@ -1,5 +1,8 @@
-﻿using Server.EndPoint.Milestones.Queries;
+﻿using Server.Database.Entities.ProjectManagements;
+using Server.EndPoint.Milestones.Queries;
+using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.Deliverables.Records;
+using Shared.Models.Deliverables.Responses.NewResponses;
 namespace Server.EndPoint.Deliverables.Queries
 {
     public static class GetDeliverableByIdEndPoint
@@ -11,7 +14,7 @@ namespace Server.EndPoint.Deliverables.Queries
                 app.MapPost(StaticClass.Deliverables.EndPoint.GetById, async (GetDeliverableByIdRequest request, IQueryRepository Repository) =>
                 {
                     Func<IQueryable<Deliverable>, IIncludableQueryable<Deliverable, object>> Includes = x => null!;
-                   
+
 
 
 
@@ -44,6 +47,16 @@ namespace Server.EndPoint.Deliverables.Queries
 
                 ProjectId = row.ProjectId,
                 Order = row.Order,
+
+                WBS = row.WBS,
+                StartDate = row.StartDate,
+                EndDate = row.EndDate,
+                ParentDeliverableId = row.ParentDeliverableId,
+              
+                DependencyType = string.IsNullOrEmpty(row.DependencyType) ? TasksRelationTypeEnum.None :
+                TasksRelationTypeEnum.GetType(row.DependencyType),
+                LabelOrder = row.LabelOrder,
+                Duration=row.DurationTime,
 
             };
 

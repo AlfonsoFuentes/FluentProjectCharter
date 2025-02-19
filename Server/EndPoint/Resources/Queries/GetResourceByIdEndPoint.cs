@@ -1,4 +1,5 @@
-﻿using Shared.Models.Resources.Records;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Resources.Records;
 using Shared.Models.Resources.Responses;
 
 namespace Server.EndPoint.Resources.Queries

@@ -1,4 +1,5 @@
-﻿using Shared.Models.BackGrounds.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.BackGrounds.Mappers;
 
 namespace Server.EndPoint.BackGrounds.Commands
 {
@@ -41,7 +42,7 @@ namespace Server.EndPoint.BackGrounds.Commands
             private string[] GetCacheKeys(BackGround row)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
+                   
            
                     .. StaticClass.BackGrounds.Cache.Key(row.Id)
                 ];

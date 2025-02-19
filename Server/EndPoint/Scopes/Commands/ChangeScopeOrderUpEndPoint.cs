@@ -1,4 +1,5 @@
-﻿using Shared.Models.Scopes.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Scopes.Mappers;
 
 namespace Server.EndPoint.Scopes.Commands
 {
@@ -41,7 +42,7 @@ namespace Server.EndPoint.Scopes.Commands
             private string[] GetCacheKeys(Scope row)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
+                  
            
                     .. StaticClass.Scopes.Cache.Key(row.Id)
                 ];

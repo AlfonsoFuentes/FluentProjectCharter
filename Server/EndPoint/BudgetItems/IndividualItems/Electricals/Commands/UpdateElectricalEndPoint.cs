@@ -1,4 +1,5 @@
-﻿using Shared.Models.BudgetItems.IndividualItems.Electricals.Requests;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Shared.Models.BudgetItems.IndividualItems.Electricals.Requests;
 
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Electricals.Commands
@@ -25,12 +26,10 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Electricals.Commands
                     return Result.EndPointResult(result, data.Succesfully, data.Fail);
                 });
             }
-            private string[] GetCacheKeys(BudgetItem alteration)
+            private string[] GetCacheKeys(BudgetItem row)
             {
                 List<string> cacheKeys = [
-                ..StaticClass.Projects.Cache.Key(alteration.ProjectId),
-                StaticClass.BudgetItems.Cache.GetAll,
-                ..StaticClass.Electricals.Cache.Key(alteration.Id)
+               ..StaticClass.BudgetItems.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

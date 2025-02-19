@@ -1,4 +1,5 @@
-﻿using Shared.Models.Backgrounds.Validators;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Backgrounds.Validators;
 
 namespace Server.EndPoint.BackGrounds.Validators
 {

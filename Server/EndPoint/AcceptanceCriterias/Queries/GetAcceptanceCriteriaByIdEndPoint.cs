@@ -1,4 +1,5 @@
-﻿using Shared.Models.AcceptanceCriterias.Records;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.AcceptanceCriterias.Records;
 using Shared.Models.AcceptanceCriterias.Responses;
 
 namespace Server.EndPoint.AcceptanceCriterias.Queries

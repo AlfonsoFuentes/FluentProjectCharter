@@ -15,5 +15,5 @@ public partial class CreateAlteration
         Model.ProjectId = ProjectId;
 
     }
-   
+
 }

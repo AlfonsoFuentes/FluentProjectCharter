@@ -1,4 +1,5 @@
-﻿using Shared.Models.Qualitys.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Qualitys.Requests;
 
 namespace Server.EndPoint.Qualitys.Commands
 {
@@ -20,7 +21,7 @@ namespace Server.EndPoint.Qualitys.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(row.ProjectId), .. StaticClass.Qualitys.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.Qualitys.Cache.Key(row.Id)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

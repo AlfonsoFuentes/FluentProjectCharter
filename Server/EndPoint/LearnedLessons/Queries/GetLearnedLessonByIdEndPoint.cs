@@ -1,4 +1,5 @@
-﻿using Shared.Models.LearnedLessons.Records;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.LearnedLessons.Records;
 using Shared.Models.LearnedLessons.Responses;
 
 namespace Server.EndPoint.LearnedLessons.Queries

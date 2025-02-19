@@ -1,4 +1,5 @@
-﻿using Shared.Models.AcceptanceCriterias.Validators;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.AcceptanceCriterias.Validators;
 using Shared.Models.Backgrounds.Validators;
 
 namespace Server.EndPoint.AcceptanceCriterias.Validators

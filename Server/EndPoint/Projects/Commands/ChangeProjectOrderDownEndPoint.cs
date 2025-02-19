@@ -40,7 +40,7 @@ namespace Server.EndPoint.Projects.Commands
 
 
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row, Data.ProjectId));
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
 
                     return Result.EndPointResult(result,
                         Data.Succesfully,
@@ -49,10 +49,10 @@ namespace Server.EndPoint.Projects.Commands
 
                 });
             }
-            private string[] GetCacheKeys(Project row, Guid ProjectId)
+            private string[] GetCacheKeys(Project row)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(ProjectId),
+            
 
                     .. StaticClass.Projects.Cache.Key(row.Id)
                 ];

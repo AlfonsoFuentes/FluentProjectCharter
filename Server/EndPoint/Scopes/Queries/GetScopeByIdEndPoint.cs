@@ -1,6 +1,7 @@
 ﻿using Server.EndPoint.Deliverables.Queries;
 using Shared.Models.Scopes.Records;
 using Server.EndPoint.AcceptanceCriterias.Queries;
+using Server.Database.Entities.ProjectManagements;
 
 namespace Server.EndPoint.Scopes.Queries
 {

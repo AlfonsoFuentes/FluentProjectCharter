@@ -1,4 +1,5 @@
-﻿using Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Requests;
+﻿using Server.Database.Entities.BudgetItems.Commons;
+using Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Requests;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Commands
 {
@@ -30,9 +31,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Command
             private string[] GetCacheKeys(BudgetItem row)
             {
                 List<string> cacheKeys = [
-                ..StaticClass.Projects.Cache.Key(row.ProjectId),
-                StaticClass.BudgetItems.Cache.GetAll,
-                ..StaticClass.EngineeringDesigns.Cache.Key(row.Id)
+                ..StaticClass.BudgetItems.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

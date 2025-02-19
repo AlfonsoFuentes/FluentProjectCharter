@@ -6,5 +6,6 @@ namespace Shared.Models.Milestones.Responses
     {
         public List<MilestoneResponse> Items { get; set; } = new();
         public int LastOrder => Items.Count == 0 ? 1 : Items.Max(x => x.Order);
+      
     }
 }

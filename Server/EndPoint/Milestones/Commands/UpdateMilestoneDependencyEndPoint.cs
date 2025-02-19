@@ -55,7 +55,7 @@ namespace Server.EndPoint.Milestones.Commands
             private List<string> GetCacheKeys(Guid ProjectId)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(ProjectId),
+                    .. StaticClass.Milestones.Cache.Key(ProjectId),
                  
 
                 ];

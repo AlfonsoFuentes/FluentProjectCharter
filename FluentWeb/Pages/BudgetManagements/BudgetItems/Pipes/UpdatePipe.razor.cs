@@ -23,7 +23,7 @@ public partial class UpdatePipe
         await GetBrands();
         await GetEngineeringFluidCode();
         var result = await GenericService.GetById<PipeResponse, GetPipeByIdRequest>(
-            new GetPipeByIdRequest() { Id = Id});
+            new GetPipeByIdRequest() { Id = Id });
 
         if (result.Succeeded)
         {
@@ -47,7 +47,7 @@ public partial class UpdatePipe
                 MaterialQuantity = result.Data.MaterialQuantity,
                 PipeClass = result.Data.PipeClass,
                 FluidCode = result.Data.FluidCode,
-                IsExisting=result.Data.IsExisting,  
+                IsExisting = result.Data.IsExisting,
 
 
 

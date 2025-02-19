@@ -1,5 +1,5 @@
 ﻿@using Web.Infrastructure.Managers.Projects
-<FluentGrid>
+<FluentGrid Justify="JustifyContent.SpaceEvenly">
     <FluentGridItem xs="12" sm="12" Style="border:solid 1px lightgray">
         <FluentGrid Spacing="0" AdaptiveRendering="true">
             <FluentGridItem xs="12" sm="2">
@@ -32,7 +32,7 @@
     <FluentGridItem xs="12" sm="12" Style="border:solid 1px lightgray">
         <FluentGrid Spacing="0" AdaptiveRendering="true">
             <FluentGridItem xs="12" sm="2">
-              
+
             </FluentGridItem>
             <FluentGridItem xs="12" sm="2">
                 <IconButton IconEnd="@(new Icons.Regular.Size20.DocumentPdf())" OnClick="@ExportProjectCharter" ToolTip="Generate Project Charter PDF"></IconButton>
@@ -42,15 +42,15 @@
 
             </FluentGridItem>
             <FluentGridItem xs="12" sm="2">
-               
+
 
             </FluentGridItem>
             <FluentGridItem xs="12" sm="2">
-               
+
 
             </FluentGridItem>
             <FluentGridItem xs="12" sm="2">
-                
+
 
             </FluentGridItem>
         </FluentGrid>
@@ -171,7 +171,7 @@
                         <FluentAnchor Href="@($"Deliverables/{Project.Id}/{Project.StartId}/{"Start"}")" Appearance="Appearance.Hypertext">Deliverables</FluentAnchor>
                     </FluentGridItem>
                     <FluentGridItem xs="12" sm="12" Gap="@gap">
-                        <FluentAnchor Href="@($"Milestones/{Project.Id}/{Project.StartId}/{"Start"}")" Appearance="Appearance.Hypertext">Milestones</FluentAnchor>
+
                     </FluentGridItem>
                 </FluentGrid>
 
@@ -329,7 +329,7 @@
     public ProjectResponse Project { get; set; } = null!;
     string gap = "1px";
     [Inject]
-    private IProjectService ProjectService { get; set; }
+    private IProjectService ProjectService { get; set; } = null!;
 
     public async Task ExportProjectCharter()
     {

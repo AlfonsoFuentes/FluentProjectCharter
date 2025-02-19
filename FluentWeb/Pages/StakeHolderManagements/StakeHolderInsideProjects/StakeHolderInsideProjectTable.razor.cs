@@ -7,7 +7,9 @@ using Shared.Models.StakeHolderInsideProjects.Records;
 using Shared.Models.StakeHolderInsideProjects.Requests;
 using Shared.Models.StakeHolderInsideProjects.Responses;
 using Shared.Models.StakeHolders.Responses;
+using Shared.StaticClasses;
 using Web.Infrastructure.Managers.StakeHolders;
+using static Shared.StaticClasses.StaticClass;
 
 namespace FluentWeb.Pages.StakeHolderManagements.StakeHolderInsideProjects;
 #nullable disable
@@ -43,8 +45,10 @@ public partial class StakeHolderInsideProjectTable
         await UpdateStakeHolder();
 
         await GetAll();
-    }
 
+
+    }
+   
 
     StakeHolderInsideProjectResponse CreateRow = null!;
     StakeHolderInsideProjectResponse EditRow = null!;
@@ -71,6 +75,7 @@ public partial class StakeHolderInsideProjectTable
             ProjectId = ProjectId,
         };
         //Si EditRow esta creada se desaparece Editrow 
+        stakeHolder = string.Empty;
         EditRow = null!;
         Items.Add(CreateRow);
     }
@@ -170,5 +175,11 @@ public partial class StakeHolderInsideProjectTable
         }
 
     }
+    void AddStakeHolder()
+    {
+        Navigation.NavigateTo(StaticClass.StakeHolders.PageName.Create);
+    }
+    
+   
 
 }

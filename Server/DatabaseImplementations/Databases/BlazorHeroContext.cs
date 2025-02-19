@@ -1,4 +1,7 @@
-﻿namespace Server.DatabaseImplementations.Databases
+﻿using Server.Database.Entities.ProjectManagements;
+using Server.Database.Entities.PurchaseOrders;
+
+namespace Server.DatabaseImplementations.Databases
 {
     public class BlazorHeroContext : AuditableContext, IAppDbContext
     {
@@ -17,7 +20,6 @@
         }
         public DbSet<App> Apps { get; set; } = null!;
         public DbSet<Project> Projects { get; set; } = null!;
-  
         public DbSet<BackGround> BackGrounds { get; set; } = null!;
         public DbSet<StakeHolder> StakeHolders { get; set; } = null!;
         public DbSet<Scope> Scopes { get; set; } = null!;
@@ -28,18 +30,13 @@
         public DbSet<Deliverable> Deliverables { get; set; } = null!;
         public DbSet<Requirement> Requirements { get; set; } = null!;
         public DbSet<Assumption> Assumptions { get; set; } = null!;
-
         public DbSet<Constrainst> Constrainsts { get; set; } = null!;
-
         public DbSet<ExpertJudgement> ExpertJudgements { get; set; } = null!;
-
         public DbSet<RoleInsideProject> RoleInsideProjects { get; set; } = null!;
         public DbSet<Meeting> Meetings { get; set; } = null!;
         public DbSet<MeetingAttendant> MeetingAttendants { get; set; } = null!;
         public DbSet<MeetingAgreement> MeetingAgreements { get; set; } = null!;
         public DbSet<LearnedLesson> LearnedLessons { get; set; } = null!;
-
-
         public DbSet<Alteration> Alterations { get; set; } = null!;
         public DbSet<EHS> EHSs { get; set; } = null!;
         public DbSet<Electrical> Electricals { get; set; } = null!;
@@ -47,22 +44,20 @@
         public DbSet<Painting> Paintings { get; set; } = null!;
         public DbSet<Structural> Structurals { get; set; } = null!;
         public DbSet<Testing> Testings { get; set; } = null!;
-
         public DbSet<EngineeringDesign> Engineerings { get; set; } = null!;
+        public DbSet<Engineering> EngineeringSalarys { get; set; } = null!;
+        public DbSet<Contingency> Contingencys { get; set; } = null!;
         public DbSet<Tax> Taxes { get; set; } = null!;
         public DbSet<TaxesItem> TaxesItems { get; set; } = null!;
-
         public DbSet<Equipment> Equipments { get; set; } = null!;
         public DbSet<Instrument> Instruments { get; set; } = null!;
         public DbSet<Valve> Valves { get; set; } = null!;
-
         public DbSet<EquipmentTemplate> EquipmentTemplates { get; set; } = null!;
         public DbSet<InstrumentTemplate> InstrumentTemplates { get; set; } = null!;
         public DbSet<ValveTemplate> ValveTemplates { get; set; } = null!;
         public DbSet<Nozzle> Nozzles { get; set; } = null!;
         public DbSet<NozzleTemplate> NozzleTemplates { get; set; } = null!;
         public DbSet<Brand> Brands { get; set; } = null!;
-
         public DbSet<Pipe> Isometrics { get; set; } = null!;
         public DbSet<IsometricItem> IsometricItems { get; set; } = null!;
         public DbSet<PipingAccesory> PipingAccesorys { get; set; } = null!;
@@ -72,14 +67,17 @@
         public DbSet<PipingAccesoryImage> PipingAccesoryImages { get; set; } = null!;
         public DbSet<PipingConnectionType> PipingConnectionTypes { get; set; } = null!;
         public DbSet<PipingAccesoryCodeBrand> PipingAccesoryCodeBrands { get; set; } = null!;
-
         public DbSet<Milestone> Milestones { get; set; } = null!;
-
         public DbSet<Quality> Qualitys { get; set; } = null!;
         public DbSet<Communication> Communications { get; set; } = null!;
         public DbSet<Resource> Resources { get; set; } = null!;
-
         public DbSet<Acquisition> Acquisitions { get; set; } = null!;
+        public DbSet<BudgetItemValue> BudgetItemValues { get; set; } = null!;
+        public DbSet<DeliverableResource> DeliverableResources { get; set; } = null!;
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; } = null!;
+        public DbSet<Supplier> Suppliers { get; set; } = null!;
+        public DbSet<PurchaseOrderItem> PurchaseOrderItems { get; set; } = null!;
+        public DbSet<PurchaseOrderItemReceived> PurchaseOrderItemReceiveds { get; set; } = null!;
         void ConfiguerQueryFilters(ModelBuilder builder)
         {
             builder.Entity<App>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
@@ -91,7 +89,7 @@
             builder.Entity<Bennefit>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<KnownRisk>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<AcceptanceCriteria>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-
+            builder.Entity<DeliverableResource>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Deliverable>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Quality>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Communication>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
@@ -99,24 +97,21 @@
             builder.Entity<Acquisition>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Requirement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Assumption>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-
+            builder.Entity<BudgetItemValue>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Constrainst>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-
+            builder.Entity<Supplier>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<ExpertJudgement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-
+            builder.Entity<PurchaseOrder>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<PurchaseOrderItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Meeting>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<MeetingAttendant>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<MeetingAgreement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-
-            builder.Entity<BudgetItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-
+            builder.Entity<PurchaseOrderItemReceived>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<TaxesItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-
             builder.Entity<IsometricItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-
             builder.Entity<Milestone>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-
             builder.Entity<Nozzle>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<BudgetItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
 
             builder.Entity<BudgetItem>().UseTpcMappingStrategy();
             builder.Entity<EngineeringItem>().UseTpcMappingStrategy();

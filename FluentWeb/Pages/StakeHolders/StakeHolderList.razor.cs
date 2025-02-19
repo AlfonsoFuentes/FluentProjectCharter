@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Shared.Models.StakeHolders.Requests;
 using Shared.Models.StakeHolders.Responses;
+using Shared.StaticClasses;
 using Web.Infrastructure.Managers.Generic;
 using Web.Infrastructure.Managers.StakeHolders;
 
@@ -34,7 +35,7 @@ public partial class StakeHolderList
     }
     public void AddNew()
     {
-        Navigation.NavigateTo($"/CreateStakeHolder");
+        Navigation.NavigateTo(StaticClass.StakeHolders.PageName.Create);
 
     }
 

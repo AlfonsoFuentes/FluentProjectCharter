@@ -21,7 +21,7 @@ public partial class UpdateAlteration
             {
                 Id = result.Data.Id,
                 Name = result.Data.Name,
-         
+
                 Quantity = result.Data.Quantity,
                 UnitaryCost = result.Data.UnitaryCost,
                 ProjectId = result.Data.ProjectId,

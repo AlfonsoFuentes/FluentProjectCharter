@@ -1,4 +1,5 @@
-﻿using Shared.Models.Assumptions.Validators;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Assumptions.Validators;
 using Shared.Models.Backgrounds.Validators;
 
 namespace Server.EndPoint.Assumptions.Validators

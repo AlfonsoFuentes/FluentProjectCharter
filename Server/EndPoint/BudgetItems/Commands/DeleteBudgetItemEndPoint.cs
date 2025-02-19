@@ -16,7 +16,7 @@ namespace Server.EndPoint.BudgetItems.Commands
                     if (row == null) { return Result.Fail(Data.NotFound); }
 
 
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(row.ProjectId),
+                    List<string> cache = [
                         .. StaticClass.BudgetItems.Cache.Key(row.Id)];
 
                     await Repository.RemoveAsync(row);

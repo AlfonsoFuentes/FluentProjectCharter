@@ -1,4 +1,5 @@
-﻿using Shared.Models.Backgrounds.Records;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Backgrounds.Records;
 
 namespace Server.EndPoint.BackGrounds.Queries
 {

@@ -1,4 +1,5 @@
-﻿using Shared.Models.Deliverables.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Deliverables.Requests;
 
 namespace Server.EndPoint.Deliverables.Commands
 {
@@ -28,7 +29,6 @@ namespace Server.EndPoint.Deliverables.Commands
             {
                 List<string> cacheKeys = [
                    
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
                     .. StaticClass.Deliverables.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

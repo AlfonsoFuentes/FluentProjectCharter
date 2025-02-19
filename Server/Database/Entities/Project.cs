@@ -3,6 +3,8 @@ using Server.Database.Entities.BudgetItems;
 using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams;
 using static Shared.StaticClasses.StaticClass;
 using System.ComponentModel.DataAnnotations.Schema;
+using Server.Database.Entities.ProjectManagements;
+using Server.Database.Entities.PurchaseOrders;
 
 namespace Server.Database.Entities
 {
@@ -64,7 +66,7 @@ namespace Server.Database.Entities
         public List<Resource> Resources { get; set; } = new();
         #endregion
         public List<Meeting> Meetings { get; set; } = new();
-
+        public List<PurchaseOrder> PurchaseOrders { get; set; } = new();
         public List<Acquisition> Acquisitions { get; set; } = new();
         public List<StakeHolder> StakeHolders { get; } = [];
         public StakeHolder? Manager { get; set; } = null!;

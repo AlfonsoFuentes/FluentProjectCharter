@@ -1,4 +1,4 @@
-﻿using Shared.Enums.MilestoneRelationTypes;
+﻿using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.Milestones.Records;
 using Shared.Models.Milestones.Responses;
 namespace Server.EndPoint.Milestones.Queries
@@ -55,7 +55,7 @@ namespace Server.EndPoint.Milestones.Queries
 
 
                 DependencyName = row.Dependant == null ? string.Empty : row.Dependant.Name,
-                DependencyType = MilestoneRelationTypeEnum.GetType(row.DependencyType),
+                DependencyType = TasksRelationTypeEnum.GetType(row.DependencyType),
                 StartDate = row.StartDate,
                 EndDate = row.EndDate,
                 DurationInput = row.Duration,

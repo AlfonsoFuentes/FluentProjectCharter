@@ -1,5 +1,6 @@
 ﻿using Server.Database.Entities.BudgetItems.Commons;
 using Shared.Models.BudgetItems.IndividualItems.EHSs.Requests;
+using static Shared.StaticClasses.StaticClass;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.EHSs.Commands
 {
@@ -30,8 +31,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EHSs.Commands
             private string[] GetCacheKeys(BudgetItem row)
             {
                 List<string> cacheKeys = [
-                ..StaticClass.Projects.Cache.Key(row.ProjectId),
-                    StaticClass.BudgetItems.Cache.GetAll
+                ..StaticClass.BudgetItems.Cache.Key(row.Id)
 
 
                 ];

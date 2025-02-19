@@ -49,9 +49,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Equipments.Commands
             private string[] GetCacheKeys(BudgetItem row)
             {
                 List<string> cacheKeys = [
-                ..StaticClass.Projects.Cache.Key(row.ProjectId),
-                StaticClass.BudgetItems.Cache.GetAll,
-                ..StaticClass.Equipments.Cache.Key(row.Id)
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

@@ -27,7 +27,7 @@ namespace Server.EndPoint.Milestones.Commands
 
                     if (milestones == null) { return Result.Fail(Data.NotFound); }
 
-                    var cachekeys = GetCacheKeys( Data.ProjectId);
+                    List<string> cachekeys = new();
                     foreach (var milestone in milestones)
                     {
                         if (Data.Items.Any(x => x.Id == milestone.Id))
@@ -52,15 +52,7 @@ namespace Server.EndPoint.Milestones.Commands
 
                 });
             }
-            private List<string> GetCacheKeys(Guid ProjectId)
-            {
-                List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(ProjectId),
-           
-
-                ];
-                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToList();
-            }
+            
         }
 
 

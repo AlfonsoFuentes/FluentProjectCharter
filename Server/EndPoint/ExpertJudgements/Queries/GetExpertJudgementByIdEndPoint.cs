@@ -1,4 +1,5 @@
-﻿using Server.EndPoint.Projects.Queries;
+﻿using Server.Database.Entities.ProjectManagements;
+using Server.EndPoint.Projects.Queries;
 using Server.EndPoint.StakeHolders.Queries;
 using Shared.Models.ExpertJudgements.Records;
 

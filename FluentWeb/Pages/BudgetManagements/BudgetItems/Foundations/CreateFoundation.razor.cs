@@ -15,5 +15,5 @@ public partial class CreateFoundation
 
         Model.ProjectId = ProjectId;
     }
-   
+
 }

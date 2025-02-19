@@ -12,7 +12,7 @@ namespace Server.EndPoint.BudgetItems.Commands
                 app.MapPost(StaticClass.BudgetItems.EndPoint.DeleteGroup, async (DeleteBudgetItemGroupRequest Data, IRepository Repository) =>
                 {
 
-                    List<string> cache = [..StaticClass.Projects.Cache.Key(Data.ProjectId),
+                    List<string> cache = [
                         StaticClass.BudgetItems.Cache.GetAll
                     ];
 

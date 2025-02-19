@@ -532,6 +532,9 @@ namespace Shared.StaticClasses
                 public static string UpdateState = $"{ClassName}/{Actions.Update}State";
                 public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
                 public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
+                public static string UpdateEDT = $"{ClassName}/{Actions.Update}EDT";
+                public static string UpdateRight = $"{ClassName}/{Actions.Update}Right";
+                public static string UpdateLeft = $"{ClassName}/{Actions.Update}Left";
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetAllProject = $"{ClassName}/{Actions.GetAll}Project";

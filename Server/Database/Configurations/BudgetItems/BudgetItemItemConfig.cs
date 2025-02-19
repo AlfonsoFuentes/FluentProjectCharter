@@ -9,16 +9,10 @@ namespace Server.Database.Configurations.BudgetItems
         public void Configure(EntityTypeBuilder<BudgetItem> builder)
         {
 
-
-            //builder.HasOne(x => x.Deliverable)
-            //.WithMany(t => t.BudgetItems)
-            //.HasForeignKey(e => e.DeliverableId)
-            //.OnDelete(DeleteBehavior.NoAction);
-
-           // builder.HasOne(x => x.Milestone)
-           //.WithMany(t => t.BudgetItems)
-           //.HasForeignKey(e => e.MilestoneId)
-           //.OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(x => x.PurchaseOrderItems)
+                .WithOne(x => x.BudgetItem)
+                .HasForeignKey(x => x.BudgetItemId)
+                .OnDelete(DeleteBehavior.Restrict);
 
         }
     }

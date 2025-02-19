@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Server.Database.Entities.ProjectManagements;
 
 namespace Server.Database.Configurations
 {

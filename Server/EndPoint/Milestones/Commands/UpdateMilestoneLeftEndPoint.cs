@@ -30,7 +30,7 @@ namespace Server.EndPoint.Milestones.Commands
             {
                 List<string> cacheKeys = [
                    
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
+                
                     .. StaticClass.Milestones.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

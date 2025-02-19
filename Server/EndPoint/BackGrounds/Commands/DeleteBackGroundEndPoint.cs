@@ -1,8 +1,4 @@
-﻿
-
-
-
-using Server.Database.Entities;
+﻿using Server.Database.Entities.ProjectManagements;
 using Shared.Models.Backgrounds.Requests;
 
 namespace Server.EndPoint.BackGrounds.Commands
@@ -19,7 +15,7 @@ namespace Server.EndPoint.BackGrounds.Commands
                     if (row == null) { return Result.Fail(Data.NotFound); }
                     await Repository.RemoveAsync(row);
 
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(row.ProjectId),StaticClass.BackGrounds.Cache.GetAll];
+                    List<string> cache = [StaticClass.BackGrounds.Cache.GetAll];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

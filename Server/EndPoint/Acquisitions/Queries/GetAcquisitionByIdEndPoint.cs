@@ -1,4 +1,5 @@
-﻿using Shared.Models.Acquisitions.Records;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Acquisitions.Records;
 using Shared.Models.Acquisitions.Responses;
 
 namespace Server.EndPoint.Acquisitions.Queries

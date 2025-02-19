@@ -7,19 +7,19 @@ public partial class LoginDisplay
     [CascadingParameter]
     public App MainApp { get; set; }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (MainApp.CurrentUser == null)
-        {
-            await MainApp.GetCurrentUser();
+    //protected override async Task OnParametersSetAsync()
+    //{
+    //    if (MainApp.CurrentUser == null)
+    //    {
+    //        await MainApp.GetCurrentUser();
 
-            Navigation.NavigateTo("/");
+    //        Navigation.NavigateTo("/");
 
-            StateHasChanged();
-        }
+    //        StateHasChanged();
+    //    }
 
 
-    }
+    //}
 
    
 }

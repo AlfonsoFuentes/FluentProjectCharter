@@ -57,7 +57,6 @@ namespace Server.EndPoint.Projects.Exports
                     .Include(x => x.Deliverables.OrderBy(x => x.Order))
                     .Include(x => x.Milestones.OrderBy(x => x.Order)).ThenInclude(x => x.Dependants.OrderBy(x => x.Order))
                     .Include(x => x.Qualitys.OrderBy(x => x.Order))
-                    .Include(x => x.BudgetItems)
                     .Include(x => x.KnownRisks.OrderBy(x => x.Order))
                     .Include(x => x.Resources.OrderBy(x => x.Order))
                     .Include(x => x.Acquisitions.OrderBy(x => x.Order))
@@ -86,7 +85,7 @@ namespace Server.EndPoint.Projects.Exports
                 Shared.Models.FileResults.FileResult newresult = new()
                 {
                     Data = pdfBytes,
-                    ExportFileName = $"Project Charter {response.Name}.pdf",
+                    ExportFileName = $"Project Execution Plan of {response.Name}.pdf",
                     ContentType = Shared.Models.FileResults.FileResult.pdfContentType,
                 };
 
@@ -102,10 +101,11 @@ namespace Server.EndPoint.Projects.Exports
                         page.Margin(30);
 
                         page.Size(PageSizes.Letter.Portrait());
-                        page.Margin(0.8f, QuestPDF.Infrastructure.Unit.Centimetre);
+                        page.MarginLeft(2f, QuestPDF.Infrastructure.Unit.Centimetre);
+                        page.MarginRight(2f, QuestPDF.Infrastructure.Unit.Centimetre); // Ajustar el margen derecho
                         page.PageColor(Colors.White);
                         page.DefaultTextStyle(x => x.FontSize(11).FontFamily("Arial"));
-                        page.Header().ShowOnce().Row(row =>
+                        page.Header().Row(row =>
                         {
                             if (CPLogo == null)
                             {
@@ -151,7 +151,7 @@ namespace Server.EndPoint.Projects.Exports
                         {
                             col1.Item().PaddingBottom(15).Column(col2 =>
                             {
-                                col2.Item().Background(Colors.Grey.Lighten2).Text("Project Execution Plan").FontSize(20).AlignCenter();
+                                col2.Item().Background(Colors.Grey.Lighten2).Text("Project Charter Statement").FontSize(20).AlignCenter();
                             });
 
                             col1.Item().Element((ele) => ProjectNameContent(ele, response));
@@ -160,12 +160,12 @@ namespace Server.EndPoint.Projects.Exports
 
                             col1.Item().Padding(10).Column(col2 =>
                             {
-                                col2.Item().Text("A) StakeHolders").FontSize(15).SemiBold();
+                                col2.Item().Text("A) StakeHolders").FontSize(10).Bold();
                             });
                             col1.Item().Element((ele) => StakeHoldersContent(ele, response));
                             col1.Item().Padding(10).Column(col2 =>
                             {
-                                col2.Item().Text("B) Scope Management").FontSize(15).SemiBold();
+                                col2.Item().Text("B) Scope Management").FontSize(10).Bold();
                             });
                             col1.Item().Element((ele) => BackGrounds(ele, response));
                             col1.Item().Element((ele) => Objetives(ele, response));
@@ -179,35 +179,28 @@ namespace Server.EndPoint.Projects.Exports
                             col1.Item().Element((ele) => ExpertJudgements(ele, response));
                             col1.Item().Padding(10).Column(col2 =>
                             {
-                                col2.Item().Text("C) Timeline Management").FontSize(15).SemiBold();
+                                col2.Item().Text("C) Timeline Management").FontSize(10).Bold();
                             });
                             col1.Item().Element((ele) => Deliverables(ele, response));
                             col1.Item().Element((ele) => Milestones(ele, response));
                             col1.Item().Padding(10).Column(col2 =>
                             {
-                                col2.Item().Text("D) Budget Management").FontSize(15).SemiBold();
-                            });
-                            col1.Item().Element((ele) => BudgetContent(ele, response));
-                            
-
-                            col1.Item().Padding(10).Column(col2 =>
-                            {
-                                col2.Item().Text("E) Quality Management").FontSize(15).SemiBold();
+                                col2.Item().Text("D) Quality Management").FontSize(10).Bold();
                             });
                             col1.Item().Element((ele) => Qualitys(ele, response));
                             col1.Item().Padding(10).Column(col2 =>
                             {
-                                col2.Item().Text("F) Risks Management").FontSize(15).SemiBold();
+                                col2.Item().Text("E) Risks Management").FontSize(10).Bold();
                             });
                             col1.Item().Element((ele) => KnownRisks(ele, response));
                             col1.Item().Padding(10).Column(col2 =>
                             {
-                                col2.Item().Text("G) Resources Management").FontSize(15).SemiBold();
+                                col2.Item().Text("F) Resources Management").FontSize(10).Bold();
                             });
                             col1.Item().Element((ele) => Resources(ele, response));
                             col1.Item().Padding(10).Column(col2 =>
                             {
-                                col2.Item().Text("H) Acquisition Management").FontSize(15).SemiBold();
+                                col2.Item().Text("G) Acquisition Management").FontSize(10).Bold();
                             });
                             col1.Item().Element((ele) => Acquisitions(ele, response));
 
@@ -281,16 +274,7 @@ namespace Server.EndPoint.Projects.Exports
                 if (response.StakeHolders.Count == 0) return;
                 container.Column(col1 =>
                 {
-
-                    col1.Item().PaddingBottom(10).Column(col2 =>
-                    {
-                        col2.Item().Text(txt =>
-                        {
-                            txt.Span("StakeHolders").FontSize(12).SemiBold();
-
-                        });
-                    });
-                    col1.Item().PaddingBottom(10).Table(table => GetStakeHoldersTable(table, response));
+                    col1.Item().TranslateX(15).PaddingBottom(5).Table(table => GetStakeHoldersTable(table, response));
                 });
             }
             TableDescriptor GetStakeHoldersTable(TableDescriptor tabla, Project response)
@@ -368,32 +352,15 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().Padding(30).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Approvals").FontSize(12).SemiBold();
+                            txt.Span("Approvals").FontSize(10).SemiBold();
 
                         });
                     });
                     col1.Item().Table(table => GetSign(table, response));
-                });
-            }
-            void BudgetContent(IContainer container, Project response)
-            {
-
-                container.Column(col1 =>
-                {
-
-                    col1.Item().PaddingBottom(10).Column(col2 =>
-                    {
-                        col2.Item().Text(txt =>
-                        {
-                            txt.Span("Budget Items").FontSize(12).SemiBold();
-
-                        });
-                    });
-                    col1.Item().Table(table => GetBudget(table, response));
                 });
             }
             TableDescriptor GetSign(TableDescriptor tabla, Project response)
@@ -423,6 +390,19 @@ namespace Server.EndPoint.Projects.Exports
 
 
                 });
+                if (response.Sponsor != null)
+                {
+                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
+                   .Padding(4).Text(response.Sponsor.Name).FontSize(10);
+                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
+                   .Padding(4).Text(response.Sponsor.Area).FontSize(10);
+
+                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
+                    .Padding(4).Text(string.Empty).FontSize(10);
+
+                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
+                    .Padding(4).Text(string.Empty).FontSize(10);
+                }
 
                 foreach (var expert in response.StakeHolders)
                 {
@@ -438,47 +418,19 @@ namespace Server.EndPoint.Projects.Exports
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
                     .Padding(4).Text(string.Empty).FontSize(10);
                 }
-
-                return tabla;
-            }
-            TableDescriptor GetBudget(TableDescriptor tabla, Project response)
-            {
-                tabla.ColumnsDefinition(columns =>
-                {
-                    columns.RelativeColumn(1);
-                    columns.RelativeColumn(4);
-
-                    columns.RelativeColumn(1);
-
-                });
-
-                tabla.Header(header =>
-                {
-                    header.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text("ID").Bold();
-
-
-                    header.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                   .Padding(4).Text("Name").Bold();
-
-                    header.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text("Budget, $USD").Bold();
-
-
-                });
-
-                foreach (var budget in response.BudgetItems)
+                if (response.Manager != null)
                 {
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text(budget.Nomenclatore).FontSize(10);
+                   .Padding(4).Text(response.Manager.Name).FontSize(10);
+                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
+                   .Padding(4).Text("Project Manager").FontSize(10);
 
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text(budget.Name).FontSize(10);
+                    .Padding(4).Text(string.Empty).FontSize(10);
 
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                   .Padding(4).Text(string.Format(new CultureInfo("en-US"), "{0:C0}", budget.Budget)).FontSize(10);
+                    .Padding(4).Text(string.Empty).FontSize(10);
                 }
-
                 return tabla;
             }
 
@@ -488,22 +440,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("BackGrounds:").FontSize(12).SemiBold();
+                            txt.Span("BackGrounds:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.BackGrounds)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -520,22 +472,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Objectives:").FontSize(12).SemiBold();
+                            txt.Span("Objectives:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.Objectives)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -553,22 +505,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Requirements:").FontSize(12).SemiBold();
+                            txt.Span("Requirements:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.Requirements)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -585,22 +537,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Scopes:").FontSize(12).SemiBold();
+                            txt.Span("Scopes:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.Scopes)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -617,22 +569,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Acceptance Criterias:").FontSize(12).SemiBold();
+                            txt.Span("Acceptance Criterias:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.AcceptanceCriterias)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -649,22 +601,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Bennefits:").FontSize(12).SemiBold();
+                            txt.Span("Bennefits:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.Bennefits)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -682,22 +634,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Constrainsts:").FontSize(12).SemiBold();
+                            txt.Span("Constrainsts:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.Constrainsts)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -714,22 +666,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Assumptions:").FontSize(12).SemiBold();
+                            txt.Span("Assumptions:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.Assumptions)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -746,22 +698,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Learned Lessons:").FontSize(12).SemiBold();
+                            txt.Span("Learned Lessons:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.LearnedLessons)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -778,22 +730,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
-                        col2.Item().Text(txt =>
+                        col2.Item().TranslateX(15).Text(txt =>
                         {
-                            txt.Span("Expert Judgements:").FontSize(12).SemiBold();
+                            txt.Span("Expert Judgements:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.ExpertJudgements)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -810,22 +762,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Deliverables:").FontSize(12).SemiBold();
+                            txt.Span("Deliverables:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.Deliverables)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -842,22 +794,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Milestones:").FontSize(12).SemiBold();
+                            txt.Span("Milestones:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.Milestones)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -874,22 +826,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Qualitys:").FontSize(12).SemiBold();
+                            txt.Span("Qualitys:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.Qualitys)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -906,22 +858,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Known Risks:").FontSize(12).SemiBold();
+                            txt.Span("Known Risks:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.KnownRisks)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -938,22 +890,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Resources:").FontSize(12).SemiBold();
+                            txt.Span("Resources:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.Resources)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 
@@ -970,22 +922,22 @@ namespace Server.EndPoint.Projects.Exports
                 container.Column(col1 =>
                 {
 
-                    col1.Item().PaddingBottom(10).Column(col2 =>
+                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
                     {
                         col2.Item().Text(txt =>
                         {
-                            txt.Span("Acquisitions:").FontSize(12).SemiBold();
+                            txt.Span("Acquisitions:").FontSize(10).SemiBold();
 
                         });
                     });
 
 
-                    col1.Item().TranslateX(10).Column(col2 =>
+                    col1.Item().Column(col2 =>
                     {
 
                         foreach (var row in response.Acquisitions)
                         {
-                            col1.Item().TranslateX(20).PaddingBottom(5).Text(txt =>
+                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
                             {
                                 txt.Span($"{row.Name}").FontSize(10);
 

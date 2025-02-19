@@ -26,12 +26,10 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EHSs.Commands
                     return Result.EndPointResult(result, data.Succesfully, data.Fail);
                 });
             }
-            private string[] GetCacheKeys(BudgetItem alteration)
+            private string[] GetCacheKeys(BudgetItem row)
             {
                 List<string> cacheKeys = [
-                ..StaticClass.Projects.Cache.Key(alteration.ProjectId),
-             StaticClass.BudgetItems.Cache.GetAll,
-                ..StaticClass.EHSs.Cache.Key(alteration.Id)
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

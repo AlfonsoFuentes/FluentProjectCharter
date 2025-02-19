@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Server.Database.Entities.ProjectManagements;
 using Server.EndPoint.Projects.Queries;
 using Shared.Models.StakeHolders.Records;
 using Shared.Models.StakeHolders.Responses;

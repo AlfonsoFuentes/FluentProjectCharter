@@ -13,8 +13,8 @@ public partial class CreatePainting
     public Guid ProjectId { get; set; }
     protected override void OnInitialized()
     {
-    
+
         Model.ProjectId = ProjectId;
     }
-   
+
 }

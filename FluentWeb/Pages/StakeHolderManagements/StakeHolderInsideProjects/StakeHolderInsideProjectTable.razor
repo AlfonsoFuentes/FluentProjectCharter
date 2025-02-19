@@ -8,10 +8,10 @@
         <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@AddNew" ToolTip="Add New" Disabled="@(CreateRow!=null)"></IconButton>
         <IconButton IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@Delete" Disabled="@(SelectedRow==null)" ToolTip="Delete"></IconButton>
 
-        
+
         <FluentSpacer />
         <FluentLabel Typo="Typography.Body">Selected: @CurrentRowName</FluentLabel>
-      
+
     </FluentStack>
     @if (Items.Count == 0)
     {
@@ -25,6 +25,7 @@
             <thead>
                 <tr>
                     <th class="name">Name</th>
+       
                     <th class="role">Role</th>
                     <th class="actions">Actions</th>
                 </tr>
@@ -41,13 +42,12 @@
                             {
                                 @RenderFluentSelectStakeHolder(item)
                             }
-                            else 
+                            else
                             {
                                 @item.StakeHolder.Name
                             }
-                            
-                        </td>
 
+                        </td>
                         <!-- Columna Role -->
                         <td class="role">
                             @if (CreateRow != null && CreateRow == item)
@@ -63,22 +63,27 @@
                                 @item.Role.Name
                             }
 
-                            
+
                         </td>
+                     
+
+                       
 
                         <!-- Columna Actions -->
                         <td class="actions">
                             @if (CreateRow != null && CreateRow == item)
                             {
                                 <FluentStack Orientation="Orientation.Horizontal">
+                                    <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@AddStakeHolder" ToolTip="Add New StakeHolder"></IconButton>
                                     <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@Create" ToolTip="Save" Disabled="@DisableSaveButton(item)"></IconButton>
                                     <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelCreate" ToolTip="Cancel"></IconButton>
                                 </FluentStack>
-                             
+
                             }
                             else if (EditRow != null && EditRow == item)
                             {
                                 <FluentStack Orientation="Orientation.Horizontal">
+                                  
                                     <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@(()=>Update(item))" ToolTip="Save" Disabled="@DisableSaveButton(item)"></IconButton>
                                     <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelEdit" ToolTip="Cancel"></IconButton>
                                 </FluentStack>
@@ -113,21 +118,21 @@
 
             /* Ancho específico para cada columna */
             .data-grid th.name, .data-grid td.name {
-                width: 40%;
+                width: 35%;
             }
 
             .data-grid th.role, .data-grid td.role {
-                width: 40%;
+                width: 35%;
             }
 
             .data-grid th.actions, .data-grid td.actions {
-                width: 20%;
+                width: 30%;
             }
 </style>
 
 @code {
     PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
-   
+
     string? stakeHolder;
     void ChangeSelect(ChangeEventArgs args, StakeHolderInsideProjectResponse model)
     {

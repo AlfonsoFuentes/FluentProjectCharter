@@ -1,4 +1,5 @@
-﻿using Shared.Models.Requirements.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Requirements.Requests;
 
 namespace Server.EndPoint.Requirements.Commands
 {
@@ -36,8 +37,7 @@ namespace Server.EndPoint.Requirements.Commands
             }
             private string[] GetCacheKeys(Requirement row)
             {
-                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
-           
+                List<string> cacheKeys = [           
                     .. StaticClass.Requirements.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

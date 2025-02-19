@@ -1,6 +1,4 @@
-﻿
-
-using Server.Database.Entities;
+﻿using Server.Database.Entities.ProjectManagements;
 using Shared.Models.Objectives.Validators;
 
 namespace Server.EndPoint.Objectives.Validators

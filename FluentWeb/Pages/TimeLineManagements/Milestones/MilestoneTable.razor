@@ -1,35 +1,38 @@
-﻿
-<div class="custom-table-responsive">
-    <table class="custom-table milestone-table">
-        <thead>
-            <tr>
-                <th>Order</th>
-                <th>Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Elapse</th>
-                <th>Relation</th>
-                <th>Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var milestone in Items)
-            {
-                <MilestoneRow Model="@milestone" SelectedRowChanged="@SelectedRowChanged"
-                              IndentLevel="0"
-                              SelectedRow="@SelectedRow"
-                              AllItems="@AllItems"
-                              ChangeName="ChangeName"
-                              ChangeStartDate="ChangeStartDate"
-                              ChangeEndDate="ChangeEndDate"
-                              ChangeDuration="ChangeDuration"
-                              ChangeDependency="ChangeDependency"
-                              ChangeDependencyType="ChangeDependencyType" />
+﻿@if (Items.Count>0)
+{
+    <div class="custom-table-responsive">
+        <table class="custom-table milestone-table">
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Elapse</th>
+                    <th>Relation</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var milestone in Items)
+                {
+                    <MilestoneRow Model="@milestone" SelectedRowChanged="@SelectedRowChanged"
+                                  IndentLevel="0"
+                                  SelectedRow="@SelectedRow"
+                                  AllItems="@AllItems"
+                                  ChangeName="ChangeName"
+                                  ChangeStartDate="ChangeStartDate"
+                                  ChangeEndDate="ChangeEndDate"
+                                  ChangeDuration="ChangeDuration"
+                                  ChangeDependency="ChangeDependency"
+                                  ChangeDependencyType="ChangeDependencyType" />
 
-            }
-        </tbody>
-    </table>
-</div>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
 <style>
     .custom-table-responsive {
         overflow-x: auto;

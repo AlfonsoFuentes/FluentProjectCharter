@@ -62,6 +62,7 @@ public partial class BennefitTable
         var result = await GenericService.GetAll<BennefitResponseList, BennefitGetAll>(new BennefitGetAll()
         {
             ProjectId = ProjectId,
+            
 
         });
         if (result.Succeeded)

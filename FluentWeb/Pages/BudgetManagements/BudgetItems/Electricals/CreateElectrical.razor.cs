@@ -12,8 +12,8 @@ public partial class CreateElectrical
     public Guid ProjectId { get; set; }
     protected override void OnInitialized()
     {
-      
+
         Model.ProjectId = ProjectId;
     }
-   
+
 }

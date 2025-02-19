@@ -23,7 +23,7 @@ public partial class CreateEquipment
         await GetBrands();
 
         Model.ProjectId = ProjectId;
-     
+
         await LoadFromLocalStorage();
         SelectedBrand = Model.Brand;
 

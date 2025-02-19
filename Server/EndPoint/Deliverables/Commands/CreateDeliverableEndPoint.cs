@@ -1,4 +1,5 @@
-﻿using Server.Repositories;
+﻿using Server.Database.Entities.ProjectManagements;
+using Server.Repositories;
 using Shared.Models.Deliverables.Requests;
 
 namespace Server.EndPoint.Deliverables.Commands
@@ -21,7 +22,8 @@ namespace Server.EndPoint.Deliverables.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
+                    var cache = $"{StaticClass.Deliverables.Cache.GetAll}-{Data.ProjectId}";
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
 
                     return Result.EndPointResult(result,
                         Data.Succesfully,
@@ -30,22 +32,21 @@ namespace Server.EndPoint.Deliverables.Commands
 
                 });
             }
-            private string[] GetCacheKeys(Deliverable row)
-            {
-                List<string> cacheKeys = [
-                  
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
-                    .. StaticClass.Deliverables.Cache.Key(row.Id)
-                ];
-                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
-            }
+
         }
 
 
         static Deliverable Map(this CreateDeliverableRequest request, Deliverable row)
         {
             row.Name = request.Name;
-          
+            row.WBS = request.WBS;
+            row.Order = request.Order;
+            row.StartDate = request.StartDate;
+            row.EndDate = request.EndDate;
+            row.DependencyType = request.DependencyType;
+            row.DurationTime = request.Duration;
+            row.LabelOrder = request.LabelOrder;
+
             return row;
         }
 

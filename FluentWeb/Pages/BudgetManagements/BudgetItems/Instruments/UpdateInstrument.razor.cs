@@ -22,7 +22,7 @@ public partial class UpdateInstrument
         await GetAllEquipmentTemplate();
         await GetBrands();
         var result = await GenericService.GetById<InstrumentResponse, GetInstrumentByIdRequest>(
-            new GetInstrumentByIdRequest() { Id = Id});
+            new GetInstrumentByIdRequest() { Id = Id });
 
         if (result.Succeeded)
         {

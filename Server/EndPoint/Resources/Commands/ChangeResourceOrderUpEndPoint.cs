@@ -1,4 +1,5 @@
-﻿using Shared.Models.Resources.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Resources.Mappers;
 
 namespace Server.EndPoint.Resources.Commands
 {
@@ -41,7 +42,7 @@ namespace Server.EndPoint.Resources.Commands
             private string[] GetCacheKeys(Resource row)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
+                    
            
                     .. StaticClass.Resources.Cache.Key(row.Id)
                 ];

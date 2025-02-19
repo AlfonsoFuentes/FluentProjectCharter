@@ -1,4 +1,5 @@
-﻿using Shared.Models.Qualitys.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Qualitys.Mappers;
 
 namespace Server.EndPoint.Qualitys.Commands
 {
@@ -41,7 +42,7 @@ namespace Server.EndPoint.Qualitys.Commands
             private string[] GetCacheKeys(Quality row)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
+                  
            
                     .. StaticClass.Qualitys.Cache.Key(row.Id)
                 ];

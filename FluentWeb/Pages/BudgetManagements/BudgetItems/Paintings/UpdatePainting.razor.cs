@@ -13,7 +13,7 @@ public partial class UpdatePainting
     protected override async Task OnInitializedAsync()
     {
         var result = await GenericService.GetById<PaintingResponse, GetPaintingByIdRequest>(
-            new GetPaintingByIdRequest() { Id = Id});
+            new GetPaintingByIdRequest() { Id = Id });
 
         if (result.Succeeded)
         {

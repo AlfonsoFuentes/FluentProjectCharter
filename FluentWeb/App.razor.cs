@@ -1,15 +1,4 @@
 using Microsoft.AspNetCore.Components;
-
-using Shared.Models.Deliverables.Records;
-using Shared.Models.Deliverables.Responses;
-using Shared.Models.Meetings.Responses;
-using Shared.Models.Milestones.Records;
-using Shared.Models.Milestones.Responses;
-using Shared.Models.Projects.Records;
-using Shared.Models.Projects.Reponses;
-using Shared.Models.Scopes.Records;
-using Shared.Models.Scopes.Responses;
-using Web.Infrastructure.Managers.Projects;
 using Web.Infrastructure.Services.Currencies;
 
 namespace FluentWeb;

@@ -1,4 +1,5 @@
-﻿using Shared.Models.Objectives.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Objectives.Requests;
 
 namespace Server.EndPoint.Objectives.Commands
 {
@@ -29,8 +30,8 @@ namespace Server.EndPoint.Objectives.Commands
             private string[] GetCacheKeys(Objective row)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
-                    StaticClass.Objectives.Cache.GetAll
+                    .. StaticClass.Objectives.Cache.Key(row.Id),
+             
 
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

@@ -1,4 +1,5 @@
-﻿using Shared.Models.LearnedLessons.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.LearnedLessons.Mappers;
 
 namespace Server.EndPoint.LearnedLessons.Commands
 {
@@ -47,7 +48,7 @@ namespace Server.EndPoint.LearnedLessons.Commands
             private string[] GetCacheKeys(LearnedLesson row, Guid ProjectId)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(ProjectId),
+               
                
                     .. StaticClass.LearnedLessons.Cache.Key(row.Id)
                 ];

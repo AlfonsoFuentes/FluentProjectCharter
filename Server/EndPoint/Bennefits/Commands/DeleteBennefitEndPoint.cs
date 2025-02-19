@@ -1,4 +1,6 @@
-﻿namespace Server.EndPoint.Bennefits.Commands
+﻿using Server.Database.Entities.ProjectManagements;
+
+namespace Server.EndPoint.Bennefits.Commands
 {
     public static class DeleteBennefitEndPoint
     {
@@ -12,8 +14,8 @@
                     if (row == null) { return Result.Fail(Data.NotFound); }
 
 
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
-                    StaticClass.Bennefits.Cache.GetAll];
+                    List<string> cache = [
+                    ..StaticClass.Bennefits.Cache.Key(row.Id)];
 
                     await Repository.RemoveAsync(row);
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());

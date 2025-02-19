@@ -1,4 +1,5 @@
-﻿using Shared.Models.Bennefits.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Bennefits.Mappers;
 
 namespace Server.EndPoint.Bennefits.Commands
 {
@@ -41,8 +42,6 @@ namespace Server.EndPoint.Bennefits.Commands
             private string[] GetCacheKeys(Bennefit row)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
-           
                     .. StaticClass.Bennefits.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

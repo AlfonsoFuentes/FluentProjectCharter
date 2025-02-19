@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Enums.MilestoneRelationTypes;
+using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.Milestones.Responses;
 
 namespace FluentWeb.Pages.TimeLineManagements.Milestones;
@@ -34,7 +34,7 @@ public partial class MilestoneTable
     [Parameter]
     public Func<MilestoneResponse, MilestoneResponse?, Task> ChangeDependency { get; set; } = null!;
     [Parameter]
-    public Func<MilestoneResponse, MilestoneRelationTypeEnum, Task> ChangeDependencyType { get; set; } = null!;
+    public Func<MilestoneResponse, TasksRelationTypeEnum, Task> ChangeDependencyType { get; set; } = null!;
 
 
 }

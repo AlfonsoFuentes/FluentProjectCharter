@@ -167,109 +167,7 @@ namespace Server.Migrations
 
                     b.HasIndex("StakeHoldersId");
 
-                    b.ToTable("ProjectStakeHolder");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.AcceptanceCriteria", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("AcceptanceCriterias");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Acquisition", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Acquisitions");
+                    b.ToTable("ProjectStakeHolder", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.App", b =>
@@ -308,154 +206,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Apps");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Assumption", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Assumptions");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.BackGround", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("BackGrounds");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Bennefit", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Bennefits");
+                    b.ToTable("Apps", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.BudgetItem", b =>
@@ -475,6 +226,9 @@ namespace Server.Migrations
 
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeliverableId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -504,6 +258,8 @@ namespace Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DeliverableId");
 
                     b.HasIndex("ProjectId");
 
@@ -545,7 +301,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands");
+                    b.ToTable("Brands", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles.Nozzle", b =>
@@ -631,7 +387,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ItemConnectedId");
 
-                    b.ToTable("Nozzles");
+                    b.ToTable("Nozzles", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles.NozzleTemplate", b =>
@@ -681,7 +437,7 @@ namespace Server.Migrations
 
                     b.HasIndex("TemplateId");
 
-                    b.ToTable("NozzleTemplates");
+                    b.ToTable("NozzleTemplates", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.EngineeringFluidCode", b =>
@@ -721,7 +477,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EngineeringFluidCodes");
+                    b.ToTable("EngineeringFluidCodes", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.IsometricItem", b =>
@@ -771,7 +527,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipingAccesoryId");
 
-                    b.ToTable("IsometricItems");
+                    b.ToTable("IsometricItems", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesory", b =>
@@ -812,7 +568,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipingCategoryId");
 
-                    b.ToTable("PipingAccesorys");
+                    b.ToTable("PipingAccesorys", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesoryCodeBrand", b =>
@@ -857,7 +613,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipingCategoryId");
 
-                    b.ToTable("PipingAccesoryCodeBrands");
+                    b.ToTable("PipingAccesoryCodeBrands", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesoryImage", b =>
@@ -897,7 +653,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PipingAccesoryImages");
+                    b.ToTable("PipingAccesoryImages", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingCategory", b =>
@@ -942,7 +698,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipingAccesoryImageId");
 
-                    b.ToTable("PipingCategorys");
+                    b.ToTable("PipingCategorys", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingConnectionType", b =>
@@ -1008,7 +764,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipingAccesoryId");
 
-                    b.ToTable("PipingConnectionTypes");
+                    b.ToTable("PipingConnectionTypes", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template", b =>
@@ -1105,322 +861,7 @@ namespace Server.Migrations
 
                     b.HasIndex("TaxItemId");
 
-                    b.ToTable("TaxesItems");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Communication", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Communications");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Constrainst", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Constrainsts");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Deliverable", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Deliverables");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.ExpertJudgement", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ExpertId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExpertId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ExpertJudgements");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.KnownRisk", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("KnownRisks");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.LearnedLesson", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("LearnedLessons");
+                    b.ToTable("TaxesItems", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Meeting", b =>
@@ -1476,7 +917,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Meetings");
+                    b.ToTable("Meetings", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.MeetingAgreement", b =>
@@ -1521,7 +962,7 @@ namespace Server.Migrations
 
                     b.HasIndex("MeetingId");
 
-                    b.ToTable("MeetingAgreements");
+                    b.ToTable("MeetingAgreements", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.MeetingAttendant", b =>
@@ -1567,7 +1008,7 @@ namespace Server.Migrations
 
                     b.HasIndex("StakeHolderId");
 
-                    b.ToTable("MeetingAttendants");
+                    b.ToTable("MeetingAttendants", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Milestone", b =>
@@ -1642,58 +1083,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Milestones");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Objective", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Objectives");
+                    b.ToTable("Milestones", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Project", b =>
@@ -1785,10 +1175,10 @@ namespace Server.Migrations
 
                     b.HasIndex("SponsorId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Quality", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.AcceptanceCriteria", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1836,10 +1226,751 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Qualitys");
+                    b.ToTable("AcceptanceCriterias", (string)null);
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Requirement", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Acquisition", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PlanningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Acquisitions", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Assumption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PlanningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Assumptions", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.BackGround", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("BackGrounds", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Bennefit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PlanningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Bennefits", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.BudgetItemValue", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BudgetItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeliverableId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliverableId");
+
+                    b.ToTable("BudgetItemValues", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Communication", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PlanningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Communications", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Constrainst", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PlanningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Constrainsts", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Deliverable", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DependencyType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("DependentantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("DurationTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LabelOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ParentDeliverableId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PlanningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("StartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WBS")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DependentantId");
+
+                    b.HasIndex("ParentDeliverableId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Deliverables", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.DeliverableResource", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Avalabilty")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeliverableId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliverableId");
+
+                    b.ToTable("DeliverableResources", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.ExpertJudgement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ExpertId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PlanningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpertId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ExpertJudgements", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.KnownRisk", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PlanningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("KnownRisks", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.LearnedLesson", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PlanningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("LearnedLessons", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Objective", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PlanningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Objectives", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Quality", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("PlanningId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Qualitys", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Requirement", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1908,10 +2039,10 @@ namespace Server.Migrations
 
                     b.HasIndex("ResponsibleId");
 
-                    b.ToTable("Requirements");
+                    b.ToTable("Requirements", (string)null);
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Resource", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Resource", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1959,10 +2090,10 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Resources");
+                    b.ToTable("Resources", (string)null);
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.RoleInsideProject", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.RoleInsideProject", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1998,10 +2129,10 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleInsideProjects");
+                    b.ToTable("RoleInsideProjects", (string)null);
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Scope", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Scope", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2049,10 +2180,10 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Scopes");
+                    b.ToTable("Scopes", (string)null);
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.StakeHolder", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.StakeHolder", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -2108,7 +2239,307 @@ namespace Server.Migrations
 
                     b.HasIndex("RoleInsideProjectId");
 
-                    b.ToTable("StakeHolders");
+                    b.ToTable("StakeHolders", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AccountAssigment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ApprovedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ClosedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CurrencyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeliverableId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ExpectedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAlteration")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCapitalizedSalary")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTaxEditable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PONumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PurchaseOrderCurrency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PurchaseOrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PurchaseRequisition")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PurchaseorderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuoteCurrency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuoteNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SPL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("SupplierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TaxCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("USDCOP")
+                        .HasColumnType("float");
+
+                    b.Property<double>("USDEUR")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliverableId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("PurchaseOrders", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BudgetItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTaxAlteration")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTaxNoProductive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PurchaseOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("UnitaryValueCurrency")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetItemId");
+
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.ToTable("PurchaseOrderItems", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrderItemReceived", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CurrencyDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PurchaseOrderItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("USDCOP")
+                        .HasColumnType("float");
+
+                    b.Property<double>("USDEUR")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ValueReceivedCurrency")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PurchaseOrderItemId");
+
+                    b.ToTable("PurchaseOrderItemReceiveds", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.Supplier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NickName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SupplierCurrency")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TaxCodeLD")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaxCodeLP")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VendorCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Suppliers", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Identity.BlazorHeroUser", b =>
@@ -2235,7 +2666,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Alterations");
+                    b.ToTable("Alterations", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.EHS", b =>
@@ -2248,7 +2679,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("EHSs");
+                    b.ToTable("EHSs", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Electrical", b =>
@@ -2261,7 +2692,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Electricals");
+                    b.ToTable("Electricals", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Foundation", b =>
@@ -2274,7 +2705,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Foundations");
+                    b.ToTable("Foundations", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Painting", b =>
@@ -2287,7 +2718,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Paintings");
+                    b.ToTable("Paintings", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Structural", b =>
@@ -2300,7 +2731,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Structurals");
+                    b.ToTable("Structurals", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Testing", b =>
@@ -2313,14 +2744,34 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Testings");
+                    b.ToTable("Testings", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.EngineeringContingency.Contingency", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<double>("Percentage")
+                        .HasColumnType("float");
+
+                    b.ToTable("Contingencys", (string)null);
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.BudgetItems.EngineeringContingency.Engineering", b =>
+                {
+                    b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
+
+                    b.Property<double>("Percentage")
+                        .HasColumnType("float");
+
+                    b.ToTable("EngineeringSalarys", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.EngineeringContingency.EngineeringDesign", b =>
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
 
-                    b.ToTable("Engineerings");
+                    b.ToTable("Engineerings", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem", b =>
@@ -2352,7 +2803,7 @@ namespace Server.Migrations
                     b.Property<double>("Percentage")
                         .HasColumnType("float");
 
-                    b.ToTable("Taxes");
+                    b.ToTable("Taxes", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.EquipmentTemplate", b =>
@@ -2378,7 +2829,7 @@ namespace Server.Migrations
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
-                    b.ToTable("EquipmentTemplates");
+                    b.ToTable("EquipmentTemplates", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments.InstrumentTemplate", b =>
@@ -2404,7 +2855,7 @@ namespace Server.Migrations
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
-                    b.ToTable("InstrumentTemplates");
+                    b.ToTable("InstrumentTemplates", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipeTemplate", b =>
@@ -2432,7 +2883,7 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("PipeTemplates");
+                    b.ToTable("PipeTemplates", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves.ValveTemplate", b =>
@@ -2473,7 +2924,7 @@ namespace Server.Migrations
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
-                    b.ToTable("ValveTemplates");
+                    b.ToTable("ValveTemplates", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.Equipment", b =>
@@ -2492,7 +2943,7 @@ namespace Server.Migrations
 
                     b.HasIndex("EquipmentTemplateId");
 
-                    b.ToTable("Equipments");
+                    b.ToTable("Equipments", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments.Instrument", b =>
@@ -2508,7 +2959,7 @@ namespace Server.Migrations
 
                     b.HasIndex("InstrumentTemplateId");
 
-                    b.ToTable("Instruments");
+                    b.ToTable("Instruments", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Pipe", b =>
@@ -2552,7 +3003,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipeTemplateId");
 
-                    b.ToTable("Isometrics");
+                    b.ToTable("Isometrics", (string)null);
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves.Valve", b =>
@@ -2568,7 +3019,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ValveTemplateId");
 
-                    b.ToTable("Valves");
+                    b.ToTable("Valves", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -2630,75 +3081,27 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Server.Database.Entities.StakeHolder", null)
+                    b.HasOne("Server.Database.Entities.ProjectManagements.StakeHolder", null)
                         .WithMany()
                         .HasForeignKey("StakeHoldersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.AcceptanceCriteria", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("AcceptanceCriterias")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Acquisition", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("Acquisitions")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Assumption", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("Assumptions")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.BackGround", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("BackGrounds")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Bennefit", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("Bennefits")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.BudgetItem", b =>
                 {
+                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Deliverable")
+                        .WithMany("BudgetItems")
+                        .HasForeignKey("DeliverableId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("BudgetItems")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Deliverable");
 
                     b.Navigation("Project");
                 });
@@ -2821,79 +3224,6 @@ namespace Server.Migrations
                     b.Navigation("TaxItem");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Communication", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("Communications")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Constrainst", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("Constrainsts")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Deliverable", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("Deliverables")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.ExpertJudgement", b =>
-                {
-                    b.HasOne("Server.Database.Entities.StakeHolder", "Expert")
-                        .WithMany("Judgements")
-                        .HasForeignKey("ExpertId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("ExpertJudgements")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Expert");
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.KnownRisk", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("KnownRisks")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.LearnedLesson", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("LearnedLessons")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("Server.Database.Entities.Meeting", b =>
                 {
                     b.HasOne("Server.Database.Entities.Project", "Project")
@@ -2924,7 +3254,7 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Server.Database.Entities.StakeHolder", "StakeHolder")
+                    b.HasOne("Server.Database.Entities.ProjectManagements.StakeHolder", "StakeHolder")
                         .WithMany("MeetingAttendants")
                         .HasForeignKey("StakeHolderId")
                         .OnDelete(DeleteBehavior.NoAction);
@@ -2959,7 +3289,188 @@ namespace Server.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Objective", b =>
+            modelBuilder.Entity("Server.Database.Entities.Project", b =>
+                {
+                    b.HasOne("Server.Database.Entities.ProjectManagements.StakeHolder", "Manager")
+                        .WithMany("Managers")
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Server.Database.Entities.ProjectManagements.StakeHolder", "Sponsor")
+                        .WithMany("Sponsors")
+                        .HasForeignKey("SponsorId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Manager");
+
+                    b.Navigation("Sponsor");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.AcceptanceCriteria", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("AcceptanceCriterias")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Acquisition", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("Acquisitions")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Assumption", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("Assumptions")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.BackGround", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("BackGrounds")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Bennefit", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("Bennefits")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.BudgetItemValue", b =>
+                {
+                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Deliverable")
+                        .WithMany("BudgetItemValues")
+                        .HasForeignKey("DeliverableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deliverable");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Communication", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("Communications")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Constrainst", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("Constrainsts")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Deliverable", b =>
+                {
+                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Dependant")
+                        .WithMany("Dependants")
+                        .HasForeignKey("DependentantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "ParentDeliverable")
+                        .WithMany("SubDeliverables")
+                        .HasForeignKey("ParentDeliverableId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("Deliverables")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dependant");
+
+                    b.Navigation("ParentDeliverable");
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.DeliverableResource", b =>
+                {
+                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Deliverable")
+                        .WithMany("DeliverableResources")
+                        .HasForeignKey("DeliverableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Deliverable");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.ExpertJudgement", b =>
+                {
+                    b.HasOne("Server.Database.Entities.ProjectManagements.StakeHolder", "Expert")
+                        .WithMany("Judgements")
+                        .HasForeignKey("ExpertId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("ExpertJudgements")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Expert");
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.KnownRisk", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("KnownRisks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.LearnedLesson", b =>
+                {
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("LearnedLessons")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Objective", b =>
                 {
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("Objectives")
@@ -2970,24 +3481,7 @@ namespace Server.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Project", b =>
-                {
-                    b.HasOne("Server.Database.Entities.StakeHolder", "Manager")
-                        .WithMany("Managers")
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Server.Database.Entities.StakeHolder", "Sponsor")
-                        .WithMany("Sponsors")
-                        .HasForeignKey("SponsorId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Manager");
-
-                    b.Navigation("Sponsor");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.Quality", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Quality", b =>
                 {
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("Qualitys")
@@ -2998,7 +3492,7 @@ namespace Server.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Requirement", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Requirement", b =>
                 {
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("Requirements")
@@ -3006,12 +3500,12 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Server.Database.Entities.StakeHolder", "RequestedBy")
+                    b.HasOne("Server.Database.Entities.ProjectManagements.StakeHolder", "RequestedBy")
                         .WithMany("RequirementRequestedBys")
                         .HasForeignKey("RequestedById")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Server.Database.Entities.StakeHolder", "Responsible")
+                    b.HasOne("Server.Database.Entities.ProjectManagements.StakeHolder", "Responsible")
                         .WithMany("RequirementResponsibles")
                         .HasForeignKey("ResponsibleId")
                         .OnDelete(DeleteBehavior.NoAction);
@@ -3023,7 +3517,7 @@ namespace Server.Migrations
                     b.Navigation("Responsible");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Resource", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Resource", b =>
                 {
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("Resources")
@@ -3034,7 +3528,7 @@ namespace Server.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Scope", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Scope", b =>
                 {
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("Scopes")
@@ -3045,14 +3539,68 @@ namespace Server.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.StakeHolder", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.StakeHolder", b =>
                 {
-                    b.HasOne("Server.Database.Entities.RoleInsideProject", "RoleInsideProject")
+                    b.HasOne("Server.Database.Entities.ProjectManagements.RoleInsideProject", "RoleInsideProject")
                         .WithMany("StakeHolders")
                         .HasForeignKey("RoleInsideProjectId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("RoleInsideProject");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrder", b =>
+                {
+                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Deliverable")
+                        .WithMany("PurchaseOrders")
+                        .HasForeignKey("DeliverableId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Server.Database.Entities.Project", "Project")
+                        .WithMany("PurchaseOrders")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Server.Database.Entities.PurchaseOrders.Supplier", "Supplier")
+                        .WithMany("PurchaseOrders")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Deliverable");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrderItem", b =>
+                {
+                    b.HasOne("Server.Database.Entities.BudgetItems.BudgetItem", "BudgetItem")
+                        .WithMany("PurchaseOrderItems")
+                        .HasForeignKey("BudgetItemId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Server.Database.Entities.PurchaseOrders.PurchaseOrder", "PurchaseOrder")
+                        .WithMany("PurchaseOrderItems")
+                        .HasForeignKey("PurchaseOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BudgetItem");
+
+                    b.Navigation("PurchaseOrder");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrderItemReceived", b =>
+                {
+                    b.HasOne("Server.Database.Entities.PurchaseOrders.PurchaseOrderItem", "PurchaseOrderItem")
+                        .WithMany("PurchaseOrderReceiveds")
+                        .HasForeignKey("PurchaseOrderItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PurchaseOrderItem");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.Equipment", b =>
@@ -3104,6 +3652,8 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.BudgetItem", b =>
                 {
+                    b.Navigation("PurchaseOrderItems");
+
                     b.Navigation("TaxesSelecteds");
                 });
 
@@ -3187,6 +3737,8 @@ namespace Server.Migrations
 
                     b.Navigation("Objectives");
 
+                    b.Navigation("PurchaseOrders");
+
                     b.Navigation("Qualitys");
 
                     b.Navigation("Requirements");
@@ -3196,12 +3748,27 @@ namespace Server.Migrations
                     b.Navigation("Scopes");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.RoleInsideProject", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Deliverable", b =>
+                {
+                    b.Navigation("BudgetItemValues");
+
+                    b.Navigation("BudgetItems");
+
+                    b.Navigation("DeliverableResources");
+
+                    b.Navigation("Dependants");
+
+                    b.Navigation("PurchaseOrders");
+
+                    b.Navigation("SubDeliverables");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.RoleInsideProject", b =>
                 {
                     b.Navigation("StakeHolders");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.StakeHolder", b =>
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.StakeHolder", b =>
                 {
                     b.Navigation("Judgements");
 
@@ -3214,6 +3781,21 @@ namespace Server.Migrations
                     b.Navigation("RequirementResponsibles");
 
                     b.Navigation("Sponsors");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrder", b =>
+                {
+                    b.Navigation("PurchaseOrderItems");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrderItem", b =>
+                {
+                    b.Navigation("PurchaseOrderReceiveds");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.Supplier", b =>
+                {
+                    b.Navigation("PurchaseOrders");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem", b =>

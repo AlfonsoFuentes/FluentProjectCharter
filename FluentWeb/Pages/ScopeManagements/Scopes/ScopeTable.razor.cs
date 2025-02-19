@@ -11,6 +11,7 @@ namespace FluentWeb.Pages.ScopeManagements.Scopes;
 #nullable disable
 public partial class ScopeTable
 {
+    [Parameter]
     public Guid ProjectId { get; set; }
     [Parameter]
     public string IdType { get; set; }

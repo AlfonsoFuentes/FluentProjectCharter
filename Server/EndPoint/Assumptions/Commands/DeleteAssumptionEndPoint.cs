@@ -1,8 +1,4 @@
-﻿
-
-
-
-using Server.Database.Entities;
+﻿using Server.Database.Entities.ProjectManagements;
 using Shared.Models.Assumptions.Requests;
 
 namespace Server.EndPoint.Assumptions.Commands
@@ -30,8 +26,7 @@ namespace Server.EndPoint.Assumptions.Commands
             }
             private string[] GetCacheKeys(Assumption row)
             {
-                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
-    
+                List<string> cacheKeys = [   
                     .. StaticClass.Assumptions.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

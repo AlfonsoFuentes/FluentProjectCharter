@@ -1,25 +1,58 @@
 using FluentWeb.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.FluentUI.AspNetCore.Components;
+using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.Deliverables.Mappers;
 using Shared.Models.Deliverables.Records;
 using Shared.Models.Deliverables.Requests;
 using Shared.Models.Deliverables.Responses;
+using Shared.Models.Deliverables.Responses.NewResponses;
+using Shared.Models.Milestones.Responses;
 using Shared.Models.Projects.Mappers;
 
 namespace FluentWeb.Pages.TimeLineManagements.Deliverables;
-#nullable disable
+
 public partial class DeliverableTable
 {
     [Parameter]
     public Guid ProjectId { get; set; }
+
     [Parameter]
-    public string IdType { get; set; }
+    public string IdType { get; set; } = string.Empty;
 
     [Parameter]
     public Guid Id { get; set; }
+
     Guid? StartId;
     Guid? PlanningId;
+
+    DeliverableResponseList Response { get; set; } = new();
+    public List<DeliverableResponse> Items => Response.OrderedItems.Count == 0 ? new() :
+        StartId.HasValue ? Response.OrderedItems.Where(x => x.StartId == StartId).ToList() :
+        Response.OrderedItems;
+
+    DeliverableResponse CreateRow = null!;
+    DeliverableResponse EditRow = null!;
+    DeliverableResponse SelectedRow = null!;
+
+    string CurrentRowName => SelectedRow == null ? string.Empty : TruncateService.Truncate(SelectedRow.Name, 30);
+
+    // Propiedad para deshabilitar el botón "Up"
+    private bool DisableUpButton => SelectedRow == null || !Response.CanMoveUp(SelectedRow);
+
+    // Propiedad para deshabilitar el botón "Down"
+    bool DisableDownButton => SelectedRow == null || !Response.CanMoveDown(SelectedRow);
+    // Propiedad para deshabilitar el botón "Left"
+    private bool DisableLeftButton => SelectedRow == null || Response.FindParent(SelectedRow) == null;
+    // Propiedad para deshabilitar el botón "Right"
+    private bool DisableRigthButton => SelectedRow == null || !Response.CanMoveRight(SelectedRow);
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        ValidateIdType();
+        await GetAll();
+    }
+
     private void ValidateIdType()
     {
         if (IdType.Equals("Planning", StringComparison.OrdinalIgnoreCase))
@@ -30,168 +63,236 @@ public partial class DeliverableTable
         {
             StartId = Id;
         }
-
     }
-    protected override async Task OnInitializedAsync()
-    {
-        ValidateIdType();
-        await GetAll();
-    }
-    public List<DeliverableResponse> Items { get; set; } = new();
 
-    string nameFilter { get; set; } = string.Empty;
-    Func<DeliverableResponse, bool> fiterexpresion => x =>
-       x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase);
-    public List<DeliverableResponse> FilteredItems => Items.Count == 0 ? new() : Items.Where(fiterexpresion).ToList();
-
-    DeliverableResponse CreateRow = null!;
-    DeliverableResponse EditRow = null!;
-    DeliverableResponse SelectedRow = null!;
-    string CurrentRowName => SelectedRow == null ? string.Empty : TruncateService.Truncate(SelectedRow.Name, 30);
-    bool DisableUpButton => SelectedRow == null ? true : SelectedRow.Order == 1;
-    bool DisableDownButton => SelectedRow == null ? true : SelectedRow.Order == LastOrder;
-    public int LastOrder => Items.Count == 0 ? 1 : Items.MaxBy(x => x.Order).Order;
-
-    bool DisableSaveButton(DeliverableResponse model)
-    {
-        return string.IsNullOrEmpty(model.Name) ? true : false;
-
-    }
     async Task GetAll()
     {
-        var result = await GenericService.GetAll<DeliverableResponseList, DeliverableGetAll>(new DeliverableGetAll()
+        var result = await GenericService.GetAll<DeliverableResponseList, DeliverableGetAll>(new DeliverableGetAll
         {
             ProjectId = ProjectId,
-
         });
+
         if (result.Succeeded)
         {
-            Items = StartId.HasValue ? result.Data.Items.Where(x => x.StartId == StartId).ToList()
-                : PlanningId.HasValue ? result.Data.Items.Where(x => x.PlanningId == PlanningId).ToList() : 
-                result.Data.Items;
+            Response = result.Data;
 
+            var selectedRowId = SelectedRow?.Id;
 
-            GetSelectedRowFromItems();
+            // Actualizar la lista Items
+            Response = result.Data;
+
+            // Restaurar SelectedRow si existe
+            var FlatOrderedItems = DeliverableHelper.FlattenCompletedOrderedItems(Response.Items);
+            SelectedRow = FlatOrderedItems.FirstOrDefault(x => x.Id == selectedRowId)!;
+
+            // Forzar la actualización de la interfaz
+            StateHasChanged();
         }
     }
+
+    /// <summary>
+    /// Centraliza la gestión de estados para evitar inconsistencias.
+    /// </summary>
+    private void SetState(DeliverableResponse? createRow = null, DeliverableResponse? editRow = null, DeliverableResponse? selectedRow = null)
+    {
+        // Limpiar todos los estados antes de aplicar nuevos valores
+        CreateRow = null!;
+        EditRow = null!;
+        SelectedRow = null!;
+
+        // Aplicar los nuevos estados
+        CreateRow = createRow!;
+        EditRow = editRow!;
+        SelectedRow = selectedRow!;
+
+        // Forzar la actualización de la interfaz
+        StateHasChanged();
+    }
+
     public void AddNew()
     {
-        CreateRow = new()
-        {
-            ProjectId = ProjectId,
-        };
-        //Si EditRow esta creada se desaparece Editrow 
-        EditRow = null!;
-        Items.Add(CreateRow);
+        var newDeliverable = Response.AddDeliverableResponse(ProjectId);
+        SetState(createRow: newDeliverable); // Activar el modo de creación
     }
-    public async Task Create()
+
+    public async Task Create(DeliverableResponse createRow)
     {
-        if (CreateRow == null) return;
-        CreateDeliverableRequest create = CreateRow.ToCreate(StartId, PlanningId);
+        if (createRow == null) return;
+
+        var create = createRow.ToCreate(StartId, PlanningId);
         var result = await GenericService.Create(create);
+
         if (result.Succeeded)
         {
-            CreateRow = null;
-            await GetAll();
+            SetState(); // Limpiar todos los estados
+            Response.Calculate();
+            await UpdateResponseAsync();
 
         }
     }
+
     void CancelCreate()
     {
-        if (CreateRow == null) return;
-
-        Items.Remove(CreateRow);
-        CreateRow = null;
-    }
-    void CancelEdit()
-    {
-        if (EditRow == null) return;
-        EditRow = null;
-    }
-    private void HandleRowClick(FluentDataGridRow<DeliverableResponse> row)
-    {
-        SelectedRow = row.Item == null ? null : SelectedRow == null ? row.Item : SelectedRow.Id == row.Item.Id ? SelectedRow : row.Item;
-        //Si EditRow es diferente al seleccionado se vuelve null para desaparecer la caja de texto
-        EditRow = EditRow == null ? null : SelectedRow == null ? null : EditRow.Id != SelectedRow.Id ? null : EditRow;
-
-
-
-    }
-    private void HandleRowDoubleClick(FluentDataGridRow<DeliverableResponse> row)
-    {
-        EditRow = row.Item == null ? null : SelectedRow == null ? row.Item : SelectedRow.Id == row.Item.Id ? SelectedRow : row.Item;
-        //Si CreateRow esta creada se elimina del listado y se vueleve null
-        CancelCreate();
-
-    }
-
-
-    async Task Update(DeliverableResponse model)
-    {
-
-        var result = await GenericService.Update(model.ToUpdate());
-        if (result.Succeeded)
+        if (CreateRow != null)
         {
-
-            await GetAll();
-            EditRow = null!;
+            Response.RemoveDeliverableResponse(CreateRow);
+            SetState(); // Limpiar todos los estados
         }
     }
-    void GetSelectedRowFromItems()
+
+    void CancelEdit()
     {
-        SelectedRow = SelectedRow == null ? null : Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
+        SetState(); // Limpiar todos los estados
     }
-    public async Task Delete()
+
+    private void RowClick(DeliverableResponse row)
     {
-        if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+        if (row == null) return;
+
+        // Alternar la selección de la fila
+        var newSelectedRow = SelectedRow?.Id == row.Id ? null : row;
+
+        // Limpiar EditRow si no coincide con la fila seleccionada
+        var newEditRow = EditRow?.Id == row?.Id ? EditRow : null;
+
+        SetState(editRow: newEditRow, selectedRow: newSelectedRow, createRow: CreateRow);
+    }
+    public async Task Delete(DeliverableResponse model)
+    {
+        if (model == null) return;
+
+        var dialog = await DialogService.ShowWarningAsync($"Delete {model.Name}?");
         var result = await dialog.Result;
-        var canceled = result.Cancelled;
 
-
-
-        if (!canceled)
+        if (!result.Cancelled)
         {
-            DeleteDeliverableRequest request = new()
+
+
+            var request = new DeleteDeliverableRequest
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = model.Id,
+                Name = model.Name,
             };
+
             var resultDelete = await GenericService.Delete(request);
+
             if (resultDelete.Succeeded)
             {
-                await GetAll();
-                _snackBar.ShowSuccess(resultDelete.Messages);
 
 
+                await UpdateResponseAsync();
+                Response.Calculate();
+                StateHasChanged();
             }
             else
             {
                 _snackBar.ShowError(resultDelete.Messages);
             }
         }
-
     }
+
     async Task Up()
     {
         if (SelectedRow == null) return;
+        Response.MoveUp(SelectedRow);
+        Response.Calculate();
+        await UpdateResponseAsync();
 
-
-        var result = await GenericService.Update(SelectedRow.ToUp());
-        if (result.Succeeded)
-        {
-            await GetAll();
-        }
     }
+
     async Task Down()
     {
         if (SelectedRow == null) return;
+        Response.MoveDown(SelectedRow);
+        Response.Calculate();
+        await UpdateResponseAsync();
 
-        var result = await GenericService.Update(SelectedRow.ToDown());
+    }
+
+    async Task Right()
+    {
+        if (SelectedRow == null) return;
+        Response.MoveRight(SelectedRow);
+        Response.Calculate();
+        await UpdateResponseAsync();
+
+    }
+
+    async Task Left()
+    {
+        if (SelectedRow == null) return;
+        Response.MoveLeft(SelectedRow);
+        Response.Calculate();
+        await UpdateResponseAsync();
+
+    }
+
+    private async Task<bool> UpdateResponseAsync()
+    {
+        var result = await GenericService.Update(Response);
 
         if (result.Succeeded)
         {
             await GetAll();
+            EditRow = null!;
+            CreateRow = null!;
+            return true;
         }
+
+        _snackBar.ShowError(result.Messages);
+        return false;
     }
+
+    void EditItem(DeliverableResponse item)
+    {
+        SetState(editRow: item, selectedRow: item); // Activar el modo de edición
+    }
+
+
+
+    private async Task UpdateDependencyType(DeliverableResponse task, TasksRelationTypeEnum type)
+    {
+        await Task.Delay(100);
+
+        Response.UpdateRelationType(task, type);
+        await UpdateResponseAsync();
+        StateHasChanged();
+    }
+    private async Task UpdateName(DeliverableResponse task, string newValue)
+    {
+        await Task.Delay(100);
+        task.Name = newValue;
+        await UpdateResponseAsync();
+        StateHasChanged();
+    }
+    private async Task UpdateDependencies(DeliverableResponse task, string newValue)
+    {
+        await Task.Delay(100);
+        Response.UpdateDependencies(task, newValue);
+        await UpdateResponseAsync();
+        StateHasChanged();
+    }
+    private async Task UpdateDuration(DeliverableResponse task, string newValue)
+    {
+        await Task.Delay(100);
+        Response.UpdateDuration(task, newValue);
+        await UpdateResponseAsync();
+        StateHasChanged();
+    }
+    private async Task UpdateStartDate(DeliverableResponse task, DateTime? newValue)
+    {
+        await Task.Delay(100);
+        Response.UpdateStartDate(task, newValue);
+        await UpdateResponseAsync();
+        StateHasChanged();
+
+    }
+    private async Task UpdateEndDate(DeliverableResponse task, DateTime? newValue)
+    {
+        await Task.Delay(100);
+        Response.UpdateEndDate(task, newValue);
+        await UpdateResponseAsync();
+        StateHasChanged();
+    }
+
 }

@@ -1,56 +1,53 @@
-﻿using Shared.Models.Deliverables.Mappers;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Deliverables.Requests;
 
 namespace Server.EndPoint.Deliverables.Commands
 {
-    public static class ChangeDeliverableOrderUpEndPoint
-    {
-        public class EndPoint : IEndPoint
-        {
-            public void MapEndPoint(IEndpointRouteBuilder app)
-            {
-                app.MapPost(StaticClass.Deliverables.EndPoint.UpdateUp, async (ChangeDeliverableOrderUpRequest Data, IRepository Repository) =>
-                {
+    //public static class ChangeDeliverableOrderUpEndPoint
+    //{
+    //    public class EndPoint : IEndPoint
+    //    {
+    //        public void MapEndPoint(IEndpointRouteBuilder app)
+    //        {
+    //            app.MapPost(StaticClass.Deliverables.EndPoint.UpdateUp, async (UpdateDeliverableOrderUpRequest Data, IRepository Repository) =>
+    //            {
 
 
-                    var row = await Repository.GetByIdAsync<Deliverable>(Data.Id);
+    //                Expression<Func<Deliverable, bool>> Criteria = x => x.Id == Data.Id;
+    //                Expression<Func<Deliverable, bool>> CriteriaPrevious = x => x.Id == Data.Prevoius.Id;
 
-                    if (row == null) { return Result.Fail(Data.NotFound); }
-                    if (row.Order == 1) { return Result.Success(Data.Succesfully); }
+    //                var current = await Repository.GetAsync(Criteria: Criteria);
+    //                var previous = await Repository.GetAsync(Criteria: CriteriaPrevious);
+    //                if (current == null || previous == null) { return Result.Fail(Data.NotFound); }
 
-                    Expression<Func<Deliverable, bool>> Criteria = x => x.ProjectId == Data.ProjectId && x.Order == row.Order - 1;
+    //                await Repository.UpdateAsync(previous);
+    //                await Repository.UpdateAsync(current);
 
-                    var previousRow = await Repository.GetAsync(Criteria: Criteria);
+    //                current.Order = current.Order - 1;
+    //                previous.Order = previous.Order + 1;
 
-                    if (previousRow == null) { return Result.Fail(Data.NotFound); }
+    //                var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(current));
 
-                    await Repository.UpdateAsync(previousRow);
-                    await Repository.UpdateAsync(row);
-
-                    row.Order = row.Order - 1;
-                    previousRow.Order = row.Order + 1;
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
-
-                    return Result.EndPointResult(result,
-                        Data.Succesfully,
-                        Data.Fail);
+    //                return Result.EndPointResult(result,
+    //                    Data.Succesfully,
+    //                    Data.Fail);
 
 
-                });
-            }
-            private string[] GetCacheKeys(Deliverable row)
-            {
-                List<string> cacheKeys = [
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
-           
-                    .. StaticClass.Deliverables.Cache.Key(row.Id)
-                ];
-                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
-            }
-        }
+    //            });
+    //        }
+    //        private string[] GetCacheKeys(Deliverable row)
+    //        {
+    //            List<string> cacheKeys = [
+
+
+    //                .. StaticClass.Deliverables.Cache.Key(row.Id)
+    //            ];
+    //            return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
+    //        }
+    //    }
 
 
 
-    }
+    //}
 
 }

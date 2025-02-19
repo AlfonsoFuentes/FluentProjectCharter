@@ -1,4 +1,5 @@
-﻿using Shared.Models.Constrainsts.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Constrainsts.Requests;
 
 
 namespace Server.EndPoint.Constrainsts.Commands
@@ -27,7 +28,7 @@ namespace Server.EndPoint.Constrainsts.Commands
             }
             private string[] GetCacheKeys(Constrainst row)
             {
-                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
+                List<string> cacheKeys = [
                  
                     .. StaticClass.Constrainsts.Cache.Key(row.Id)
                 ];

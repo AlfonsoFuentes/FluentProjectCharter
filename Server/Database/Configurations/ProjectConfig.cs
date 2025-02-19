@@ -23,6 +23,8 @@ namespace Server.Database.Configurations
             .IsRequired()
            .OnDelete(DeleteBehavior.Cascade);
 
+
+
             builder.HasKey(ci => ci.Id);
             builder.HasMany(x => x.Assumptions)
             .WithOne(t => t.Project)
@@ -137,13 +139,6 @@ namespace Server.Database.Configurations
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
-
-
-
-
-
-
-
             builder.HasMany(e => e.StakeHolders)
                   .WithMany(e => e.Projects);
 
@@ -157,7 +152,11 @@ namespace Server.Database.Configurations
          .HasForeignKey(x => x.ManagerId)
          .OnDelete(DeleteBehavior.NoAction);
 
-
+            builder.HasMany(x => x.PurchaseOrders)
+          .WithOne(t => t.Project)
+          .HasForeignKey(e => e.ProjectId)
+           .IsRequired()
+          .OnDelete(DeleteBehavior.Cascade);
 
         }
 

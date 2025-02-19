@@ -1,4 +1,5 @@
-﻿using Shared.Models.StakeHolderInsideProjects.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.StakeHolderInsideProjects.Requests;
 
 namespace Server.EndPoint.StakeHolderInsideProjects.Commands
 {
@@ -42,7 +43,7 @@ namespace Server.EndPoint.StakeHolderInsideProjects.Commands
                         await Repository.UpdateAsync(stakeholder);
                     }
 
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(Data.ProjectId), .. StaticClass.StakeHolders.Cache.Key(stakeholder.Id)];
+                    List<string> cache = [.. StaticClass.StakeHolderInsideProjects.Cache.Key(stakeholder.Id)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

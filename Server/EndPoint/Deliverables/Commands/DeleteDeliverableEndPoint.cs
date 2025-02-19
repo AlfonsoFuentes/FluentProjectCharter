@@ -1,4 +1,5 @@
-﻿using Shared.Models.Deliverables.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Deliverables.Requests;
 
 namespace Server.EndPoint.Deliverables.Commands
 {
@@ -23,9 +24,9 @@ namespace Server.EndPoint.Deliverables.Commands
                    
                     await Repository.RemoveAsync(row);
 
-                    var cache = GetCacheKeys(row);
-                  
+          
 
+                    var cache = $"{StaticClass.Deliverables.Cache.GetAll}-{Data.ProjectId}";
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
 
 
@@ -34,15 +35,6 @@ namespace Server.EndPoint.Deliverables.Commands
                         Data.Fail);
 
                 });
-            }
-            private string[] GetCacheKeys(Deliverable row)
-            {
-                List<string> cacheKeys = [
-                    
-                    .. StaticClass.Projects.Cache.Key(row.ProjectId),
-                    .. StaticClass.Deliverables.Cache.Key(row.Id)
-                ];
-                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }
             
 

@@ -1,4 +1,5 @@
-﻿using Server.EndPoint.Projects.Queries;
+﻿using Server.Database.Entities.ProjectManagements;
+using Server.EndPoint.Projects.Queries;
 using Shared.Models.StakeHolders.Records;
 
 namespace Server.EndPoint.StakeHolders.Queries

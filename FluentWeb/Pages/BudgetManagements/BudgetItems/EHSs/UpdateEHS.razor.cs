@@ -13,7 +13,7 @@ public partial class UpdateEHS
     protected override async Task OnInitializedAsync()
     {
         var result = await GenericService.GetById<EHSResponse, GetEHSByIdRequest>(
-            new GetEHSByIdRequest() { Id = Id});
+            new GetEHSByIdRequest() { Id = Id });
 
         if (result.Succeeded)
         {

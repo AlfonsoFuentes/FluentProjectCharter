@@ -1,4 +1,5 @@
-﻿using Shared.Models.Acquisitions.Validators;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Acquisitions.Validators;
 using Shared.Models.Backgrounds.Validators;
 
 namespace Server.EndPoint.Acquisitions.Validators

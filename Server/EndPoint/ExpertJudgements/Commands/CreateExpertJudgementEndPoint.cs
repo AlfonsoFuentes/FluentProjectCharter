@@ -1,4 +1,5 @@
-﻿using Shared.Models.ExpertJudgements.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.ExpertJudgements.Requests;
 
 namespace Server.EndPoint.ExpertJudgements.Commands
 {
@@ -31,7 +32,7 @@ namespace Server.EndPoint.ExpertJudgements.Commands
             }
             private string[] GetCacheKeys(ExpertJudgement row)
             {
-                List<string> cacheKeys = [.. StaticClass.Projects.Cache.Key(row.ProjectId),
+                List<string> cacheKeys = [
                     .. StaticClass.ExpertJudgements.Cache.Key(row.Id)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

@@ -1,41 +1,12 @@
 ﻿using Shared.Models.Deliverables.Requests;
 using Shared.Models.Deliverables.Responses;
+using Shared.Models.Deliverables.Responses.NewResponses;
 
 namespace Shared.Models.Deliverables.Mappers
 {
     public static class DeliverableMapper
     {
-        public static ChangeDeliverableOrderDowmRequest ToDown(this DeliverableResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                Order = response.Order,
 
-
-            };
-        }
-        public static ChangeDeliverableOrderUpRequest ToUp(this DeliverableResponse response)
-        {
-            return new()
-            {
-                ProjectId = response.ProjectId,
-                Id = response.Id,
-                Name = response.Name,
-                Order = response.Order,
-            };
-        }
-        public static UpdateDeliverableRequest ToUpdate(this DeliverableResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
         public static CreateDeliverableRequest ToCreate(this DeliverableResponse response, Guid? startid, Guid? planid)
         {
             return new()
@@ -44,7 +15,18 @@ namespace Shared.Models.Deliverables.Mappers
                 Name = response.Name,
                 ProjectId = response.ProjectId,
                 StartId = startid,
-                PlanningId = planid
+                PlanningId = planid,
+                Order = response.Order,
+                WBS = response.WBS,
+                StartDate = response.StartDate,
+                DependencyType = response.DependencyType.Name,
+                Duration = response.Duration,
+                EndDate = response.EndDate,
+                LabelOrder = response.LabelOrder,
+                 
+                
+
+
             };
         }
     }

@@ -1,4 +1,5 @@
-﻿using Shared.Models.AcceptanceCriterias.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.AcceptanceCriterias.Requests;
 
 namespace Server.EndPoint.AcceptanceCriterias.Commands
 {
@@ -14,7 +15,7 @@ namespace Server.EndPoint.AcceptanceCriterias.Commands
                     if (row == null) { return Result.Fail(Data.NotFound); }
 
 
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(row.ProjectId), .. StaticClass.AcceptanceCriterias.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.AcceptanceCriterias.Cache.Key(row.Id)];
 
                     await Repository.RemoveAsync(row);
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());

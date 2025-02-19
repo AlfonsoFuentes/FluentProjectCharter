@@ -1,4 +1,5 @@
-﻿using Shared.Models.Resources.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.Resources.Requests;
 
 
 namespace Server.EndPoint.Resources.Commands
@@ -15,7 +16,7 @@ namespace Server.EndPoint.Resources.Commands
                     if (row == null) { return Result.Fail(Data.NotFound); }
                     await Repository.UpdateAsync(row);
                     Data.Map(row);
-                    List<string> cache = [.. StaticClass.Projects.Cache.Key(row.ProjectId), .. StaticClass.Resources.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.Resources.Cache.Key(row.Id)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

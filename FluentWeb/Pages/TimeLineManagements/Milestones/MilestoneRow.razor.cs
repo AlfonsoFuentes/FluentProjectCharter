@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Enums.MilestoneRelationTypes;
+using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.Milestones.Responses;
 using System.Reflection.Metadata;
 
@@ -35,7 +35,7 @@ public partial class MilestoneRow
     [Parameter]
     public Func<MilestoneResponse, MilestoneResponse?, Task> ChangeDependency { get; set; } = null!;
     [Parameter]
-    public Func<MilestoneResponse, MilestoneRelationTypeEnum, Task> ChangeDependencyType { get; set; } = null!;
+    public Func<MilestoneResponse, TasksRelationTypeEnum, Task> ChangeDependencyType { get; set; } = null!;
     [Parameter]
     [EditorRequired]
     public List<MilestoneResponse> AllItems { get; set; } = new();
@@ -82,7 +82,7 @@ public partial class MilestoneRow
         if (args == null) return;
         if (model != null)
         {
-            var DependencyType = MilestoneRelationTypeEnum.GetType(args!.Value!.ToString()!);
+            var DependencyType = TasksRelationTypeEnum.GetType(args!.Value!.ToString()!);
             await ChangeDependencyType.Invoke(model, DependencyType);
         }
 

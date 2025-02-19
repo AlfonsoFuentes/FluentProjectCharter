@@ -1,4 +1,6 @@
-﻿namespace Server.EndPoint.Assumptions.Queries
+﻿using Server.Database.Entities.ProjectManagements;
+
+namespace Server.EndPoint.Assumptions.Queries
 {
     public static class GetAssumptionByIdEndPoint
     {

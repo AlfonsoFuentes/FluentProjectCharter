@@ -1,4 +1,6 @@
-﻿namespace Server.EndPoint.Constrainsts.Queries
+﻿using Server.Database.Entities.ProjectManagements;
+
+namespace Server.EndPoint.Constrainsts.Queries
 {
     public static class GetConstrainstByIdEndPoint
     {

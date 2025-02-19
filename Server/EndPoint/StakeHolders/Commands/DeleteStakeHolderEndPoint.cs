@@ -1,4 +1,5 @@
-﻿using Shared.Models.StakeHolders.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.StakeHolders.Requests;
 
 namespace Server.EndPoint.StakeHolders.Commands
 {
@@ -67,7 +68,7 @@ namespace Server.EndPoint.StakeHolders.Commands
                     projects.ForEach(async x =>
                     {
                         x.StakeHolders.RemoveAll(x => x.Id == Data.Id);
-                        cache.AddRange(StaticClass.Projects.Cache.Key(x.Id).ToList());
+                    
                         await Repository.UpdateAsync(x);
                     });
 

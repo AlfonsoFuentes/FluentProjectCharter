@@ -8,10 +8,7 @@ public partial class CreateBrand
     CreateBrandRequest Model = new();
 
 
-    protected override void OnInitialized()
-    {
- 
-    }
+    
    
 
 }

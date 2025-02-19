@@ -1,4 +1,4 @@
-﻿using Shared.Enums.MilestoneRelationTypes;
+﻿using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.FileResults.Generics.Reponses;
 namespace Shared.Models.Milestones.Responses
 {
@@ -41,7 +41,7 @@ namespace Shared.Models.Milestones.Responses
         public string ParentTaskName { get; set; } = ""; // Nombre de la tarea principal (si es una subtarea)
         public string DependencyName { get; set; } = ""; // Nombre de la tarea de la que depende
   
-        public MilestoneRelationTypeEnum DependencyType { get; set; } = MilestoneRelationTypeEnum.None; // Tipo de dependencia (SS, SE, ES, EE)
+        public TasksRelationTypeEnum DependencyType { get; set; } = TasksRelationTypeEnum.None; // Tipo de dependencia (SS, SE, ES, EE)
         public void UpdateEndDateAndDuration()
         {
             if (StartDate.HasValue && EndDate.HasValue)
