@@ -1,6 +1,8 @@
 ﻿using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.FileResults.Generics.Reponses;
 using Shared.Models.FileResults.Generics.Request;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Shared.Models.Deliverables.Responses.NewResponses
 {
@@ -13,50 +15,85 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
         public override string ClassName => StaticClass.Deliverables.ClassName;
         public Guid ProjectId { get; set; }
         public List<DeliverableResponse> Items { get; set; } = new();
-        public List<DeliverableResponse> OrderedItems => Items.Count == 0 ? new() : Items.OrderBy(x => x.LabelOrder).ToList();
+        public int LastOrder => Items.Count == 0 ? 1 : OrderedItems.Last().Order;
+        public List<DeliverableResponse> OrderedItems => Items.Count == 0 ? new() : Items.OrderBy(x => x.Order).ToList();
         public List<DeliverableResponse> FlatOrderedItems => DeliverableHelper.FlattenCompletedOrderedItems(Items);
-        //public List<DeliverableResponse> FlattenWithoutDependencesOrSubDeliverablesItems => DeliverableHelper.FlattenWithoutDependencesOrSubDeliverablesOrderedItems(Items);
-        //public List<DeliverableResponse> FlattenWithDependencesItems => DeliverableHelper.FlattenWithDependencesOrderedItems(Items);
-        //public List<DeliverableResponse> FlattenWithDeliverablesItems => DeliverableHelper.FlattenWithDeliverablesOrderedItems(Items);
+        public List<DeliverableResponse> FlattenWithoutDependencesOrSubDeliverablesItems => DeliverableHelper.FlattenWithoutDependencesOrSubDeliverablesOrderedItems(FlatOrderedItems);
+        public List<DeliverableResponse> FlattenWithDependencesItems => DeliverableHelper.FlattenWithDependencesOrderedItems(FlatOrderedItems);
+        public List<DeliverableResponse> FlattenWithDeliverablesItems => DeliverableHelper.FlattenWithDeliverablesOrderedItems(FlatOrderedItems);
 
         public void Calculate()
         {
             UpdateSOrder();
-            CalculateWithoutDependencesOrSubDeliverables();
-            CalculateWithDependences();
-            CalculateWithDeliverables();
+            CalculateWithoutDependencesOrSubDeliverables(Items);
+            CalculateWithDependences(Items);
+            CalculateWithDeliverables(Items);
         }
-        void CalculateWithoutDependencesOrSubDeliverables()
-        {
 
-            var flatlist = DeliverableHelper.FlattenWithoutDependencesOrSubDeliverablesOrderedItems(FlatOrderedItems);
-            foreach (var item in flatlist)
-            {
-                item.CalculateWithoutDependencesOrDeliverables();
-            }
-        }
-        void CalculateWithDependences()
+        void CalculateWithoutDependencesOrSubDeliverables(List<DeliverableResponse> items)
         {
-
-            var flatlist = DeliverableHelper.FlattenWithDependencesOrderedItems(FlatOrderedItems);
-            foreach (var item in flatlist)
+            foreach (var item in items)
             {
-                CalculateWithDependences(item);
-                foreach (var dependence in item.Dependants)
+                if (item.SubDeliverables.Any())
                 {
-                    CalculateWithDependences(dependence);
+                    foreach (var row in item.SubDeliverables)
+                    {
+                        CalculateWithoutDependencesOrSubDeliverables(item.SubDeliverables);
+                    }
                 }
+                else
+                {
+                    if (!item.Dependants.Any())
+                    {
+                        item.CalculateEndDate();
+                    }
+
+                }
+
+
             }
         }
+
+        void CalculateWithDependences(List<DeliverableResponse> items)
+        {
+            foreach (var item in items)
+            {
+                if (item.SubDeliverables.Any())
+                {
+                    foreach (var row in item.SubDeliverables)
+                    {
+                        CalculateWithDependences(item.SubDeliverables);
+                    }
+                }
+                else
+                {
+                    if (item.Dependants.Any())
+                        CalculateWithDependences(item);
+                }
+
+
+            }
+        }
+
+
+        private List<DeliverableResponse> GetListFromFlaten(List<DeliverableResponse> items)
+        {
+            return items.Select(x => FlatOrderedItems.FirstOrDefault(y => y.Id == x.Id)!).ToList();
+        }
+
         void CalculateWithDependences(DeliverableResponse item)
         {
-            var minStartDate = item.Dependants
+
+            var dependencies = GetListFromFlaten(item.Dependants);
+
+
+            var minStartDate = dependencies
                .Where(x => x.StartDate.HasValue)
                .Select(x => x.StartDate!.Value)
                .DefaultIfEmpty(DateTime.MaxValue)
                .Min();
 
-            var maxEndDate = item.Dependants
+            var maxEndDate = dependencies
                 .Where(x => x.EndDate.HasValue)
                 .Select(x => x.EndDate!.Value)
                 .DefaultIfEmpty(DateTime.MinValue)
@@ -66,22 +103,22 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             // Aplicar las reglas según el tipo de dependencia
             switch (item.DependencyType.Id)
             {
-                case 0://Start Start
+                case 0://Start Start La tarea dependiente puede comenzar solo cuando la tarea precedente haya comenzado
                     item.StartDate = minStartDate;
                     item.CalculateEndDate();
                     break;
 
-                case 1: //Start Finish
-                    item.StartDate = maxEndDate;
-                    item.CalculateEndDate();
+                case 1: //Start Finish  La tarea dependiente debe terminar cuando la tarea precedente comience.
+                    item.EndDate = minStartDate;
+                    item.CalculateStartDate();
                     break;
 
-                case 2: //Finish Start
+                case 2: //Finish Start La tarea dependiente puede comenzar solo cuando la tarea precedente haya terminado.
                     item.StartDate = maxEndDate.AddDays(1);
                     item.CalculateEndDate();
                     break;
 
-                case 3: //End End
+                case 3: //End End  La tarea dependiente debe terminar al mismo tiempo que la tarea precedente.
                     item.EndDate = maxEndDate;
                     item.CalculateStartDate();
                     break;
@@ -90,57 +127,66 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
                     // Si no hay un tipo de dependencia válido, no hacer nada
                     return;
             }
-
-        }
-        void CalculateWithDeliverables()
-        {
-
-            var flatlist = DeliverableHelper.FlattenWithDeliverablesOrderedItems(Items);
-            CalculateWithDeliverables(flatlist);
-
-        }
-        void CalculateWithDeliverables(List<DeliverableResponse> list)
-        {
-            if (list == null || list.Count == 0) return;
-            foreach (var row in list)
+            if (item.DependantId != null)
             {
-                CalculateWithDeliverables(row);
-                var parent = FindParent(row);
+                var dependant = FlatOrderedItems.FirstOrDefault(x => x.Id == item.DependantId);
+                if (dependant != null)
+                {
+                    CalculateWithDependences(dependant);
+                }
+            }
 
-                if (parent != null) CalculateWithDeliverables(parent.SubDeliverables);
+        }
+
+
+
+        public void CalculateWithDeliverables(List<DeliverableResponse> items)
+        {
+            // Calcular las fechas para cada elemento en el orden correcto
+            foreach (var item in items)
+            {
+                // Procesar los subdeliverables recursivamente
+                if (item.SubDeliverables != null && item.SubDeliverables.Any())
+                {
+                    CalculateWithDeliverables(item.OrderedSubDeliverables);
+                    CalculateDatesForItem(item);
+                }
 
             }
         }
 
-
-        void CalculateWithDeliverables(DeliverableResponse item)
+        private void CalculateDatesForItem(DeliverableResponse item)
         {
-            var minSubStartDate = item.SubDeliverables
+            var subdeliverables = GetListFromFlaten(item.SubDeliverables);
+            // Si tiene subdeliverables, calcular StartDate y EndDate basados en ellos
+            if (subdeliverables.Any())
+            {
+                var minSubStartDate = subdeliverables
                     .Where(sd => sd.StartDate.HasValue)
                     .Select(sd => sd.StartDate!.Value)
                     .DefaultIfEmpty(DateTime.MaxValue)
                     .Min();
 
-            var maxSubEndDate = item.SubDeliverables
-                .Where(sd => sd.EndDate.HasValue)
-                .Select(sd => sd.EndDate!.Value)
-                .DefaultIfEmpty(DateTime.MinValue)
-                .Max();
+                var maxSubEndDate = subdeliverables
+                    .Where(sd => sd.EndDate.HasValue)
+                    .Select(sd => sd.EndDate!.Value)
+                    .DefaultIfEmpty(DateTime.MinValue)
+                    .Max();
 
-            if (minSubStartDate != DateTime.MaxValue)
-            {
-                item.StartDate = minSubStartDate;
+                if (minSubStartDate != DateTime.MaxValue)
+                {
+                    item.StartDate = minSubStartDate;
+                }
+                if (maxSubEndDate != DateTime.MinValue)
+                {
+                    item.EndDate = maxSubEndDate;
+                }
+                item.CalculateDurationFromDates();
             }
-            if (maxSubEndDate != DateTime.MinValue)
-            {
-                item.EndDate = maxSubEndDate;
-            }
-            item.CalculateDurationFromDates();
-            foreach (var sub in item.SubDeliverables)
-            {
 
-            }
+
         }
+
         private void UpdateSOrder()
         {
             int globalOrder = 0; // Inicializar el contador global
@@ -170,7 +216,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
                 // Si el elemento tiene subelementos, actualizar recursivamente
                 if (item.SubDeliverables != null && item.SubDeliverables.Count > 0)
                 {
-                    UpdateSOrder(item.SubDeliverables, item, ref globalOrder);
+                    UpdateSOrder(item.OrderedSubDeliverables, item, ref globalOrder);
                 }
             }
         }
@@ -209,7 +255,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
 
             // Actualizar la jerarquía completa
 
-            UpdateSOrder();
+
             Calculate();
         }
         public void UpdateStartDate(DeliverableResponse current, DateTime? start)
@@ -227,15 +273,17 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             current.Duration = duration;
             Calculate();
         }
-        public void UpdateDependencies(DeliverableResponse current, string dependencies)
+        public string UpdateDependencies(DeliverableResponse current, string dependencies)
         {
             current.Dependants = new();
+            StringBuilder result = new StringBuilder();
             if (string.IsNullOrWhiteSpace(dependencies))
             {
                 // Si no hay dependencias, limpiar la lista de dependientes y salir
                 Console.WriteLine("No dependencies provided.");
-
-                return;
+                result.Append("No dependencies provided.");
+                Calculate();
+                return string.Empty;
             }
 
             // Dividir las dependencias por comas y limpiar espacios en blanco
@@ -255,44 +303,51 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
                 if (dependencyFromFlatList == null)
                 {
                     Console.WriteLine($"Dependency with LabelOrder {dependency} not found.");
-                    continue; // Saltar esta dependencia si no se encuentra
+                    result.Append($"Dependency #{dependency} not found.");
+                    return result.ToString();
+
                 }
 
                 // Validar que no haya referencias cruzadas o dependencias inválidas
-                if (!IsValidDependency(current, dependencyFromFlatList))
+                var resultDependency = IsValidDependency(current, dependencyFromFlatList);
+                if (!string.IsNullOrEmpty(resultDependency))
                 {
-                    Console.WriteLine($"Invalid dependency: {current.Name} cannot depend on {dependencyFromFlatList.Name}.");
-                    continue; // Saltar esta dependencia si no es válida
+                    Console.WriteLine(resultDependency);
+
+                    return resultDependency;
+
                 }
 
+                dependencyFromFlatList.DependantId = current.DependantId;
                 // Agregar la dependencia válida a la lista de dependientes
                 current.Dependants.Add(dependencyFromFlatList);
             }
 
             // Recalcular las fechas basadaCalculateDatesFromDependenciess en las nuevas dependencias
             Calculate();
+            return string.Empty;
         }
-        private bool IsValidDependency(DeliverableResponse current, DeliverableResponse dependency)
+        private string IsValidDependency(DeliverableResponse current, DeliverableResponse dependency)
         {
             // 1. Un elemento no puede depender de sí mismo
             if (current.Id == dependency.Id)
             {
-                return false;
+                return "Element can not depend from itself";
             }
 
             // 2. Un elemento no puede depender de su padre ni de ningún ancestro
             if (HasAncestor(current, dependency))
             {
-                return false;
+                return "Element can not depend from any parent";
             }
 
             // 3. Detectar ciclos indirectos
             if (HasCircularDependency(current, dependency))
             {
-                return false; // Dependencia inválida: ciclo detectado
+                return "Reference circular detected"; // Dependencia inválida: ciclo detectado
             }
 
-            return true;
+            return string.Empty;
         }
         private bool HasAncestor(DeliverableResponse child, DeliverableResponse potentialAncestor)
         {
@@ -316,52 +371,52 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
         }
         private bool HasCircularDependency(DeliverableResponse current, DeliverableResponse dependency)
         {
-            return false;
-            // Conjunto para rastrear los nodos visitados durante la búsqueda
-            //var visited = new HashSet<Guid>();
-            //var stack = new Stack<DeliverableResponse>();
-
-            //// Guardar el estado original de los Dependants
-            //var originalDependants = new List<DeliverableResponse>(current.Dependants);
-
-            //current.Dependants.Add(dependency);
-
-            //// Comenzar la búsqueda desde el nodo "current"
-            //stack.Push(current);
-
-            //while (stack.Count > 0)
-            //{
-            //    var node = stack.Pop();
-
-            //    // Si ya hemos visitado este nodo, continuar con el siguiente
-            //    if (visited.Contains(node.Id))
-            //    {
-            //        continue;
-            //    }
-
-            //    // Marcar este nodo como visitado
-            //    visited.Add(node.Id);
-
-            //    // Agregar todos los dependientes de este nodo al stack para seguir explorando
-            //    foreach (var dependent in node.Dependants)
-            //    {
-            //        // Si encontramos el nodo inicial (current), hay un ciclo
-            //        if (dependent.Id == current.Id)
-            //        {
-            //            current.Dependants = originalDependants;
-            //            return true; // Ciclo detectado
-            //        }
-
-            //        // Agregar el dependiente al stack para seguir explorando
-            //        stack.Push(dependent);
-            //    }
-            //}
-
-            //// Si no se encontró ningún ciclo, retornar false
-
-
-            //current.Dependants = originalDependants;
             //return false;
+            //Conjunto para rastrear los nodos visitados durante la búsqueda
+            var visited = new HashSet<Guid>();
+            var stack = new Stack<DeliverableResponse>();
+
+            // Guardar el estado original de los Dependants
+            var originalDependants = new List<DeliverableResponse>(current.Dependants);
+
+            current.Dependants.Add(dependency);
+
+            // Comenzar la búsqueda desde el nodo "current"
+            stack.Push(current);
+
+            while (stack.Count > 0)
+            {
+                var node = stack.Pop();
+
+                // Si ya hemos visitado este nodo, continuar con el siguiente
+                if (visited.Contains(node.Id))
+                {
+                    continue;
+                }
+
+                // Marcar este nodo como visitado
+                visited.Add(node.Id);
+
+                // Agregar todos los dependientes de este nodo al stack para seguir explorando
+                foreach (var dependent in node.Dependants)
+                {
+                    // Si encontramos el nodo inicial (current), hay un ciclo
+                    if (dependent.Id == current.Id)
+                    {
+                        current.Dependants = originalDependants;
+                        return true; // Ciclo detectado
+                    }
+
+                    // Agregar el dependiente al stack para seguir explorando
+                    stack.Push(dependent);
+                }
+            }
+
+            // Si no se encontró ningún ciclo, retornar false
+
+
+            current.Dependants = originalDependants;
+            return false;
         }
         public DeliverableResponse? FindParent(DeliverableResponse child)
         {
@@ -376,7 +431,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
 
             parent.AddSubDeliverable(subDeliverable);
 
-
+            parent.Dependants = new();
 
         }
         /// <summary>
@@ -425,32 +480,46 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
                     }
                     else
                     {
+                        selectedRow.Order = LastOrder + 1;
                         // Si no hay padre del padre actual, agregar al nivel raíz
                         Items.Add(selectedRow);
                     }
                 }
                 else
                 {
+                    var previous = list.FirstOrDefault(x => x.Order == selectedRow.Order - 1);
+
+
+                    if (previous != null)
+                    {
+
+                        var currentorder = previous.Order;
+                        selectedRow.Order = currentorder;
+                        previous.Order = currentorder + 1;
+                    }
                     // Si no es el primer elemento, intercambiar con el elemento anterior
-                    list.RemoveAt(currentIndex);
-                    list.Insert(currentIndex - 1, selectedRow);
+
                 }
             }
             else
             {
                 // Si el SelectedRow está en el nivel raíz, realizar el movimiento normal dentro de la lista raíz
                 var list = Items;
-                int currentIndex = list.IndexOf(selectedRow);
 
-                if (currentIndex > 0)
+                var previous = list.FirstOrDefault(x => x.Order == selectedRow.Order - 1);
+
+
+                if (previous != null)
                 {
-                    list.RemoveAt(currentIndex);
-                    list.Insert(currentIndex - 1, selectedRow);
+
+                    var currentorder = previous.Order;
+                    selectedRow.Order = currentorder;
+                    previous.Order = currentorder + 1;
                 }
             }
 
             // Actualizar la jerarquía completa
-            UpdateSOrder();
+
         }
         /// <summary>
         /// Determina si un elemento puede moverse hacia abajo.
@@ -475,15 +544,23 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             var parent = FindParent(selectedRow);
             var list = parent?.SubDeliverables ?? Items;
 
-            int currentIndex = list.IndexOf(selectedRow);
-            if (currentIndex < list.Count - 1)
+            var next = list.FirstOrDefault(x => x.Order == selectedRow.Order + 1);
+            if (next != null)
             {
-                list.RemoveAt(currentIndex);
-                list.Insert(currentIndex + 1, selectedRow);
 
-                // Actualizar la jerarquía completa
-                UpdateSOrder();
+                var currentorder = next.Order;
+                selectedRow.Order = currentorder;
+                next.Order = currentorder - 1;
             }
+            //int currentIndex = list.IndexOf(selectedRow);
+            //if (currentIndex < list.Count)
+            //{
+
+
+
+
+
+            //}
         }
         /// <summary>
         /// Determina si un elemento puede moverse hacia la derecha.
@@ -571,6 +648,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             }
             else
             {
+           
                 Items.Remove(selectedRow);
             }
 
@@ -578,7 +656,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             AddSubDeliverable(ancestor, selectedRow);
 
             // Actualizar la jerarquía completa
-            UpdateSOrder();
+
         }
         public void MoveLeft(DeliverableResponse selectedRow)
         {
@@ -602,12 +680,13 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             }
             else
             {
+                selectedRow.Order = LastOrder + 1;
                 // Si no hay padre del padre actual, agregar al nivel raíz
                 Items.Add(selectedRow);
             }
 
             // Actualizar la jerarquía completa
-            UpdateSOrder();
+
         }
         private DeliverableResponse? FindAncestor(DeliverableResponse selectedRow, List<DeliverableResponse> flatList, int currentIndex)
         {

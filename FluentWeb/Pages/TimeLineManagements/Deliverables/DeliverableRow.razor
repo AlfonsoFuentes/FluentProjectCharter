@@ -1,8 +1,8 @@
 ﻿@using Shared.Enums.TasksRelationTypeTypes
 @using Shared.Models.Deliverables.Responses.NewResponses
 <tr @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
-@onclick="() => OnClick.InvokeAsync(Item)"
-class="@(SelectedRow == Item ? "active-row" : "")">
+    @onclick="() => OnClick.InvokeAsync(Item)"
+    class="@(SelectedRow == Item ? "active-row" : "")">
     <!-- Columnas -->
     <td class="column-labelorder soft-border text-center">
         <b>@Item.LabelOrder</b>
@@ -26,16 +26,20 @@ class="@(SelectedRow == Item ? "active-row" : "")">
         <EditableField T="string" Value="Item.sDependences" OnValueChanged="newValue => OnChangeDependencies.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
     </td>
     <td class="column-type soft-border text-center">
-        @if ((EditRow == Item || CreateRow == Item))
+        @if (Item.Dependants.Any())
         {
-            <TaskRelationTypeSelector SelectedValue="@Item.DependencyType"
-            OnValueChanged="@((arg)=>OnChangeDependencyType.Invoke(Item,arg))" />
+            if ((EditRow == Item || CreateRow == Item))
+            {
+                <TaskRelationTypeSelector SelectedValue="@Item.DependencyType"
+                                          OnValueChanged="@((arg)=>OnChangeDependencyType.Invoke(Item,arg))" />
+            }
+            else
+            {
+                @Item.DependencyType.Name
+            }
 
         }
-        else
-        {
-            @Item.DependencyType.Name
-        }
+
 
 
 
@@ -66,24 +70,24 @@ class="@(SelectedRow == Item ? "active-row" : "")">
     foreach (var deliverable in Item.OrderedSubDeliverables)
     {
         <DeliverableRow CreateRow="CreateRow"
-        EditRow="EditRow"
-        SelectedRow="SelectedRow"
-        Level="@(Level+1)"
-        OnCancelCreate="OnCancelCreate"
-        OnCancelEdit="OnCancelEdit"
-        OnChangeDependencies="OnChangeDependencies"
-        OnChangeDependencyType="OnChangeDependencyType"
-        OnChangeDuration="OnChangeDuration"
-        OnChangeEndDate="OnChangeEndDate"
-        OnChangeName="OnChangeName"
-        OnChangeStartDate="OnChangeStartDate"
-        OnClick="OnClick"
-        OnDelete="OnDelete"
-        OnDoubleClick="OnDoubleClick"
-        OnSaveCreate="OnSaveCreate"
-        OnSaveEdit="OnSaveEdit"
-        OnEdit="OnEdit"
-        Item="deliverable">
+                        EditRow="EditRow"
+                        SelectedRow="SelectedRow"
+                        Level="@(Level+1)"
+                        OnCancelCreate="OnCancelCreate"
+                        OnCancelEdit="OnCancelEdit"
+                        OnChangeDependencies="OnChangeDependencies"
+                        OnChangeDependencyType="OnChangeDependencyType"
+                        OnChangeDuration="OnChangeDuration"
+                        OnChangeEndDate="OnChangeEndDate"
+                        OnChangeName="OnChangeName"
+                        OnChangeStartDate="OnChangeStartDate"
+                        OnClick="OnClick"
+                        OnDelete="OnDelete"
+                        OnDoubleClick="OnDoubleClick"
+                        OnSaveCreate="OnSaveCreate"
+                        OnSaveEdit="OnSaveEdit"
+                        OnEdit="OnEdit"
+                        Item="deliverable">
 
         </DeliverableRow>
     }
@@ -93,54 +97,54 @@ class="@(SelectedRow == Item ? "active-row" : "")">
 <style>
 
     .column-labelorder {
-    width: 5%;
+        width: 5%;
     }
 
     .column-name {
-    width: 35%;
+        width: 35%;
     }
 
     .column-date {
-    width: 10%;
+        width: 8%;
     }
 
     .column-duration {
-    width: 8%;
+        width: 8%;
     }
 
     .column-type {
-    width: 10%;
+        width: 14%;
     }
 
     .column-dependencies {
-    width: 12%;
+        width: 12%;
     }
 
     .column-actions {
-    width: 10%;
+        width: 10%;
     }
 
     .soft-border {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    padding: 1px;
-    background-color: #ffffff;
-    transition: all 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        padding: 1px;
+        background-color: #ffffff;
+        transition: all 0.3s ease;
     }
 
     .active-row {
-    background-color: #f0f8ff;
-    transition: background-color 0.3s ease;
+        background-color: #f0f8ff;
+        transition: background-color 0.3s ease;
     }
 
     .recursive-table {
-    border-collapse: collapse;
-    width: 100%;
+        border-collapse: collapse;
+        width: 100%;
     }
 
     /* Estilo para las filas */
     .recursive-table-row {
-    border: none;
+        border: none;
     }
 </style>
 @code {

@@ -50,15 +50,48 @@ namespace Shared.Models.Deliverables.Responses
         }
         private static void FlattenWithoutDependencesOrSubDeliverablesdItems(IEnumerable<DeliverableResponse> items, List<DeliverableResponse> flatList)
         {
-            var resultitems = items.Where(x => !x.SubDeliverables.Any() && !x.Dependants.Any());
-            flatList.AddRange(resultitems);
+            foreach (var item in items)
+            {
+                if (item.SubDeliverables.Any())
+                {
+                    foreach (var row in item.SubDeliverables)
+                    {
+                        FlattenWithoutDependencesOrSubDeliverablesdItems(item.SubDeliverables, flatList);
+                    }
+                }
+                else
+                {
+                    if (!item.Dependants.Any())
+                    {
+                        flatList.Add(item);
+                    }
+
+                }
+
+
+            }
+
 
         }
         private static void FlattenWithDependencesItems(IEnumerable<DeliverableResponse> items, List<DeliverableResponse> flatList)
         {
-            var resultitems = items.Where(x => x.Dependants.Any());
-            if (resultitems.Any())
-                flatList.AddRange(resultitems);
+            foreach (var item in items)
+            {
+                if (item.SubDeliverables.Any())
+                {
+                    foreach (var row in item.SubDeliverables)
+                    {
+                        FlattenWithDependencesItems(item.SubDeliverables, flatList);
+                    }
+                }
+                else
+                {
+                    if (item.Dependants.Any())
+                        flatList.Add(item);
+                }
+
+
+            }
 
 
         }
@@ -70,12 +103,9 @@ namespace Shared.Models.Deliverables.Responses
                 if (item.SubDeliverables != null && item.SubDeliverables.Any())
                 {
                     FlattenCompletedItems(item.OrderedSubDeliverables, flatList);
-                }
-                else
-                {
-                    // Añadir el elemento actual a la lista plana
                     flatList.Add(item);
                 }
+
             }
 
         }

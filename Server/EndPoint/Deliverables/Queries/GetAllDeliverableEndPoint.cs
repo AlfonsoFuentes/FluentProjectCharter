@@ -32,11 +32,13 @@ namespace Server.EndPoint.Deliverables.Queries
                         // Mapear los datos a DeliverableResponse
                         var flattenlist = rows.Select(x => x.MapFlat()).ToList();
 
-
+                        //Mappear los dependants
+                      
 
                         // Reconstruir la jerarquía
                         var maps = RebuildHierarchy(flattenlist);
 
+                        RebuildDependants(flattenlist, rows);
                         // Validar que haya al menos un elemento raíz
                         if (!maps.Any())
                         {
@@ -91,7 +93,8 @@ namespace Server.EndPoint.Deliverables.Queries
             private static async Task<List<Deliverable>> LoadAllDeliverablesFlat(Guid projectId, IQueryRepository repository)
             {
                 var cache = $"{StaticClass.Deliverables.Cache.GetAll}-{projectId}";
-                Func<IQueryable<Deliverable>, IIncludableQueryable<Deliverable, object>> includes = x => x.Include(x => x.Dependants);
+                Func<IQueryable<Deliverable>, IIncludableQueryable<Deliverable, object>> includes = x => x
+                .Include(x => x.Dependants);
                 Expression<Func<Deliverable, bool>> criteria = x => x.ProjectId == projectId;
                 return await repository.GetAllAsync(Cache: cache, Criteria: criteria, Includes: includes);
             }
@@ -129,9 +132,35 @@ namespace Server.EndPoint.Deliverables.Queries
                             throw new InvalidOperationException($"El elemento con Id '{item.Id}' tiene un ParentDeliverableId '{item.ParentDeliverableId}' que no existe en la lista.");
                         }
                     }
+                   
                 }
 
                 return rootItems;
+            }
+
+            private static void RebuildDependants(IEnumerable<DeliverableResponse> flatList, List<Deliverable> rows)
+            {
+                foreach (var row in rows)
+                {
+                    if (row.Dependants.Any())
+                    {
+                        var rowmaped = flatList.SingleOrDefault(x => x.Id == row.Id);
+                        if (rowmaped != null)
+                        {
+                            foreach (var dependant in row.Dependants)
+                            {
+                                var dependantmapped = flatList.SingleOrDefault(x => x.Id == dependant.Id);
+                                if (dependantmapped != null)
+                                {
+                                    rowmaped.Dependants.Add(dependantmapped);
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+
             }
         }
         private static DeliverableResponse MapFlat(this Deliverable row)
@@ -145,7 +174,7 @@ namespace Server.EndPoint.Deliverables.Queries
                 StartDate = row.StartDate,
                 EndDate = row.EndDate,
                 Duration = string.IsNullOrEmpty(row.DurationTime) ? "1d" : row.DurationTime,
-            
+
                 ParentDeliverableId = row.ParentDeliverableId,
                 Id = row.Id,
                 Name = row.Name,
@@ -155,7 +184,7 @@ namespace Server.EndPoint.Deliverables.Queries
                 WBS = row.WBS,
                 LabelOrder = row.LabelOrder,
                 DependantId = row.DependentantId,
-                Dependants = row.Dependants == null || row.Dependants.Count == 0 ? new() : row.Dependants.Select(x => x.Map()).ToList(),
+
 
             };
         }

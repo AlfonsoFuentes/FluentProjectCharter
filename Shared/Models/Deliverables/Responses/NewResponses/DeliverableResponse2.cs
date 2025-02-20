@@ -23,7 +23,8 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
         public string WBS { get; set; } = string.Empty;
         public Guid? ParentDeliverableId { get; set; } // Referencia al padre (opcional)
         public List<DeliverableResponse> SubDeliverables { get; set; } = new();
-        public List<DeliverableResponse> OrderedSubDeliverables => SubDeliverables.Count == 0 ? new() : SubDeliverables.OrderBy(x => x.LabelOrder).ToList();
+        public List<DeliverableResponse> OrderedSubDeliverables => SubDeliverables.Count == 0 ? new() : SubDeliverables.OrderBy(x => x.Order).ToList();
+        public int LastOrder => SubDeliverables.Count == 0 ? 1 : OrderedSubDeliverables.Last().Order;
         public Guid? DependantId { get; set; } // Referencia al padre (opcional)
         public List<DeliverableResponse> Dependants { get; set; } = new(); // Colección de subtareas
         public List<DeliverableResponse> OrderedDependants => Dependants.Count == 0 ? new() : Dependants.OrderBy(x => x.LabelOrder).ToList();
@@ -103,18 +104,26 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             }
             _duration = $"{result}{_unitDuration}";
         }
-        
+
         public void CalculateDurationFromDates()
         {
-            if (StartDate.HasValue && EndDate.HasValue)
+            if (!StartDate.HasValue || !EndDate.HasValue)
             {
-                SetDurationInDays(StartDate.Value.Day - EndDate.Value.Day);
+                return;
             }
+
+            TimeSpan difference = EndDate.Value - StartDate.Value;
+
+
+            SetDurationInDays(difference.Days);
+
         }
 
         public void AddSubDeliverable(DeliverableResponse subDeliverable)
         {
-            subDeliverable.ParentDeliverableId = ParentDeliverableId;
+
+            subDeliverable.ParentDeliverableId = Id;
+            subDeliverable.Order = LastOrder + 1;
             SubDeliverables.Add(subDeliverable);
         }
         public void RemoveSubDeliverable(DeliverableResponse subDeliverable)
@@ -130,12 +139,12 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
 
             return false;
         }
-       
+
         public void CalculateEndDate()
         {
             if (StartDate.HasValue)
             {
-                EndDate=StartDate.Value.AddDays(_durationInDays);
+                EndDate = StartDate.Value.AddDays(_durationInDays);
             }
         }
         public void CalculateStartDate()
@@ -145,9 +154,6 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
                 StartDate = EndDate.Value.AddDays(-_durationInDays);
             }
         }
-        public void CalculateWithoutDependencesOrDeliverables()
-        {
-            CalculateEndDate();
-        }
+
     }
 }

@@ -10,9 +10,9 @@
         public static TasksRelationTypeEnum Create(int id, string name) => new TasksRelationTypeEnum() { Id = id, Name = name };
         public static TasksRelationTypeEnum None = Create(-1, "None");
         public static TasksRelationTypeEnum StartStart = Create(0, "Start Start");
-        public static TasksRelationTypeEnum StartFinish = Create(1, "Start Finish");
-        public static TasksRelationTypeEnum FinishStart = Create(2, "Finish Start");
-        public static TasksRelationTypeEnum FinishFinish = Create(3, "Finish Finish");
+        public static TasksRelationTypeEnum StartFinish = Create(1, "Start End");
+        public static TasksRelationTypeEnum FinishStart = Create(2, "End Start");
+        public static TasksRelationTypeEnum FinishFinish = Create(3, "End End");
 
 
         public static List<TasksRelationTypeEnum> List = new List<TasksRelationTypeEnum>()

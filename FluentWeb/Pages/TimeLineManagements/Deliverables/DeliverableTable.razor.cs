@@ -268,8 +268,16 @@ public partial class DeliverableTable
     private async Task UpdateDependencies(DeliverableResponse task, string newValue)
     {
         await Task.Delay(100);
-        Response.UpdateDependencies(task, newValue);
-        await UpdateResponseAsync();
+        var result = Response.UpdateDependencies(task, newValue);
+        if (string.IsNullOrEmpty(result))
+        {
+            await UpdateResponseAsync();
+        }
+        else
+        {
+            _snackBar.ShowError(result);
+        }
+
         StateHasChanged();
     }
     private async Task UpdateDuration(DeliverableResponse task, string newValue)
