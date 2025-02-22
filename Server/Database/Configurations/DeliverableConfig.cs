@@ -31,11 +31,11 @@ namespace Server.Database.Configurations
              .HasForeignKey(m => m.DeliverableId) // Clave foránea
              .OnDelete(DeleteBehavior.Restrict); // Evita la eliminación en cascada para evitar problemas
 
-            builder
-             .HasMany(m => m.BudgetItemValues) // Un hito tiene un padre
-             .WithOne(m => m.Deliverable) // Un padre puede tener muchos subhitos
-             .HasForeignKey(m => m.DeliverableId) // Clave foránea
-             .OnDelete(DeleteBehavior.Cascade); // Evita la eliminación en cascada para evitar problemas
+            //builder
+            // .HasMany(m => m.BudgetItemValues) // Un hito tiene un padre
+            // .WithOne(m => m.Deliverable) // Un padre puede tener muchos subhitos
+            // .HasForeignKey(m => m.DeliverableId) // Clave foránea
+            // .OnDelete(DeleteBehavior.Cascade); // Evita la eliminación en cascada para evitar problemas
 
             builder
           .HasMany(m => m.DeliverableResources) // Un hito tiene un padre

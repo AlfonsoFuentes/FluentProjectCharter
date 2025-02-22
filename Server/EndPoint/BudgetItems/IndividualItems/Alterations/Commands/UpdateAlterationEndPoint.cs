@@ -1,4 +1,5 @@
 ﻿using Server.Database.Entities.BudgetItems.Commons;
+using Server.Database.Entities.ProjectManagements;
 using Server.Repositories;
 using Shared.Models.BudgetItems.IndividualItems.Alterations.Requests;
 
@@ -18,6 +19,16 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Commands
                     {
                         return Result.Fail(data.NotFound);
                     }
+                    if (data.DeliverableId.HasValue)
+                    {
+                        var deliverable = await repository.GetByIdAsync<Deliverable>(data.DeliverableId.Value);
+                        if (deliverable != null)
+                        {
+                            deliverable.ShowBudgetItems = true;
+                            await repository.UpdateAsync(deliverable);
+                        }
+
+                    }
 
                     data.Map(row);
                     await repository.UpdateAsync(row);
@@ -30,7 +41,8 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Commands
             private string[] GetCacheKeys(BudgetItem row)
             {
                 List<string> cacheKeys = [
-               ..StaticClass.BudgetItems.Cache.Key(row.Id)
+               ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId),
+                ..StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

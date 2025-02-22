@@ -33,33 +33,33 @@ namespace Web.Infrastructure.Validators.Deliverables
             return !result;
         }
     }
-    public class UpdateDeliverableValidator : AbstractValidator<UpdateDeliverableRequest>
-    {
-        private readonly IGenericService Service;
+    //public class UpdateDeliverableValidator : AbstractValidator<UpdateDeliverableRequest>
+    //{
+    //    private readonly IGenericService Service;
 
-        public UpdateDeliverableValidator(IGenericService service)
-        {
-            Service = service;
-                  RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
+    //    public UpdateDeliverableValidator(IGenericService service)
+    //    {
+    //        Service = service;
+    //              RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
 
 
-            RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
-                .When(x => !string.IsNullOrEmpty(x.Name))
-                .WithMessage(x => $"{x.Name} already exist");
+    //        RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
+    //            .When(x => !string.IsNullOrEmpty(x.Name))
+    //            .WithMessage(x => $"{x.Name} already exist");
 
-        }
+    //    }
 
-        async Task<bool> ReviewIfNameExist(UpdateDeliverableRequest request, string name, CancellationToken cancellationToken)
-        {
-            ValidateDeliverableRequest validate = new()
-            {
-                Name = name,
-                ProjectId = request.ProjectId,
-                Id = request.Id
+    //    async Task<bool> ReviewIfNameExist(UpdateDeliverableRequest request, string name, CancellationToken cancellationToken)
+    //    {
+    //        ValidateDeliverableRequest validate = new()
+    //        {
+    //            Name = name,
+    //            ProjectId = request.ProjectId,
+    //            Id = request.Id
 
-            };
-            var result = await Service.Validate(validate);
-            return !result;
-        }
-    }
+    //        };
+    //        var result = await Service.Validate(validate);
+    //        return !result;
+    //    }
+    //}
 }

@@ -13,12 +13,14 @@ public partial class CreateTax
 
     [Parameter]
     public Guid ProjectId { get; set; }
+    [Parameter]
+    public Guid? DeliverableId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await GetTaxItems();
 
-  
+        Model.DeliverableId = DeliverableId;
         Model.ProjectId = ProjectId;
     }
     TaxItemResponseList taxItemResponseList = new();

@@ -88,11 +88,12 @@ namespace Server.EndPoint.Deliverables.Commands
             row.Name = flat.Name;
             row.StartDate = flat.StartDate;
             row.EndDate = flat.EndDate;
-            row.DurationTime = flat.Duration!;
+            row.Duration = flat.Duration;
+            row.Lag = flat.Lag;
             row.DependencyType = flat.DependencyType.Name;
             row.ParentDeliverableId = flat.ParentDeliverableId;
             row.LabelOrder = flat.LabelOrder;
-
+            row.ShowBudgetItems = flat.ShowBudgetItems;
             return row;
         }
     }

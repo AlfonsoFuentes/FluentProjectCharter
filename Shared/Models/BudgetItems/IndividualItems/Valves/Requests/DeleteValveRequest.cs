@@ -8,7 +8,7 @@ namespace Shared.Models.BudgetItems.Valves.Requests
         public override string Legend => Name;
         public Guid ProjectId { get; set; }
         public override string ClassName => StaticClass.Valves.ClassName;
-
+        public Guid? DeliverableId { get; set; }
         public Guid Id { get; set; }
 
         public string EndPointName => StaticClass.Valves.EndPoint.Delete;

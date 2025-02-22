@@ -23,8 +23,8 @@ namespace Shared.Models.Deliverables.Mappers
                 Duration = response.Duration,
                 EndDate = response.EndDate,
                 LabelOrder = response.LabelOrder,
-                 
-                
+                Lag = response.Lag,
+
 
 
             };

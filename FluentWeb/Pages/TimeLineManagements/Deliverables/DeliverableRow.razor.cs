@@ -38,19 +38,9 @@ public partial class DeliverableRow
         return string.IsNullOrEmpty(model.Name) ? true : false;
 
     }
-    
 
-    async Task ChangeDependencyType(DeliverableResponse model, TasksRelationTypeEnum args)
-    {
-        if (args == null) return;
-        if (model != null)
-        {
-            var DependencyType = args;
-            await OnChangeDependencyType.Invoke(model, DependencyType);
-        }
-
-
-    }
+    [Parameter]
+    public Func<Task> GetAll { get; set; } = null!;
     [Parameter]
     public Func<DeliverableResponse, TasksRelationTypeEnum, Task> OnChangeDependencyType { get; set; } = null!;
 
@@ -61,6 +51,8 @@ public partial class DeliverableRow
 
     [Parameter]
     public Func<DeliverableResponse, string, Task> OnChangeDependencies { get; set; } = null!;
+    [Parameter]
+    public Func<DeliverableResponse, string, Task> OnChangeLag { get; set; } = null!;
 
     [Parameter]
     public Func<DeliverableResponse, DateTime?, Task> OnChangeStartDate { get; set; } = null!;

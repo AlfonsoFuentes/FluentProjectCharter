@@ -1,4 +1,5 @@
-﻿@page "/CreateAlterations/{ProjectId:guid}"
+﻿@page "/CreateAlterations/{ProjectId:guid}/{DeliverableId:guid}"
+@page "/CreateAlterations/{ProjectId:guid}"
 @using Shared.Models.BudgetItems.IndividualItems.Alterations.Requests
 <CreateTemplate @ref=CreateForm TItem="CreateAlterationRequest" @bind-Model="@Model"
                 Title="Create Alteration">

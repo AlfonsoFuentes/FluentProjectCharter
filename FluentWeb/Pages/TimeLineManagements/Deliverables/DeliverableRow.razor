@@ -44,8 +44,13 @@
 
 
     </td>
+    <td class="column-duration soft-border">
+        <EditableField T="string" Value="Item.Lag" OnValueChanged="newValue => OnChangeLag.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
+    </td>
     <td class="column-actions soft-border text-center">
         <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment=HorizontalAlignment.Center>
+
+            <IconButton IconEnd="@(new Icons.Regular.Size20.List())" OnClick="@(()=>Item.ShowBudgetItems=!Item.ShowBudgetItems)" ToolTip="Show BudgetItems" />
             @if (EditRow == Item)
             {
                 <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="async () => await OnSaveEdit.InvokeAsync(Item)" ToolTip="Save" Disabled="@DisableSaveButton(Item)" />
@@ -65,6 +70,18 @@
         </FluentStack>
     </td>
 </tr>
+
+@if (Item.ShowBudgetItems)
+{
+  <tr>
+        <td colspan="10" style="padding: 0;">
+            <div class="expanded-row">
+                <BudgetItemsTableForDeliverables Deliverable="@Item" GetAll="GetAll"></BudgetItemsTableForDeliverables>
+            </div>
+        </td>
+    </tr>
+
+}
 @if (Item.SubDeliverables != null && Item.SubDeliverables.Any())
 {
     foreach (var deliverable in Item.OrderedSubDeliverables)
@@ -87,6 +104,8 @@
                         OnSaveCreate="OnSaveCreate"
                         OnSaveEdit="OnSaveEdit"
                         OnEdit="OnEdit"
+                        OnChangeLag="OnChangeLag"
+                        GetAll="GetAll"
                         Item="deliverable">
 
         </DeliverableRow>
@@ -94,14 +113,29 @@
 
 
 }
-<style>
 
+
+
+<style>
+    .expanded-row {
+        display: block;
+        width: 100%;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    /* Evitar que la fila expandida afecte el ancho de las columnas */
+    tr > td[colspan="10"] {
+        padding: 0;
+        margin: 0;
+    }
     .column-labelorder {
         width: 5%;
     }
 
     .column-name {
-        width: 35%;
+        width: 30%;
     }
 
     .column-date {

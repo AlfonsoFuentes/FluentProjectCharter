@@ -56,7 +56,8 @@ namespace Server.EndPoint.Deliverables.Queries
                 DependencyType = string.IsNullOrEmpty(row.DependencyType) ? TasksRelationTypeEnum.None :
                 TasksRelationTypeEnum.GetType(row.DependencyType),
                 LabelOrder = row.LabelOrder,
-                Duration=row.DurationTime,
+                Duration=row.Duration,
+                Lag=row.Lag
 
             };
 

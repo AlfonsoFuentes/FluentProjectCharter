@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using static Shared.StaticClasses.StaticClass;
 
 namespace Shared.StaticClasses
 {
@@ -47,8 +48,8 @@ namespace Shared.StaticClasses
             public static string Received = "received";
             public static string ChangeStatus = "changed status";
         }
-       
-     
+
+
         public static class EngineeringFluidCodes
         {
             public static string ClassLegend = "Engineering Fluid Code";
@@ -373,7 +374,7 @@ namespace Shared.StaticClasses
             public static class Cache
             {
                 public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-              
+
                 public static string GetAll => $"GetAll-{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
@@ -387,7 +388,7 @@ namespace Shared.StaticClasses
 
 
         }
-     
+
         public static class Assumptions
         {
             public static string ClassLegend = "Assumption";
@@ -521,7 +522,7 @@ namespace Shared.StaticClasses
 
 
         }
-     
+
         public static class Deliverables
         {
             public static string ClassLegend = "Deliverable";
@@ -546,8 +547,8 @@ namespace Shared.StaticClasses
             public static class Cache
             {
 
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid projectid) => new[] { GetAll(projectid), GetById(Id) };
+                public static string GetAll(Guid projectid) => $"GetAll-{ClassName}-{projectid}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -601,7 +602,7 @@ namespace Shared.StaticClasses
 
 
         }
-       
+
         public static class KnownRisks
         {
             public static string ClassLegend = "Known Risk";
@@ -834,7 +835,7 @@ namespace Shared.StaticClasses
 
 
         }
-        
+
         public static class MeetingAttendants
         {
             public static string ClassLegend = "Meeting Attendant";
@@ -932,7 +933,7 @@ namespace Shared.StaticClasses
 
 
         }
-    
+
         public static class AcceptanceCriterias
         {
             public static string ClassLegend = "Acceptance Criterias";
@@ -1018,7 +1019,7 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-               
+
                 public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
                 public static string GetAll => $"GetAll-{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
@@ -1040,15 +1041,15 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-     
+
 
                 public static string Update = $"{ClassName}/{Actions.Update}";
- 
+
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
-     
+
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
-      
+
                 public static string Export = $"{ClassName}/{Actions.Export}";
                 public static string Validate = $"{ClassName}/{Actions.Validate}";
             }
@@ -1123,9 +1124,9 @@ namespace Shared.StaticClasses
             public static class Cache
             {
 
-                public static string[] Key(Guid BrandId) => new[] { GetAll, GetById(BrandId) };
-                public static string GetAll => $"GetAll-{ClassName}";
-                public static string GetById(Guid BrandId) => $"GetById-{ClassName}-{BrandId}";
+                public static string[] Key(Guid Id, Guid projectId) => new[] { GetAll(projectId), GetById(Id) };
+                public static string GetAll(Guid projectId) => $"GetAll-{ClassName}-{projectId}";
+                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
             {
@@ -1428,7 +1429,7 @@ namespace Shared.StaticClasses
             }
 
 
-        }        
+        }
         public static class Paintings
         {
             public static string ClassLegend = "Paintings";
@@ -1589,6 +1590,6 @@ namespace Shared.StaticClasses
 
 
         }
-      
+
     }
 }

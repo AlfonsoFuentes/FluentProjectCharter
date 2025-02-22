@@ -17,10 +17,12 @@ public partial class CreateInstrument
     [Parameter]
     public Guid ProjectId { get; set; }
     BrandResponseList BrandsResponseList { get; set; } = new();
+    [Parameter]
+    public Guid? DeliverableId { get; set; }
     protected override async Task OnInitializedAsync()
     {
 
-
+        Model.DeliverableId = DeliverableId;
         Model.ProjectId = ProjectId;
         await LoadFromLocalStorage();
         await GetAllEquipmentTemplate();

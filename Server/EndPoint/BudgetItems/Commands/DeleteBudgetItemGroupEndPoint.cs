@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Server.Database.Entities.ProjectManagements;
 using Shared.Models.BudgetItems;
 
 namespace Server.EndPoint.BudgetItems.Commands
@@ -13,9 +14,18 @@ namespace Server.EndPoint.BudgetItems.Commands
                 {
 
                     List<string> cache = [
-                        StaticClass.BudgetItems.Cache.GetAll
+                        StaticClass.BudgetItems.Cache.GetAll(Data.ProjectId)
                     ];
-
+                    if (Data.DeliverableId.HasValue)
+                    {
+                        var deliverable = await Repository.GetByIdAsync<Deliverable>(Data.DeliverableId.Value);
+                        if (deliverable != null)
+                        {
+                            deliverable.ShowBudgetItems = true;
+                            await Repository.UpdateAsync(deliverable);
+                        }
+                      
+                    }
                     foreach (var datarow in Data.DeleteGroup)
                     {
                         var row = await Repository.GetByIdAsync<BudgetItem>(datarow);
@@ -28,7 +38,7 @@ namespace Server.EndPoint.BudgetItems.Commands
 
                     }
 
-
+                    cache.Add(StaticClass.Deliverables.Cache.GetAll(Data.ProjectId));
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
                     return Result.EndPointResult(result,

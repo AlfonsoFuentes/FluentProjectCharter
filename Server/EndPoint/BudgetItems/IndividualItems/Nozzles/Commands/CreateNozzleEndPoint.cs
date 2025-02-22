@@ -20,7 +20,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Nozzles.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [.. StaticClass.Nozzles.Cache.Key(row.Id), StaticClass.BudgetItems.Cache.GetAll,];
+                    List<string> cache = [.. StaticClass.Nozzles.Cache.Key(row.Id), StaticClass.BudgetItems.Cache.GetAll(row.EngineeringItem.ProjectId),];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
                     return Result.EndPointResult(result,

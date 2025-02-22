@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
 using Server.Database.Entities.BudgetItems.Commons;
+using Server.Database.Entities.ProjectManagements;
 using Shared.Models.BudgetItems.IndividualItems.Alterations.Requests;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Commands
@@ -17,9 +18,18 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Commands
 
                     int order = GetNextOrder(project);
 
-                    var row = Alteration.Create(project.Id);
+                    var row = Alteration.Create(project.Id, data.DeliverableId);
                     row.Order = order;
-
+                    if(data.DeliverableId.HasValue)
+                    {
+                        var deliverable = await repository.GetByIdAsync<Deliverable>(data.DeliverableId.Value);
+                        if (deliverable != null)
+                        {
+                            deliverable.ShowBudgetItems = true;
+                            await repository.UpdateAsync(deliverable);
+                        }
+                    }
+                    
                     data.Map(row);
                     await repository.AddAsync(row);
 
@@ -30,8 +40,10 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Commands
             }
             private string[] GetCacheKeys(BudgetItem row)
             {
+                var deliverable = row.DeliverableId.HasValue ? StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId) : new[] { string.Empty };
                 List<string> cacheKeys = [
-                 ..StaticClass.BudgetItems.Cache.Key(row.Id)
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId),
+                 ..deliverable
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

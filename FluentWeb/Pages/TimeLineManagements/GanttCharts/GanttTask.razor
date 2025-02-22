@@ -1,0 +1,81 @@
+﻿@using Shared.Models.Deliverables.Responses.NewResponses
+<div class="gantt-task">
+    <div class="gantt-task-name">@Task.Name</div>
+    <div class="gantt-task-bar"
+         style="left: @(CalculateLeftOffset(Task.StartDate))px; width: @(CalculateBarWidth(Task.StartDate, Task.EndDate))px;">
+    </div>
+</div>
+@if (Task.SubDeliverables != null && Task.SubDeliverables.Any())
+{
+    <div class="gantt-body">
+        @foreach (var item in Task.OrderedSubDeliverables)
+        {
+            <GanttTask Task="@item" StartDate="@StartDate" />
+        }
+    </div>
+}
+<style>
+    .gantt-container {
+        display: flex;
+        flex-direction: column;
+        font-family: Arial, sans-serif;
+    }
+
+    .gantt-header {
+        display: flex;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .gantt-day {
+        width: 20px; /* Ancho de cada día */
+        text-align: center;
+        border-right: 1px solid #ccc;
+    }
+
+    .gantt-body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .gantt-task {
+        display: flex;
+        align-items: center;
+        height: 30px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .gantt-task-name {
+        width: 300px; /* Ancho fijo para los nombres de las tareas */
+        padding: 5px;
+        background-color: #f9f9f9;
+        border-right: 1px solid #ccc;
+    }
+
+    .gantt-task-bar {
+        height: 100%;
+        background-color: #4caf50;
+        position: relative;
+    }
+</style>
+@code {
+    [Parameter]
+    public DeliverableResponse Task { get; set; } = null!;
+
+    [Parameter]
+    public DateTime StartDate { get; set; }
+
+    private int CalculateLeftOffset(DateTime? taskStartDate)
+    {
+        if (!taskStartDate.HasValue) return 0;
+        var daysOffset = (taskStartDate.Value - StartDate).Days;
+        return daysOffset * 20; // 20px por día
+    }
+
+    private int CalculateBarWidth(DateTime? taskStartDate, DateTime? taskEndDate)
+    {
+        if (!taskStartDate.HasValue || !taskEndDate.HasValue) return 0;
+        var duration = (taskEndDate.Value - taskStartDate.Value).Days;
+        return duration * 20; // 20px por día
+    }
+
+}

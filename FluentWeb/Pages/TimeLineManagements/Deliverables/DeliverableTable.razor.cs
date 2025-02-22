@@ -74,7 +74,7 @@ public partial class DeliverableTable
 
         if (result.Succeeded)
         {
-            Response = result.Data;
+
 
             var selectedRowId = SelectedRow?.Id;
 
@@ -125,9 +125,9 @@ public partial class DeliverableTable
         if (result.Succeeded)
         {
             SetState(); // Limpiar todos los estados
+            await GetAll();
             Response.Calculate();
-            await UpdateResponseAsync();
-
+            StateHasChanged();
         }
     }
 
@@ -172,16 +172,16 @@ public partial class DeliverableTable
             {
                 Id = model.Id,
                 Name = model.Name,
+                ProjectId = ProjectId,
             };
 
             var resultDelete = await GenericService.Delete(request);
 
             if (resultDelete.Succeeded)
             {
-
-
-                await UpdateResponseAsync();
+                await GetAll();
                 Response.Calculate();
+
                 StateHasChanged();
             }
             else
@@ -229,13 +229,15 @@ public partial class DeliverableTable
 
     private async Task<bool> UpdateResponseAsync()
     {
+        if (EditRow == null) return false;
+
         var result = await GenericService.Update(Response);
 
         if (result.Succeeded)
         {
             await GetAll();
             EditRow = null!;
-            CreateRow = null!;
+
             return true;
         }
 
@@ -262,6 +264,7 @@ public partial class DeliverableTable
     {
         await Task.Delay(100);
         task.Name = newValue;
+
         await UpdateResponseAsync();
         StateHasChanged();
     }
@@ -277,6 +280,14 @@ public partial class DeliverableTable
         {
             _snackBar.ShowError(result);
         }
+
+        StateHasChanged();
+    }
+    private async Task UpdateLag(DeliverableResponse task, string newValue)
+    {
+        await Task.Delay(100);
+        Response.UpdateLag(task, newValue);
+        await UpdateResponseAsync();
 
         StateHasChanged();
     }

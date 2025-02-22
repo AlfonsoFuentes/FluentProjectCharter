@@ -5,7 +5,7 @@ namespace Shared.Models.BudgetItems.Testings.Requests
 {
     public class CreateTestingRequest : CreateMessageResponse, IRequest
     {
-   
+        public Guid? DeliverableId { get; set; }
         public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;
   

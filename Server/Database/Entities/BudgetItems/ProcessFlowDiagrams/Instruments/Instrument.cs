@@ -12,13 +12,15 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments
 
         public InstrumentTemplate? InstrumentTemplate { get; set; } = null!;
         public Guid? InstrumentTemplateId { get; set; }
-        public static Instrument Create(Guid ProjectId)
+        public static Instrument Create(Guid ProjectId, Guid? DeliverableId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-              
+                DeliverableId = DeliverableId,
+
+
             };
         }
     }

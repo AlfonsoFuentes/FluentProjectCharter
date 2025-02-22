@@ -1,4 +1,5 @@
-﻿using Shared.Models.BudgetItems.IndividualItems.Instruments.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.BudgetItems.IndividualItems.Instruments.Requests;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Instruments.Commands
 {
@@ -16,7 +17,16 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Instruments.Commands
 
                     int order = GetNextOrder(project);
 
-                    var row = Instrument.Create(project.Id);
+                    var row = Instrument.Create(project.Id, data.DeliverableId);
+                    if (data.DeliverableId.HasValue)
+                    {
+                        var deliverable = await repository.GetByIdAsync<Deliverable>(data.DeliverableId.Value);
+                        if (deliverable != null)
+                        {
+                            deliverable.ShowBudgetItems = true;
+                            await repository.UpdateAsync(deliverable);
+                        }
+                    }
                     row.Order = order;
 
                     data.Map(row);
@@ -42,8 +52,10 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Instruments.Commands
             }
             private string[] GetCacheKeys(BudgetItem row)
             {
+                var deliverable = row.DeliverableId.HasValue ? StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId) : new[] { string.Empty };
                 List<string> cacheKeys = [
-                 ..StaticClass.BudgetItems.Cache.Key(row.Id)
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId),
+                 ..deliverable
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

@@ -5,12 +5,13 @@ using Shared.Models.BudgetItems.Records;
 using Shared.Models.BudgetItems.Responses;
 using Shared.Models.Deliverables.Responses;
 using Shared.Models.Milestones.Responses;
+using static Shared.StaticClasses.StaticClass;
 
 namespace FluentWeb.Pages.BudgetManagements.BudgetItems;
 #nullable disable
 public partial class BudgetItemsTable
 {
-
+  
 
     [Parameter]
     public Guid ProjectId { get; set; } = new();

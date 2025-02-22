@@ -11,9 +11,12 @@ public partial class CreateEngineeringDesign
 
     [Parameter]
     public Guid ProjectId { get; set; }
+    [Parameter]
+    public Guid? DeliverableId { get; set; }
     protected override void OnInitialized()
     {
         Model.ProjectId = ProjectId;
+        Model.DeliverableId = DeliverableId;
 
     }
 

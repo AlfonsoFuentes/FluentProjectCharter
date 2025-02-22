@@ -9,7 +9,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Pipes.Requests
 {
     public class CreatePipeRequest : CreateMessageResponse, IRequest
     {
-
+        public Guid? DeliverableId { get; set; }
         public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;
 

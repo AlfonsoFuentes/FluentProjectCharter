@@ -39,8 +39,8 @@ namespace Server.Database.Entities.ProjectManagements
 
         [ForeignKey("DependentantId")]
         public ICollection<Deliverable> Dependants { get; set; } = new List<Deliverable>(); // Colección de subtareas
-
-        public string DurationTime { get; set; } = string.Empty;
+        public string? Lag { get; set; } = string.Empty;
+        public string? Duration { get; set; } = string.Empty;
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string DependencyType { get; set; } = string.Empty;
@@ -48,12 +48,10 @@ namespace Server.Database.Entities.ProjectManagements
         [ForeignKey("DeliverableId")]
         public ICollection<BudgetItem> BudgetItems { get; set; } = new List<BudgetItem>();
 
-        public ICollection<BudgetItemValue> BudgetItemValues { get; set; } = new List<BudgetItemValue>();
         public ICollection<DeliverableResource> DeliverableResources { get; set; } = new List<DeliverableResource>();
 
         [ForeignKey("DeliverableId")]
         public ICollection<PurchaseOrder> PurchaseOrders { get; set; } = new List<PurchaseOrder>(); // Colección de subtareas
-
-   
+        public bool ShowBudgetItems { get; set; }
     }
 }

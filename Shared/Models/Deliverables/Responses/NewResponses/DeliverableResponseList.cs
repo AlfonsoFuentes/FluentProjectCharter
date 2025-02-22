@@ -10,6 +10,15 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
     {
         public string EndPointName => StaticClass.Deliverables.EndPoint.UpdateEDT;
 
+        public DateTime StartDate => FlatOrderedItems.Where(x => x.StartDate.HasValue)
+               .Select(x => x.StartDate!.Value)
+               .DefaultIfEmpty(DateTime.MaxValue)
+               .Min();
+        public DateTime EndDate => FlatOrderedItems.Where(x => x.EndDate.HasValue)
+                .Select(x => x.EndDate!.Value)
+                .DefaultIfEmpty(DateTime.MinValue)
+                .Max();
+        public TimeSpan? Duration => StartDate-EndDate;
         public override string Legend => "Deliverables";
 
         public override string ClassName => StaticClass.Deliverables.ClassName;
@@ -104,22 +113,22 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             switch (item.DependencyType.Id)
             {
                 case 0://Start Start La tarea dependiente puede comenzar solo cuando la tarea precedente haya comenzado
-                    item.StartDate = minStartDate;
+                    item.SetStartDateWithLag(minStartDate);
                     item.CalculateEndDate();
                     break;
 
                 case 1: //Start Finish  La tarea dependiente debe terminar cuando la tarea precedente comience.
-                    item.EndDate = minStartDate;
+                    item.SetEndDateWithlag(minStartDate);
                     item.CalculateStartDate();
                     break;
 
                 case 2: //Finish Start La tarea dependiente puede comenzar solo cuando la tarea precedente haya terminado.
-                    item.StartDate = maxEndDate.AddDays(1);
+                    item.SetStartDateWithLag(maxEndDate.AddDays(1));
                     item.CalculateEndDate();
                     break;
 
                 case 3: //End End  La tarea dependiente debe terminar al mismo tiempo que la tarea precedente.
-                    item.EndDate = maxEndDate;
+                    item.SetEndDateWithlag(maxEndDate);
                     item.CalculateStartDate();
                     break;
 
@@ -175,7 +184,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
 
                 if (minSubStartDate != DateTime.MaxValue)
                 {
-                    item.StartDate = minSubStartDate;
+                    item.EndDate = minSubStartDate;
                 }
                 if (maxSubEndDate != DateTime.MinValue)
                 {
@@ -225,7 +234,8 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
         {
 
             var flatlist = FlatOrderedItems;
-            var lasorder = flatlist.Count == 0 ? 1 : flatlist.Last().LabelOrder + 1;
+            var lasorder = flatlist.Count == 0 ? 1 : flatlist.Last().Order + 1;
+            var lastlabelorder = flatlist.Count == 0 ? 1 : flatlist.Last().LabelOrder + 1;
             // Crear un nuevo DeliverableResponse
             var newDeliverable = new DeliverableResponse
             {
@@ -236,7 +246,9 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
                 Duration = "1d",
                 DependencyType = TasksRelationTypeEnum.FinishStart,
                 EndDate = DateTime.Now.AddDays(1),
-                LabelOrder = lasorder
+                LabelOrder = lastlabelorder,
+                Order = lasorder,
+
 
             };
 
@@ -326,6 +338,12 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             // Recalcular las fechas basadaCalculateDatesFromDependenciess en las nuevas dependencias
             Calculate();
             return string.Empty;
+        }
+        public void UpdateLag(DeliverableResponse current, string lag)
+        {
+            current.Lag= lag;
+            Calculate();
+            
         }
         private string IsValidDependency(DeliverableResponse current, DeliverableResponse dependency)
         {
@@ -648,7 +666,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             }
             else
             {
-           
+
                 Items.Remove(selectedRow);
             }
 

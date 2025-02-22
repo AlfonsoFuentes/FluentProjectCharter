@@ -1,10 +1,19 @@
 ﻿using Shared.Enums.TasksRelationTypeTypes;
+using Shared.Models.BudgetItems.IndividualItems.Alterations.Responses;
+using Shared.Models.BudgetItems.IndividualItems.EHSs.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Electricals.Responses;
+using Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Equipments.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Foundations.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Instruments.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Paintings.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Pipes.Responses;
+using Shared.Models.BudgetItems.Responses;
+using Shared.Models.BudgetItems.Structurals.Responses;
+using Shared.Models.BudgetItems.Taxs.Responses;
+using Shared.Models.BudgetItems.Testings.Responses;
+using Shared.Models.BudgetItems.Valves.Responses;
 using Shared.Models.FileResults.Generics.Reponses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shared.Models.Deliverables.Responses.NewResponses
 {
@@ -18,7 +27,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
         public Guid ProjectId { get; set; }
         public Guid? StartId { get; set; }
         public Guid? PlanningId { get; set; }
-
+        public string ProjectName { get; set; } = string.Empty;
         public int LabelOrder { get; set; }
         public string WBS { get; set; } = string.Empty;
         public Guid? ParentDeliverableId { get; set; } // Referencia al padre (opcional)
@@ -40,14 +49,14 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             }
             set
             {
-                SetDurationByUI(value);
+                SetDuration(value);
             }
 
         }
         string _unitDuration { get; set; } = string.Empty;
         int _durationInDays = 0;
         string _duration = string.Empty;
-        public void SetDurationByUI(string? rawinput)
+        public void SetDuration(string? rawinput)
         {
 
             if (string.IsNullOrWhiteSpace(rawinput))
@@ -140,6 +149,28 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             return false;
         }
 
+        public void SetStartDateWithLag(DateTime date)
+        {
+            if (string.IsNullOrEmpty(Lag))
+            {
+                StartDate = date;
+            }
+            else
+            {
+                StartDate = date.AddDays(_lagInDays);
+            }
+        }
+        public void SetEndDateWithlag(DateTime date)
+        {
+            if (string.IsNullOrEmpty(Lag))
+            {
+                EndDate = date;
+            }
+            else
+            {
+                EndDate = date.AddDays(_lagInDays);
+            }
+        }
         public void CalculateEndDate()
         {
             if (StartDate.HasValue)
@@ -155,5 +186,98 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
             }
         }
 
+        public string? Lag
+        {
+            get
+            {
+                return _lag;
+            }
+            set
+            {
+                SetLag(value);
+            }
+
+        }
+        string _unitLag { get; set; } = string.Empty;
+        int _lagInDays = 0;
+        string _lag = string.Empty;
+        public void SetLag(string? rawinput)
+        {
+
+            if (string.IsNullOrWhiteSpace(rawinput))
+            {
+                return;
+            }
+            var input = rawinput.Trim();
+
+            var match = System.Text.RegularExpressions.Regex.Match(input, @"^(\d+)\s*([dwmy]?)$");
+            if (!match.Success)
+            {
+                return;
+            }
+            if (!int.TryParse(match.Groups[1].Value, out var numericValue) || numericValue < 0)
+            {
+                return;
+            }
+            _lagInDays = 0;
+            _unitLag = match.Groups[2].Value.ToLower();
+            _lag = rawinput;
+            switch (_unitLag)
+            {
+                case "d":
+                    _lagInDays = numericValue;
+                    break;
+                case "w":
+                    _lagInDays = numericValue * 7;
+                    break;
+                case "m":
+                    _lagInDays = numericValue * 30;
+                    break;
+                case "y":
+                    _lagInDays = numericValue * 365;
+                    break;
+                case "":
+                    _lagInDays = numericValue;
+                    break;
+                default:
+                    return;
+            }
+
+        }
+        public void SetLagInDays(int lagindays)
+        {
+            _lagInDays = lagindays;
+            var result = 0.0;
+            switch (_unitDuration)
+            {
+                case "d": result = _lagInDays; break;
+                case "w": result = _lagInDays / 7; break;
+                case "m": result = _lagInDays / 30.44; break;
+                case "y": result = _lagInDays / 365.24; break;
+                default: return;
+            }
+            _duration = $"{result}{_unitLag}";
+        }
+        public List<AlterationResponse> Alterations { get; set; } = new();
+        public List<FoundationResponse> Foundations { get; set; } = new();
+        public List<StructuralResponse> Structurals { get; set; } = new();
+        public List<EquipmentResponse> Equipments { get; set; } = new();
+        public List<ElectricalResponse> Electricals { get; set; } = new();
+        public List<PipeResponse> Pipings { get; set; } = new();
+        public List<InstrumentResponse> Instruments { get; set; } = new();
+        public List<EHSResponse> EHSs { get; set; } = new();
+        public List<PaintingResponse> Paintings { get; set; } = new();
+        public List<TaxResponse> Taxes { get; set; } = new();
+        public List<TestingResponse> Testings { get; set; } = new();
+        public List<ValveResponse> Valves { get; set; } = new();
+        public List<EngineeringDesignResponse> EngineeringDesigns { get; set; } = new();
+        public List<IBudgetItemResponse> Expenses => [.. Alterations];
+        public List<IBudgetItemResponse> Capital => [..Foundations,..Structurals,..Equipments,..Valves,..Electricals,
+            ..Pipings,..Instruments,..EHSs,..Paintings,..Taxes,..Testings,..EngineeringDesigns];
+
+        public List<IBudgetItemResponse> Items => BudgetItems.OrderBy(x => x.Nomenclatore).ToList();
+        public List<IBudgetItemResponse> BudgetItems => [.. Expenses, .. Capital];
+
+        public bool ShowBudgetItems {  get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace Server.EndPoint.Deliverables.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    var cache = $"{StaticClass.Deliverables.Cache.GetAll}-{Data.ProjectId}";
+                    var cache = $"{StaticClass.Deliverables.Cache.GetAll(Data.ProjectId)}";
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
 
                     return Result.EndPointResult(result,
@@ -44,9 +44,10 @@ namespace Server.EndPoint.Deliverables.Commands
             row.StartDate = request.StartDate;
             row.EndDate = request.EndDate;
             row.DependencyType = request.DependencyType;
-            row.DurationTime = request.Duration;
+            row.Duration = request.Duration;
             row.LabelOrder = request.LabelOrder;
-
+            row.Lag = request.Lag;
+           
             return row;
         }
 

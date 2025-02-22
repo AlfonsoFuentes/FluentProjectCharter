@@ -1,0 +1,74 @@
+﻿@page "/ganttchart/{ProjectId:guid}"
+
+<h3>Gant Chart</h3>
+@if (Response.Items.Count==0)
+{
+    @("No data to show")
+}
+else
+{
+    <div class="gantt-container">
+        <div class="gantt-header">
+            @for (int i = 0; i < 5; i++)
+            {
+                <div class="gantt-day">@Response.StartDate.AddDays(i).ToString("dd/MM")</div>
+            }
+        </div>
+        <div class="gantt-body">
+            @foreach (var item in Items)
+            {
+                <GanttTask Task="@item" StartDate="@Response.StartDate" />
+            }
+        </div>
+    </div>
+}
+
+<style>
+    .gantt-container {
+        display: flex;
+        flex-direction: column;
+        font-family: Arial, sans-serif;
+    }
+
+    .gantt-header {
+        display: flex;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .gantt-day {
+        width: 20px; /* Ancho de cada día */
+        text-align: center;
+        border-right: 1px solid #ccc;
+    }
+
+    .gantt-body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .gantt-task {
+        display: flex;
+        align-items: center;
+        height: 30px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .gantt-task-name {
+        width: 150px; /* Ancho fijo para los nombres de las tareas */
+        padding: 5px;
+        background-color: #f9f9f9;
+        border-right: 1px solid #ccc;
+    }
+
+    .gantt-task-bar {
+        height: 100%;
+        background-color: #4caf50;
+        position: relative;
+    }
+</style>
+@code {
+ 
+
+    // private DateTime StartDate = DateTime.Today;
+    // private int DaysInTimeline = 30; // Número de días en el eje horizontal
+}

@@ -167,7 +167,7 @@ namespace Server.Migrations
 
                     b.HasIndex("StakeHoldersId");
 
-                    b.ToTable("ProjectStakeHolder", (string)null);
+                    b.ToTable("ProjectStakeHolder");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.App", b =>
@@ -206,7 +206,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Apps", (string)null);
+                    b.ToTable("Apps");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.BudgetItem", b =>
@@ -301,7 +301,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands", (string)null);
+                    b.ToTable("Brands");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles.Nozzle", b =>
@@ -387,7 +387,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ItemConnectedId");
 
-                    b.ToTable("Nozzles", (string)null);
+                    b.ToTable("Nozzles");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles.NozzleTemplate", b =>
@@ -437,7 +437,7 @@ namespace Server.Migrations
 
                     b.HasIndex("TemplateId");
 
-                    b.ToTable("NozzleTemplates", (string)null);
+                    b.ToTable("NozzleTemplates");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.EngineeringFluidCode", b =>
@@ -477,7 +477,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EngineeringFluidCodes", (string)null);
+                    b.ToTable("EngineeringFluidCodes");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.IsometricItem", b =>
@@ -527,7 +527,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipingAccesoryId");
 
-                    b.ToTable("IsometricItems", (string)null);
+                    b.ToTable("IsometricItems");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesory", b =>
@@ -568,7 +568,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipingCategoryId");
 
-                    b.ToTable("PipingAccesorys", (string)null);
+                    b.ToTable("PipingAccesorys");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesoryCodeBrand", b =>
@@ -613,7 +613,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipingCategoryId");
 
-                    b.ToTable("PipingAccesoryCodeBrands", (string)null);
+                    b.ToTable("PipingAccesoryCodeBrands");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingAccesoryImage", b =>
@@ -653,7 +653,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PipingAccesoryImages", (string)null);
+                    b.ToTable("PipingAccesoryImages");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingCategory", b =>
@@ -698,7 +698,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipingAccesoryImageId");
 
-                    b.ToTable("PipingCategorys", (string)null);
+                    b.ToTable("PipingCategorys");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipingConnectionType", b =>
@@ -764,7 +764,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipingAccesoryId");
 
-                    b.ToTable("PipingConnectionTypes", (string)null);
+                    b.ToTable("PipingConnectionTypes");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template", b =>
@@ -861,7 +861,7 @@ namespace Server.Migrations
 
                     b.HasIndex("TaxItemId");
 
-                    b.ToTable("TaxesItems", (string)null);
+                    b.ToTable("TaxesItems");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Meeting", b =>
@@ -917,7 +917,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Meetings", (string)null);
+                    b.ToTable("Meetings");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.MeetingAgreement", b =>
@@ -962,7 +962,7 @@ namespace Server.Migrations
 
                     b.HasIndex("MeetingId");
 
-                    b.ToTable("MeetingAgreements", (string)null);
+                    b.ToTable("MeetingAgreements");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.MeetingAttendant", b =>
@@ -1008,7 +1008,7 @@ namespace Server.Migrations
 
                     b.HasIndex("StakeHolderId");
 
-                    b.ToTable("MeetingAttendants", (string)null);
+                    b.ToTable("MeetingAttendants");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Milestone", b =>
@@ -1083,7 +1083,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Milestones", (string)null);
+                    b.ToTable("Milestones");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.Project", b =>
@@ -1175,7 +1175,7 @@ namespace Server.Migrations
 
                     b.HasIndex("SponsorId");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.AcceptanceCriteria", b =>
@@ -1226,7 +1226,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("AcceptanceCriterias", (string)null);
+                    b.ToTable("AcceptanceCriterias");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Acquisition", b =>
@@ -1277,7 +1277,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Acquisitions", (string)null);
+                    b.ToTable("Acquisitions");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Assumption", b =>
@@ -1328,7 +1328,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Assumptions", (string)null);
+                    b.ToTable("Assumptions");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.BackGround", b =>
@@ -1373,7 +1373,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("BackGrounds", (string)null);
+                    b.ToTable("BackGrounds");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Bennefit", b =>
@@ -1424,54 +1424,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Bennefits", (string)null);
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.BudgetItemValue", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BudgetItemId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("DeliverableId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Value")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DeliverableId");
-
-                    b.ToTable("BudgetItemValues", (string)null);
+                    b.ToTable("Bennefits");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Communication", b =>
@@ -1522,7 +1475,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Communications", (string)null);
+                    b.ToTable("Communications");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Constrainst", b =>
@@ -1573,7 +1526,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Constrainsts", (string)null);
+                    b.ToTable("Constrainsts");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Deliverable", b =>
@@ -1602,8 +1555,7 @@ namespace Server.Migrations
                     b.Property<Guid?>("DependentantId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("DurationTime")
-                        .IsRequired()
+                    b.Property<string>("Duration")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
@@ -1614,6 +1566,9 @@ namespace Server.Migrations
 
                     b.Property<int>("LabelOrder")
                         .HasColumnType("int");
+
+                    b.Property<string>("Lag")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(128)");
@@ -1637,6 +1592,9 @@ namespace Server.Migrations
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("ShowBudgetItems")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -1659,7 +1617,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Deliverables", (string)null);
+                    b.ToTable("Deliverables");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.DeliverableResource", b =>
@@ -1707,7 +1665,7 @@ namespace Server.Migrations
 
                     b.HasIndex("DeliverableId");
 
-                    b.ToTable("DeliverableResources", (string)null);
+                    b.ToTable("DeliverableResources");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.ExpertJudgement", b =>
@@ -1763,7 +1721,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("ExpertJudgements", (string)null);
+                    b.ToTable("ExpertJudgements");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.KnownRisk", b =>
@@ -1818,7 +1776,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("KnownRisks", (string)null);
+                    b.ToTable("KnownRisks");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.LearnedLesson", b =>
@@ -1865,7 +1823,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("LearnedLessons", (string)null);
+                    b.ToTable("LearnedLessons");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Objective", b =>
@@ -1916,7 +1874,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Objectives", (string)null);
+                    b.ToTable("Objectives");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Quality", b =>
@@ -1967,7 +1925,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Qualitys", (string)null);
+                    b.ToTable("Qualitys");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Requirement", b =>
@@ -2039,7 +1997,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ResponsibleId");
 
-                    b.ToTable("Requirements", (string)null);
+                    b.ToTable("Requirements");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Resource", b =>
@@ -2090,7 +2048,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Resources", (string)null);
+                    b.ToTable("Resources");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.RoleInsideProject", b =>
@@ -2129,7 +2087,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleInsideProjects", (string)null);
+                    b.ToTable("RoleInsideProjects");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Scope", b =>
@@ -2180,7 +2138,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Scopes", (string)null);
+                    b.ToTable("Scopes");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.StakeHolder", b =>
@@ -2239,7 +2197,7 @@ namespace Server.Migrations
 
                     b.HasIndex("RoleInsideProjectId");
 
-                    b.ToTable("StakeHolders", (string)null);
+                    b.ToTable("StakeHolders");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrder", b =>
@@ -2357,7 +2315,7 @@ namespace Server.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("PurchaseOrders", (string)null);
+                    b.ToTable("PurchaseOrders");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrderItem", b =>
@@ -2419,7 +2377,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PurchaseOrderId");
 
-                    b.ToTable("PurchaseOrderItems", (string)null);
+                    b.ToTable("PurchaseOrderItems");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrderItemReceived", b =>
@@ -2472,7 +2430,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PurchaseOrderItemId");
 
-                    b.ToTable("PurchaseOrderItemReceiveds", (string)null);
+                    b.ToTable("PurchaseOrderItemReceiveds");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.Supplier", b =>
@@ -2539,7 +2497,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Suppliers", (string)null);
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("Server.Database.Identity.BlazorHeroUser", b =>
@@ -2666,7 +2624,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Alterations", (string)null);
+                    b.ToTable("Alterations");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.EHS", b =>
@@ -2679,7 +2637,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("EHSs", (string)null);
+                    b.ToTable("EHSs");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Electrical", b =>
@@ -2692,7 +2650,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Electricals", (string)null);
+                    b.ToTable("Electricals");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Foundation", b =>
@@ -2705,7 +2663,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Foundations", (string)null);
+                    b.ToTable("Foundations");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Painting", b =>
@@ -2718,7 +2676,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Paintings", (string)null);
+                    b.ToTable("Paintings");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Structural", b =>
@@ -2731,7 +2689,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Structurals", (string)null);
+                    b.ToTable("Structurals");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.Commons.Testing", b =>
@@ -2744,7 +2702,7 @@ namespace Server.Migrations
                     b.Property<double>("UnitaryCost")
                         .HasColumnType("float");
 
-                    b.ToTable("Testings", (string)null);
+                    b.ToTable("Testings");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.EngineeringContingency.Contingency", b =>
@@ -2754,7 +2712,7 @@ namespace Server.Migrations
                     b.Property<double>("Percentage")
                         .HasColumnType("float");
 
-                    b.ToTable("Contingencys", (string)null);
+                    b.ToTable("Contingencys");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.EngineeringContingency.Engineering", b =>
@@ -2764,14 +2722,14 @@ namespace Server.Migrations
                     b.Property<double>("Percentage")
                         .HasColumnType("float");
 
-                    b.ToTable("EngineeringSalarys", (string)null);
+                    b.ToTable("EngineeringSalarys");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.EngineeringContingency.EngineeringDesign", b =>
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.BudgetItem");
 
-                    b.ToTable("Engineerings", (string)null);
+                    b.ToTable("Engineerings");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem", b =>
@@ -2803,7 +2761,7 @@ namespace Server.Migrations
                     b.Property<double>("Percentage")
                         .HasColumnType("float");
 
-                    b.ToTable("Taxes", (string)null);
+                    b.ToTable("Taxes");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.EquipmentTemplate", b =>
@@ -2829,7 +2787,7 @@ namespace Server.Migrations
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
-                    b.ToTable("EquipmentTemplates", (string)null);
+                    b.ToTable("EquipmentTemplates");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments.InstrumentTemplate", b =>
@@ -2855,7 +2813,7 @@ namespace Server.Migrations
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
-                    b.ToTable("InstrumentTemplates", (string)null);
+                    b.ToTable("InstrumentTemplates");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.PipeTemplate", b =>
@@ -2883,7 +2841,7 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("PipeTemplates", (string)null);
+                    b.ToTable("PipeTemplates");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves.ValveTemplate", b =>
@@ -2924,7 +2882,7 @@ namespace Server.Migrations
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
-                    b.ToTable("ValveTemplates", (string)null);
+                    b.ToTable("ValveTemplates");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments.Equipment", b =>
@@ -2943,7 +2901,7 @@ namespace Server.Migrations
 
                     b.HasIndex("EquipmentTemplateId");
 
-                    b.ToTable("Equipments", (string)null);
+                    b.ToTable("Equipments");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Instruments.Instrument", b =>
@@ -2959,7 +2917,7 @@ namespace Server.Migrations
 
                     b.HasIndex("InstrumentTemplateId");
 
-                    b.ToTable("Instruments", (string)null);
+                    b.ToTable("Instruments");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings.Pipe", b =>
@@ -3003,7 +2961,7 @@ namespace Server.Migrations
 
                     b.HasIndex("PipeTemplateId");
 
-                    b.ToTable("Isometrics", (string)null);
+                    b.ToTable("Isometrics");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves.Valve", b =>
@@ -3019,7 +2977,7 @@ namespace Server.Migrations
 
                     b.HasIndex("ValveTemplateId");
 
-                    b.ToTable("Valves", (string)null);
+                    b.ToTable("Valves");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -3359,17 +3317,6 @@ namespace Server.Migrations
                         .IsRequired();
 
                     b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.BudgetItemValue", b =>
-                {
-                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Deliverable")
-                        .WithMany("BudgetItemValues")
-                        .HasForeignKey("DeliverableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Deliverable");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Communication", b =>
@@ -3750,8 +3697,6 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Deliverable", b =>
                 {
-                    b.Navigation("BudgetItemValues");
-
                     b.Navigation("BudgetItems");
 
                     b.Navigation("DeliverableResources");

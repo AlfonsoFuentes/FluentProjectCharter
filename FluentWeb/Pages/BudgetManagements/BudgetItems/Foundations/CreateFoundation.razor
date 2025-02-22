@@ -1,5 +1,5 @@
-﻿@page "/CreateFoundations/{ProjectId:guid}"
-
+﻿@page "/CreateFoundations/{ProjectId:guid}/{DeliverableId:guid}"
+@page "/CreateFoundations/{ProjectId:guid}"
 @using Shared.Models.BudgetItems.IndividualItems.Foundations.Requests
 <CreateTemplate @ref=CreateForm TItem="CreateFoundationRequest" @bind-Model="@Model"
                 Title="Create Foundation">

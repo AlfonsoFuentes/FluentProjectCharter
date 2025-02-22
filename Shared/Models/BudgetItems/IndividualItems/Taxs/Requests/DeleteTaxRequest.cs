@@ -8,7 +8,7 @@ namespace Shared.Models.BudgetItems.Taxs.Requests
         public override string Legend => Name;
         public Guid ProjectId { get; set; }
         public override string ClassName => StaticClass.Taxs.ClassName;
-
+        public Guid? DeliverableId { get; set; }
         public Guid Id { get; set; }
 
         public string EndPointName => StaticClass.Taxs.EndPoint.Delete;

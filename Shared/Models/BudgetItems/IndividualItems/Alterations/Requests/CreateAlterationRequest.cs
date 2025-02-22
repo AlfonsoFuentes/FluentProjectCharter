@@ -5,7 +5,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Alterations.Requests
 {
     public class CreateAlterationRequest : CreateMessageResponse, IRequest
     {
-
+        public Guid? DeliverableId { get; set; }
         public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;
 

@@ -1,4 +1,5 @@
-﻿using Shared.Models.BudgetItems.Taxs.Requests;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.BudgetItems.Taxs.Requests;
 
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Commands
@@ -19,7 +20,16 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Commands
 
                     if (row == null) { return Result.Fail(Data.NotFound); }
                     await Repository.UpdateAsync(row);
+                    if (Data.DeliverableId.HasValue)
+                    {
+                        var deliverable = await Repository.GetByIdAsync<Deliverable>(Data.DeliverableId.Value);
+                        if (deliverable != null)
+                        {
+                            deliverable.ShowBudgetItems = true;
+                            await Repository.UpdateAsync(deliverable);
+                        }
 
+                    }
                     await UpdateTaxesItems(Repository, row, Data);
                     Data.Map(row);
 
@@ -34,7 +44,8 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Commands
             private string[] GetCacheKeys(BudgetItem row)
             {
                 List<string> cacheKeys = [
-                ..StaticClass.BudgetItems.Cache.Key(row.Id)
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId),
+                ..StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

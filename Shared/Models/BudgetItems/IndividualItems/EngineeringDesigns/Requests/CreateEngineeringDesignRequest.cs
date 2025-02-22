@@ -5,7 +5,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Requests
 {
     public class CreateEngineeringDesignRequest : CreateMessageResponse, IRequest
     {
-
+        public Guid? DeliverableId { get; set; }
         public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;
 

@@ -21,5 +21,6 @@ namespace Shared.Models.Deliverables.Requests
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string? Duration {  get; set; } = string.Empty;
+        public string? Lag { get; set; } = string.Empty;
     }
 }

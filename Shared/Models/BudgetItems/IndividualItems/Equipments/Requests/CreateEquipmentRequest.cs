@@ -9,7 +9,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Equipments.Requests
 {
     public class CreateEquipmentRequest : CreateMessageResponse, IRequest
     {
-
+        public Guid? DeliverableId { get; set; }
         public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;
 

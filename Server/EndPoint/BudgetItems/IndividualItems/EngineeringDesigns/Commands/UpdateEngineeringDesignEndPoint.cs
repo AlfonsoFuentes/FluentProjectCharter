@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Server.Database.Entities.ProjectManagements;
 using Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Requests;
 
 
@@ -17,7 +18,16 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Command
                     {
                         return Result.Fail(data.NotFound);
                     }
+                    if (data.DeliverableId.HasValue)
+                    {
+                        var deliverable = await repository.GetByIdAsync<Deliverable>(data.DeliverableId.Value);
+                        if (deliverable != null)
+                        {
+                            deliverable.ShowBudgetItems = true;
+                            await repository.UpdateAsync(deliverable);
+                        }
 
+                    }
                     data.Map(row);
                     await repository.UpdateAsync(row);
 
@@ -29,7 +39,8 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Command
             private string[] GetCacheKeys(BudgetItem row)
             {
                 List<string> cacheKeys = [
-                    ..StaticClass.BudgetItems.Cache.Key(row.Id)
+                     ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId),
+                ..StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

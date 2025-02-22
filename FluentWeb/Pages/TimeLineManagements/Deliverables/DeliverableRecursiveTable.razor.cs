@@ -14,7 +14,8 @@ public partial class DeliverableRecursiveTable
     public DeliverableResponse EditRow { get; set; } = null!;
     [Parameter]
     public List<DeliverableResponse> Items { get; set; } = new();
-
+    [Parameter]
+    public Func<Task> GetAll { get; set; } = null!;
     [Parameter]
     public EventCallback<DeliverableResponse> OnEdit { get; set; }
     [Parameter]
@@ -47,4 +48,7 @@ public partial class DeliverableRecursiveTable
     public Func<DeliverableResponse, string, Task> OnChangeDependencies { get; set; } = null!;
     [Parameter]
     public Func<DeliverableResponse, string, Task> OnChangeName { get; set; } = null!;
+
+    [Parameter]
+    public Func<DeliverableResponse, string, Task> OnChangeLag { get; set; } = null!;
 }

@@ -17,13 +17,15 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings
         [NotMapped]
         public string InsulationCode => Insulation ? "1" : "0";
         public List<IsometricItem> IsometricItems { get; set; } = new List<IsometricItem>();
-        public static Pipe Create(Guid ProjectId)
+        public static Pipe Create(Guid ProjectId, Guid? DeliverableId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-           
+                DeliverableId = DeliverableId,
+
+
             };
         }
         public PipeTemplate? PipeTemplate { get; set; } = null!;

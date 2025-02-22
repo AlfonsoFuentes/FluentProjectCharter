@@ -1,8 +1,8 @@
 ﻿@using Shared.Enums.TasksRelationTypeTypes
 
 <div style="display: flex; width: 100%; height: 100%;">
-    <select value="@SelectedValue.Id" @onchange="HandleValueChanged" 
-    style="flex: 1; width: 100%; height: 100%; box-sizing: border-box; padding: 8px; font-size: inherit;" class="select-field">
+    <select value="@SelectedValue.Id" @onchange="HandleValueChanged"
+            style="flex: 1; width: 100%; height: 100%; box-sizing: border-box; padding: 8px; font-size: inherit;" class="select-field">
         @foreach (var option in Options)
         {
             <option value="@option.Id">@option.Name</option>
@@ -11,8 +11,8 @@
 </div>
 <style>
     .select-field select {
-        padding: 5px;
-        border-radius: 4px;
+        padding: 2px;
+        border-radius: 2px;
         border: 1px solid #ccc;
         background-color: #f9f9f9;
         transition: border-color 0.3s ease;
@@ -23,21 +23,15 @@
             outline: none;
         }
 
-    .soft-border {
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        padding: 1px;
-        background-color: #ffffff;
-        transition: all 0.3s ease;
-    }
+    
 </style>
 @code {
     [Parameter]
     public string Label { get; set; } = "Select Task Relation Type";
 
-    [Parameter,EditorRequired]
-    
-    public TasksRelationTypeEnum SelectedValue { get; set; }
+    [Parameter, EditorRequired]
+
+    public TasksRelationTypeEnum SelectedValue { get; set; } = TasksRelationTypeEnum.None;
 
     [Parameter]
     public EventCallback<TasksRelationTypeEnum> OnValueChanged { get; set; }

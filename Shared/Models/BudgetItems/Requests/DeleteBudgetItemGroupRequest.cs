@@ -8,7 +8,7 @@ namespace Shared.Models.BudgetItems
         public override string Legend => Name;
 
         public override string ClassName => StaticClass.BudgetItems.ClassName;
-
+        public Guid? DeliverableId { get; set; }
         public Guid ProjectId { get; set; }
         public List<Guid> DeleteGroup { get; set; } = new();
 
