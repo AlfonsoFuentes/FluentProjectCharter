@@ -4,44 +4,46 @@
 
 
 <FluentStack Orientation="Orientation.Vertical" Width="100%" HorizontalAlignment="HorizontalAlignment.Start" VerticalAlignment="VerticalAlignment.Top">
-    <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center" Gap="8">
-        <!-- Botón "Go Back" -->
-        <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowStepBack())" OnClick="@Navigation.NavigateBack" ToolTip="Go Back"></IconButton>
+    <div class="fixed-toolbar">
 
-        <!-- Botón "Add New" -->
-        <IconButton IconEnd="@(new Icons.Regular.Size20.Add())"
-                    OnClick="@AddNew"
-                    ToolTip="Add New Deliverable"
-                    Disabled="@(CreateRow != null || EditRow != null)"></IconButton>
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center">
+            <!-- Botón "Go Back" -->
+            <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowStepBack())" OnClick="@Navigation.NavigateBack" ToolTip="Go Back"></IconButton>
 
-        <!-- Botón "Move Up" -->
-        <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowUp())"
-                    OnClick="@Up"
-                    ToolTip="Move the selected deliverable up in the hierarchy"
-                    Disabled="@(DisableUpButton || CreateRow != null || EditRow != null)"></IconButton>
+            <!-- Botón "Add New" -->
+            <IconButton IconEnd="@(new Icons.Regular.Size20.Add())"
+                        OnClick="@AddNew"
+                        ToolTip="Add New Deliverable"
+                        Disabled="@(CreateRow != null || EditRow != null)"></IconButton>
 
-        <!-- Botón "Move Down" -->
-        <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowDown())"
-                    OnClick="@Down"
-                    ToolTip="Move the selected deliverable down in the hierarchy"
-                    Disabled="@(DisableDownButton || CreateRow != null || EditRow != null)"></IconButton>
+            <!-- Botón "Move Up" -->
+            <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowUp())"
+                        OnClick="@Up"
+                        ToolTip="Move the selected deliverable up in the hierarchy"
+                        Disabled="@(DisableUpButton || CreateRow != null || EditRow != null)"></IconButton>
 
-        <!-- Botón "Move Right" -->
-        <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowRight())"
-                    OnClick="@Right"
-                    ToolTip="Move the selected deliverable to a lower level"
-                    Disabled="@(DisableRigthButton || CreateRow != null || EditRow != null)"></IconButton>
+            <!-- Botón "Move Down" -->
+            <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowDown())"
+                        OnClick="@Down"
+                        ToolTip="Move the selected deliverable down in the hierarchy"
+                        Disabled="@(DisableDownButton || CreateRow != null || EditRow != null)"></IconButton>
 
-        <!-- Botón "Move Left" -->
-        <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowLeft())"
-                    OnClick="@Left"
-                    ToolTip="Move the selected deliverable to a higher level"
-                    Disabled="@(DisableLeftButton || CreateRow != null || EditRow != null)"></IconButton>
+            <!-- Botón "Move Right" -->
+            <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowRight())"
+                        OnClick="@Right"
+                        ToolTip="Move the selected deliverable to a lower level"
+                        Disabled="@(DisableRigthButton || CreateRow != null || EditRow != null)"></IconButton>
 
-        <FluentSpacer />
-        <FluentLabel Typo="Typography.Body">Selected: <strong>@CurrentRowName</strong></FluentLabel>
-    </FluentStack>
+            <!-- Botón "Move Left" -->
+            <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowLeft())"
+                        OnClick="@Left"
+                        ToolTip="Move the selected deliverable to a higher level"
+                        Disabled="@(DisableLeftButton || CreateRow != null || EditRow != null)"></IconButton>
 
+            <FluentSpacer />
+            <FluentLabel Typo="Typography.Body">Selected: <strong>@CurrentRowName</strong></FluentLabel>
+        </FluentStack>
+    </div>
     <DeliverableRecursiveTable Items="@Items"
                                OnEdit="EditItem"
                                OnDelete="Delete"
@@ -61,11 +63,27 @@
                                OnChangeDuration="UpdateDuration"
                                OnChangeStartDate="UpdateStartDate"
                                OnChangeEndDate="UpdateEndDate"
-                               GetAll="GetAll"
-                               />
+                               GetAll="GetAll" />
 </FluentStack>
 
+<style>
+    /* Contenedor principal */
+    .fixed-toolbar {
+        position: sticky; /* Mantiene la barra visible mientras se desplaza */
+        top: 0; /* Alinea la barra con la parte superior del contenedor */
+        z-index: 10; /* Asegura que la barra esté por encima del contenido */
+        background-color: white; /* Fondo claro para la barra */
+        padding: 8px 0; /* Espacio interno */
+        border-bottom: 1px solid #ddd; /* Línea divisoria */
+        width:100%;
+    }
 
+    /* Contenido principal */
+    .DeliverableRecursiveTable {
+        overflow-y: auto; /* Habilita el desplazamiento vertical */
+        max-height: calc(100vh - 100px); /* Altura máxima ajustada al viewport */
+    }
+</style>
 
 @code {
 

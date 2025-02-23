@@ -1,13 +1,13 @@
 ﻿using Shared.Enums.TasksRelationTypeTypes;
-using Shared.Models.FileResults.Generics.Reponses;
-using Shared.Models.FileResults.Generics.Request;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Shared.Models.Deliverables.Responses.NewResponses
 {
-    public class DeliverableResponseList : UpdateMessageResponse, IResponseAll, IRequest
+
+    public class DeliverableResponseList 
     {
+
         public string EndPointName => StaticClass.Deliverables.EndPoint.UpdateEDT;
 
         public DateTime StartDate => FlatOrderedItems.Where(x => x.StartDate.HasValue)
@@ -18,10 +18,8 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
                 .Select(x => x.EndDate!.Value)
                 .DefaultIfEmpty(DateTime.MinValue)
                 .Max();
-        public TimeSpan? Duration => StartDate-EndDate;
-        public override string Legend => "Deliverables";
-
-        public override string ClassName => StaticClass.Deliverables.ClassName;
+        public TimeSpan Duration => EndDate - StartDate;
+        
         public Guid ProjectId { get; set; }
         public List<DeliverableResponse> Items { get; set; } = new();
         public int LastOrder => Items.Count == 0 ? 1 : OrderedItems.Last().Order;
@@ -184,7 +182,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
 
                 if (minSubStartDate != DateTime.MaxValue)
                 {
-                    item.EndDate = minSubStartDate;
+                    item.StartDate = minSubStartDate;
                 }
                 if (maxSubEndDate != DateTime.MinValue)
                 {
@@ -233,9 +231,9 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
         public DeliverableResponse AddDeliverableResponse(Guid projectid)
         {
 
-            var flatlist = FlatOrderedItems;
-            var lasorder = flatlist.Count == 0 ? 1 : flatlist.Last().Order + 1;
-            var lastlabelorder = flatlist.Count == 0 ? 1 : flatlist.Last().LabelOrder + 1;
+
+            var lasorder = OrderedItems.Count == 0 ? 1 : OrderedItems.Last().Order + 1;
+            var lastlabelorder = FlatOrderedItems.Count == 0 ? 1 : FlatOrderedItems.Last().LabelOrder + 1;
             // Crear un nuevo DeliverableResponse
             var newDeliverable = new DeliverableResponse
             {
@@ -287,6 +285,11 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
         }
         public string UpdateDependencies(DeliverableResponse current, string dependencies)
         {
+            current.Dependants.ForEach(dep =>
+            {
+                dep.DependantId = null;
+
+            });
             current.Dependants = new();
             StringBuilder result = new StringBuilder();
             if (string.IsNullOrWhiteSpace(dependencies))
@@ -330,7 +333,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
 
                 }
 
-                dependencyFromFlatList.DependantId = current.DependantId;
+                dependencyFromFlatList.DependantId = current.Id;
                 // Agregar la dependencia válida a la lista de dependientes
                 current.Dependants.Add(dependencyFromFlatList);
             }
@@ -341,9 +344,9 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
         }
         public void UpdateLag(DeliverableResponse current, string lag)
         {
-            current.Lag= lag;
+            current.Lag = lag;
             Calculate();
-            
+
         }
         private string IsValidDependency(DeliverableResponse current, DeliverableResponse dependency)
         {

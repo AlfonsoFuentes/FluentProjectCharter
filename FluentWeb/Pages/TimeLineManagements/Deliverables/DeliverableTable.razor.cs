@@ -8,6 +8,7 @@ using Shared.Models.Deliverables.Responses;
 using Shared.Models.Deliverables.Responses.NewResponses;
 using Shared.Models.Milestones.Responses;
 using Shared.Models.Projects.Mappers;
+using System.Diagnostics;
 
 namespace FluentWeb.Pages.TimeLineManagements.Deliverables;
 
@@ -67,7 +68,7 @@ public partial class DeliverableTable
 
     async Task GetAll()
     {
-        var result = await GenericService.GetAll<DeliverableResponseList, DeliverableGetAll>(new DeliverableGetAll
+        var result = await GenericService.GetAll<DeliverableResponseListToUpdate, DeliverableGetAll>(new DeliverableGetAll
         {
             ProjectId = ProjectId,
         });
@@ -79,7 +80,7 @@ public partial class DeliverableTable
             var selectedRowId = SelectedRow?.Id;
 
             // Actualizar la lista Items
-            Response = result.Data;
+            Response = result.Data.ToResponse();
 
             // Restaurar SelectedRow si existe
             var FlatOrderedItems = DeliverableHelper.FlattenCompletedOrderedItems(Response.Items);
@@ -223,21 +224,27 @@ public partial class DeliverableTable
         if (SelectedRow == null) return;
         Response.MoveLeft(SelectedRow);
         Response.Calculate();
+        StateHasChanged();
         await UpdateResponseAsync();
 
     }
 
     private async Task<bool> UpdateResponseAsync()
     {
-        if (EditRow == null) return false;
-
-        var result = await GenericService.Update(Response);
-
+        if (CreateRow != null) return false;
+        Stopwatch sw = Stopwatch.StartNew();
+        var result = await GenericService.Update(Response.ToUpdate());
+        sw.Stop();
+        var elpase1 = sw.Elapsed;
+        sw.Restart();
         if (result.Succeeded)
         {
             await GetAll();
-            EditRow = null!;
+            sw.Stop();
+            var elpase2 = sw.Elapsed;
 
+            EditRow = null!;
+            _snackBar.ShowSuccess(result.Messages);
             return true;
         }
 
@@ -254,27 +261,29 @@ public partial class DeliverableTable
 
     private async Task UpdateDependencyType(DeliverableResponse task, TasksRelationTypeEnum type)
     {
-        await Task.Delay(100);
+
 
         Response.UpdateRelationType(task, type);
-        await UpdateResponseAsync();
         StateHasChanged();
+        //await UpdateResponseAsync();
+
     }
     private async Task UpdateName(DeliverableResponse task, string newValue)
     {
-        await Task.Delay(100);
-        task.Name = newValue;
 
-        await UpdateResponseAsync();
+        task.Name = newValue;
+        StateHasChanged();
+        //await UpdateResponseAsync();
         StateHasChanged();
     }
     private async Task UpdateDependencies(DeliverableResponse task, string newValue)
     {
-        await Task.Delay(100);
+
         var result = Response.UpdateDependencies(task, newValue);
+        StateHasChanged();
         if (string.IsNullOrEmpty(result))
         {
-            await UpdateResponseAsync();
+            //await UpdateResponseAsync();
         }
         else
         {
@@ -285,32 +294,36 @@ public partial class DeliverableTable
     }
     private async Task UpdateLag(DeliverableResponse task, string newValue)
     {
-        await Task.Delay(100);
+
         Response.UpdateLag(task, newValue);
-        await UpdateResponseAsync();
+        StateHasChanged();
+        //await UpdateResponseAsync();
 
         StateHasChanged();
     }
     private async Task UpdateDuration(DeliverableResponse task, string newValue)
     {
-        await Task.Delay(100);
+
         Response.UpdateDuration(task, newValue);
-        await UpdateResponseAsync();
+        StateHasChanged();
+        //await UpdateResponseAsync();
         StateHasChanged();
     }
     private async Task UpdateStartDate(DeliverableResponse task, DateTime? newValue)
     {
-        await Task.Delay(100);
+
         Response.UpdateStartDate(task, newValue);
-        await UpdateResponseAsync();
+        StateHasChanged();
+        //await UpdateResponseAsync();
         StateHasChanged();
 
     }
     private async Task UpdateEndDate(DeliverableResponse task, DateTime? newValue)
     {
-        await Task.Delay(100);
+
         Response.UpdateEndDate(task, newValue);
-        await UpdateResponseAsync();
+        StateHasChanged();
+        //await UpdateResponseAsync();
         StateHasChanged();
     }
 

@@ -1,6 +1,7 @@
 ﻿using Polly;
 using Polly.Extensions.Http;
 using Polly.Retry;
+using System.Diagnostics;
 using System.Net.Http.Json;
 
 namespace Web.Infrastructure.Services.Client
@@ -49,6 +50,7 @@ namespace Web.Infrastructure.Services.Client
             HttpResponseMessage result = new();
             try
             {
+                Stopwatch sw = Stopwatch.StartNew();
                 var HttpResponse = await RetryPolicy.ExecuteAsync(
                        async () =>
                        {
@@ -57,6 +59,8 @@ namespace Web.Infrastructure.Services.Client
                        });
             
                 HttpResponse.EnsureSuccessStatusCode();
+                sw.Stop();
+                var elpa = sw.Elapsed;
                 return HttpResponse;
             }
             catch (Exception ex)

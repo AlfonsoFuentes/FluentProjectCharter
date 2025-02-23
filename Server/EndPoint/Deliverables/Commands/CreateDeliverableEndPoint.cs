@@ -17,12 +17,12 @@ namespace Server.EndPoint.Deliverables.Commands
                         return Result.Fail();
                     var lastorder = await Repository.GetLastOrderAsync<Deliverable, Project>(Data.ProjectId);
 
-                    var row = Deliverable.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = Deliverable.Create(Data.ProjectId, Data.StartId, Data.PlanningId);
 
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    var cache = $"{StaticClass.Deliverables.Cache.GetAll(Data.ProjectId)}";
+                    var cache = StaticClass.Deliverables.Cache.GetAll(Data.ProjectId);
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
 
                     return Result.EndPointResult(result,

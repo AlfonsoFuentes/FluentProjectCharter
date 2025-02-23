@@ -12,14 +12,14 @@ namespace Server.Database.Entities.ProjectManagements
         public string Answer { get; set; } = string.Empty;
         public int LabelOrder { get; set; }
         public string WBS { get; set; } = string.Empty;
-        public static Deliverable Create(Guid ProjectId, Guid? StartId, Guid? PlanningId, int Order)
+        public static Deliverable Create(Guid ProjectId, Guid? StartId, Guid? PlanningId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 StartId = StartId,
                 ProjectId = ProjectId,
-                Order = Order,
+         
                 PlanningId = PlanningId,
             };
         }
@@ -38,7 +38,7 @@ namespace Server.Database.Entities.ProjectManagements
         public Guid? DependentantId { get; set; }
 
         [ForeignKey("DependentantId")]
-        public ICollection<Deliverable> Dependants { get; set; } = new List<Deliverable>(); // Colección de subtareas
+        public List<Deliverable> Dependants { get; set; } = new List<Deliverable>(); // Colección de subtareas
         public string? Lag { get; set; } = string.Empty;
         public string? Duration { get; set; } = string.Empty;
         public DateTime? StartDate { get; set; }

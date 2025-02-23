@@ -29,6 +29,24 @@ namespace Shared.Models.Deliverables.Mappers
 
             };
         }
+        public static DeliverableResponseListToUpdate ToUpdate(this DeliverableResponseList responseList )
+        {
+            return new()
+            {
+                ProjectId = responseList.ProjectId,
+                FlatOrderedItems = responseList.FlatOrderedItems,
+            };
+
+        }
+        public static DeliverableResponseList ToResponse(this DeliverableResponseListToUpdate responseList)
+        {
+            return new()
+            {
+                ProjectId = responseList.ProjectId,
+                Items = responseList.Items,
+            };
+
+        }
     }
 
 }

@@ -15,6 +15,7 @@ using Server.EndPoint.BudgetItems.IndividualItems.Valves.Queries;
 using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.Deliverables.Records;
 using Shared.Models.Deliverables.Responses.NewResponses;
+using System.Diagnostics;
 
 namespace Server.EndPoint.Deliverables.Queries
 {
@@ -29,54 +30,64 @@ namespace Server.EndPoint.Deliverables.Queries
                     // Validación inicial
                     if (!ValidateRequest(request, repository, out var validationError))
                     {
-                        return Result<DeliverableResponseList>.Fail(validationError);
+                        return Result<DeliverableResponseListToUpdate>.Fail(validationError);
                     }
 
                     try
                     {
+                        Stopwatch sw = Stopwatch.StartNew();
                         // Cargar todos los deliverables en una lista plana
                         var rows = await LoadAllDeliverablesFlat(request.ProjectId, repository);
                         if (rows == null || !rows.Any())
                         {
-                            return Result<DeliverableResponseList>.Fail(
+                            return Result<DeliverableResponseListToUpdate>.Fail(
                                 StaticClass.ResponseMessages.ReponseNotFound(StaticClass.Deliverables.ClassLegend));
                         }
-
+                        sw.Stop();
+                        var elapse1 = sw.Elapsed;
+                        sw.Start();
                         // Mapear los datos a DeliverableResponse
                         var flattenlist = rows.Select(x => x.MapFlat()).ToList();
-
+                        sw.Stop();
+                        var elapse2 = sw.Elapsed;
+                        sw.Start();
                         //Mappear los dependants
 
 
                         // Reconstruir la jerarquía
                         var maps = RebuildHierarchy(flattenlist);
-
+                        sw.Stop();
+                        var elapse3 = sw.Elapsed;
+                        sw.Start();
                         RebuildDependants(flattenlist, rows);
+                        sw.Stop();
+                        var elapse4 = sw.Elapsed;
+                        sw.Start();
                         // Validar que haya al menos un elemento raíz
                         if (!maps.Any())
                         {
-                            return Result<DeliverableResponseList>.Fail("No deliverables found for the given ProjectId.");
+                            return Result<DeliverableResponseListToUpdate>.Fail("No deliverables found for the given ProjectId.");
                         }
 
                         // Construir la respuesta
-                        var response = new DeliverableResponseList
+                        var response = new DeliverableResponseListToUpdate
                         {
 
                             Items = maps,
                             ProjectId = request.ProjectId,
                         };
 
-                        return Result<DeliverableResponseList>.Success(response);
+                        return Result<DeliverableResponseListToUpdate>.Success(response);
                     }
                     catch (InvalidOperationException ex)
                     {
                         Console.Error.WriteLine($"Hierarchy error: {ex.Message}");
-                        return Result<DeliverableResponseList>.Fail($"Data integrity issue: {ex.Message}");
+                        return Result<DeliverableResponseListToUpdate>.Fail($"Data integrity issue: {ex.Message}");
                     }
                     catch (Exception ex)
                     {
                         Console.Error.WriteLine($"Unexpected error: {ex}");
-                        return Result<DeliverableResponseList>.Fail("An unexpected error occurred while processing the request.");
+                        return Result<DeliverableResponseListToUpdate>.Fail("An unexpected error occurred while processing the request.");
                     }
                 });
             }
@@ -105,11 +116,12 @@ namespace Server.EndPoint.Deliverables.Queries
             /// </summary>
             private static async Task<List<Deliverable>> LoadAllDeliverablesFlat(Guid projectId, IQueryRepository repository)
             {
-                var cache = $"{StaticClass.Deliverables.Cache.GetAll(projectId)}";
+
+                var cache = StaticClass.Deliverables.Cache.GetAll(projectId);
                 Func<IQueryable<Deliverable>, IIncludableQueryable<Deliverable, object>> includes = x => x
                 .Include(x => x.Dependants)
                 .Include(x => x.BudgetItems)
-                .Include(x => x.Project);
+                ;
                 Expression<Func<Deliverable, bool>> criteria = x => x.ProjectId == projectId;
                 return await repository.GetAllAsync(Cache: cache, Criteria: criteria, Includes: includes);
             }
@@ -118,7 +130,7 @@ namespace Server.EndPoint.Deliverables.Queries
             /// <summary>
             /// Reconstruye la jerarquía a partir de una lista plana.
             /// </summary>
-            private static List<DeliverableResponse> RebuildHierarchy(IEnumerable<DeliverableResponse> flatList)
+            private static List<DeliverableResponse> RebuildHierarchy(List<DeliverableResponse> flatList)
             {
                 if (flatList == null)
                 {
@@ -127,9 +139,9 @@ namespace Server.EndPoint.Deliverables.Queries
 
                 var idToItemMap = flatList.ToDictionary(item => item.Id);
                 var rootItems = new List<DeliverableResponse>();
-
-                foreach (var item in flatList)
+                for (int i = 0; i < flatList.Count; i++)
                 {
+                    var item = flatList[i];
                     if (!item.ParentDeliverableId.HasValue)
                     {
                         // Si ParentDeliverableId es nulo, es una raíz
@@ -147,34 +159,79 @@ namespace Server.EndPoint.Deliverables.Queries
                             throw new InvalidOperationException($"El elemento con Id '{item.Id}' tiene un ParentDeliverableId '{item.ParentDeliverableId}' que no existe en la lista.");
                         }
                     }
-
                 }
+                //foreach (var item in flatList)
+                //{
+                //    if (!item.ParentDeliverableId.HasValue)
+                //    {
+                //        // Si ParentDeliverableId es nulo, es una raíz
+                //        rootItems.Add(item);
+                //    }
+                //    else
+                //    {
+                //        // Si tiene ParentDeliverableId, buscar el padre en el diccionario
+                //        if (idToItemMap.TryGetValue(item.ParentDeliverableId.Value, out var parent))
+                //        {
+                //            parent.SubDeliverables.Add(item);
+                //        }
+                //        else
+                //        {
+                //            throw new InvalidOperationException($"El elemento con Id '{item.Id}' tiene un ParentDeliverableId '{item.ParentDeliverableId}' que no existe en la lista.");
+                //        }
+                //    }
+
+                //}
 
                 return rootItems;
             }
 
-            private static void RebuildDependants(IEnumerable<DeliverableResponse> flatList, List<Deliverable> rows)
+            private static void RebuildDependants(List<DeliverableResponse> flatList, List<Deliverable> rows)
             {
-                foreach (var row in rows)
+                for (int i = 0; i < rows.Count; i++)
                 {
+                    var row = rows[i];
                     if (row.Dependants.Any())
                     {
                         var rowmaped = flatList.SingleOrDefault(x => x.Id == row.Id);
                         if (rowmaped != null)
                         {
-                            foreach (var dependant in row.Dependants)
+                            for (int j = 0; j < row.Dependants.Count; j++)
                             {
+                                var dependant = row.Dependants[j];
                                 var dependantmapped = flatList.SingleOrDefault(x => x.Id == dependant.Id);
                                 if (dependantmapped != null)
                                 {
+
                                     rowmaped.Dependants.Add(dependantmapped);
                                 }
                             }
+                            
                         }
 
                     }
 
                 }
+                //foreach (var row in rows)
+                //{
+                //    if (row.Dependants.Any())
+                //    {
+                //        var rowmaped = flatList.SingleOrDefault(x => x.Id == row.Id);
+                //        if (rowmaped != null)
+                //        {
+                //            foreach (var dependant in row.Dependants)
+                //            {
+                //                var dependantmapped = flatList.SingleOrDefault(x => x.Id == dependant.Id);
+                //                if (dependantmapped != null)
+                //                {
+
+                //                    rowmaped.Dependants.Add(dependantmapped);
+                //                }
+                //            }
+                //        }
+
+                //    }
+
+                //}
 
             }
         }
@@ -188,7 +245,7 @@ namespace Server.EndPoint.Deliverables.Queries
                     : TasksRelationTypeEnum.GetType(row.DependencyType),
                 StartDate = row.StartDate,
                 EndDate = row.EndDate,
-                Duration = row.Duration ?? "1d",
+                Duration = row.Duration,
                 Lag = row.Lag,
                 ParentDeliverableId = row.ParentDeliverableId,
                 Id = row.Id,
@@ -199,7 +256,7 @@ namespace Server.EndPoint.Deliverables.Queries
                 WBS = row.WBS,
                 LabelOrder = row.LabelOrder,
                 DependantId = row.DependentantId,
-                ShowBudgetItems = row.ShowBudgetItems,
+
                 Alterations = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Alteration>().Select(x => x.Map()).ToList(),
                 Structurals = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Structural>().Select(x => x.Map()).ToList(),
                 Foundations = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Foundation>().Select(x => x.Map()).ToList(),
@@ -216,8 +273,8 @@ namespace Server.EndPoint.Deliverables.Queries
                 Testings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Testing>().Select(x => x.Map()).ToList(),
 
                 EngineeringDesigns = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<EngineeringDesign>().Select(x => x.Map()).ToList(),
-                ProjectName = row.Project == null ? string.Empty : row.Project.Name,
-               
+                //ProjectName = row.Project == null ? string.Empty : row.Project.Name,
+
             };
         }
     }

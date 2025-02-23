@@ -1,4 +1,5 @@
-﻿using Shared.Enums.TasksRelationTypeTypes;
+﻿using Shared.Enums.DeliverableStatuss;
+using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.BudgetItems.IndividualItems.Alterations.Responses;
 using Shared.Models.BudgetItems.IndividualItems.EHSs.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Electricals.Responses;
@@ -40,7 +41,10 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
         public string sDependences => string.Join(",", OrderedDependants.Select(d => d.LabelOrder.ToString()));
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public DateTime EndDateValue => EndDate.HasValue ? EndDate.Value : DateTime.Now;
+        public DateTime StartDateValue => StartDate.HasValue ? StartDate.Value : DateTime.Now;
         public TasksRelationTypeEnum DependencyType { get; set; } = TasksRelationTypeEnum.None;
+        public DeliverableStatus DeliverableStatus { get; set; } = DeliverableStatus.None;
         public string? Duration
         {
             get
@@ -61,7 +65,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
 
             if (string.IsNullOrWhiteSpace(rawinput))
             {
-                return;
+                rawinput = "1d";
             }
             var input = rawinput.Trim();
 
@@ -143,11 +147,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
                 SubDeliverables.Remove(subDeliverable);
             }
         }
-        public bool GetCircularReference(DeliverableResponse newCurrent = null!)
-        {
-
-            return false;
-        }
+        
 
         public void SetStartDateWithLag(DateTime date)
         {
@@ -278,6 +278,7 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
         public List<IBudgetItemResponse> Items => BudgetItems.OrderBy(x => x.Nomenclatore).ToList();
         public List<IBudgetItemResponse> BudgetItems => [.. Expenses, .. Capital];
 
-        public bool ShowBudgetItems {  get; set; }
+        public bool ShowBudgetItems { get; set; }
+        public bool IsExpanded { get; set; } = true;
     }
 }

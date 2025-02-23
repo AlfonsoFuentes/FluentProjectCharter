@@ -1,18 +1,15 @@
-﻿window.moveElementToBody = (element) => {
-    if (element && element.parentElement) {
-        document.body.appendChild(element);
-    }
+﻿window.getWindowDimensions = () => {
+    return {
+        width: window.innerWidth,
+        height: window.innerHeight
+    };
 };
-// dragDropHelper.js
-window.preventDefault = function (event) {
-    if (event && typeof event.preventDefault === "function") {
-        event.preventDefault();
-    } else {
-        console.error("Invalid event passed to preventDefault");
-    }
-};
-// dragDropHelper.js
-window.handleDragOver = function (event) {
-    // Previene el comportamiento predeterminado
-    window.preventDefault(event);
+window.onWindowResize = (dotNetHelper) => {
+    window.addEventListener('resize', () => {
+        const dimensions = {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+        dotNetHelper.invokeMethodAsync('UpdateWindowDimensions', dimensions);
+    });
 };

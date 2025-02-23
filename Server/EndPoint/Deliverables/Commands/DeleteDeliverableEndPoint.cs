@@ -26,7 +26,7 @@ namespace Server.EndPoint.Deliverables.Commands
 
           
 
-                    var cache = $"{StaticClass.Deliverables.Cache.GetAll(Data.ProjectId)}";
+                    var cache = StaticClass.Deliverables.Cache.GetAll(Data.ProjectId);
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
 
 

@@ -1,74 +1,206 @@
 ﻿@page "/ganttchart/{ProjectId:guid}"
+@implements IDisposable
+@using Shared.Enums.DeliverableStatuss
+@using Shared.Models.Deliverables.Responses.NewResponses
+<!-- Botón "Go Back" -->
+<IconButton IconEnd="@(new Icons.Regular.Size20.ArrowStepBack())" OnClick="@Navigation.NavigateBack" ToolTip="Go Back"></IconButton>
+<h3>Gantt Chart</h3>
 
-<h3>Gant Chart</h3>
-@if (Response.Items.Count==0)
+@if (Response == null)
 {
-    @("No data to show")
+    <p>Loading...</p>
+}
+else if (!Response.Items.Any())
+{
+    <p>No Items to Show</p>
 }
 else
 {
     <div class="gantt-container">
-        <div class="gantt-header">
-            @for (int i = 0; i < 5; i++)
+        <div class="gantt-sidebar">
+            <div class="gantt-sidebar-header">Tasks</div>
+            @foreach (var task in Response.OrderedItems)
             {
-                <div class="gantt-day">@Response.StartDate.AddDays(i).ToString("dd/MM")</div>
+                @RenderTaskRow(task, 0)
             }
         </div>
-        <div class="gantt-body">
-            @foreach (var item in Items)
-            {
-                <GanttTask Task="@item" StartDate="@Response.StartDate" />
-            }
+        <div class="gantt-timeline">
+            <div class="gantt-header">
+                @if (debug)
+                {
+
+                }
+                @for (int i = 0; i < Response.Duration.Days; i++)
+                {
+                    <div class="gantt-column" style="min-width: @(ColumnWidth)px;">
+                        <div class="gantt-date">@Response.StartDate.AddDays(i).ToString("dd/MM")</div>
+                    </div>
+                }
+            </div>
+            <div class="gantt-body" style="width: @(Response.Duration.Days * ColumnWidth)px;">
+                @foreach (var task in GetFlattenedTasks(Response.OrderedItems))
+                {
+                    <div class="gantt-row" style="padding-left: @(task.Level * 20)px">
+                        @{
+                            var taskStart = (task.Task.StartDateValue - Response.StartDate).Days;
+                            var duration = (task.Task.EndDateValue - task.Task.StartDateValue).Days + 1;
+                            var width = duration * ColumnWidth;
+                            var left = taskStart * ColumnWidth;
+                        }
+                        <div class="gantt-bar @(task.Task.OrderedSubDeliverables.Any() ? "parent-task" : "")"
+                             style="width: @(width)px; left: @(left)px; background-color: @GetDeliverableColor(task.Task.DeliverableStatus)">
+                            <div class="gantt-bar-label"></div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 }
 
+@code {
+    bool debug = true;
+}
+
+
 <style>
     .gantt-container {
         display: flex;
-        flex-direction: column;
+        margin: 20px;
+        overflow-x: auto;
         font-family: Arial, sans-serif;
+        width: 100%;
+        min-height: 500px;
+    }
+
+    .gantt-sidebar {
+        min-width: 250px;
+        width: 250px;
+        flex-shrink: 0;
+        border-right: 1px solid #ddd;
+        background-color: #fff;
+        overflow-y: auto;
+        resize: horizontal; /* Permite ajustar el ancho */
+        overflow: auto; /* Necesario para que el resize funcione */
+    }
+
+    .gantt-sidebar-header {
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #f5f5f5;
+        font-weight: bold;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .gantt-sidebar-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 10px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        white-space: normal; /* Permite que el texto se divida en varias líneas */
+        overflow: hidden; /* Evita que el texto se desborde */
+        text-overflow: ellipsis; /* Agrega puntos suspensivos (...) */
+        min-height: 40px; /* Altura mínima */
+        max-width: calc(100% - 40px); /* Deja espacio para el ícono de expansión */
+    }
+
+    .expand-icon {
+        margin-right: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+        .gantt-sidebar-item:hover {
+            background-color: #f5f5f5;
+        }
+
+    
+
+
+
+
+    .gantt-row {
+        display: flex;
+        align-items: center;
+        padding-left: 20px; /* Indentación para subtareas */
+        border-bottom: 1px solid #eee;
+        min-height: 40px; /* Altura mínima */
+        white-space: normal; /* Permite que el texto se divida en varias líneas */
+        overflow: hidden; /* Evita que el texto se desborde */
+    }
+
+    .gantt-bar {
+        position: absolute;
+        height: 20px;
+        margin-top: 5px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+        .gantt-bar.parent-task {
+            opacity: 0.9;
+            height: 20px;
+            margin-top: 5px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+        }
+
+    .gantt-bar-label {
+        position: absolute;
+        white-space: nowrap;
+        color: white;
+        padding: 5px;
+        font-size: 0.8em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    gantt-timeline {
+        display: flex;
+        flex-direction: column; /* Apila el encabezado y el cuerpo */
+        overflow-x: auto;
+        width: 100%;
+        min-width: fit-content;
     }
 
     .gantt-header {
         display: flex;
-        border-bottom: 1px solid #ccc;
+        background-color: #f5f5f5;
+        width: fit-content; /* Ajusta el ancho al contenido */
+        min-width: 100%; /* Ocupa al menos el ancho del contenedor */
+        height: 40px; /* Mismo alto que gantt-sidebar-header */
+        padding: 0 10px; /* Espacio interno consistente */
+        align-items: center; /* Centra verticalmente el contenido */
+        border-bottom: 1px solid #ddd; /* Línea divisoria */
     }
 
-    .gantt-day {
-        width: 20px; /* Ancho de cada día */
+    .gantt-column {
+        min-width: 60px; /* Usa el mismo valor que en el cuerpo */
+        border-right: 1px solid #ddd;
+        box-sizing: border-box; /* Incluye bordes en el cálculo del ancho */
+    }
+
+    .gantt-date {
+        padding: 10px 5px;
         text-align: center;
-        border-right: 1px solid #ccc;
+        font-size: 0.9em;
     }
 
     .gantt-body {
-        display: flex;
-        flex-direction: column;
+        position: relative;
+        overflow: visible;
+        width: fit-content; /* Ancho dinámico */
     }
 
-    .gantt-task {
-        display: flex;
-        align-items: center;
-        height: 30px;
+    .gantt-row {
+        height: 40px;
         border-bottom: 1px solid #eee;
-    }
-
-    .gantt-task-name {
-        width: 150px; /* Ancho fijo para los nombres de las tareas */
-        padding: 5px;
-        background-color: #f9f9f9;
-        border-right: 1px solid #ccc;
-    }
-
-    .gantt-task-bar {
-        height: 100%;
-        background-color: #4caf50;
         position: relative;
     }
 </style>
-@code {
- 
 
-    // private DateTime StartDate = DateTime.Today;
-    // private int DaysInTimeline = 30; // Número de días en el eje horizontal
-}

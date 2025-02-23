@@ -4,6 +4,26 @@
 
 <FluentStack Orientation="Orientation.Vertical" Width="100%" HorizontalAlignment="HorizontalAlignment.Start" VerticalAlignment="VerticalAlignment.Top">
     <FluentLabel Typo="Typography.Subject"><strong>@Title</strong></FluentLabel>
+    <div>
+        <FluentGrid AdaptiveRendering=true Justify="JustifyContent.FlexStart">
+            <FluentGridItem xs="12" sm="3">
+                <FluentLabel Typo="Typography.Body"><strong>Capital, $USD: </strong>@Response.sTotalCapital</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="3">
+                <FluentLabel Typo="Typography.Body"><strong>Expenses, $USD: </strong>@Response.sTotalExpenses</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="3">
+                <FluentLabel Typo="Typography.Body"><strong>Engineering @($"({Response.PercentageEngineering}%)"), $USD: </strong>@Response.sEngineeringBudget</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="3">
+                <FluentLabel Typo="Typography.Body"><strong>Contingency @($"({Response.PercentageContingency}%)"), $USD: </strong>@Response.sContingenyBudget</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="6">
+                <FluentLabel Typo="Typography.H4"><strong>Appropiation, $USD: </strong>@Response.sTotalBudget</FluentLabel>
+            </FluentGridItem>
+            <FluentGridItem xs="12" sm="6"></FluentGridItem>
+        </FluentGrid>
+    </div>
     <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center">
 
         <!-- Botón "Go Back" -->
