@@ -1113,6 +1113,7 @@ namespace Shared.StaticClasses
 
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string GetAllByDeliverable = $"{ClassName}/{Actions.GetAll}ByDeliverable";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
                 public static string DeleteGroup = $"{ClassName}/{Actions.Delete}DeleteGroup";
@@ -1124,8 +1125,18 @@ namespace Shared.StaticClasses
             public static class Cache
             {
 
-                public static string[] Key(Guid Id, Guid projectId) => new[] { GetAll(projectId), GetById(Id) };
+                public static string[] Key(Guid Id, Guid projectId, Guid? deliverableId)
+                {
+                    var deliverablecache = deliverableId.HasValue ? GetAllByDeliverable(deliverableId.Value) : string.Empty;
+                    var result = new[] {
+                        GetAll(projectId)
+                        ,GetById(Id),
+                        deliverablecache
+                    };
+                    return result;
+                }
                 public static string GetAll(Guid projectId) => $"GetAll-{ClassName}-{projectId}";
+                public static string GetAllByDeliverable(Guid deliverableid) => $"GetAllByDeliverable-{ClassName}-{deliverableid}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName

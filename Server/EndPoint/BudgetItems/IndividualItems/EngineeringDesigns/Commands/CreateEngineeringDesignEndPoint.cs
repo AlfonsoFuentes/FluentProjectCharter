@@ -42,7 +42,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Command
             {
                 var deliverable = row.DeliverableId.HasValue ? StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId) : new[] { string.Empty };
                 List<string> cacheKeys = [
-                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId),
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.DeliverableId),
                  ..deliverable
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

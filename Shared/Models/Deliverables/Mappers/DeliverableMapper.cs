@@ -7,7 +7,7 @@ namespace Shared.Models.Deliverables.Mappers
     public static class DeliverableMapper
     {
 
-        public static CreateDeliverableRequest ToCreate(this DeliverableResponse response, Guid? startid, Guid? planid)
+        public static CreateDeliverableRequest ToCreate(this DeliverableResponse response, Guid? startid=null, Guid? planid = null)
         {
             return new()
             {

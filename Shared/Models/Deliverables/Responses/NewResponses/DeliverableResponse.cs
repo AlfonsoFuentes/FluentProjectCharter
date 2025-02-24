@@ -43,6 +43,8 @@ namespace Shared.Models.Deliverables.Responses.NewResponses
         public DateTime? EndDate { get; set; }
         public DateTime EndDateValue => EndDate.HasValue ? EndDate.Value : DateTime.Now;
         public DateTime StartDateValue => StartDate.HasValue ? StartDate.Value : DateTime.Now;
+        public string sEndDateValue => EndDateValue.ToString("d");
+        public string sStartDateValue => StartDateValue.ToString("d");
         public TasksRelationTypeEnum DependencyType { get; set; } = TasksRelationTypeEnum.None;
         public DeliverableStatus DeliverableStatus { get; set; } = DeliverableStatus.None;
         public string? Duration

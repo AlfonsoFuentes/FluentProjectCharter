@@ -19,7 +19,7 @@ namespace Server.EndPoint.BudgetItems.Commands
 
 
                     List<string> cache = [
-                        .. StaticClass.BudgetItems.Cache.Key(row.Id,row.ProjectId)];
+                        .. StaticClass.BudgetItems.Cache.Key(row.Id,row.ProjectId,row.DeliverableId)];
                     if (Data.DeliverableId.HasValue)
                     {
                         var deliverable = await Repository.GetByIdAsync<Deliverable>(Data.DeliverableId.Value);
@@ -28,7 +28,7 @@ namespace Server.EndPoint.BudgetItems.Commands
                             deliverable.ShowBudgetItems = true;
                             await Repository.UpdateAsync(deliverable);
                         }
-                  
+
                     }
                     cache.Add(StaticClass.Deliverables.Cache.GetAll(row.ProjectId));
                     await Repository.RemoveAsync(row);

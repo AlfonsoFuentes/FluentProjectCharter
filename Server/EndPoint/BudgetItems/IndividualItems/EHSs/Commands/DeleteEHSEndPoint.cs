@@ -40,11 +40,10 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EHSs.Commands
             }
             private string[] GetCacheKeys(BudgetItem row)
             {
+                var deliverable = row.DeliverableId.HasValue ? StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId) : new[] { string.Empty };
                 List<string> cacheKeys = [
-                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId),
-                ..StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId)
-
-
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.DeliverableId),
+                 ..deliverable
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

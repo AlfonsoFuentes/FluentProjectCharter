@@ -1,71 +1,41 @@
+ï»¿using FluentWeb.Pages.TimeLineManagements.GanttCharts;
 using FluentWeb.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using Shared.Enums.DeliverableStatuss;
 using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.Deliverables.Mappers;
 using Shared.Models.Deliverables.Records;
 using Shared.Models.Deliverables.Requests;
 using Shared.Models.Deliverables.Responses;
 using Shared.Models.Deliverables.Responses.NewResponses;
-using Shared.Models.Milestones.Responses;
-using Shared.Models.Projects.Mappers;
 using System.Diagnostics;
 
-namespace FluentWeb.Pages.TimeLineManagements.Deliverables;
-
-public partial class DeliverableTable
+namespace FluentWeb.Pages.TimeLineManagements.NewDeliverables;
+public partial class NewDeliverablesPage
 {
     [Parameter]
     public Guid ProjectId { get; set; }
 
-    [Parameter]
-    public string IdType { get; set; } = string.Empty;
-
-    [Parameter]
-    public Guid Id { get; set; }
-
-    Guid? StartId;
-    Guid? PlanningId;
-
     DeliverableResponseList Response { get; set; } = new();
-    public List<DeliverableResponse> Items => Response.OrderedItems.Count == 0 ? new() :
-        StartId.HasValue ? Response.OrderedItems.Where(x => x.StartId == StartId).ToList() :
-        Response.OrderedItems;
-
+    public List<DeliverableResponse> Items => Response.OrderedItems.Count == 0 ? new() :Response.OrderedItems;
     DeliverableResponse CreateRow = null!;
     DeliverableResponse EditRow = null!;
     DeliverableResponse SelectedRow = null!;
-
-    string CurrentRowName => SelectedRow == null ? string.Empty : TruncateService.Truncate(SelectedRow.Name, 30);
-
-    // Propiedad para deshabilitar el botón "Up"
+    // Propiedad para deshabilitar el botÃ³n "Up"
     private bool DisableUpButton => SelectedRow == null || !Response.CanMoveUp(SelectedRow);
 
-    // Propiedad para deshabilitar el botón "Down"
+    string CurrentRowName => SelectedRow == null ? string.Empty : TruncateService.Truncate(SelectedRow.Name, 30);
+    // Propiedad para deshabilitar el botÃ³n "Down"
     bool DisableDownButton => SelectedRow == null || !Response.CanMoveDown(SelectedRow);
-    // Propiedad para deshabilitar el botón "Left"
+    // Propiedad para deshabilitar el botÃ³n "Left"
     private bool DisableLeftButton => SelectedRow == null || Response.FindParent(SelectedRow) == null;
-    // Propiedad para deshabilitar el botón "Right"
+    // Propiedad para deshabilitar el botÃ³n "Right"
     private bool DisableRigthButton => SelectedRow == null || !Response.CanMoveRight(SelectedRow);
-
-
     protected override async Task OnInitializedAsync()
     {
-        ValidateIdType();
         await GetAll();
     }
-
-    private void ValidateIdType()
-    {
-        if (IdType.Equals("Planning", StringComparison.OrdinalIgnoreCase))
-        {
-            PlanningId = Id;
-        }
-        else if (IdType.Equals("Start", StringComparison.OrdinalIgnoreCase))
-        {
-            StartId = Id;
-        }
-    }
-
     async Task GetAll()
     {
         var result = await GenericService.GetAll<DeliverableResponseListToUpdate, DeliverableGetAll>(new DeliverableGetAll
@@ -86,14 +56,11 @@ public partial class DeliverableTable
             var FlatOrderedItems = DeliverableHelper.FlattenCompletedOrderedItems(Response.Items);
             SelectedRow = FlatOrderedItems.FirstOrDefault(x => x.Id == selectedRowId)!;
 
-            // Forzar la actualización de la interfaz
+            // Forzar la actualizaciÃ³n de la interfaz
             StateHasChanged();
         }
+        
     }
-
-    /// <summary>
-    /// Centraliza la gestión de estados para evitar inconsistencias.
-    /// </summary>
     private void SetState(DeliverableResponse? createRow = null, DeliverableResponse? editRow = null, DeliverableResponse? selectedRow = null)
     {
         // Limpiar todos los estados antes de aplicar nuevos valores
@@ -106,26 +73,28 @@ public partial class DeliverableTable
         EditRow = editRow!;
         SelectedRow = selectedRow!;
 
-        // Forzar la actualización de la interfaz
+        // Forzar la actualizaciÃ³n de la interfaz
         StateHasChanged();
     }
+    
     public void AddNew()
     {
         var newDeliverable = Response.AddDeliverableResponse(ProjectId);
-        SetState(createRow: newDeliverable); // Activar el modo de creación
+        SetState(createRow: newDeliverable); // Activar el modo de creaciÃ³n
     }
     public async Task Create(DeliverableResponse createRow)
     {
         if (createRow == null) return;
 
-        var create = createRow.ToCreate(StartId, PlanningId);
+        var create = createRow.ToCreate();
         var result = await GenericService.Create(create);
 
         if (result.Succeeded)
         {
             SetState(); // Limpiar todos los estados
-            await GetAll();
             Response.Calculate();
+            await GetAll();
+           
             StateHasChanged();
         }
     }
@@ -145,7 +114,7 @@ public partial class DeliverableTable
     {
         if (row == null) return;
 
-        // Alternar la selección de la fila
+        // Alternar la selecciÃ³n de la fila
         var newSelectedRow = SelectedRow?.Id == row.Id ? null : row;
 
         // Limpiar EditRow si no coincide con la fila seleccionada
@@ -209,7 +178,8 @@ public partial class DeliverableTable
         Response.Calculate();
         await UpdateResponseAsync();
 
-    }async Task Left()
+    }
+    async Task Left()
     {
         if (SelectedRow == null) return;
         Response.MoveLeft(SelectedRow);
@@ -242,7 +212,7 @@ public partial class DeliverableTable
     }
     void EditItem(DeliverableResponse item)
     {
-        SetState(editRow: item, selectedRow: item); // Activar el modo de edición
+        SetState(editRow: item, selectedRow: item); // Activar el modo de ediciÃ³n
     }
     private async Task UpdateDependencyType(DeliverableResponse task, TasksRelationTypeEnum type)
     {
@@ -311,5 +281,83 @@ public partial class DeliverableTable
         //await UpdateResponseAsync();
         StateHasChanged();
     }
+    private RenderFragment RenderTaskRow(DeliverableResponse task, int level) => builder =>
+    {
+        builder.OpenElement(0, "div");
+        builder.AddAttribute(1, "class", "gantt-sidebar-item");
+        builder.AddAttribute(2, "style", $"padding-left: {level * 20}px");
 
+        if (task.OrderedSubDeliverables.Any())
+        {
+            builder.OpenElement(3, "span");
+            builder.AddAttribute(4, "class", "expand-icon");
+            builder.AddAttribute(5, "onclick", EventCallback.Factory.Create(this, () => ToggleTask(task)));
+            builder.AddContent(6, task.IsExpanded ? "â–¼" : "â–º");
+            builder.CloseElement();
+        }
+
+        builder.AddContent(7, task.Name);
+        builder.CloseElement();
+
+        if (task.IsExpanded)
+        {
+            foreach (var subtask in task.OrderedSubDeliverables)
+            {
+                builder.AddContent(8, RenderTaskRow(subtask, level + 1));
+            }
+        }
+    };
+    private int WindowWidth { get; set; }
+    private DotNetObjectReference<NewDeliverablesPage> _dotNetRef = null!;
+    private void ToggleTask(DeliverableResponse task)
+    {
+        task.IsExpanded = !task.IsExpanded;
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && Items.Count > 0)
+        {
+            var dimensions = await _jsRuntime.InvokeAsync<Dictionary<string, int>>("getWindowDimensions");
+            WindowWidth = dimensions["width"];
+            _dotNetRef = DotNetObjectReference.Create(this);
+            await _jsRuntime.InvokeVoidAsync("onWindowResize", _dotNetRef);
+
+            // AsegÃºrate de que los elementos estÃ©n presentes antes de sincronizar el desplazamiento
+            await _jsRuntime.InvokeVoidAsync("syncScroll");
+            await InvokeAsync(async () =>
+            {
+                StateHasChanged();
+                await Task.Delay(100); // Espera breve para asegurar que el DOM estÃ© actualizado
+                await _jsRuntime.InvokeVoidAsync("syncRowHeights");
+            });
+        }
+    }
+
+    [JSInvokable]
+    public void UpdateWindowDimensions(Dictionary<string, int> dimensions)
+    {
+        WindowWidth = dimensions["width"];
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        _dotNetRef?.Dispose();
+    }
+
+    private int ColumnWidth => Math.Max(60, (int)(WindowWidth / Response.Duration.Days));
+
+    private string GetDeliverableColor(DeliverableStatus status)
+    {
+        return status switch
+        {
+            DeliverableStatus.Completed => "#4CAF50",    // Verde
+            DeliverableStatus.InProgress => "#2196F3",   // Azul
+            DeliverableStatus.Delayed => "#f44336",      // Rojo
+            DeliverableStatus.OnHold => "#FFA726",       // Naranja
+            _ => "#9E9E9E"                               // Gris para otros estados
+        };
+    }
 }

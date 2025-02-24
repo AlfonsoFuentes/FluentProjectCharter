@@ -2,7 +2,7 @@
 
 <div style="display: flex; width: 100%; height: 100%;">
     <select value="@SelectedValue.Id" @onchange="HandleValueChanged"
-            style="flex: 1; width: 100%; height: 100%; box-sizing: border-box; padding: 8px; font-size: inherit;" class="select-field">
+            style="flex: 1; width: 100%; height: 100%; box-sizing: border-box;  font-size: inherit;" class="select-field">
         @foreach (var option in Options)
         {
             <option value="@option.Id">@option.Name</option>
@@ -13,7 +13,7 @@
     .select-field select {
         padding: 2px;
         border-radius: 2px;
-        border: 1px solid #ccc;
+    
         background-color: #f9f9f9;
         transition: border-color 0.3s ease;
     }

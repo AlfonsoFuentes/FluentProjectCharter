@@ -1,0 +1,423 @@
+﻿@using Shared.Models.Deliverables.Responses.NewResponses
+@* <div class="gantt-sidebar-item">
+    <!-- Columna 1: LabelOrder -->
+    <span class="label-order-column" @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
+          @onclick="() => OnClick.InvokeAsync(Item)">@Item.LabelOrder</span>
+
+    <!-- Columna 2: WBS -->
+    <span class="wbs-column" @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
+          @onclick="() => OnClick.InvokeAsync(Item)">@Item.WBS</span>
+
+    <!-- Columna 3: Ícono de Expansión -->
+    <div class="expand-icon" style="padding-left: @(Level * 20)px">
+        @if (Item.SubDeliverables.Any())
+        {
+            <span class="expand-icon" @onclick="() => ToggleItem(Item)">
+                @(Item.IsExpanded ? "▼" : "►")
+            </span>
+        }
+        else
+        {
+            <span class="expand-icon"></span>
+        }
+    </div>
+
+    <!-- Columna 4: Nombre del Deliverable -->
+    <span class="name-column" style="padding-left: @(Level * 20 + 10)px;" @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
+          @onclick="() => OnClick.InvokeAsync(Item)">
+        <EditableField T="string" Value="Item.Name" OnValueChanged="newValue => OnChangeName.Invoke(Item, newValue)" IsEditable="EditRow == Item || CreateRow == Item" />
+   @*      @if (EditRow == Item || CreateRow == Item)
+        {
+            <input type="text"
+                   value="@Item.Name"
+                   class="select-field"
+                   style="flex: 1; width: 100%; height: 100%; box-sizing: border-box; padding: 2px; font-size: inherit;"
+                   @onchange="newValue => OnChangeName.Invoke(Item, newValue.ToString())"
+                   @oninput="newValue => OnChangeName.Invoke(Item, newValue.ToString())" />
+        }
+        else
+        {
+            @Item.Name
+        } 
+    </span>
+
+    <!-- Columna 5: StartDate -->
+    <span class="start-end-date-column" @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
+          @onclick="() => OnClick.InvokeAsync(Item)">
+        <EditableDateField T="DateTime" Value="Item.StartDate" OnValueChanged="newValue => OnChangeStartDate.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
+       @*  @if (EditRow == Item || CreateRow == Item)
+        {
+            <input type="date"
+                   value="@Item.StartDate"
+                   class="select-field"
+                   style="flex: 1; width: 100%; height: 100%; box-sizing: border-box; padding: 2px; font-size: inherit;"
+                   @onchange="newValue => OnChangeStartDate.Invoke(Item, DateTime.Parse(newValue.ToString()))" />
+        }
+        else
+        {
+            @Item.sStartDateValue
+        }
+    </span>
+
+    <!-- Columna 6: EndDate -->
+    <span class="start-end-date-column" @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
+          @onclick="() => OnClick.InvokeAsync(Item)">
+        <EditableDateField T="DateTime" Value="Item.EndDate" OnValueChanged="newValue => OnChangeEndDate.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
+       @*  @if (EditRow == Item || CreateRow == Item)
+        {
+            <input type="date"
+                   value="@Item.EndDate"
+                   class="select-field"
+                   style="flex: 1; width: 100%; height: 100%; box-sizing: border-box; padding: 2px; font-size: inherit;"
+                   @onchange="newValue => OnChangeEndDate.Invoke(Item, DateTime.Parse(newValue.ToString()))" />
+        }
+        else
+        {
+            @Item.sEndDateValue
+        } 
+    </span>
+
+    <!-- Columna 7: Duration -->
+    <span class="duration-column" @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
+          @onclick="() => OnClick.InvokeAsync(Item)">
+        <EditableField T="string" Value="Item.Duration" OnValueChanged="newValue => OnChangeDuration.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
+      @*   @if (EditRow == Item || CreateRow == Item)
+        {
+            <input type="text"
+                   value="@Item.Duration"
+                   class="select-field"
+                   style="flex: 1; width: 100%; height: 100%; box-sizing: border-box; padding: 2px; font-size: inherit;"
+                   @onchange="newValue => OnChangeDuration.Invoke(Item, newValue.ToString())" />
+        }
+        else
+        {
+            @Item.Duration
+        }
+    </span>
+
+    <!-- Columna 8: Dependences -->
+    <span class="dependencies-column" @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
+          @onclick="() => OnClick.InvokeAsync(Item)">
+        <EditableField T="string" Value="Item.sDependences" OnValueChanged="newValue => OnChangeDependencies.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
+       @*  @if (EditRow == Item || CreateRow == Item)
+        {
+            <input type="text"
+                   value="@Item.sDependences"
+                   class="select-field"
+                   style="flex: 1; width: 100%; height: 100%; box-sizing: border-box; padding: 2px; font-size: inherit;"
+                   @onchange="newValue => OnChangeDependencies.Invoke(Item, newValue.ToString())" />
+        }
+        else
+        {
+            @Item.sDependences
+        } 
+    </span>
+
+    <!-- Columna 9: Type -->
+    <span class="type-column" @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
+          @onclick="() => OnClick.InvokeAsync(Item)">
+        @if (Item.Dependants.Any())
+        {
+            if ((EditRow == Item || CreateRow == Item))
+            {
+                <TaskRelationTypeSelector SelectedValue="@Item.DependencyType"
+                                          OnValueChanged="@((arg)=>OnChangeDependencyType.Invoke(Item,arg))" />
+            }
+            else
+            {
+                @Item.DependencyType.Name
+            }
+
+        }
+     @*    @if (Item.Dependants.Any())
+        {
+            if ((EditRow == Item || CreateRow == Item))
+            {
+                <ItemRelationTypeSelector SelectedValue="@Item.DependencyType"
+                                          OnValueChanged="@((arg) => OnChangeDependencyType.Invoke(Item, arg))" />
+            }
+            else
+            {
+                @Item.DependencyType?.Name
+            }
+        } 
+    </span>
+
+    <!-- Columna 10: Lag -->
+    <span class="lag-column" @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
+          @onclick="() => OnClick.InvokeAsync(Item)">
+        <EditableField T="string" Value="Item.Lag" OnValueChanged="newValue => OnChangeLag.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
+      @*   @if (EditRow == Item || CreateRow == Item)
+        {
+            <input type="text"
+                   value="@Item.Lag"
+                   class="select-field"
+                   style="flex: 1; width: 100%; height: 100%; box-sizing: border-box; padding: 2px; font-size: inherit;"
+                   @onchange="newValue => OnChangeLag.Invoke(Item, newValue.ToString())" />
+        }
+        else
+        {
+            @Item.Lag
+        } 
+    </span>
+
+    <!-- Columna 11: Acciones -->
+    <div class="actions-column" @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
+         @onclick="() => OnClick.InvokeAsync(Item)">
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+            @if (EditRow == Item)
+            {
+                <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="async () => await OnSaveEdit.InvokeAsync(Item)" ToolTip="Save" Disabled="@DisableSaveButton(Item)" />
+                <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="() => OnCancelEdit.InvokeAsync(Item)" ToolTip="Cancel" />
+            }
+            else if (CreateRow == Item)
+            {
+                <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="async () => await OnSaveCreate.InvokeAsync(Item)" ToolTip="Save" Disabled="@DisableSaveButton(Item)" />
+                <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="() => OnCancelCreate.InvokeAsync(Item)" ToolTip="Cancel" />
+            }
+            else
+            {
+                <IconButton IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="() => OnEdit.InvokeAsync(Item)" ToolTip="Edit" />
+                <IconButton IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="() => OnDelete.InvokeAsync(Item)" ToolTip="Delete" />
+            }
+        </FluentStack>
+    </div>
+</div>
+
+@if (Item.IsExpanded)
+{
+    foreach (var subtask in Item.OrderedSubDeliverables)
+    {
+        <NewDeliverableRow Level="@(Level + 1)" Item="@subtask"
+                           OnCancelCreate="OnCancelCreate"
+                           OnCancelEdit="OnCancelEdit"
+                           OnChangeDependencies="OnChangeDependencies"
+                           OnChangeDependencyType="OnChangeDependencyType"
+                           OnChangeDuration="OnChangeDuration"
+                           OnChangeEndDate="OnChangeEndDate"
+                           OnChangeName="OnChangeName"
+                           OnChangeStartDate="OnChangeStartDate"
+                           OnClick="OnClick"
+                           OnDelete="OnDelete"
+                           OnDoubleClick="OnDoubleClick"
+                           OnSaveCreate="OnSaveCreate"
+                           OnSaveEdit="OnSaveEdit"
+                           OnEdit="OnEdit"
+                           OnChangeLag="OnChangeLag"
+                           GetAll="GetAll"
+                           CreateRow="CreateRow"
+                           EditRow="EditRow"
+                           SelectedRow="SelectedRow"></NewDeliverableRow>
+    }
+}
+
+@code {
+    [Parameter]
+    public int Level { get; set; }
+
+    [Parameter]
+    public DeliverableResponse Item { get; set; }
+
+    private void ToggleItem(DeliverableResponse task)
+    {
+        task.IsExpanded = !task.IsExpanded;
+    }
+
+    private bool DisableSaveButton(DeliverableResponse task)
+    {
+        // Lógica para deshabilitar el botón de guardar si es necesario
+        return string.IsNullOrEmpty(task?.Name);
+    }
+}
+<style>
+    /* Contenedor principal */
+    .gantt-sidebar-item {
+        display: grid;
+        grid-template-columns: auto auto 40px 1fr repeat(7, minmax(100px, auto)) 100px; /* Ajuste para la columna Actions */
+        align-items: center;
+        padding: 2px;
+        border-bottom: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+        .gantt-sidebar-item:hover {
+            background-color: #f5f5f5;
+        }
+
+    /* Estilo específico para la columna LabelOrder */
+    .label-order-column {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        padding: 2px;
+        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+  
+        min-width: 60px;
+        max-width: 80px;
+    }
+
+    /* Estilo específico para la columna WBS */
+    .wbs-column {
+        display: flex;
+        align-items: flex-start;
+        justify-content:  left;
+      
+        padding: 2px;
+        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+     
+        min-width: 50px;
+        max-width: 70px;
+    }
+
+    /* Estilo específico para la columna Name */
+    .name-column {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 2px;
+   
+        white-space: normal; /* Permite que el texto se divida en varias líneas */
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        color: #666;
+        min-width: 350px;
+    }
+
+    /* Estilo específico para las columnas StartDate y EndDate */
+    .start-end-date-column {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      
+        padding: 2px;
+        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      
+        min-width: 100px;
+    }
+
+    /* Estilo específico para la columna Duration */
+    .duration-column {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      
+        padding: 2px;
+        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+ 
+        min-width: 80px;
+    }
+
+    /* Estilo específico para la columna Dependences */
+    .dependencies-column {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 2px;
+        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+ 
+        min-width: 100px;
+    }
+
+    /* Estilo específico para la columna Type */
+    .type-column {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      
+        padding: 2px;
+        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+  
+        min-width: 100px;
+    }
+
+    /* Estilo específico para la columna Lag */
+    .lag-column {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  
+        padding: 2px;
+        
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+   
+        min-width: 80px;
+    }
+
+    /* Estilo específico para la columna Actions */
+    .actions-column {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        min-width: 50px;
+    }
+
+    /* Estilo para campos editables */
+    .select-field input {
+        padding: 2px;
+        border-radius: 2px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s ease;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+        .select-field input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+    /* Contenedor del ícono de expansión */
+    .expand-icon-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px; /* Ancho fijo para el contenedor del ícono */
+        margin-left: -20px; /* Ajuste para alinear con la indentación */
+        overflow: hidden; /* Evita que el contenido se desborde */
+    }
+
+    /* Estilo específico para el ícono de expansión */
+    .expand-icon {
+        font-size: 10px;
+        cursor: pointer;
+        user-select: none;
+        text-align: center; /* Centra el ícono horizontalmente */
+        width: 100%; /* Ocupa todo el ancho del contenedor */
+        height: 100%; /* Ocupa todo el alto del contenedor */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right:2px;
+        padding: 2px; /* Espaciado interno */
+
+    }
+
+       
+</style>
+ *@
