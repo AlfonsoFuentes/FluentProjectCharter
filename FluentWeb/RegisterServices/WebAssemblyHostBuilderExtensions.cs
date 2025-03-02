@@ -47,6 +47,7 @@ namespace FluentWeb.RegisterServices
                     client.DefaultRequestHeaders.AcceptLanguage.Clear();
                     client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName);
                     client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); // Fix: Use builder.HostEnvironment.BaseAddress
+                  
                 })
                 .AddHttpMessageHandler<AuthenticationHeaderHandler>();
             builder.Services.AddHttpClientInterceptor();

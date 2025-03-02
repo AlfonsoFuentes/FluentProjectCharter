@@ -9,8 +9,8 @@ namespace Server.Database.Configurations
         {
             builder.HasKey(ci => ci.Id);
 
-            builder.HasOne(c => c.Deliverable).WithMany(t => t.PurchaseOrders).HasForeignKey(x => x.DeliverableId).OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(c => c.Supplier).WithMany(t => t.PurchaseOrders).HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.Restrict);
+           
+            builder.HasOne(c => c.Supplier).WithMany(t => t.PurchaseOrders).HasForeignKey(x => x.SupplierId).OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(c => c.PurchaseOrderItems).WithOne(t => t.PurchaseOrder).HasForeignKey(e => e.PurchaseOrderId).IsRequired().OnDelete(DeleteBehavior.Cascade);
         }
 

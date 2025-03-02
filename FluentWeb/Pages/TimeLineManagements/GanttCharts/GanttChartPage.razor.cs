@@ -3,7 +3,7 @@ using Microsoft.JSInterop;
 using Shared.Enums.DeliverableStatuss;
 using Shared.Models.Deliverables.Mappers;
 using Shared.Models.Deliverables.Records;
-using Shared.Models.Deliverables.Responses.NewResponses;
+using Shared.Models.Deliverables.Responses;
 
 namespace FluentWeb.Pages.TimeLineManagements.GanttCharts;
 public partial class GanttChartPage

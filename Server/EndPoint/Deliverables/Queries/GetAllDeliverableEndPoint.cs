@@ -1,4 +1,5 @@
-﻿using Server.Database.Entities.ProjectManagements;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Server.Database.Entities.ProjectManagements;
 using Server.EndPoint.BudgetItems.IndividualItems.Alterations.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.EHSs.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Electricals.Queries;
@@ -14,11 +15,12 @@ using Server.EndPoint.BudgetItems.IndividualItems.Testings.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Valves.Queries;
 using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.Deliverables.Records;
-using Shared.Models.Deliverables.Responses.NewResponses;
+using System.Collections.Concurrent;
 using System.Diagnostics;
-
 namespace Server.EndPoint.Deliverables.Queries
 {
+
+
     public static class GetAllDeliverableEndPoint
     {
         public class EndPoint : IEndPoint
@@ -27,74 +29,50 @@ namespace Server.EndPoint.Deliverables.Queries
             {
                 app.MapPost(StaticClass.Deliverables.EndPoint.GetAll, async (DeliverableGetAll request, IQueryRepository repository) =>
                 {
-                    // Validación inicial
-                    if (!ValidateRequest(request, repository, out var validationError))
-                    {
-                        return Result<DeliverableResponseListToUpdate>.Fail(validationError);
-                    }
-
                     try
                     {
                         Stopwatch sw = Stopwatch.StartNew();
-                        // Cargar todos los deliverables en una lista plana
+                        // Validación inicial
+                        if (!ValidateRequest(request, repository, out var validationError))
+                        {
+                            return Result<DeliverableResponseListToUpdate>.Fail(validationError);
+                        }
+
+                        // Cargar datos
                         var rows = await LoadAllDeliverablesFlat(request.ProjectId, repository);
                         if (rows == null || !rows.Any())
                         {
-                            return Result<DeliverableResponseListToUpdate>.Fail(
-                                StaticClass.ResponseMessages.ReponseNotFound(StaticClass.Deliverables.ClassLegend));
-                        }
-                        sw.Stop();
-                        var elapse1 = sw.Elapsed;
-                        sw.Start();
-                        // Mapear los datos a DeliverableResponse
-                        var flattenlist = rows.Select(x => x.MapFlat()).ToList();
-                        sw.Stop();
-                        var elapse2 = sw.Elapsed;
-                        sw.Start();
-                        //Mappear los dependants
-
-
-                        // Reconstruir la jerarquía
-                        var maps = RebuildHierarchy(flattenlist);
-                        sw.Stop();
-                        var elapse3 = sw.Elapsed;
-                        sw.Start();
-                        RebuildDependants(flattenlist, rows);
-                        sw.Stop();
-                        var elapse4 = sw.Elapsed;
-                        sw.Start();
-                        // Validar que haya al menos un elemento raíz
-                        if (!maps.Any())
-                        {
-                            return Result<DeliverableResponseListToUpdate>.Fail("No deliverables found for the given ProjectId.");
+                            return Result<DeliverableResponseListToUpdate>.Fail("No deliverables found.");
                         }
 
-                        // Construir la respuesta
+                        // Mapear en paralelo
+                        var flatList = await MapFlatInParallelAsync(rows);
+
+                        // Reconstruir jerarquía en paralelo
+                        var hierarchy = RebuildHierarchyInParallel(flatList);
+
+                        // Reconstruir dependencias en paralelo
+                        RebuildDependantsInParallel(flatList, rows);
+
+                        sw.Stop();
+
+                        Console.WriteLine($"Consulting Deliverable GetAll By Project {sw.ElapsedMilliseconds} ms");
+                        // Construir respuesta
                         var response = new DeliverableResponseListToUpdate
                         {
-
-                            Items = maps,
+                            Items = hierarchy,
                             ProjectId = request.ProjectId,
                         };
 
                         return Result<DeliverableResponseListToUpdate>.Success(response);
                     }
-                    catch (InvalidOperationException ex)
-                    {
-                        Console.Error.WriteLine($"Hierarchy error: {ex.Message}");
-                        return Result<DeliverableResponseListToUpdate>.Fail($"Data integrity issue: {ex.Message}");
-                    }
                     catch (Exception ex)
                     {
-                        Console.Error.WriteLine($"Unexpected error: {ex}");
-                        return Result<DeliverableResponseListToUpdate>.Fail("An unexpected error occurred while processing the request.");
+                        return Result<DeliverableResponseListToUpdate>.Fail($"An error occurred: {ex.Message}");
                     }
                 });
             }
 
-            /// <summary>
-            /// Valida la solicitud inicial.
-            /// </summary>
             private static bool ValidateRequest(DeliverableGetAll request, IQueryRepository repository, out string errorMessage)
             {
                 if (request == null || repository == null)
@@ -111,131 +89,95 @@ namespace Server.EndPoint.Deliverables.Queries
                 return true;
             }
 
-            /// <summary>
-            /// Carga todos los deliverables en una lista plana desde la base de datos.
-            /// </summary>
             private static async Task<List<Deliverable>> LoadAllDeliverablesFlat(Guid projectId, IQueryRepository repository)
             {
-
                 var cache = StaticClass.Deliverables.Cache.GetAll(projectId);
+
+                if (cache == null)
+                {
+                    return null!;
+                }
                 Func<IQueryable<Deliverable>, IIncludableQueryable<Deliverable, object>> includes = x => x
-                .Include(x => x.Dependants)
-                .Include(x => x.BudgetItems)
-                ;
+                   .Include(x => x.Dependants)
+                   .Include(x => x.BudgetItems);
+
                 Expression<Func<Deliverable, bool>> criteria = x => x.ProjectId == projectId;
-                return await repository.GetAllAsync(Cache: cache, Criteria: criteria, Includes: includes);
+                var data = await repository.GetAllAsync(
+                    Cache: cache,
+                    Criteria: criteria,
+                    Includes: includes
+                );
+
+
+                return data;
             }
 
-
-            /// <summary>
-            /// Reconstruye la jerarquía a partir de una lista plana.
-            /// </summary>
-            private static List<DeliverableResponse> RebuildHierarchy(List<DeliverableResponse> flatList)
+            private static async Task<List<DeliverableResponse>> MapFlatInParallelAsync(List<Deliverable> rows)
             {
-                if (flatList == null)
+                var tasks = rows.Select(async row =>
                 {
-                    throw new ArgumentNullException(nameof(flatList), "La lista plana no puede ser nula.");
-                }
+                    return await Task.Run(() => row.MapFlat());
+                });
 
+                // Convertir el resultado de Task.WhenAll (arreglo) a una lista
+                return (await Task.WhenAll(tasks)).ToList();
+            }
+
+            private static List<DeliverableResponse> RebuildHierarchyInParallel(List<DeliverableResponse> flatList)
+            {
                 var idToItemMap = flatList.ToDictionary(item => item.Id);
-                var rootItems = new List<DeliverableResponse>();
-                for (int i = 0; i < flatList.Count; i++)
+                var rootItems = new ConcurrentBag<DeliverableResponse>();
+
+                Parallel.ForEach(flatList, item =>
                 {
-                    var item = flatList[i];
                     if (!item.ParentDeliverableId.HasValue)
                     {
-                        // Si ParentDeliverableId es nulo, es una raíz
                         rootItems.Add(item);
                     }
-                    else
+                    else if (idToItemMap.TryGetValue(item.ParentDeliverableId.Value, out var parent))
                     {
-                        // Si tiene ParentDeliverableId, buscar el padre en el diccionario
-                        if (idToItemMap.TryGetValue(item.ParentDeliverableId.Value, out var parent))
+                        lock (parent.SubDeliverables)
                         {
                             parent.SubDeliverables.Add(item);
                         }
-                        else
-                        {
-                            throw new InvalidOperationException($"El elemento con Id '{item.Id}' tiene un ParentDeliverableId '{item.ParentDeliverableId}' que no existe en la lista.");
-                        }
                     }
-                }
-                //foreach (var item in flatList)
-                //{
-                //    if (!item.ParentDeliverableId.HasValue)
-                //    {
-                //        // Si ParentDeliverableId es nulo, es una raíz
-                //        rootItems.Add(item);
-                //    }
-                //    else
-                //    {
-                //        // Si tiene ParentDeliverableId, buscar el padre en el diccionario
-                //        if (idToItemMap.TryGetValue(item.ParentDeliverableId.Value, out var parent))
-                //        {
-                //            parent.SubDeliverables.Add(item);
-                //        }
-                //        else
-                //        {
-                //            throw new InvalidOperationException($"El elemento con Id '{item.Id}' tiene un ParentDeliverableId '{item.ParentDeliverableId}' que no existe en la lista.");
-                //        }
-                //    }
+                    else
+                    {
+                        throw new InvalidOperationException($"ParentDeliverableId '{item.ParentDeliverableId}' not found.");
+                    }
+                });
 
-                //}
-
-                return rootItems;
+                return rootItems.ToList();
             }
 
-            private static void RebuildDependants(List<DeliverableResponse> flatList, List<Deliverable> rows)
+            private static void RebuildDependantsInParallel(List<DeliverableResponse> flatList, List<Deliverable> rows)
             {
-                for (int i = 0; i < rows.Count; i++)
-                {
-                    var row = rows[i];
-                    if (row.Dependants.Any())
-                    {
-                        var rowmaped = flatList.SingleOrDefault(x => x.Id == row.Id);
-                        if (rowmaped != null)
-                        {
-                            for (int j = 0; j < row.Dependants.Count; j++)
-                            {
-                                var dependant = row.Dependants[j];
-                                var dependantmapped = flatList.SingleOrDefault(x => x.Id == dependant.Id);
-                                if (dependantmapped != null)
-                                {
+                var flatListDict = flatList.ToDictionary(x => x.Id);
 
-                                    rowmaped.Dependants.Add(dependantmapped);
+                Parallel.ForEach(rows.Where(r => r.Dependants.Any()), row =>
+                {
+                    if (flatListDict.TryGetValue(row.Id, out var mappedRow))
+                    {
+                        foreach (var dependant in row.Dependants)
+                        {
+                            if (flatListDict.TryGetValue(dependant.Id, out var mappedDependant))
+                            {
+                                lock (mappedRow.Dependants)
+                                {
+                                    mappedRow.Dependants.Add(mappedDependant);
                                 }
                             }
-                            
                         }
-
                     }
-
-                }
-                //foreach (var row in rows)
-                //{
-                //    if (row.Dependants.Any())
-                //    {
-                //        var rowmaped = flatList.SingleOrDefault(x => x.Id == row.Id);
-                //        if (rowmaped != null)
-                //        {
-                //            foreach (var dependant in row.Dependants)
-                //            {
-                //                var dependantmapped = flatList.SingleOrDefault(x => x.Id == dependant.Id);
-                //                if (dependantmapped != null)
-                //                {
-
-                //                    rowmaped.Dependants.Add(dependantmapped);
-                //                }
-                //            }
-                //        }
-
-                //    }
-
-                //}
-
+                });
             }
         }
-        private static DeliverableResponse MapFlat(this Deliverable row)
+    }
+
+    // Extension method para mapear un Deliverable a DeliverableResponse
+    public static class DeliverableExtensions
+    {
+        public static DeliverableResponse MapParallel(this Deliverable row)
         {
             return new DeliverableResponse
             {
@@ -251,30 +193,28 @@ namespace Server.EndPoint.Deliverables.Queries
                 Id = row.Id,
                 Name = row.Name,
                 Order = row.Order,
-                PlanningId = row.PlanningId,
-                StartId = row.StartId,
+                IsExpanded = row.IsExpanded,
                 WBS = row.WBS,
                 LabelOrder = row.LabelOrder,
                 DependantId = row.DependentantId,
 
-                Alterations = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Alteration>().Select(x => x.Map()).ToList(),
-                Structurals = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Structural>().Select(x => x.Map()).ToList(),
-                Foundations = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Foundation>().Select(x => x.Map()).ToList(),
-                Equipments = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Equipment>().Select(x => x.Map()).ToList(),
+                Alterations = row.BudgetItems?.OfType<Alteration>().Select(x => x.Map()).ToList() ?? new(),
+                Structurals = row.BudgetItems?.OfType<Structural>().Select(x => x.Map()).ToList() ?? new(),
+                Foundations = row.BudgetItems?.OfType<Foundation>().Select(x => x.Map()).ToList() ?? new(),
+                Equipments = row.BudgetItems?.OfType<Equipment>().Select(x => x.Map()).ToList() ?? new(),
 
-                Valves = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Valve>().Select(x => x.Map()).ToList(),
-                Electricals = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Electrical>().Select(x => x.Map()).ToList(),
-                Pipings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Pipe>().Select(x => x.Map()).ToList(),
-                Instruments = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Instrument>().Select(x => x.Map()).ToList(),
+                Valves = row.BudgetItems?.OfType<Valve>().Select(x => x.Map()).ToList() ?? new(),
+                Electricals = row.BudgetItems?.OfType<Electrical>().Select(x => x.Map()).ToList() ?? new(),
+                Pipings = row.BudgetItems?.OfType<Pipe>().Select(x => x.Map()).ToList() ?? new(),
+                Instruments = row.BudgetItems?.OfType<Instrument>().Select(x => x.Map()).ToList() ?? new(),
 
-                EHSs = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<EHS>().Select(x => x.Map()).ToList(),
-                Paintings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Painting>().Select(x => x.Map()).ToList(),
-                Taxes = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Tax>().Select(x => x.Map()).ToList(),
-                Testings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Testing>().Select(x => x.Map()).ToList(),
+                EHSs = row.BudgetItems?.OfType<EHS>().Select(x => x.Map()).ToList() ?? new(),
+                Paintings = row.BudgetItems?.OfType<Painting>().Select(x => x.Map()).ToList() ?? new(),
+                Taxes = row.BudgetItems?.OfType<Tax>().Select(x => x.Map()).ToList() ?? new(),
+                Testings = row.BudgetItems?.OfType<Testing>().Select(x => x.Map()).ToList() ?? new(),
 
-                EngineeringDesigns = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<EngineeringDesign>().Select(x => x.Map()).ToList(),
-                //ProjectName = row.Project == null ? string.Empty : row.Project.Name,
-
+                EngineeringDesigns = row.BudgetItems?.OfType<EngineeringDesign>().Select(x => x.Map()).ToList() ?? new(),
+                ProjectName = row.Project?.Name ?? string.Empty,
             };
         }
     }

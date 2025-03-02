@@ -1,7 +1,7 @@
 ﻿@page "/ganttchart/{ProjectId:guid}"
 @implements IDisposable
 @using Shared.Enums.DeliverableStatuss
-@using Shared.Models.Deliverables.Responses.NewResponses
+@using Shared.Models.Deliverables.Responses
 <!-- Botón "Go Back" -->
 <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowStepBack())" OnClick="@Navigation.NavigateBack" ToolTip="Go Back"></IconButton>
 <h3>Gantt Chart</h3>

@@ -8,9 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServerServices();
 UnitManager.RegisterByAssembly(typeof(SIUnitTypes).Assembly);
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
+
 var app = builder.Build();
 
 app.UseExceptionHandling(app.Environment);

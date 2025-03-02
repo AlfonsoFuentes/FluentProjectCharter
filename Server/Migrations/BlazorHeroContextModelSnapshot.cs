@@ -1564,6 +1564,9 @@ namespace Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsExpanded")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LabelOrder")
                         .HasColumnType("int");
 
@@ -1586,9 +1589,6 @@ namespace Server.Migrations
                     b.Property<Guid?>("ParentDeliverableId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
@@ -1597,9 +1597,6 @@ namespace Server.Migrations
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
                         .IsRequired()
@@ -3501,7 +3498,7 @@ namespace Server.Migrations
                     b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Deliverable")
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("DeliverableId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("PurchaseOrders")
@@ -3512,7 +3509,7 @@ namespace Server.Migrations
                     b.HasOne("Server.Database.Entities.PurchaseOrders.Supplier", "Supplier")
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Deliverable");
 

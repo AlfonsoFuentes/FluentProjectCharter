@@ -3,6 +3,7 @@
 using Shared.Models.FileResults.Generics.Records;
 using Shared.Models.FileResults.Generics.Reponses;
 using Shared.Models.FileResults.Generics.Request;
+using System.Diagnostics;
 
 namespace Web.Infrastructure.Managers.Generic
 {
@@ -66,9 +67,16 @@ namespace Web.Infrastructure.Managers.Generic
            where TResponse : class, IResponseAll
            where TRequest : class, IGetAll
         {
+            Stopwatch sw = Stopwatch.StartNew();
 
-            var result = await http.PostAsJsonAsync(request.EndPointName, request);
-            return await result.ToResult<TResponse>();
+            var response = await http.PostAsJsonAsync(request.EndPointName, request);
+            sw.Stop();
+            Console.WriteLine($"Time POST {sw.ElapsedMilliseconds} ms");
+            sw.Restart();
+            var result = await response.ToResult<TResponse>();
+            sw.Stop();
+            Console.WriteLine($"Time ToResult {sw.ElapsedMilliseconds} ms");
+            return result;
         }
 
         public async Task<IResult> UpdateState<T>(T request) where T : class, IUpdateStateResponse

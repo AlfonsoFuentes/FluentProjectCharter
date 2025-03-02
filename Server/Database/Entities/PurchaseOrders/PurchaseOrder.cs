@@ -11,9 +11,6 @@ namespace Server.Database.Entities.PurchaseOrders
         public Guid ProjectId { get; set; }
         public Guid? SupplierId { get; set; }
         public Supplier? Supplier { get; set; } = null!;
-
-        public Guid? DeliverableId { get; set; }
-        public Deliverable? Deliverable { get; set; } = null!;
         public ICollection<PurchaseOrderItem> PurchaseOrderItems { get; set; } = new List<PurchaseOrderItem>();
         public static PurchaseOrder Create(Guid projectid)
         {

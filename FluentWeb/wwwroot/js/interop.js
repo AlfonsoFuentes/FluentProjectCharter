@@ -13,39 +13,33 @@ window.onWindowResize = (dotNetHelper) => {
         dotNetHelper.invokeMethodAsync('UpdateWindowDimensions', dimensions);
     });
 };
-window.syncScroll = () => {
-    const timeline = document.querySelector('.gantt-timeline');
-    const header = document.querySelector('.gantt-header');
+// Función genérica para calcular el ancho de una columna
+window.calculateColumnWidth = (columnClass) => {
+    const cells = document.querySelectorAll(`.${columnClass}`);
+    let maxWidth = 0;
 
-    if (!timeline || !header) {
-        console.warn("Elementos .gantt-timeline o .gantt-header no encontrados.");
-        return;
-    }
+    // Iterar sobre todas las celdas de la columna para encontrar el ancho máximo
+    cells.forEach(cell => {
+        const computedStyle = window.getComputedStyle(cell);
+        const padding = parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight);
+        const border = parseFloat(computedStyle.borderLeftWidth) + parseFloat(computedStyle.borderRightWidth);
+        const width = cell.scrollWidth + padding + border;
 
-    timeline.addEventListener('scroll', () => {
-        header.scrollLeft = timeline.scrollLeft;
-    });
-};
-window.syncRowHeights = () => {
-    const sidebarItems = document.querySelectorAll('.gantt-sidebar-item');
-    const rows = document.querySelectorAll('.gantt-row');
-    if (!sidebarItems || !rows) {
-        console.warn("Elementos .gantt-timeline o .gantt-header no encontrados.");
-        return;
-    }
-    // Itera sobre los elementos y ajusta el alto máximo
-    for (let i = 0; i < Math.max(sidebarItems.length, rows.length); i++) {
-        const sidebarItem = sidebarItems[i];
-        const row = rows[i];
-
-        if (sidebarItem && row) {
-            const maxHeight = Math.max(
-                sidebarItem.offsetHeight,
-                row.offsetHeight
-            );
-
-            sidebarItem.style.height = `${maxHeight}px`;
-            row.style.height = `${maxHeight}px`;
+        if (width > maxWidth) {
+            maxWidth = width;
         }
-    }
+    });
+
+    // Devolver el ancho máximo
+    return maxWidth;
 };
+document.addEventListener("DOMContentLoaded", function () {
+    const header = document.querySelector(".table-header");
+    const table = document.querySelector(".scrollable-table");
+
+    if (header && table) {
+        table.addEventListener("scroll", () => {
+            header.scrollLeft = table.scrollLeft;
+        });
+    }
+});

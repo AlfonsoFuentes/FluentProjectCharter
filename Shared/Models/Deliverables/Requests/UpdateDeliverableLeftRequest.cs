@@ -1,7 +1,4 @@
-﻿using Shared.Models.Deliverables.Responses.NewResponses;
-using Shared.Models.FileResults.Generics.Request;
-
-namespace Shared.Models.Deliverables.Requests
+﻿namespace Shared.Models.Deliverables.Requests
 {
     //public class UpdateDeliverableLeftRequest : UpdateMessageResponse, IRequest
     //{

@@ -51,7 +51,7 @@ namespace Server.EndPoint.Projects.Exports
                     .Include(x => x.Assumptions.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
                     .Include(x => x.LearnedLessons.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
                     .Include(x => x.ExpertJudgements.Where(x => x.StartId.HasValue).OrderBy(x => x.Order)).ThenInclude(x => x.Expert!)
-                    .Include(x => x.Deliverables.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
+                   
                     .Include(x => x.Milestones.Where(x => x.StartId.HasValue).OrderBy(x => x.Order)).ThenInclude(x => x.Dependants.OrderBy(x => x.Order))
                     .Include(x => x.Qualitys.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
                     .Include(x => x.KnownRisks.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))

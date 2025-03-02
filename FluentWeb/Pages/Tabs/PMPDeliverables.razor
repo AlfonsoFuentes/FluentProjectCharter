@@ -1,0 +1,19 @@
+﻿<MatrixRow RowName="Deliverables Management">
+    <StartContent>
+        <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Left" Class="compact-stack">
+            <FluentAnchor Href="@($"Deliverables/{Project.Id}/{Project.StartId}/{"Start"}")" Appearance="Appearance.Hypertext">Deliverables</FluentAnchor>
+        </FluentStack>
+    </StartContent>
+    <PlannificationContent>
+        <FluentStack Orientation="Orientation.Vertical" HorizontalAlignment="HorizontalAlignment.Left" Class="compact-stack">
+            <FluentAnchor Href="@($"Deliverables/{Project.Id}")" Appearance="Appearance.Hypertext">Time Line</FluentAnchor>
+            <FluentAnchor Href="@($"ganttchart/{Project.Id}")" Appearance="Appearance.Hypertext">Gantt Chart</FluentAnchor>
+            <FluentAnchor Href="@($"ganttchart/{Project.Id}")" Appearance="Appearance.Hypertext">Work Breakdown Structure</FluentAnchor>
+        </FluentStack>
+    </PlannificationContent>
+</MatrixRow>
+
+@code {
+    [Parameter]
+    public ProjectResponse Project { get; set; } = null!;
+}

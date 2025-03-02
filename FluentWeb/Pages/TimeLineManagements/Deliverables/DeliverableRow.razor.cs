@@ -1,62 +1,104 @@
 using Microsoft.AspNetCore.Components;
 using Shared.Enums.TasksRelationTypeTypes;
-using Shared.Models.Deliverables.Responses.NewResponses;
+using Shared.Models.Deliverables.Mappers;
+using Shared.Models.Deliverables.Responses;
+using static UnitSystem.Amount;
 
 namespace FluentWeb.Pages.TimeLineManagements.Deliverables;
 public partial class DeliverableRow
 {
     [Parameter]
-    public DeliverableResponse SelectedRow { get; set; } = null!;
+    public DeliverableResponseList Response { get; set; } = new();
     [Parameter]
-    public DeliverableResponse EditRow { get; set; } = null!;
+    public EventCallback<DeliverableResponseList> ResponseChanged { get; set; }
     [Parameter]
-    public DeliverableResponse CreateRow { get; set; } = null!;
-    [Parameter]
-    public DeliverableResponse Item { get; set; } = null!;
+    public DeliverableResponse Row { get; set; } = new();
+
 
     [Parameter]
-    public int Level { get; set; }
-
+    public EventCallback<DeliverableResponse> OnClick { get; set; }
     [Parameter]
     public EventCallback<DeliverableResponse> OnEdit { get; set; }
     [Parameter]
-    public EventCallback<DeliverableResponse> OnSaveEdit { get; set; }
+    public EventCallback<DeliverableResponse> OnSave { get; set; }
+
     [Parameter]
-    public EventCallback<DeliverableResponse> OnSaveCreate { get; set; }
-    [Parameter]
-    public EventCallback<DeliverableResponse> OnCancelEdit { get; set; }
-    [Parameter]
-    public EventCallback<DeliverableResponse> OnCancelCreate { get; set; }
+    public EventCallback<DeliverableResponse> OnCancel { get; set; }
     [Parameter]
     public EventCallback<DeliverableResponse> OnDelete { get; set; }
     [Parameter]
-    public EventCallback<DeliverableResponse> OnDoubleClick { get; set; }
-    [Parameter]
-    public EventCallback<DeliverableResponse> OnClick { get; set; }
-    bool DisableSaveButton(DeliverableResponse model)
+    public Func<Task> GetAll { get; set; } = null!;
+    private bool DisableSaveButton(DeliverableResponse task)
     {
-        return string.IsNullOrEmpty(model.Name) ? true : false;
+        // Lógica para deshabilitar el botón de guardar si es necesario
+        return string.IsNullOrEmpty(task?.Name);
+    }
+
+    public async Task OnToggleTask(DeliverableResponse task)
+    {
+
+        task.IsExpanded = !task.IsExpanded;
+        await ResponseChanged.InvokeAsync(Response);
+     
+        var result=await GenericService.Update(task.ToExpand());
+        if (result.Succeeded)
+        {
+
+        }
+    }
+    public async Task OnChangeName(string name)
+    {
+
+        Row.Name = name;
+        await ResponseChanged.InvokeAsync(Response);
+
+    }
+    public async Task OnChangeStartDate(DateTime? newdate)
+    {
+        Response.UpdateStartDate(Row, newdate);
+
+        await ResponseChanged.InvokeAsync(Response);
+
+    }
+    public async Task OnChangeEndDate(DateTime? newdate)
+    {
+        Response.UpdateEndDate(Row, newdate);
+
+        await ResponseChanged.InvokeAsync(Response);
+
+    }
+    public async Task OnChangeDuration(string newValue)
+    {
+
+        Response.UpdateDuration(Row, newValue);
+        await ResponseChanged.InvokeAsync(Response);
+
+    }
+    public async Task OnChangeLag(string newValue)
+    {
+
+        Response.UpdateLag(Row, newValue);
+        await ResponseChanged.InvokeAsync(Response);
+
+    }
+    async Task OnChangeDependencyType(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var selectedId))
+        {
+            var selectedType = TasksRelationTypeEnum.GetType(selectedId);
+            Response.UpdateRelationType(Row, selectedType);
+            await ResponseChanged.InvokeAsync(Response);
+        }
+
+       
+    }
+    public async Task OnChangeDependences(string newValue)
+    {
+
+        Response.UpdateDependencies(Row, newValue);
+        await ResponseChanged.InvokeAsync(Response);
 
     }
 
-    [Parameter]
-    public Func<Task> GetAll { get; set; } = null!;
-    [Parameter]
-    public Func<DeliverableResponse, TasksRelationTypeEnum, Task> OnChangeDependencyType { get; set; } = null!;
-
-    [Parameter]
-    public Func<DeliverableResponse, string, Task> OnChangeDuration { get; set; } = null!;
-    [Parameter]
-    public Func<DeliverableResponse, string, Task> OnChangeName { get; set; } = null!;
-
-    [Parameter]
-    public Func<DeliverableResponse, string, Task> OnChangeDependencies { get; set; } = null!;
-    [Parameter]
-    public Func<DeliverableResponse, string, Task> OnChangeLag { get; set; } = null!;
-
-    [Parameter]
-    public Func<DeliverableResponse, DateTime?, Task> OnChangeStartDate { get; set; } = null!;
-    [Parameter]
-    public Func<DeliverableResponse, DateTime?, Task> OnChangeEndDate { get; set; } = null!;
 
 }

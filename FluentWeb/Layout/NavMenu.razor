@@ -6,8 +6,9 @@
         <AuthorizeView>
             <FluentNavMenu Id="main-menu" Width="250" Collapsible="true" Title="Navigation menu" @bind-Expanded="expanded" CustomToggle="true">
                 <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Projects</FluentNavLink>
-                
+            
                 <FluentNavLink Href="StakeHolders" Icon="@(new Icons.Regular.Size20.PeopleAudience())" IconColor="Color.Accent">Persons</FluentNavLink>
+                <FluentNavLink Href="Suppliers" Icon="@(new Icons.Regular.Size20.Ram())" IconColor="Color.Accent">Suppliers</FluentNavLink>
                 <FluentNavLink Href="Brands" Icon="@(new Icons.Regular.Size20.Storage())" IconColor="Color.Accent">Brands</FluentNavLink>
                 <FluentNavGroup Expanded="true" Title="Templates" Icon="@(new Icons.Regular.Size20.BookTemplate())">
                     <FluentNavLink Href="templates/equipment-templates" Icon="@(new Icons.Regular.Size20.LeafOne())">Equipments</FluentNavLink>

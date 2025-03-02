@@ -1,5 +1,5 @@
 ﻿using Shared.Enums.ExportFiles;
-using Shared.Models.Deliverables.Responses.NewResponses;
+using Shared.Models.Deliverables.Responses;
 
 namespace Shared.Models.Deliverables.Exports
 {

@@ -185,56 +185,244 @@ code {
         right: unset;
     }
 }
-.accordion-item-style {
-    background-color: #f0f0f0;
-    border: 1px solid #d3d3d3;
-}
-.column-labelorder {
-    width: 5%;
+
+/*Clases css para Deliverables con timeline*/
+/* ==============================
+   1. Variables Globales
+   ============================== */
+:root {
+    --primary-bg-color: #fff;
+    --secondary-bg-color: #f9f9f9;
+    --border-color: #ddd;
+    --text-color: #333;
+    --font-size-small: 12px;
+    --font-size-medium: 14px;
+    --padding-small: 4px;
+    --padding-medium: 8px;
 }
 
-.column-name {
-    width: 35%;
+/* ==============================
+   2. Contenedores Principales
+   ============================== */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
 }
 
-.column-date {
-    width: 10%;
+.scrollable-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: auto;
 }
 
-.column-duration {
-    width: 8%;
+/* ==============================
+   3. Encabezados de Tabla
+   ============================== */
+.header-section {
+    display: grid;
+    align-items: center;
+    background-color: var(--secondary-bg-color);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    font-weight: bold;
+    font-size: var(--font-size-medium);
 }
 
-.column-type {
-    width: 10%;
+    .header-section > span {
+        padding: var(--padding-small);
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+/* ==============================
+   4. Filas y Celdas de Tabla
+   ============================== */
+.data-row {
+    display: grid;
+    align-items: center;
+    background-color: var(--primary-bg-color);
+    font-size: var(--font-size-small);
+    border-bottom: 1px solid var(--border-color);
 }
 
-.column-dependencies {
-    width: 12%;
+    .data-row:nth-child(even) {
+        background-color: var(--secondary-bg-color);
+    }
+
+    .data-row > span {
+        padding: var(--padding-small);
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.2; /* Reduce la altura de las líneas de texto */
+    }
+
+/* ==============================
+   5. Columnas Específicas
+   ============================== */
+.col-name {
+    text-align: left !important;
+    white-space: normal;
+    word-wrap: break-word;
+}
+    /* ==============================
+   5. Estilos para Filas con Subdeliverables
+   ============================== */
+    .col-name.has-subdeliverables {
+        font-weight: bold; /* Texto en negrita */
+    }
+
+        .col-name.has-subdeliverables.edit-mode {
+            font-weight: normal; /* Evita que el texto editable también sea negrita */
+        }
+
+    .col-generic.edit-mode,
+    .col-name.edit-mode {
+        padding: 0 !important;
+        display: flex;
+        align-items: stretch;
+    }
+
+        .col-generic.edit-mode .fluent-text-field,
+        .col-generic.edit-mode .fluent-text-area,
+        .col-generic.edit-mode .fluent-date-picker,
+        .col-generic.edit-mode .task-relation-selector,
+        .col-name.edit-mode .fluent-text-area {
+            width: 100%;
+            height: auto;
+            box-sizing: border-box;
+        }
+/* ==============================
+   5. Estilos para Componentes Editables
+   ============================== */
+.fluent-text-field,
+.fluent-date-picker,
+.task-relation-selector {
+    width: 100%; /* Ocupa todo el ancho de la columna */
+    height: auto; /* Se ajusta al contenido */
+    min-height: 32px; /* Altura mínima consistente con Fluent components */
+    transition: all 0.3s ease; /* Transición suave para hover y focus */
 }
 
-.column-actions {
-    width: 10%;
+.task-relation-selector {
+    box-sizing: border-box; /* Incluye padding y borde en el cálculo del tamaño */
+    font-size: var(--font-size-small); /* Tamaño de fuente consistente */
+    padding: var(--padding-small); /* Espaciado interno */
+    border: 1px solid var(--border-color); /* Borde suave */
+    border-radius: 4px; /* Bordes redondeados */
+    appearance: none; /* Elimina la flecha predeterminada del navegador */
+    -webkit-appearance: none; /* Compatibilidad con navegadores basados en WebKit */
+    -moz-appearance: none; /* Compatibilidad con Firefox */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e"); /* Flecha personalizada */
+    background-repeat: no-repeat;
+    background-position: right 8px center; /* Posición de la flecha */
+    background-size: 12px; /* Tamaño de la flecha */
+    line-height: normal; /* Asegura que el texto se alinee correctamente */
 }
 
-.soft-border {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    padding: 1px;
-    background-color: #ffffff;
-    transition: all 0.3s ease;
+    .task-relation-selector:hover {
+        background-color: var(--secondary-bg-color); /* Cambio de fondo al pasar el mouse */
+        border-color: #007bff; /* Cambio de borde al pasar el mouse */
+    }
+
+    .task-relation-selector:focus {
+        border-color: #007bff; /* Borde destacado al hacer foco */
+        outline: none; /* Elimina el contorno predeterminado */
+        box-shadow: 0 0 4px rgba(0, 123, 255, 0.25); /* Sombra sutil al hacer foco */
+    }
+
+/* ==============================
+   6. Estados Especiales
+   ============================== */
+.data-row.edit-mode {
+    background-color: var(--secondary-bg-color);
+    border-left: 4px solid #007bff;
 }
 
-.active-row {
-    background-color: #f0f8ff;
-    transition: background-color 0.3s ease;
-}
-.recursive-table {
-    border-collapse: collapse;
-    width: 100%;
+.success-notification {
+    color: green;
+    font-weight: bold;
 }
 
-/* Estilo para las filas */
-.recursive-table-row {
-    border: none;
+.error-notification {
+    color: red;
+    font-weight: bold;
 }
+
+/* ==============================
+   7. Responsive Design
+   ============================== */
+@media (max-width: 768px) {
+    .header-section,
+    .data-row {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .col-wbs,
+    .col-dependencies,
+    .col-dependency-type,
+    .col-lag {
+        display: none;
+    }
+}
+/* Contenedor principal */
+.project-matrix {
+    overflow-x: auto; /* Responsividad horizontal */
+    margin: 1rem 0;
+    border: 1px solid #ccc; /* Borde externo de la tabla */
+    border-radius: 2px; /* Bordes redondeados */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+}
+
+/* Estilo de la tabla */
+.matrix-table {
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    border-collapse: collapse; /* Colapsa los bordes para evitar superposiciones */
+    font-size: 0.9rem;
+    text-align: left;
+    table-layout: auto; /* Permite que las columnas se ajusten al contenido */
+}
+
+    /* Encabezados de la tabla */
+    .matrix-table th {
+        background-color: #f4f4f4; /* Color de fondo gris claro */
+        color: #333; /* Texto oscuro */
+        font-weight: bold;
+        text-align: center; /* Centra el texto en los encabezados */
+        padding: 0.5rem; /* Espaciado reducido */
+        border: 1px solid #ccc; /* Borde claro */
+        white-space: nowrap; /* Evita que el texto se rompa */
+        box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1); /* Efecto 3D */
+        min-width: max-content;
+    }
+
+    /* Celdas de la tabla */
+    .matrix-table td {
+        padding: 0.3rem; /* Espaciado reducido */
+        border: 1px solid #ccc; /* Borde claro */
+        text-align: left; /* Alinea el contenido hacia la izquierda */
+        vertical-align: top; /* Alinea el contenido hacia arriba */
+        word-wrap: break-word; /* Permite que el texto largo se ajuste */
+        min-width: max-content;
+    }
+
+        /* Primera columna (nombres de filas) */
+        .matrix-table td.first-column {
+            text-align: left; /* Alinea el texto a la izquierda */
+            vertical-align: middle; /* Centra el texto verticalmente */
+            font-weight: bold; /* Resalta los nombres de fila */
+            background-color: #f4f4f4; /* Mismo color de fondo que las cabeceras */
+            border-right: 1px solid #ccc; /* Borde derecho para separar la primera columna */
+            box-shadow: inset 2px 0px 4px rgba(0, 0, 0, 0.1); /* Efecto 3D */
+            white-space: nowrap; /* Evita que el texto se rompa */
+            padding: 0.1rem; /* Espaciado reducido */
+           
+        }

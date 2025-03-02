@@ -1,13 +1,11 @@
 ﻿using Shared.Enums.TasksRelationTypeTypes;
+using Shared.Models.Deliverables.Responses;
 using Shared.Models.FileResults.Generics.Request;
 
 namespace Shared.Models.Deliverables.Requests
 {
     public class CreateDeliverableRequest : CreateMessageResponse, IRequest
     {
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
-      
         public string Name { get; set; } = string.Empty;
         public string EndPointName => StaticClass.Deliverables.EndPoint.Create;
         public Guid ProjectId { get; set; }
@@ -22,5 +20,7 @@ namespace Shared.Models.Deliverables.Requests
         public DateTime? EndDate { get; set; }
         public string? Duration {  get; set; } = string.Empty;
         public string? Lag { get; set; } = string.Empty;
+        public Guid? ParentDeliverableId {  get; set; }
+        public List<DeliverableResponse> Dependants { get; set; } = new(); // Colección de subtareas
     }
 }

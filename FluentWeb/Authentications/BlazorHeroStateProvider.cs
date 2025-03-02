@@ -36,12 +36,12 @@ namespace FluentWeb.Authentications
             NotifyAuthenticationStateChanged(authState);
         }
 
-        public async Task<ClaimsPrincipal> GetAuthenticationStateProviderUserAsync()
-        {
-            var state = await GetAuthenticationStateAsync();
-            var authenticationStateProviderUser = state.User;
-            return authenticationStateProviderUser;
-        }
+        //public async Task<ClaimsPrincipal> GetAuthenticationStateProviderUserAsync()
+        //{
+        //    var state = await GetAuthenticationStateAsync();
+        //    var authenticationStateProviderUser = state.User;
+        //    return authenticationStateProviderUser;
+        //}
 
         public ClaimsPrincipal AuthenticationStateUser { get; set; } = null!;
 

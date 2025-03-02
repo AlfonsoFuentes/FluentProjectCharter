@@ -1,216 +1,194 @@
-﻿@using Shared.Enums.TasksRelationTypeTypes
-@using Shared.Models.Deliverables.Responses.NewResponses
-<tr @ondblclick="() => OnDoubleClick.InvokeAsync(Item)"
-    @onclick="() => OnClick.InvokeAsync(Item)"
-    class="@(SelectedRow == Item ? "active-row" : "")">
-    <!-- Columnas -->
-    <td class="column-labelorder soft-border text-center">
-        <b>@Item.LabelOrder</b>
-    </td>
-    <td class="soft-border" style="padding-left:@(CalculatepaddingWBS(Level));padding-right:10px;padding-top:10px;padding-bottom:10px; width: @(CalculateWBSWidth(Level))">
-        <span class="wbs-label">@Item.WBS</span>
-    </td>
-    <td class="column-name soft-border">
-        <EditableField T="string" Value="Item.Name" OnValueChanged="newValue => OnChangeName.Invoke(Item, newValue)" IsEditable="EditRow == Item || CreateRow == Item" />
-    </td>
-    <td class="column-date soft-border text-center">
-        <EditableDateField T="DateTime" Value="Item.StartDate" OnValueChanged="newValue => OnChangeStartDate.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
-    </td>
-    <td class="column-date soft-border text-center">
-        <EditableDateField T="DateTime" Value="Item.EndDate" OnValueChanged="newValue => OnChangeEndDate.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
-    </td>
-    <td class="column-duration soft-border text-center">
-        <EditableField T="string" Value="Item.Duration" OnValueChanged="newValue => OnChangeDuration.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
-    </td>
-    <td class="column-dependencies soft-border">
-        <EditableField T="string" Value="Item.sDependences" OnValueChanged="newValue => OnChangeDependencies.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
-    </td>
-    <td class="column-type soft-border text-center">
-        @if (Item.Dependants.Any())
+﻿<div class="data-row @(Row.IsEditing ? "edit-mode" : "")" style="@Response.Styles.GridStyle" @onclick="() => OnClick.InvokeAsync(Row)">
+    <!-- Icono de Expansión -->
+    <span class="col-generic">
+        @if (Row.OrderedSubDeliverables.Any())
         {
-            if ((EditRow == Item || CreateRow == Item))
+            @if (Row.IsExpanded)
             {
-                <TaskRelationTypeSelector SelectedValue="@Item.DependencyType"
-                                          OnValueChanged="@((arg)=>OnChangeDependencyType.Invoke(Item,arg))" />
+                <FluentIcon Value="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.ChevronDown())" OnClick="() => OnToggleTask(Row)" />
             }
             else
             {
-                @Item.DependencyType.Name
+                <FluentIcon Value="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.ChevronRight())" OnClick="() => OnToggleTask(Row)" />
             }
-
         }
+        else
+        {
+            <span>&nbsp;</span>
+        }
+    </span>
 
+    <!-- ID -->
+    <span class="col-id">@Row.LabelOrder</span>
 
+    <!-- WBS -->
+    <span class="col-wbs">@Row.WBS</span>
 
+    <!-- Nombre -->
+    <span class="col-name @(Row.IsEditing ? "edit-mode" : "") @(Row.OrderedSubDeliverables.Any() ? "has-subdeliverables" : "")">
+        @if (Row.IsEditing)
+        {
+            <FluentTextArea Value=@Row.Name
+                            ValueChanged=OnChangeName
+                            Rows="3"
+                            Class="fluent-text-area"
+                            Resize=TextAreaResize.Vertical
+                            Immediate=true>
+            </FluentTextArea>
+        }
+        else
+        {
+            @Row.Name
+        }
+    </span>
 
-    </td>
-    <td class="column-duration soft-border">
-        <EditableField T="string" Value="Item.Lag" OnValueChanged="newValue => OnChangeLag.Invoke(Item, newValue)" IsEditable="(EditRow == Item || CreateRow == Item)&&Item.SubDeliverables.Count==0" />
-    </td>
-    <td class="column-actions soft-border text-center">
-        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment=HorizontalAlignment.Center>
+    <!-- Fecha de Inicio -->
+    <span class="col-date @(Row.IsEditing ? "edit-mode" : "")">
+        @if (!Row.IsEditing || Row.SubDeliverables.Any() || Row.Dependants.Any())
+        {
+            @Row.StartDateValue.ToString("d")
+        }
+        else
+        {
+            <FluentDatePicker Value="@Row.StartDate" 
+                              ValueChanged="OnChangeStartDate" 
+                              
+                              Class="fluent-date-picker">
+            </FluentDatePicker>
+        }
+    </span>
 
-            <IconButton IconEnd="@(new Icons.Regular.Size20.List())" OnClick="@(()=>Item.ShowBudgetItems=!Item.ShowBudgetItems)" ToolTip="Show BudgetItems" />
-            @if (EditRow == Item)
+    <!-- Fecha de Fin -->
+    <span class="col-date @(Row.IsEditing ? "edit-mode" : "")">
+        @if (!Row.IsEditing || Row.SubDeliverables.Any() || Row.Dependants.Any())
+        {
+            @Row.EndDateValue.ToString("d")
+        }
+        else
+        {
+            <FluentDatePicker Value="@Row.EndDate" 
+                              ValueChanged="OnChangeEndDate" 
+                              Class="fluent-date-picker">
+            </FluentDatePicker>
+        }
+    </span>
+
+    <!-- Duración -->
+    <span class="col-generic @(Row.IsEditing ? "edit-mode" : "")">
+        @if (Row.IsEditing)
+        {
+            <FluentTextField Value=@Row.Duration 
+                            ValueChanged=OnChangeDuration 
+                            Class="fluent-text-field" 
+                            Immediate=true>
+            </FluentTextField>
+        }
+        else
+        {
+            @Row.Duration
+        }
+    </span>
+
+    <!-- Dependencias -->
+    <span class="col-generic @(Row.IsEditing ? "edit-mode" : "")">
+        @if (Row.IsEditing)
+        {
+            <FluentTextField Value=@Row.sDependences 
+                            ValueChanged=OnChangeDependences 
+                            Class="fluent-text-field" 
+                            Immediate=true>
+            </FluentTextField>
+        }
+        else
+        {
+            @Row.sDependences
+        }
+    </span>
+
+    <!-- Tipo de Dependencia -->
+    <span class="col-generic @(Row.IsEditing ? "edit-mode" : "")">
+        @if (Row.Dependants.Any())
+        {
+            @if (Row.IsEditing)
             {
-                <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="async () => await OnSaveEdit.InvokeAsync(Item)" ToolTip="Save" Disabled="@DisableSaveButton(Item)" />
-                <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="() => OnCancelEdit.InvokeAsync(Item)" ToolTip="Cancel" />
-            }
-            else if (CreateRow == Item)
-            {
-                <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="async () => await OnSaveCreate.InvokeAsync(Item)" ToolTip="Save" Disabled="@DisableSaveButton(Item)" />
-                <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="() => OnCancelCreate.InvokeAsync(Item)" ToolTip="Cancel" />
+                <select value="@Row.DependencyType.Id" @onchange="OnChangeDependencyType" class="task-relation-selector">
+                    @foreach (var option in TasksRelationTypeEnum.List)
+                    {
+                        <option value="@option.Id">@option.Name</option>
+                    }
+                </select>
+
+     
             }
             else
             {
-
-                <IconButton IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="() => OnEdit.InvokeAsync(Item)" ToolTip="Edit" />
-                <IconButton IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="() => OnDelete.InvokeAsync(Item)" ToolTip="Delete" />
+                @Row.DependencyType?.Name
             }
-        </FluentStack>
-    </td>
-</tr>
+        }
+    </span>
 
-@if (Item.ShowBudgetItems)
+    <!-- Lag -->
+    <span class="col-generic @(Row.IsEditing ? "edit-mode" : "")">
+        @if (Row.IsEditing)
+        {
+            <FluentTextField Value=@Row.Lag 
+                            ValueChanged=OnChangeLag 
+                            Class="fluent-text-field" 
+                            Immediate=true>
+            </FluentTextField>
+        }
+        else
+        {
+            @Row.Lag
+        }
+    </span>
+
+    <!-- Presupuesto -->
+    <span class="col-generic">@Row.sTotalBudget</span>
+
+    <!-- Acciones -->
+    <span class="col-actions">
+        @if (Row.IsEditing)
+        {
+            <IconButton IconEnd="@(new Icons.Regular.Size16.Save())" OnClick="async () => await OnSave.InvokeAsync(Row)" ToolTip="Save" Disabled="@DisableSaveButton(Row)" />
+            <IconButton IconEnd="@(new Icons.Regular.Size16.CalendarCancel())" OnClick="() => OnCancel.InvokeAsync(Row)" ToolTip="Cancel" />
+        }
+        else
+        {
+            <IconButton IconEnd="@(new Icons.Regular.Size16.List())" OnClick="@(() => Row.ShowBudgetItems = !Row.ShowBudgetItems)" ToolTip="Show BudgetItems" />
+            <IconButton IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="() => OnEdit.InvokeAsync(Row)" ToolTip="Edit" Disabled=@Row.ShowBudgetItems/>
+            <IconButton IconEnd="@(new Icons.Regular.Size16.Delete())" OnClick="() => OnDelete.InvokeAsync(Row)" ToolTip="Delete"  Disabled=@Row.ShowBudgetItems />
+        }
+    </span>
+</div>
+
+<!-- Mostrar Elementos del Presupuesto -->
+@if (Row.ShowBudgetItems)
 {
-  <tr>
-        <td colspan="10" style="padding: 0;">
+    <tr>
+        <td colspan="12" style="padding: 0;">
             <div class="expanded-row">
-                <BudgetItemsTableForDeliverables Deliverable="@Item" GetAll="GetAll"></BudgetItemsTableForDeliverables>
+                <BudgetItemsTableForDeliverables Deliverable="@Row" GetAll="GetAll"></BudgetItemsTableForDeliverables>
             </div>
         </td>
     </tr>
-
 }
-@if (Item.SubDeliverables != null && Item.SubDeliverables.Any())
+
+<!-- Subtareas Expandidas -->
+@if (Row.IsExpanded)
 {
-    foreach (var deliverable in Item.OrderedSubDeliverables)
+    foreach (var subtask in Row.OrderedSubDeliverables)
     {
-        <DeliverableRow CreateRow="CreateRow"
-                        EditRow="EditRow"
-                        SelectedRow="SelectedRow"
-                        Level="@(Level+1)"
-                        OnCancelCreate="OnCancelCreate"
-                        OnCancelEdit="OnCancelEdit"
-                        OnChangeDependencies="OnChangeDependencies"
-                        OnChangeDependencyType="OnChangeDependencyType"
-                        OnChangeDuration="OnChangeDuration"
-                        OnChangeEndDate="OnChangeEndDate"
-                        OnChangeName="OnChangeName"
-                        OnChangeStartDate="OnChangeStartDate"
-                        OnClick="OnClick"
-                        OnDelete="OnDelete"
-                        OnDoubleClick="OnDoubleClick"
-                        OnSaveCreate="OnSaveCreate"
-                        OnSaveEdit="OnSaveEdit"
-                        OnEdit="OnEdit"
-                        OnChangeLag="OnChangeLag"
-                        GetAll="GetAll"
-                        Item="deliverable">
-
-        </DeliverableRow>
+        <DeliverableRow @bind-Response="@Response"
+                           Row="@subtask"
+                           OnEdit="OnEdit"
+                           OnSave="OnSave"
+                           OnCancel="OnCancel"
+                           OnDelete="OnDelete"
+                           OnClick="OnClick"></DeliverableRow>
     }
-
-
 }
 
-
-
-<style>
-    .expanded-row {
-        display: block;
-        width: 100%;
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        padding: 10px;
-        box-sizing: border-box;
-    }
-    /* Evitar que la fila expandida afecte el ancho de las columnas */
-    tr > td[colspan="10"] {
-        padding: 0;
-        margin: 0;
-    }
-    .column-labelorder {
-        width: 5%;
-    }
-
-    .column-name {
-        width: 30%;
-    }
-
-    .column-date {
-        width: 8%;
-    }
-
-    .column-duration {
-        width: 8%;
-    }
-
-    .column-type {
-        width: 14%;
-    }
-
-    .column-dependencies {
-        width: 12%;
-    }
-
-    .column-actions {
-        width: 10%;
-    }
-
-    .soft-border {
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        padding: 1px;
-        background-color: #ffffff;
-        transition: all 0.3s ease;
-    }
-
-    .active-row {
-        background-color: #f0f8ff;
-        transition: background-color 0.3s ease;
-    }
-
-    .recursive-table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    /* Estilo para las filas */
-    .recursive-table-row {
-        border: none;
-    }
-</style>
 @code {
-    private Dictionary<int, string> _wbsWidthCache = new();
 
-    private string CalculateWBSWidth(int level)
-    {
-        if (!_wbsWidthCache.TryGetValue(level, out var width))
-        {
-            int baseWidth = 150;
-            int incrementPerLevel = 30;
-            width = $"{baseWidth + (level * incrementPerLevel)}px";
-            _wbsWidthCache[level] = width;
-        }
-        return width;
-    }
-    private string CalculatepaddingWBS(int level)
-    {
-        var result = (level + 1) * 10;
-        var stringresult = $"{result}px";
-        return stringresult;
-    }
-    private TasksRelationTypeEnum _selectedRelation = TasksRelationTypeEnum.None;
-
-    private void HandleRelationChanged(TasksRelationTypeEnum newRelation)
-    {
-        _selectedRelation = newRelation;
-    }
-
-    private void HandleInputDependencies(DeliverableResponse item, string dependencies)
-    {
-
-
-    }
 }

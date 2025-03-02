@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Shared.Models.BudgetItems;
 using Shared.Models.BudgetItems.Responses;
-using Shared.Models.Deliverables.Responses.NewResponses;
+using Shared.Models.Deliverables.Responses;
 
 namespace FluentWeb.Pages.BudgetManagements.BudgetItems;
 #nullable disable

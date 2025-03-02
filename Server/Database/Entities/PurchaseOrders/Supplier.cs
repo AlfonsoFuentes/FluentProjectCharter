@@ -10,8 +10,7 @@ namespace Server.Database.Entities.PurchaseOrders
         public string TaxCodeLD { get; set; } = string.Empty;
         public string NickName { get; set; } = string.Empty;
         public string TaxCodeLP { get; set; } = string.Empty;
-        [ForeignKey("SupplierId")]
-        public ICollection<PurchaseOrder> PurchaseOrders { get; set; } = new List<PurchaseOrder>();
+       
         public string? PhoneNumber { get; set; } = string.Empty;
         public string? ContactName { get; set; } = string.Empty;
         public string? Address { get; set; } = string.Empty;
@@ -33,5 +32,7 @@ namespace Server.Database.Entities.PurchaseOrders
         {
             return new() { Id = Guid.NewGuid() };
         }
+        [ForeignKey("SupplierId")]
+        public ICollection<PurchaseOrder> PurchaseOrders { get; set; } = new List<PurchaseOrder>();
     }
 }

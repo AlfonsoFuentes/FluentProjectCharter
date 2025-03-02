@@ -1,0 +1,62 @@
+﻿@page "/Suppliers"
+<FluentStack Orientation="Orientation.Vertical" Width="100%" HorizontalAlignment="HorizontalAlignment.Start" VerticalAlignment="VerticalAlignment.Top">
+    <FluentLabel Typo="Typography.Subject"><strong>"@($"Manage {Title}")"</strong></FluentLabel>
+
+    <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center">
+
+        <!-- Botón "Go Back" -->
+        <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowStepBack())" OnClick="@Navigation.NavigateBack" ToolTip="Go Back"></IconButton>
+        <FluentButton Id="add" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
+
+        </FluentButton>
+        <FluentTooltip Anchor="add" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>@($"Add {Title}")</FluentTooltip>
+
+
+
+        <FluentSpacer />
+        <FluentSearch @bind-Value="@nameFilter"
+                      @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
+    </FluentStack>
+    @if (Items.Count > 0)
+    {
+        <FluentDataGrid id="defaultGrid"
+                        Items=@FilteredItems.AsQueryable()
+                        TGridItem=SupplierResponse
+                        AutoFit="true"
+                        Pagination="@pagination"
+                        DisplayMode="DataGridDisplayMode.Table"
+                        MultiLine="true"
+                        RowSize="@DataGridRowSize.Medium" Style="width:100%">
+
+            <PropertyColumn Property="@(p => p.Name)" Title="Name" Width="20%" />
+            <PropertyColumn Property="@(p => p.NickName)" Title="Nick Name" Width="10%" />
+            <PropertyColumn Property="@(p => p.VendorCode)" Title="Vendor Code" Width="10%" />
+            <PropertyColumn Property="@(p => p.SupplierCurrency.Name)" Title="Supplier Currency" Width="10%" />
+            <PropertyColumn Property="@(p => p.TaxCodeLD)" Title="Tax Code LD" Width="10%" />
+            <PropertyColumn Property="@(p => p.TaxCodeLP)" Title="Tax Code LP" Width="10%" />
+            <PropertyColumn Property="@(p => p.ContactName)" Title="Contact Name" Width="10%" />
+            <PropertyColumn Property="@(p => p.PhoneNumber)" Title="Phone Number" Width="10%" />
+
+            <TemplateColumn Width="20%">
+                <IconButton IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(() => Edit(context))" ToolTip="Edit"></IconButton>
+                <IconButton IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(() => Delete(context))" ToolTip="Delete"></IconButton>
+
+            </TemplateColumn>
+
+        </FluentDataGrid>
+    }
+    else
+    {
+        @("No items to Show")
+    }
+
+
+</FluentStack>
+
+
+
+@code {
+
+    string Title = "Supplier";
+    PaginationState pagination = new PaginationState { ItemsPerPage = 40 };
+}

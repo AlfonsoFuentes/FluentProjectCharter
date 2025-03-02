@@ -1,0 +1,14 @@
+﻿<MatrixRow RowName="Stakeholder Management">
+    <StartContent>
+        <FluentAnchor Href="@($"StakeHolderInsideProjects/{Project.Id}")" Appearance="Appearance.Hypertext">StakeHolders</FluentAnchor>
+    </StartContent>
+    <PlannificationContent>
+        <FluentAnchor Href="@($"StakeHolderInsideProjects/{Project.Id}")" Appearance="Appearance.Hypertext">StakeHolders</FluentAnchor>
+    </PlannificationContent>
+</MatrixRow>
+
+
+@code {
+    [Parameter]
+    public ProjectResponse Project { get; set; } = null!;
+}

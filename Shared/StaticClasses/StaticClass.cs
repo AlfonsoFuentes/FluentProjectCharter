@@ -10,6 +10,8 @@ namespace Shared.StaticClasses
 
             public static string Create = "Create";
             public static string Update = "Update";
+            public static string Approve = "Approve";
+            public static string Close = "Close";
             public static string GetAll = "GetAll";
             public static string ToSearch = "ToSearch";
             public static string Delete = "Delete";
@@ -531,6 +533,7 @@ namespace Shared.StaticClasses
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
                 public static string UpdateState = $"{ClassName}/{Actions.Update}State";
+                public static string UpdateExpand = $"{ClassName}/{Actions.Update}Expand";
                 public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
                 public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
                 public static string UpdateEDT = $"{ClassName}/{Actions.Update}EDT";
@@ -1601,6 +1604,74 @@ namespace Shared.StaticClasses
 
 
         }
+        public static class Suppliers
+        {
+            public static string ClassLegend = "Supplier";
+            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
+            public static class EndPoint
+            {
+                public static string Create = $"{ClassName}/{Actions.Create}";
 
+                public static string Update = $"{ClassName}/{Actions.Update}";
+                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string GetById = $"{ClassName}/{Actions.GetById}";
+                public static string Delete = $"{ClassName}/{Actions.Delete}";
+                public static string Export = $"{ClassName}/{Actions.Export}";
+                public static string ValidateName = $"{ClassName}/{Actions.Validate}Name";
+                public static string ValidateVendorCode = $"{ClassName}/{Actions.Validate}VendorCode";
+                public static string ValidateNickName = $"{ClassName}/{Actions.Validate}NickName";
+            }
+            public static class Cache
+            {
+
+                public static string[] Key(Guid BrandId) => new[] { GetAll, GetById(BrandId) };
+                public static string GetAll => $"GetAll-{ClassName}";
+                public static string GetById(Guid BrandId) => $"GetById-{ClassName}-{BrandId}";
+            }
+            public static class PageName
+            {
+                public static string Create = $"Create{ClassName}";
+                public static string Update = $"Update{ClassName}";
+                public static string GetAll = $"GetAll{ClassName}";
+
+            }
+
+
+        }
+        public static class PurchaseOrders
+        {
+            public static string ClassLegend = "Purchase Orders";
+            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
+            public static class EndPoint
+            {
+                public static string Create = $"{ClassName}/{Actions.Create}";
+
+                public static string Approve = $"{ClassName}/{Actions.Approve}";
+                public static string Close = $"{ClassName}/{Actions.Close}";
+                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string GetById = $"{ClassName}/{Actions.GetById}";
+                public static string Delete = $"{ClassName}/{Actions.Delete}";
+                public static string Export = $"{ClassName}/{Actions.Export}";
+    
+                public static string ValidateNumber = $"{ClassName}/{Actions.Validate}Number";
+            }
+            public static class Cache
+            {
+
+                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
+                public static string GetAll => $"GetAll-{ClassName}";
+                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
+            }
+            public static class PageName
+            {
+                public static string Create = $"Create{ClassName}";
+                public static string Close = $"Close{ClassName}";
+                public static string Approve = $"Approve{ClassName}";
+                public static string GetAll = $"GetAll{ClassName}";
+
+            }
+
+
+        }
     }
 }

@@ -12,20 +12,19 @@ namespace Server.Database.Entities.ProjectManagements
         public string Answer { get; set; } = string.Empty;
         public int LabelOrder { get; set; }
         public string WBS { get; set; } = string.Empty;
-        public static Deliverable Create(Guid ProjectId, Guid? StartId, Guid? PlanningId)
+        public bool IsExpanded {  get; set; }
+        public static Deliverable Create(Guid ProjectId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
-                StartId = StartId,
+              
                 ProjectId = ProjectId,
          
-                PlanningId = PlanningId,
+           
             };
         }
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
-
+    
 
         // Relación padre-hijo
         public Guid? ParentDeliverableId { get; set; } // Referencia al padre (opcional)
@@ -50,8 +49,7 @@ namespace Server.Database.Entities.ProjectManagements
 
         public ICollection<DeliverableResource> DeliverableResources { get; set; } = new List<DeliverableResource>();
 
-        [ForeignKey("DeliverableId")]
-        public ICollection<PurchaseOrder> PurchaseOrders { get; set; } = new List<PurchaseOrder>(); // Colección de subtareas
+      
         public bool ShowBudgetItems { get; set; }
     }
 }

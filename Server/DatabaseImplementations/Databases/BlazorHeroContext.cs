@@ -99,7 +99,7 @@ namespace Server.DatabaseImplementations.Databases
             builder.Entity<Assumption>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             //builder.Entity<BudgetItemValue>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Constrainst>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<Supplier>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+           
             builder.Entity<ExpertJudgement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<PurchaseOrder>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<PurchaseOrderItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
@@ -118,7 +118,7 @@ namespace Server.DatabaseImplementations.Databases
             builder.Entity<Template>().UseTpcMappingStrategy();
 
             builder.Entity<Brand>().HasQueryFilter(p => p.IsDeleted == false);
-
+            builder.Entity<Supplier>().HasQueryFilter(p => p.IsDeleted == false);
 
             builder.Entity<RoleInsideProject>().HasQueryFilter(p => p.IsDeleted == false);
             builder.Entity<LearnedLesson>().HasQueryFilter(p => p.IsDeleted == false);

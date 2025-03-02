@@ -1,201 +1,310 @@
-﻿using Shared.Enums.TasksRelationTypeTypes;
+﻿using Shared.Enums.DeliverableStatuss;
+using Shared.Enums.TasksRelationTypeTypes;
+using Shared.Models.BudgetItems.IndividualItems.Alterations.Responses;
+using Shared.Models.BudgetItems.IndividualItems.EHSs.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Electricals.Responses;
+using Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Equipments.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Foundations.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Instruments.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Paintings.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Pipes.Responses;
+using Shared.Models.BudgetItems.Responses;
+using Shared.Models.BudgetItems.Structurals.Responses;
+using Shared.Models.BudgetItems.Taxs.Responses;
+using Shared.Models.BudgetItems.Testings.Responses;
+using Shared.Models.BudgetItems.Valves.Responses;
+using Shared.Models.FileResults.Generics.Records;
 using Shared.Models.FileResults.Generics.Reponses;
+
 namespace Shared.Models.Deliverables.Responses
 {
-    //public class DeliverableResponse2 : BaseResponse, IUpdateStateResponse
-    //{
-    //    public override string ToString()
-    //    {
-    //        return Name;
-    //    }
+    public class DeliverableResponse : BaseResponse, IUpdateStateResponse
+    {
+        public override string ToString()
+        {
+            return $"{Name}-{StartDate}-{EndDate}-{Duration}";
+        }
+        public string EndPointName => StaticClass.Deliverables.EndPoint.UpdateState;
+        public Guid ProjectId { get; set; }
+      
+        public string ProjectName { get; set; } = string.Empty;
+        public int LabelOrder { get; set; }
+        public string WBS { get; set; } = string.Empty;
+        public Guid? ParentDeliverableId { get; set; } // Referencia al padre (opcional)
+        public List<DeliverableResponse> SubDeliverables { get; set; } = new();
+        public List<DeliverableResponse> OrderedSubDeliverables => SubDeliverables.Count == 0 ? new() : SubDeliverables.OrderBy(x => x.Order).ToList();
+        public int LastOrder => SubDeliverables.Count == 0 ? 1 : OrderedSubDeliverables.Last().Order;
+        public Guid? DependantId { get; set; } // Referencia al padre (opcional)
+        public List<DeliverableResponse> Dependants { get; set; } = new(); // Colección de subtareas
+        public List<DeliverableResponse> OrderedDependants => Dependants.Count == 0 ? new() : Dependants.OrderBy(x => x.LabelOrder).ToList();
+        public string sDependences => OrderedDependants.Count == 0 ? string.Empty : string.Join(",", OrderedDependants.Select(d => d.LabelOrder.ToString()));
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public DateTime EndDateValue => EndDate.HasValue ? EndDate.Value : DateTime.Now;
+        public DateTime StartDateValue => StartDate.HasValue ? StartDate.Value : DateTime.Now;
+        public string sEndDateValue => EndDateValue.ToString("d");
+        public string sStartDateValue => StartDateValue.ToString("d");
+        public TasksRelationTypeEnum DependencyType { get; set; } = TasksRelationTypeEnum.None;
+        public DeliverableStatus DeliverableStatus { get; set; } = DeliverableStatus.None;
+        public string? Duration
+        {
+            get
+            {
+                return _duration;
+            }
+            set
+            {
+                SetDuration(value);
+            }
 
-    //    public Guid ProjectId { get; set; }
-    //    public Guid? StartId { get; set; }
-    //    public Guid? PlanningId { get; set; }
-    //    public Guid? DependantId { get; set; }
-    //    public int LabelOrder { get; set; }
-    //    public string WBS { get; set; } = string.Empty;
-    //    public string EndPointName => StaticClass.Deliverables.EndPoint.UpdateState;
-    //    public Guid? ParentDeliverableId { get; set; } // Referencia al padre (opcional)
-    //    public List<DeliverableResponse2> SubDeliverables { get; set; } = new();
-    //    public List<DeliverableResponse2> OrderedSubDeliverables => SubDeliverables.Count == 0 ? new() : SubDeliverables.OrderBy(x => x.LabelOrder).ToList();
-    //    public List<DeliverableResponse2> Dependants { get; set; } = new(); // Colección de subtareas
+        }
+        string _unitDuration { get; set; } = string.Empty;
+        int _durationInDays = 0;
+        string _duration = string.Empty;
+        public void SetDuration(string? rawinput)
+        {
 
-    //    public TasksRelationTypeEnum DependencyType { get; set; } = TasksRelationTypeEnum.None;
+            if (string.IsNullOrWhiteSpace(rawinput))
+            {
+                rawinput = "1d";
+            }
+            var input = rawinput.Trim();
 
+            var match = System.Text.RegularExpressions.Regex.Match(input, @"^(\d+)\s*([dwmy]?)$");
+            if (!match.Success)
+            {
+                return;
+            }
+            if (!int.TryParse(match.Groups[1].Value, out var numericValue) || numericValue < 0)
+            {
+                return;
+            }
+            _durationInDays = 0;
+            _unitDuration = match.Groups[2].Value.ToLower();
+            _duration = rawinput;
+            switch (_unitDuration)
+            {
+                case "d":
+                    _durationInDays = numericValue;
+                    break;
+                case "w":
+                    _durationInDays = numericValue * 7;
+                    break;
+                case "m":
+                    _durationInDays = numericValue * 30;
+                    break;
+                case "y":
+                    _durationInDays = numericValue * 365;
+                    break;
+                case "":
+                    _durationInDays = numericValue;
+                    break;
+                default:
+                    return;
+            }
 
-    //    public void RemoveSubDeliverable(DeliverableResponse2 subDeliverable)
-    //    {
+        }
+        public void SetDurationInDays(int durationindays)
+        {
+            _durationInDays = durationindays;
+            var result = 0.0;
+            switch (_unitDuration)
+            {
+                case "d": result = _durationInDays; break;
+                case "w": result = _durationInDays / 7; break;
+                case "m": result = _durationInDays / 30.44; break;
+                case "y": result = _durationInDays / 365.24; break;
+                default: return;
+            }
+            _duration = $"{result}{_unitDuration}";
+        }
 
-    //        if (SubDeliverables.Contains(subDeliverable))
-    //        {
-    //            subDeliverable.ParentDeliverableId = null;
-    //            SubDeliverables.Remove(subDeliverable);
-    //        }
+        public void CalculateDurationFromDates()
+        {
+            if (!StartDate.HasValue || !EndDate.HasValue)
+            {
+                return;
+            }
 
-    //    }
-
-    //    public DateTime? StartDate { get; set; }
-    //    public DateTime? EndDate { get; set; }
-
-    //    int Duration { get; set; } = 1;
-    //    public string sDependences => string.Join(",", Dependants.OrderBy(x => x.LabelOrder).Select(d => d.LabelOrder.ToString()));
-    //    private string? _DurationInput = string.Empty;
-    //    public string? DurationInput
-    //    {
-    //        get => GetDurationInput();
-    //        set
-    //        {
-    //            if (TryParseDuration(value, out var parsedDuration))
-    //            {
-    //                Duration = parsedDuration;
-
-    //            }
-    //            _DurationInput = value;
-    //        }
-    //    }
-
-    //    public static bool TryParseDuration(string? input, out int durationInDays)
-    //    {
-    //        durationInDays = 0;
-    //        string unitduration = "d";
-    //        if (string.IsNullOrWhiteSpace(input))
-    //        {
-    //            return false;
-    //        }
-    //        input = input.Trim();
-    //        var match = System.Text.RegularExpressions.Regex.Match(input, @"^(\d+)\s*([dwmy]?)$");
-    //        if (!match.Success)
-    //        {
-    //            return false;
-    //        }
-    //        if (!int.TryParse(match.Groups[1].Value, out var numericValue) || numericValue < 0)
-    //        {
-    //            return false;
-    //        }
-    //        unitduration = match.Groups[2].Value.ToLower();
-
-    //        switch (unitduration)
-    //        {
-    //            case "d":
-    //                durationInDays = numericValue;
-    //                break;
-    //            case "w":
-    //                durationInDays = numericValue * 7;
-    //                break;
-    //            case "m":
-    //                durationInDays = numericValue * 30;
-    //                break;
-    //            case "y":
-    //                durationInDays = numericValue * 365;
-    //                break;
-    //            case "":
-    //                durationInDays = numericValue;
-    //                break;
-    //            default:
-    //                return false;
-    //        }
-    //        return true;
-    //    }
-
-    //    private string GetDurationInput()
-    //    {
-    //        var duration = CalculateDuration();
-    //        var unit = ExtractUnitFromDurationInput(_DurationInput);
-    //        var result = $"{duration}{unit}";
-    //        return result;
-    //    }
-
-    //    // Método privado para calcular la duración
-    //    private int CalculateDuration()
-    //    {
-    //        if (!StartDate.HasValue || !EndDate.HasValue)
-    //        {
-    //            return 0; // No se puede calcular sin fechas válidas
-    //        }
-
-    //        // Calcular la diferencia en días entre StartDate y EndDate
-    //        var durationInDays = (int)(EndDate.Value - StartDate.Value).TotalDays + 1;
-
-    //        // Extraer la unidad de medida del DurationInput
-    //        var unit = ExtractUnitFromDurationInput(_DurationInput);
-
-    //        // Convertir la duración en días a la unidad especificada
-    //        return unit switch
-    //        {
-    //            "d" => durationInDays, // Días
-    //            "w" => durationInDays / 7, // Semanas
-    //            "m" => (int)(durationInDays / 30.44), // Meses (promedio de 30.44 días por mes)
-    //            "y" => (int)(durationInDays / 365.25), // Años (promedio de 365.25 días por año)
-    //            _ => durationInDays // Por defecto, usar días
-    //        };
-    //    }
-
-    //    // Método para extraer la unidad de medida del DurationInput
-    //    private string ExtractUnitFromDurationInput(string? durationInput)
-    //    {
-    //        if (string.IsNullOrEmpty(durationInput))
-    //        {
-    //            return "d"; // Unidad predeterminada: días
-    //        }
-
-    //        // Extraer el último carácter como la unidad
-    //        var lastChar = durationInput[^1];
-    //        return char.IsLetter(lastChar) ? lastChar.ToString().ToLower() : "d";
-    //    }
-
-    //    public static DeliverableResponse2? FindParent(DeliverableResponse2 child, IEnumerable<DeliverableResponse2> deliverables)
-    //    {
-    //        foreach (var deliverable in deliverables)
-    //        {
-    //            if (deliverable.SubDeliverables.Contains(child))
-    //            {
-    //                return deliverable;
-    //            }
-
-    //            var parent = FindParent(child, deliverable.SubDeliverables);
-    //            if (parent != null)
-    //            {
-    //                return parent;
-    //            }
-    //        }
-
-    //        return null;
-    //    }
-
-    //    public void UpdateStartDate(DateTime? startdate)
-    //    {
-    //        StartDate = startdate;
-    //        if (!Dependants.Any() && StartDate.HasValue)
-    //        {
-    //            EndDate = StartDate.Value.AddDays(Duration);
-    //        }
-    //    }
-    //    public void UpdateEndDate(DateTime? endate)
-    //    {
-    //        EndDate = endate;
-    //        if (!Dependants.Any() && EndDate.HasValue)
-    //        {
-    //            StartDate = EndDate.Value.AddDays(-Duration);
-    //        }
-    //    }
-    //    public void UpdateDuration(string duration)
-    //    {
-    //        DurationInput = duration;
-    //        if (!Dependants.Any() )
-    //        {
-    //            if(StartDate.HasValue)
-    //            {
-    //                EndDate = StartDate.Value.AddDays(Duration);
-    //            }
-    //            else if(EndDate.HasValue)
-    //            {
-    //                StartDate = EndDate.Value.AddDays(-Duration);
-    //            }
-    //        }
-            
-    //    }
+            TimeSpan difference = EndDate.Value - StartDate.Value;
 
 
-    //}
+            SetDurationInDays(difference.Days);
+
+        }
+
+        public void AddSubDeliverable(DeliverableResponse subDeliverable)
+        {
+
+            subDeliverable.ParentDeliverableId = Id;
+            subDeliverable.Order = LastOrder + 1;
+            SubDeliverables.Add(subDeliverable);
+        }
+        public void RemoveSubDeliverable(DeliverableResponse subDeliverable)
+        {
+            if (SubDeliverables.Contains(subDeliverable))
+            {
+                subDeliverable.ParentDeliverableId = null;
+                SubDeliverables.Remove(subDeliverable);
+            }
+        }
+
+
+        public void SetStartDateWithLag(DateTime date)
+        {
+            if (string.IsNullOrEmpty(Lag))
+            {
+                StartDate = date;
+            }
+            else
+            {
+                StartDate = date.AddDays(_lagInDays);
+            }
+        }
+        public void SetEndDateWithlag(DateTime date)
+        {
+            if (string.IsNullOrEmpty(Lag))
+            {
+                EndDate = date;
+            }
+            else
+            {
+                EndDate = date.AddDays(_lagInDays);
+            }
+        }
+        public void CalculateEndDate()
+        {
+            if (StartDate.HasValue)
+            {
+                EndDate = StartDate.Value.AddDays(_durationInDays);
+            }
+        }
+        public void CalculateStartDate()
+        {
+            if (EndDate.HasValue)
+            {
+                StartDate = EndDate.Value.AddDays(-_durationInDays);
+            }
+        }
+
+        public string? Lag
+        {
+            get
+            {
+                return _lag;
+            }
+            set
+            {
+                SetLag(value);
+            }
+
+        }
+        string _unitLag { get; set; } = string.Empty;
+        int _lagInDays = 0;
+        string _lag = string.Empty;
+        public void SetLag(string? rawinput)
+        {
+
+            if (string.IsNullOrWhiteSpace(rawinput))
+            {
+                return;
+            }
+            var input = rawinput.Trim();
+
+            var match = System.Text.RegularExpressions.Regex.Match(input, @"^(\d+)\s*([dwmy]?)$");
+            if (!match.Success)
+            {
+                return;
+            }
+            if (!int.TryParse(match.Groups[1].Value, out var numericValue) || numericValue < 0)
+            {
+                return;
+            }
+            _lagInDays = 0;
+            _unitLag = match.Groups[2].Value.ToLower();
+            _lag = rawinput;
+            switch (_unitLag)
+            {
+                case "d":
+                    _lagInDays = numericValue;
+                    break;
+                case "w":
+                    _lagInDays = numericValue * 7;
+                    break;
+                case "m":
+                    _lagInDays = numericValue * 30;
+                    break;
+                case "y":
+                    _lagInDays = numericValue * 365;
+                    break;
+                case "":
+                    _lagInDays = numericValue;
+                    break;
+                default:
+                    return;
+            }
+
+        }
+        public void SetLagInDays(int lagindays)
+        {
+            _lagInDays = lagindays;
+            var result = 0.0;
+            switch (_unitDuration)
+            {
+                case "d": result = _lagInDays; break;
+                case "w": result = _lagInDays / 7; break;
+                case "m": result = _lagInDays / 30.44; break;
+                case "y": result = _lagInDays / 365.24; break;
+                default: return;
+            }
+            _duration = $"{result}{_unitLag}";
+        }
+
+
+        public bool ShowBudgetItems { get; set; }
+        public bool IsExpanded { get; set; } = true;
+        public bool IsEditing { get; set; } = false;
+        public bool IsCreating { get; set; } = false;
+        public List<AlterationResponse> Alterations { get; set; } = new();
+        public List<FoundationResponse> Foundations { get; set; } = new();
+        public List<StructuralResponse> Structurals { get; set; } = new();
+        public List<EquipmentResponse> Equipments { get; set; } = new();
+        public List<ElectricalResponse> Electricals { get; set; } = new();
+        public List<PipeResponse> Pipings { get; set; } = new();
+        public List<InstrumentResponse> Instruments { get; set; } = new();
+        public List<EHSResponse> EHSs { get; set; } = new();
+        public List<PaintingResponse> Paintings { get; set; } = new();
+        public List<TaxResponse> Taxes { get; set; } = new();
+        public List<TestingResponse> Testings { get; set; } = new();
+        public List<ValveResponse> Valves { get; set; } = new();
+        public List<EngineeringDesignResponse> EngineeringDesigns { get; set; } = new();
+        public List<IBudgetItemResponse> Expenses => [.. Alterations];
+        public List<IBudgetItemResponse> Capital => [..Foundations,..Structurals,..Equipments,..Valves,..Electricals,
+            ..Pipings,..Instruments,..EHSs,..Paintings,..Taxes,..Testings,..EngineeringDesigns];
+
+        public List<IBudgetItemResponse> Items => BudgetItems.OrderBy(x => x.Nomenclatore).ToList();
+        public List<IBudgetItemResponse> BudgetItems => [.. Expenses, .. Capital];
+        public double TotalCapital => Capital.Sum(x => x.Budget) + TaxesBudget;
+
+        public double TotalCapitalWithOutVAT => Capital.Sum(x => x.Budget);
+        public double TotalExpenses => Expenses.Sum(x => x.Budget);
+        public double PercentageEngineering { get; set; }
+        public double PercentageContingency { get; set; }
+        public double PercentageTaxes { get; set; }
+        public bool IsProductive { get; set; } = true;
+
+        public double EngineeringBudget => TotalCapital * PercentageEngineering / 100;
+        public double ContingenyBudget => TotalCapital * PercentageContingency / 100;
+        public double TaxesBudget => IsProductive ? 0 : TotalCapitalWithOutVAT * PercentageTaxes / 100;
+        public double TotalBudget => TotalCapital + TotalExpenses + EngineeringBudget + ContingenyBudget;
+
+        public string sTotalCapital => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalCapital);
+        public string sTotalExpenses => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalExpenses);
+        public string sEngineeringBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", EngineeringBudget);
+        public string sContingenyBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", ContingenyBudget);
+        public string sTotalBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalBudget);
+        public string sTaxesBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", TaxesBudget);
+        public string sTotalCapitalWithOutVAT => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalCapitalWithOutVAT);
+    }
 }

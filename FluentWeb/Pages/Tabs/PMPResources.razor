@@ -1,0 +1,13 @@
+﻿<MatrixRow RowName="Resources Management">
+    <StartContent>
+        <FluentAnchor Href="@($"Resources/{Project.Id}/{Project.StartId}/{"Start"}")" Appearance="Appearance.Hypertext">Resources</FluentAnchor>
+    </StartContent>
+    <PlannificationContent>
+        <FluentAnchor Href="@($"Resources/{Project.Id}/{Project.PlanningId}/{"Planning"}")" Appearance="Appearance.Hypertext">Resources</FluentAnchor>
+    </PlannificationContent>
+</MatrixRow>
+
+@code {
+    [Parameter]
+    public ProjectResponse Project { get; set; } = null!;
+}

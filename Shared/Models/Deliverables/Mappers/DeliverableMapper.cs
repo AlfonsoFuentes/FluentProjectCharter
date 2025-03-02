@@ -1,21 +1,27 @@
 ﻿using Shared.Models.Deliverables.Requests;
 using Shared.Models.Deliverables.Responses;
-using Shared.Models.Deliverables.Responses.NewResponses;
 
 namespace Shared.Models.Deliverables.Mappers
 {
     public static class DeliverableMapper
     {
-
-        public static CreateDeliverableRequest ToCreate(this DeliverableResponse response, Guid? startid=null, Guid? planid = null)
+        public static UpdateDeliverableExpandRequest ToExpand(this DeliverableResponse response)
+        {
+            return new()
+            {
+                ProjectId = response.ProjectId,
+                Expanded = response.IsExpanded,
+                Id = response.Id,
+                Name = response.Name,
+            };
+        }
+        public static CreateDeliverableRequest ToCreate(this DeliverableResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid,
                 Order = response.Order,
                 WBS = response.WBS,
                 StartDate = response.StartDate,
@@ -24,12 +30,12 @@ namespace Shared.Models.Deliverables.Mappers
                 EndDate = response.EndDate,
                 LabelOrder = response.LabelOrder,
                 Lag = response.Lag,
-
-
+                ParentDeliverableId = response.ParentDeliverableId,
+                Dependants = response.Dependants,
 
             };
         }
-        public static DeliverableResponseListToUpdate ToUpdate(this DeliverableResponseList responseList )
+        public static DeliverableResponseListToUpdate ToUpdate(this DeliverableResponseList responseList)
         {
             return new()
             {

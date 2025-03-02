@@ -13,11 +13,10 @@ namespace Server.EndPoint.Deliverables.Commands
             {
                 app.MapPost(StaticClass.Deliverables.EndPoint.Create, async (CreateDeliverableRequest Data, IRepository Repository) =>
                 {
-                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
-                        return Result.Fail();
+
                     var lastorder = await Repository.GetLastOrderAsync<Deliverable, Project>(Data.ProjectId);
 
-                    var row = Deliverable.Create(Data.ProjectId, Data.StartId, Data.PlanningId);
+                    var row = Deliverable.Create(Data.ProjectId);
 
                     await Repository.AddAsync(row);
 
@@ -47,7 +46,7 @@ namespace Server.EndPoint.Deliverables.Commands
             row.Duration = request.Duration;
             row.LabelOrder = request.LabelOrder;
             row.Lag = request.Lag;
-           
+            row.ParentDeliverableId = request.ParentDeliverableId;
             return row;
         }
 

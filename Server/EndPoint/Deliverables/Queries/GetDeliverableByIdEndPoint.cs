@@ -2,7 +2,6 @@
 using Server.EndPoint.Milestones.Queries;
 using Shared.Enums.TasksRelationTypeTypes;
 using Shared.Models.Deliverables.Records;
-using Shared.Models.Deliverables.Responses.NewResponses;
 namespace Server.EndPoint.Deliverables.Queries
 {
     public static class GetDeliverableByIdEndPoint
@@ -42,8 +41,7 @@ namespace Server.EndPoint.Deliverables.Queries
             {
                 Id = row.Id,
                 Name = row.Name,
-                StartId = row.StartId,
-                PlanningId = row.PlanningId,
+         
 
                 ProjectId = row.ProjectId,
                 Order = row.Order,
