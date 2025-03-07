@@ -18,9 +18,9 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Command
                     {
                         return Result.Fail(data.NotFound);
                     }
-                    if (data.DeliverableId.HasValue)
+                    if (data.GanttTaskId.HasValue)
                     {
-                        var deliverable = await repository.GetByIdAsync<Deliverable>(data.DeliverableId.Value);
+                        var deliverable = await repository.GetByIdAsync<GanttTask>(data.GanttTaskId.Value);
                         if (deliverable != null)
                         {
                             deliverable.ShowBudgetItems = true;
@@ -38,9 +38,9 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Command
             }
             private string[] GetCacheKeys(BudgetItem row)
             {
-                var deliverable = row.DeliverableId.HasValue ? StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId) : new[] { string.Empty };
+                var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
                 List<string> cacheKeys = [
-                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.DeliverableId),
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.GanttTaskId),
                  ..deliverable
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

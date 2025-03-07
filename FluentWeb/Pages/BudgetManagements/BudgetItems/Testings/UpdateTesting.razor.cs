@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.BudgetItems.Testings.Records;
-using Shared.Models.BudgetItems.Testings.Requests;
-using Shared.Models.BudgetItems.Testings.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Testings.Records;
+using Shared.Models.BudgetItems.IndividualItems.Testings.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Testings.Responses;
 
 namespace FluentWeb.Pages.BudgetManagements.BudgetItems.Testings;
 public partial class UpdateTesting

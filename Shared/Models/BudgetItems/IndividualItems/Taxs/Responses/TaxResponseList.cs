@@ -1,4 +1,4 @@
-﻿namespace Shared.Models.BudgetItems.Taxs.Responses
+﻿namespace Shared.Models.BudgetItems.IndividualItems.Taxs.Responses
 {
     public class TaxResponseList
     {

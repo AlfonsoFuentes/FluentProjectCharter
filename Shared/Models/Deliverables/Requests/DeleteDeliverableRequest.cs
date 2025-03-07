@@ -6,11 +6,11 @@ namespace Shared.Models.Deliverables.Requests
     {
         public string Name { get; set; } = string.Empty;
         public override string Legend => Name;
-
+  
         public override string ClassName => StaticClass.Deliverables.ClassName;
 
-        public Guid ProjectId { get; set; }
         public Guid Id { get; set; }
+        public Guid ProjectId {  get; set; }
 
         public string EndPointName => StaticClass.Deliverables.EndPoint.Delete;
     }

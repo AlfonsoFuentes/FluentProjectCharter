@@ -47,7 +47,7 @@ namespace Server.Database.Entities
         #endregion
         #region Timeline
         public List<Deliverable> Deliverables { get; set; } = new();
-        public List<Milestone> Milestones { get; set; } = new();
+  
 
         #endregion
         #region Budget

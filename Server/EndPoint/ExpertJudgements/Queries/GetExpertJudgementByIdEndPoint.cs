@@ -43,8 +43,8 @@ namespace Server.EndPoint.ExpertJudgements.Queries
                 ProjectId = row.ProjectId,
                 Expert = row.Expert == null ? null! : row.Expert.Map(),
                 Order = row.Order,
-                StartId = row.StartId,
-                PlanningId = row.PlanningId,
+                
+                
             };
         }
 

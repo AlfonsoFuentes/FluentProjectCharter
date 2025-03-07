@@ -12,11 +12,10 @@ namespace Server.EndPoint.Qualitys.Commands
             {
                 app.MapPost(StaticClass.Qualitys.EndPoint.Create, async (CreateQualityRequest Data, IRepository Repository) =>
                 {
-                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
-                        return Result.Fail();
+                    
                     var lastorder = await Repository.GetLastOrderAsync<Quality, Project>(Data.ProjectId);
 
-                    var row = Quality.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = Quality.Create(Data.ProjectId,lastorder);
 
                     await Repository.AddAsync(row);
 

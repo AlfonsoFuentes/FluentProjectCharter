@@ -23,7 +23,8 @@ namespace Server.EndPoint.Resources.Queries
 
                     var response = new ResourceResponseList
                     {
-                        Items = maps
+                        Items = maps,
+                        ProjectName = rows.Name
                     };
 
                     return Result<ResourceResponseList>.Success(response);

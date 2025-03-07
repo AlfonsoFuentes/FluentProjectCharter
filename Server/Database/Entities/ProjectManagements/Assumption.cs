@@ -13,19 +13,19 @@ namespace Server.Database.Entities.ProjectManagements
 
         public string Name { set; get; } = string.Empty;
 
-        public static Assumption Create(Guid ProjectId, Guid? StartId, Guid? PlanningId, int Order)
+        public static Assumption Create(Guid ProjectId,  int Order)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
-                StartId = StartId,
+               
                 ProjectId = ProjectId,
                 Order = Order,
-                PlanningId = PlanningId,
+               
             };
         }
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
+       
+        
     }
 
 }

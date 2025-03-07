@@ -10,7 +10,11 @@ namespace Server.EndPoint.Bennefits.Queries
             {
                 app.MapPost(StaticClass.Bennefits.EndPoint.GetAll, async (BennefitGetAll request, IQueryRepository repository) =>
                 {
-                    var rows = await GetBennefitAsync(request, repository);
+                    Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x.Include(p => p.Bennefits);
+                    Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
+                    string cacheKey = StaticClass.Bennefits.Cache.GetAll;
+
+                    var rows = await repository.GetAsync(Cache: cacheKey, Includes: includes, Criteria: criteria);
 
                     if (rows == null)
                     {
@@ -18,11 +22,12 @@ namespace Server.EndPoint.Bennefits.Queries
                             StaticClass.ResponseMessages.ReponseNotFound(StaticClass.Bennefits.ClassLegend));
                     }
 
-                    var maps = rows.OrderBy(x=>x.Order).Select(x=>x.Map()).ToList();
+                    var maps = rows.Bennefits.OrderBy(x => x.Order).Select(x => x.Map()).ToList();
 
                     var response = new BennefitResponseList
                     {
-                        Items = maps
+                        Items = maps,
+                        ProjectName = rows.Name,
                     };
 
                     return Result<BennefitResponseList>.Success(response);
@@ -31,14 +36,14 @@ namespace Server.EndPoint.Bennefits.Queries
 
             private static async Task<List<Bennefit>> GetBennefitAsync(BennefitGetAll request, IQueryRepository repository)
             {
-         
+
                 Expression<Func<Bennefit, bool>> criteria = x => x.ProjectId == request.ProjectId;
                 string cacheKey = StaticClass.Bennefits.Cache.GetAll;
 
                 return await repository.GetAllAsync(Cache: cacheKey, Criteria: criteria);
             }
 
-           
+
         }
     }
 }

@@ -5,5 +5,6 @@ namespace Shared.Models.Objectives.Responses
     public class ObjectiveResponseList : IResponseAll
     {
         public List<ObjectiveResponse> Items { get; set; } = new();
+        public string ProjectName { get; set; } = string.Empty;
     }
 }

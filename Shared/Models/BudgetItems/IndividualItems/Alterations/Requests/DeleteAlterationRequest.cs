@@ -8,7 +8,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Alterations.Requests
         public override string Legend => Name;
         public Guid ProjectId { get; set; }
         public override string ClassName => StaticClass.Alterations.ClassName;
-        public Guid? DeliverableId { get; set; }
+        public Guid? GanttTaskId { get; set; }
         public Guid Id { get; set; }
 
         public string EndPointName => StaticClass.Alterations.EndPoint.Delete;

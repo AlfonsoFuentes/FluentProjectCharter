@@ -36,15 +36,15 @@ namespace Shared.Models.Constrainsts.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateConstrainstRequest ToCreate(this ConstrainstResponse response, Guid? startid, Guid? planid)
+        public static CreateConstrainstRequest ToCreate(this ConstrainstResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

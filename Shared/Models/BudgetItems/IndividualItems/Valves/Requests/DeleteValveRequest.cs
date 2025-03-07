@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems.Valves.Requests
+namespace Shared.Models.BudgetItems.IndividualItems.Valves.Requests
 {
     public class DeleteValveRequest : DeleteMessageResponse, IRequest
     {
@@ -8,7 +8,7 @@ namespace Shared.Models.BudgetItems.Valves.Requests
         public override string Legend => Name;
         public Guid ProjectId { get; set; }
         public override string ClassName => StaticClass.Valves.ClassName;
-        public Guid? DeliverableId { get; set; }
+        public Guid? GanttTaskId { get; set; }
         public Guid Id { get; set; }
 
         public string EndPointName => StaticClass.Valves.EndPoint.Delete;

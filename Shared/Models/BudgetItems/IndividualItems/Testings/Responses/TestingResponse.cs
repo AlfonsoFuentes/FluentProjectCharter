@@ -3,7 +3,7 @@ using Shared.Enums.CostCenter;
 using Shared.Models.BudgetItems.Responses;
 using System.Globalization;
 
-namespace Shared.Models.BudgetItems.Testings.Responses
+namespace Shared.Models.BudgetItems.IndividualItems.Testings.Responses
 {
     public class TestingResponse : BaseResponse, IBudgetItemResponse
     {

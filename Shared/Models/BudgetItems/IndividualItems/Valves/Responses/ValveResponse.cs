@@ -8,7 +8,7 @@ using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Shared.Models.BudgetItems.Responses;
 using System.Globalization;
 
-namespace Shared.Models.BudgetItems.Valves.Responses
+namespace Shared.Models.BudgetItems.IndividualItems.Valves.Responses
 {
     public class ValveResponse : BaseResponse, IBudgetItemResponse
     {

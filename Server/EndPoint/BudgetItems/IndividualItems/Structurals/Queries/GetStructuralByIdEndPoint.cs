@@ -1,7 +1,7 @@
 ﻿using Server.Database.Entities.BudgetItems.Commons;
 using Server.EndPoint.Projects.Queries;
-using Shared.Models.BudgetItems.Structurals.Records;
-using Shared.Models.BudgetItems.Structurals.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Structurals.Records;
+using Shared.Models.BudgetItems.IndividualItems.Structurals.Responses;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Structurals.Queries
 {

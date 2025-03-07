@@ -6,7 +6,7 @@ namespace Shared.Models.Objectives.Responses
     {
         public string EndPointName => StaticClass.Objectives.EndPoint.UpdateState;
         public Guid ProjectId { get; set; }
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
+        
+        
     }
 }

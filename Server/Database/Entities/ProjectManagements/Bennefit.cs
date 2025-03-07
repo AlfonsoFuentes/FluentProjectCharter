@@ -10,18 +10,18 @@ namespace Server.Database.Entities.ProjectManagements
 
 
         public string Name { get; set; } = string.Empty;
-        public static Bennefit Create(Guid ProjectId, Guid? StartId, Guid? PlanningId, int Order)
+        public static Bennefit Create(Guid ProjectId,  int Order)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
-                StartId = StartId,
+               
                 ProjectId = ProjectId,
                 Order = Order,
-                PlanningId = PlanningId,
+               
             };
         }
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
+       
+        
     }
 }

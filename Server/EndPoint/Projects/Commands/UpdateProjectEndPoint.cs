@@ -32,8 +32,8 @@
             row.ManagerId = request.Manager == null ? null : request.Manager.Id;
             row.SponsorId = request.Sponsor == null ? null : request.Sponsor.Id;
             row.StartDate = request.InitialProjectDate == null ? null : request.InitialProjectDate.Value;
-            row.Status = request.Status.Name;
-            row.ProjectNumber = request.ProjectNumber;
+          
+        
             row.PercentageEngineering = request.PercentageEngineering;
             row.PercentageContingency = request.PercentageContingency;
             row.PercentageTaxProductive = request.PercentageTaxProductive;

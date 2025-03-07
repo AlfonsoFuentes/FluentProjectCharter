@@ -15,6 +15,7 @@ namespace Server.Interfaces.Database
         DbSet<Scope> Scopes { get; set; }
         DbSet<Objective> Objectives { get; set; }
         DbSet<Deliverable> Deliverables { get; set; }
+        DbSet<GanttTask> GanttTasks { get; set; }
         DbSet<Requirement> Requirements { get; set; }
         DbSet<Assumption> Assumptions { get; set; }
         DbSet<Constrainst> Constrainsts { get; set; }
@@ -62,8 +63,6 @@ namespace Server.Interfaces.Database
         DbSet<PipingConnectionType> PipingConnectionTypes { get; set; }
         DbSet<PipingAccesoryCodeBrand> PipingAccesoryCodeBrands { get; set; }
       
-
-        DbSet<Milestone> Milestones { get; set; }
         DbSet<App> Apps { get; set; }
         DbSet<Quality> Qualitys { get; set; }
         DbSet<Communication> Communications { get; set; }

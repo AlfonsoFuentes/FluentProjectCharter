@@ -22,7 +22,8 @@ namespace Server.EndPoint.ExpertJudgements.Queries
 
                     var response = new ExpertJudgementResponseList
                     {
-                        Items = maps
+                        Items = maps,
+                        ProjectName=rows.Name,
                     };
 
                     return Result<ExpertJudgementResponseList>.Success(response);

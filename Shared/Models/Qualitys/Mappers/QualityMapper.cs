@@ -36,15 +36,15 @@ namespace Shared.Models.Qualitys.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateQualityRequest ToCreate(this QualityResponse response, Guid? startid, Guid? planid)
+        public static CreateQualityRequest ToCreate(this QualityResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

@@ -14,28 +14,11 @@ public partial class AssumptionTable
 
     [Parameter]
     public Guid ProjectId { get; set; }
-    [Parameter]
-    public string IdType { get; set; }
 
-    [Parameter]
-    public Guid Id { get; set; }
-    Guid? StartId;
-    Guid? PlanningId;
-    private void ValidateIdType()
-    {
-        if (IdType.Equals("Planning", StringComparison.OrdinalIgnoreCase))
-        {
-            PlanningId = Id;
-        }
-        else if (IdType.Equals("Start", StringComparison.OrdinalIgnoreCase))
-        {
-            StartId = Id;
-        }
-
-    }
+   
     protected override async Task OnInitializedAsync()
     {
-        ValidateIdType();
+      
         await GetAll();
     }
     public List<AssumptionResponse> Items { get; set; } = new();
@@ -66,7 +49,7 @@ public partial class AssumptionTable
         });
         if (result.Succeeded)
         {
-            Items = StartId.HasValue ? result.Data.Items.Where(x => x.StartId == StartId).ToList() : result.Data.Items;
+            Items = result.Data.Items;
 
 
             GetSelectedRowFromItems();
@@ -85,7 +68,7 @@ public partial class AssumptionTable
     public async Task Create()
     {
         if (CreateRow == null) return;
-        CreateAssumptionRequest create = CreateRow.ToCreate(StartId, PlanningId);
+        CreateAssumptionRequest create = CreateRow.ToCreate();
         var result = await GenericService.Create(create);
         if (result.Succeeded)
         {

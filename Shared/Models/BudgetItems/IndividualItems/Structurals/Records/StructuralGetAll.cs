@@ -1,4 +1,4 @@
-﻿namespace Shared.Models.BudgetItems.Structurals.Records
+﻿namespace Shared.Models.BudgetItems.IndividualItems.Structurals.Records
 {
     public record StructuralGetAll();
 }

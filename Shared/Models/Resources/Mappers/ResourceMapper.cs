@@ -36,15 +36,15 @@ namespace Shared.Models.Resources.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateResourceRequest ToCreate(this ResourceResponse response, Guid? startid, Guid? planid)
+        public static CreateResourceRequest ToCreate(this ResourceResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

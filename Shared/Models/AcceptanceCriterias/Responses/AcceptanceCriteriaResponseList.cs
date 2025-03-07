@@ -5,5 +5,6 @@ namespace Shared.Models.AcceptanceCriterias.Responses
     public class AcceptanceCriteriaResponseList : IResponseAll
     {
         public List<AcceptanceCriteriaResponse> Items { get; set; } = new();
+        public string ProjectName { get; set; } = string.Empty;
     }
 }

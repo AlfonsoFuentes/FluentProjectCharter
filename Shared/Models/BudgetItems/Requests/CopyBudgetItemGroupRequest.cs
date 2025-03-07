@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems
+namespace Shared.Models.BudgetItems.Requests
 {
     public class CopyBudgetItemGroupRequest : DeleteMessageResponse, IRequest
     {

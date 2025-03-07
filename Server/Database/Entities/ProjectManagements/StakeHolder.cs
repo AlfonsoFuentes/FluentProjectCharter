@@ -27,29 +27,8 @@ namespace Server.Database.Entities.ProjectManagements
         public List<Requirement> RequirementRequestedBys { get; set; } = new();
         [ForeignKey("ResponsibleId")]
         public List<Requirement> RequirementResponsibles { get; set; } = new();
-        public static StakeHolder CreateStart(Guid ProjectId, Guid StartId)
-        {
-            return new()
-            {
-                Id = Guid.NewGuid(),
-
-                StartId = StartId,
-
-            };
-        }
-        public static StakeHolder CreatePlanning(Guid ProjectId, Guid PlanningId)
-        {
-            return new()
-            {
-                Id = Guid.NewGuid(),
-
-
-
-                PlanningId = PlanningId
-            };
-        }
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
+      
+        
         public static StakeHolder Create()
         {
             return new()

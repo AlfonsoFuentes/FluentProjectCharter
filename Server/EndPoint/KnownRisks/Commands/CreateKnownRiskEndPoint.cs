@@ -13,11 +13,10 @@ namespace Server.EndPoint.KnownRisks.Commands
             {
                 app.MapPost(StaticClass.KnownRisks.EndPoint.Create, async (CreateKnownRiskRequest Data, IRepository Repository) =>
                 {
-                    if (!Data.StartId.HasValue && !Data.PlanningId.HasValue)
-                        return Result.Fail();
+                 
                     var lastorder = await Repository.GetLastOrderAsync<KnownRisk, Project>(Data.ProjectId);
 
-                    var row = KnownRisk.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = KnownRisk.Create(Data.ProjectId,lastorder);
 
 
                     await Repository.AddAsync(row);

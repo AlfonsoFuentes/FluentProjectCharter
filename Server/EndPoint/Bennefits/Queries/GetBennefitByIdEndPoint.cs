@@ -36,8 +36,8 @@ namespace Server.EndPoint.Bennefits.Queries
                 Name = row.Name,
                 ProjectId = row.ProjectId,
                 Order = row.Order,
-                StartId = row.StartId,
-                PlanningId = row.PlanningId,
+                
+                
             };
         }
 

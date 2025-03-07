@@ -1,13 +1,13 @@
 ﻿using Shared.Enums.CostCenter;
 using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems.Testings.Requests
+namespace Shared.Models.BudgetItems.IndividualItems.Testings.Requests
 {
     public class UpdateTestingRequest : UpdateMessageResponse, IRequest
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public Guid? DeliverableId { get; set; }
+        public Guid? GanttTaskId { get; set; }
         public Guid ProjectId { get; set; }
         public string EndPointName => StaticClass.Testings.EndPoint.Update;
 

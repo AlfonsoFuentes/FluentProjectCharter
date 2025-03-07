@@ -5,5 +5,6 @@ namespace Shared.Models.Resources.Responses
     public class ResourceResponseList : IResponseAll
     {
         public List<ResourceResponse> Items { get; set; } = new();
+        public string ProjectName { get; set; } = string.Empty;
     }
 }

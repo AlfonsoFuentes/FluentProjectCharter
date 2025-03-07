@@ -24,7 +24,8 @@ namespace Server.EndPoint.Constrainsts.Queries
 
                     var response = new ConstrainstResponseList
                     {
-                        Items = maps
+                        Items = maps,
+                        ProjectName=rows.Name,
                     };
 
                     return Result<ConstrainstResponseList>.Success(response);

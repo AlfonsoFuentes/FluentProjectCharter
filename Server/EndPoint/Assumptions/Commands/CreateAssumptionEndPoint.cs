@@ -13,11 +13,10 @@ namespace Server.EndPoint.Assumptions.Commands
             {
                 app.MapPost(StaticClass.Assumptions.EndPoint.Create, async (CreateAssumptionRequest Data, IRepository Repository) =>
                 {
-                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
-                        return Result.Fail();
+                  
                     var lastorder = await Repository.GetLastOrderAsync<Assumption, Project>(Data.ProjectId);
 
-                    var row = Assumption.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = Assumption.Create(Data.ProjectId,lastorder);
 
                     await Repository.AddAsync(row);
 

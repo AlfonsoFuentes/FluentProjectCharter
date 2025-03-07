@@ -40,8 +40,8 @@ namespace Server.EndPoint.KnownRisks.Queries
                 Name = row.Name,
                 ProjectId = row.ProjectId,
                 Order = row.Order,
-                StartId = row.StartId,
-                PlanningId = row.PlanningId,
+                
+                
             };
         }
 

@@ -15,7 +15,7 @@ public partial class CreateAlteration
     protected override void OnInitialized()
     {
         Model.ProjectId = ProjectId;
-        Model.DeliverableId = DeliverableId;
+        Model.GanttTaskId = DeliverableId;
 
     }
   

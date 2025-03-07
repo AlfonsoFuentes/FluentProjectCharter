@@ -24,7 +24,8 @@ namespace Server.EndPoint.LearnedLessons.Queries
 
                     var response = new LearnedLessonResponseList
                     {
-                        Items = maps
+                        Items = maps,
+                        ProjectName=rows.Name,
                     };
 
                     return Result<LearnedLessonResponseList>.Success(response);

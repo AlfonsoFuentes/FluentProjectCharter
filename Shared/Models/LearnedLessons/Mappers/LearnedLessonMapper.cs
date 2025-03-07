@@ -36,15 +36,15 @@ namespace Shared.Models.LearnedLessons.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateLearnedLessonRequest ToCreate(this LearnedLessonResponse response, Guid? startid, Guid? planid)
+        public static CreateLearnedLessonRequest ToCreate(this LearnedLessonResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

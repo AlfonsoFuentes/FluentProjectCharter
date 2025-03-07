@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Shared.Models.Brands.Records;
 using Shared.Models.Brands.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
-using Shared.Models.BudgetItems.Valves.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Valves.Requests;
 using Shared.Models.Templates.Valves.Records;
 using Shared.Models.Templates.Valves.Responses;
 using Shared.StaticClasses;
@@ -18,12 +18,12 @@ public partial class CreateValve
     public Guid ProjectId { get; set; }
     BrandResponseList BrandsResponseList { get; set; } = new();
     [Parameter]
-    public Guid? DeliverableId { get; set; }
+    public Guid? GanttTaskId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
 
-        Model.DeliverableId = DeliverableId;
+        Model.GanttTaskId = GanttTaskId;
         Model.ProjectId = ProjectId;
         await LoadFromLocalStorage();
         await GetAllEquipmentTemplate();

@@ -1,5 +1,5 @@
 ﻿using Server.Database.Entities.BudgetItems.Commons;
-using Shared.Models.BudgetItems.Testings.Validators;
+using Shared.Models.BudgetItems.IndividualItems.Testings.Validators;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Testings.Validators
 {

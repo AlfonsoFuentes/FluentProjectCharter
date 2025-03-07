@@ -1,4 +1,4 @@
-﻿@page "/CreatePaintings/{ProjectId:guid}/{DeliverableId:guid}"
+﻿@page "/CreatePaintings/{ProjectId:guid}/{GanttTaskId:guid}"
 @page "/CreatePaintings/{ProjectId:guid}"
 @using Shared.Models.BudgetItems.IndividualItems.Paintings.Requests
 <CreateTemplate @ref=CreateForm TItem="CreatePaintingRequest" @bind-Model="@Model"

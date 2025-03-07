@@ -1,5 +1,5 @@
-﻿using Shared.Models.BudgetItems.Testings.Requests;
-using Shared.Models.BudgetItems.Testings.Validators;
+﻿using Shared.Models.BudgetItems.IndividualItems.Testings.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Testings.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.Testings

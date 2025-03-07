@@ -1,7 +1,7 @@
 ﻿using Shared.Models.FileResults.Generics.Records;
 using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems.Taxs.Records
+namespace Shared.Models.BudgetItems.IndividualItems.Taxs.Records
 {
     public class GetBudgetItemsToApplyTaxRequest : GetByIdMessageResponse, IGetAll
     {

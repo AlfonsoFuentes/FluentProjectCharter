@@ -1,4 +1,4 @@
-﻿namespace Shared.Models.BudgetItems.Testings.Responses
+﻿namespace Shared.Models.BudgetItems.IndividualItems.Testings.Responses
 {
     public class TestingExportResponse
     {

@@ -36,15 +36,15 @@ namespace Shared.Models.Scopes.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateScopeRequest ToCreate(this ScopeResponse response, Guid? startid, Guid? planid)
+        public static CreateScopeRequest ToCreate(this ScopeResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

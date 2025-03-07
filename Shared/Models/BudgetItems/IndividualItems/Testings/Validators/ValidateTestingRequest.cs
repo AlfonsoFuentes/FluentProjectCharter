@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems.Testings.Validators
+namespace Shared.Models.BudgetItems.IndividualItems.Testings.Validators
 {
     public class ValidateTestingRequest : ValidateMessageResponse, IRequest
     {

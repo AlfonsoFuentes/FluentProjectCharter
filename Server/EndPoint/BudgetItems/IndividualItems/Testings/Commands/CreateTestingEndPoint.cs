@@ -1,5 +1,5 @@
 ﻿using Server.Database.Entities.ProjectManagements;
-using Shared.Models.BudgetItems.Testings.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Testings.Requests;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Testings.Commands
 {
@@ -16,10 +16,10 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Testings.Commands
                     if (project == null) return Result.Fail(data.Fail);
                     int order = GetNextOrder(project);
 
-                    var row = Testing.Create(project.Id, data.DeliverableId);
-                    if (data.DeliverableId.HasValue)
+                    var row = Testing.Create(project.Id, data.GanttTaskId);
+                    if (data.GanttTaskId.HasValue)
                     {
-                        var deliverable = await repository.GetByIdAsync<Deliverable>(data.DeliverableId.Value);
+                        var deliverable = await repository.GetByIdAsync<GanttTask>(data.GanttTaskId.Value);
                         if (deliverable != null)
                         {
                             deliverable.ShowBudgetItems = true;
@@ -38,9 +38,9 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Testings.Commands
             }
             private string[] GetCacheKeys(BudgetItem row)
             {
-                var deliverable = row.DeliverableId.HasValue ? StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId) : new[] { string.Empty };
+                var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
                 List<string> cacheKeys = [
-                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.DeliverableId),
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.GanttTaskId),
                  ..deliverable
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

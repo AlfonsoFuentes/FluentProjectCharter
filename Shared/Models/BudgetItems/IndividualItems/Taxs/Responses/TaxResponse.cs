@@ -3,7 +3,7 @@ using Shared.Enums.CostCenter;
 using Shared.Models.BudgetItems.Responses;
 using System.Globalization;
 
-namespace Shared.Models.BudgetItems.Taxs.Responses
+namespace Shared.Models.BudgetItems.IndividualItems.Taxs.Responses
 {
     public class TaxResponse : BaseResponse, IBudgetItemResponse
     {

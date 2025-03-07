@@ -5,7 +5,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Foundations.Requests
 {
     public class CreateFoundationRequest : CreateMessageResponse, IRequest
     {
-        public Guid? DeliverableId { get; set; }
+        public Guid? GanttTaskId { get; set; }
         public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;
 

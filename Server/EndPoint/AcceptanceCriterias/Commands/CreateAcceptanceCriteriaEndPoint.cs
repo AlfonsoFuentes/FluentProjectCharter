@@ -12,11 +12,10 @@ namespace Server.EndPoint.AcceptanceCriterias.Commands
             {
                 app.MapPost(StaticClass.AcceptanceCriterias.EndPoint.Create, async (CreateAcceptanceCriteriaRequest Data, IRepository Repository) =>
                 {
-                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
-                        return Result.Fail();
+                   
                     var lastorder = await Repository.GetLastOrderAsync<AcceptanceCriteria, Project>(Data.ProjectId);
 
-                    var row = AcceptanceCriteria.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = AcceptanceCriteria.Create(Data.ProjectId,lastorder);
 
                     await Repository.AddAsync(row);
 

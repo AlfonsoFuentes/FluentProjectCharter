@@ -1,4 +1,4 @@
-﻿namespace Shared.Models.BudgetItems.Structurals.Responses
+﻿namespace Shared.Models.BudgetItems.IndividualItems.Structurals.Responses
 {
     public class StructuralExportResponse
     {

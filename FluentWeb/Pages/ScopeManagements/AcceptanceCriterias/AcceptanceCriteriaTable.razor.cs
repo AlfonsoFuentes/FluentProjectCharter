@@ -13,25 +13,8 @@ public partial class AcceptanceCriteriaTable
 {
     [Parameter]
     public Guid ProjectId { get; set; }
-    [Parameter]
-    public string IdType { get; set; }
-
-    [Parameter]
-    public Guid Id { get; set; }
-    Guid? StartId { get; set; } = null;
-    Guid? PlanningId { get; set; } = null;
-    private void ValidateIdType()
-    {
-        if (IdType.Equals("Planning", StringComparison.OrdinalIgnoreCase))
-        {
-            PlanningId = Id;
-        }
-        else if (IdType.Equals("Start", StringComparison.OrdinalIgnoreCase))
-        {
-            StartId = Id;
-        }
-
-    }
+  
+   
     public List<AcceptanceCriteriaResponse> Items { get; set; } = new();
 
     string nameFilter { get; set; } = string.Empty;
@@ -41,7 +24,7 @@ public partial class AcceptanceCriteriaTable
 
     protected override async Task OnInitializedAsync()
     {
-        ValidateIdType();
+        
         await GetAll();
     }
     AcceptanceCriteriaResponse CreateRow = null!;
@@ -66,7 +49,7 @@ public partial class AcceptanceCriteriaTable
         });
         if (result.Succeeded)
         {
-            Items = StartId.HasValue ? result.Data.Items.Where(x => x.StartId == StartId).ToList() : result.Data.Items;
+            Items = result.Data.Items;
 
 
             GetSelectedRowFromItems();
@@ -85,7 +68,7 @@ public partial class AcceptanceCriteriaTable
     public async Task Create()
     {
         if (CreateRow == null) return;
-        CreateAcceptanceCriteriaRequest create = CreateRow.ToCreate(StartId, PlanningId);
+        CreateAcceptanceCriteriaRequest create = CreateRow.ToCreate();
         var result = await GenericService.Create(create);
         if (result.Succeeded)
         {

@@ -5,11 +5,11 @@ using Shared.Models.Brands.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems.Valves.Requests
+namespace Shared.Models.BudgetItems.IndividualItems.Valves.Requests
 {
     public class CreateValveRequest : CreateMessageResponse, IRequest
     {
-        public Guid? DeliverableId { get; set; }
+        public Guid? GanttTaskId { get; set; }
         public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;
  

@@ -19,8 +19,8 @@ namespace Shared.Models.Projects.Request
         public StakeHolderResponse Manager { get; set; } = null!;
         public StakeHolderResponse Sponsor { get; set; } = null!;
         public DateTime? InitialProjectDate { get; set; } = DateTime.Today;
-        public ProjectStatusEnum Status { get; set; } = ProjectStatusEnum.None;
-        public string ProjectNumber { get; set; } = string.Empty;
+
+    
         public double PercentageTaxProductive { get; set; }
         public bool IsProductiveAsset { get; set; } = true;
     }

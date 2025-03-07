@@ -12,11 +12,10 @@ namespace Server.EndPoint.ExpertJudgements.Commands
             {
                 app.MapPost(StaticClass.ExpertJudgements.EndPoint.Create, async (CreateExpertJudgementRequest Data, IRepository Repository) =>
                 {
-                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
-                        return Result.Fail();
+                  
                     var lastorder = await Repository.GetLastOrderAsync<ExpertJudgement, Project>(Data.ProjectId);
 
-                    var row = ExpertJudgement.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = ExpertJudgement.Create(Data.ProjectId,lastorder);
 
                     await Repository.AddAsync(row);
 

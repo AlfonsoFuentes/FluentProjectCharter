@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.BudgetItems.Taxs.Records;
-using Shared.Models.BudgetItems.Taxs.Requests;
-using Shared.Models.BudgetItems.Taxs.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Taxs.Records;
+using Shared.Models.BudgetItems.IndividualItems.Taxs.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Taxs.Responses;
 using static Shared.StaticClasses.StaticClass;
 
 #nullable disable

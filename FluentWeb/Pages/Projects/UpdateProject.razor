@@ -98,30 +98,13 @@
             <FluentGridItem xs="12" sm="12" md="4">
                 <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
                     <FluentGridItem xs="12">
-                        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="3" Width="100%">
+                        <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="3" Width="100%">
                             <FluentDatePicker Label="Project Initial Date" AriaLabel="To" @bind-Value="@Model.InitialProjectDate" DoubleClickToDate="@Model.InitialProjectDate" />
                             <ValidationMessage For="() => Model.InitialProjectDate" style="color:red; font-size:x-small;" />
                         </FluentStack>
                     </FluentGridItem>
                     <FluentGridItem xs="12">
-                        <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="3" Width="100%">
-                            <FluentSelect TOption="ProjectStatusEnum"
-                                          Label="Select Project status"
-                                          Items="@ProjectStatusEnum.List"
-                                          Id="people-listbox"
-                                          Width="60%"
-                                          Height="350px"
-                                          @onchange=@ChangeSelectProjectStatus
-                                          Placeholder="Make a selection..."
-                                          OptionValue="@(p => p.Name)"
-                                          OptionText="@(p => p.Name)"
-                                     
-                                          @bind-Value="@Model.Status.Name"
-                                          @bind-SelectedOption="@Model.Status" />
-
-
-                            <ValidationMessage For="() => Model.Status" style="color:red; font-size:x-small;" />
-                        </FluentStack>
+                     
                     </FluentGridItem>
                     <FluentGridItem xs="12">
                       
@@ -148,6 +131,7 @@
 
 @code {
     EditTemplate<UpdateProjectRequest> Form = null!;
+ 
     int Spacing = 3;
     JustifyContent Justification = JustifyContent.FlexStart;
 
@@ -157,12 +141,7 @@
         Model.ProjectNeedType = ProjectNeedTypeEnum.GetType(args!.Value!.ToString()!);
         await Form.ValidateAsync();
     }
-    async Task ChangeSelectProjectStatus(ChangeEventArgs args)
-    {
-        if (args == null) return;
-        Model.Status = ProjectStatusEnum.GetType(args!.Value!.ToString()!);
-        await Form.ValidateAsync();
-    }
+   
     string? manager;
     async Task ChangeManager(ChangeEventArgs args)
     {

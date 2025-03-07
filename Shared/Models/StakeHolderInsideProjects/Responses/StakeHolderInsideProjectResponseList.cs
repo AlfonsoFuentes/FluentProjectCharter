@@ -5,5 +5,6 @@ namespace Shared.Models.StakeHolderInsideProjects.Responses
     public class StakeHolderInsideProjectResponseList : IResponseAll
     {
         public List<StakeHolderInsideProjectResponse> Items { get; set; } = new();
+        public string ProjectName { get; set; } = string.Empty;
     }
 }

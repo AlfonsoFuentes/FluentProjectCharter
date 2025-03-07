@@ -1,7 +1,8 @@
-﻿@page "/CreateTaxs/{ProjectId:guid}/{DeliverableId:guid}"
+﻿@page "/CreateTaxs/{ProjectId:guid}/{GanttTaskId:guid}"
 @page "/CreateTaxs/{ProjectId:guid}"
-@using Shared.Models.BudgetItems.Taxs.Requests
-@using Shared.Models.BudgetItems.Taxs.Responses
+@using Shared.Models.BudgetItems.IndividualItems.Taxs.Requests
+@using Shared.Models.BudgetItems.IndividualItems.Taxs.Responses
+
 
 
 <CreateTemplate @ref="Form" TItem="CreateTaxRequest" @bind-Model="@Model" Title="Create Tax">

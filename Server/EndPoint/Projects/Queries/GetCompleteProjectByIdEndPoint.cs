@@ -1,7 +1,5 @@
 ﻿using Server.EndPoint.AcceptanceCriterias.Queries;
 using Server.EndPoint.Constrainsts.Queries;
-using Server.EndPoint.Deliverables.Queries;
-using Server.EndPoint.Milestones.Queries;
 using Server.EndPoint.Objectives.Queries;
 using Server.EndPoint.StakeHolders.Queries;
 
@@ -50,8 +48,8 @@ namespace Server.EndPoint.Projects.Queries
                 Status = ProjectStatusEnum.GetType(row.Status),
                 IsProductive = row.IsProductiveAsset,
                 PercentageTaxes = row.PercentageTaxProductive,
-                PlanningId = row.PlanningId,
-                StartId = row.StartId,
+                
+                
                 ClosingId = row.ClosingId,
                 ExecutingId = row.ExecutingId,
                 InitialProjectDate = row.StartDate,

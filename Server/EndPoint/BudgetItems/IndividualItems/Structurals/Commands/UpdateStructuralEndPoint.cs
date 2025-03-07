@@ -1,7 +1,6 @@
 ﻿using Server.Database.Entities.BudgetItems.Commons;
 using Server.Database.Entities.ProjectManagements;
-using Shared.Models.BudgetItems.Structurals.Requests;
-
+using Shared.Models.BudgetItems.IndividualItems.Structurals.Requests;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Structurals.Commands
 {
@@ -18,9 +17,9 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Structurals.Commands
                     await Repository.UpdateAsync(row);
                     Data.Map(row);
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
-                    if (Data.DeliverableId.HasValue)
+                    if (Data.GanttTaskId.HasValue)
                     {
-                        var deliverable = await Repository.GetByIdAsync<Deliverable>(Data.DeliverableId.Value);
+                        var deliverable = await Repository.GetByIdAsync<GanttTask>(Data.GanttTaskId.Value);
                         if (deliverable != null)
                         {
                             deliverable.ShowBudgetItems = true;
@@ -36,9 +35,9 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Structurals.Commands
             }
             private string[] GetCacheKeys(BudgetItem row)
             {
-                var deliverable = row.DeliverableId.HasValue ? StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId) : new[] { string.Empty };
+                var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
                 List<string> cacheKeys = [
-                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.DeliverableId),
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.GanttTaskId),
                  ..deliverable
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

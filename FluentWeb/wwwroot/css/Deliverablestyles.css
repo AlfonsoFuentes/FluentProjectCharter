@@ -1,1 +1,150 @@
-﻿
+﻿/* ==============================
+   1. Variables Globales
+   ============================== */
+:root {
+    --primary-bg-color: #fff;
+    --secondary-bg-color: #f9f9f9;
+    --border-color: #ddd;
+    --text-color: #333;
+    --font-size-small: 12px;
+    --font-size-medium: 14px;
+    --padding-small: 4px;
+    --padding-medium: 8px;
+}
+
+/* ==============================
+   2. Tabla Principal
+   ============================== */
+.deliverable-table {
+    width: auto; /* Ancho automático para permitir desplazamiento */
+    border-collapse: collapse;
+    font-size: var(--font-size-small);
+    background-color: var(--primary-bg-color);
+    min-width: 100%; /* Asegura que la tabla ocupe al menos el ancho del contenedor */
+    overflow-x: auto; /* Scroll horizontal */
+    display: block; /* Necesario para que funcione overflow-x */
+    max-height: 100vh; /* Altura máxima para permitir scroll vertical */
+    overflow-y: auto; /* Scroll vertical */
+}
+
+    .deliverable-table thead {
+        background-color: var(--secondary-bg-color);
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .deliverable-table th,
+    .deliverable-table td {
+        padding: var(--padding-small);
+        text-align: center;
+        border: 1px solid var(--border-color);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .deliverable-table th {
+        font-weight: bold;
+        font-size: var(--font-size-medium);
+        position: sticky;
+        top: 0; /* Fija los encabezados verticalmente */
+        background-color: var(--secondary-bg-color);
+        z-index: 2;
+    }
+
+/* ==============================
+   3. Filas de Datos
+   ============================== */
+.data-row:nth-child(even) {
+    background-color: var(--secondary-bg-color);
+}
+
+.data-row:nth-child(odd) {
+    background-color: var(--primary-bg-color);
+}
+
+/* ==============================
+   4. Columnas
+   ============================== */
+.col-expand {
+    width: 40px; /* Ancho fijo */
+}
+
+.col-id {
+    width: 60px; /* Ancho fijo */
+}
+
+.col-wbs {
+    width: 80px; /* Ancho fijo */
+}
+
+.col-name {
+    text-align: left !important;
+    white-space: normal;
+    word-wrap: break-word;
+    min-width: 200px; /* Ancho mínimo para evitar recorte */
+}
+
+.col-start-date,
+.col-end-date,
+.col-duration,
+.col-dependencies,
+.col-dependency-type,
+.col-lag,
+.col-budget {
+    min-width: 120px; /* Ancho mínimo para evitar recorte */
+}
+
+/* ==============================
+   5. Barra de Duración
+   ============================== */
+.col-timeline {
+    min-width: 400px; /* Ancho mínimo para la barra */
+    position: relative;
+}
+
+.timeline-bar-container {
+    position: relative;
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin: var(--padding-small);
+}
+
+.bar-wrapper {
+    position: relative;
+    height: 100%;
+}
+
+.bar {
+    position: absolute;
+    height: 100%;
+    background-color: #33FF57;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* ==============================
+   6. Responsive Design
+   ============================== */
+@media (max-width: 768px) {
+    .deliverable-table th,
+    .deliverable-table td {
+        font-size: var(--font-size-small);
+        padding: var(--padding-small);
+    }
+
+    .col-timeline {
+        min-width: 300px; /* Reducir el ancho mínimo en pantallas pequeñas */
+    }
+
+    .col-name,
+    .col-start-date,
+    .col-end-date,
+    .col-duration,
+    .col-dependencies,
+    .col-dependency-type,
+    .col-lag,
+    .col-budget {
+        min-width: 100px; /* Reducir el ancho mínimo en pantallas pequeñas */
+    }
+}

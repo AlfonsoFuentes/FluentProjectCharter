@@ -4,8 +4,8 @@ namespace Shared.Models.ExpertJudgements.Responses
 {
     public class ExpertJudgementResponse : BaseResponse
     {
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
+        
+        
 
         public Guid ProjectId { get; set; }
         public StakeHolderResponse? Expert { get; set; }

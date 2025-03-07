@@ -13,28 +13,15 @@ public partial class AcquisitionTable
 {
     [Parameter]
     public Guid ProjectId { get; set; }
-    [Parameter]
-    public string IdType { get; set; }
+  
+    
 
     [Parameter]
     public Guid Id { get; set; }
-    Guid? StartId;
-    Guid? PlanningId;
-    private void ValidateIdType()
-    {
-        if (IdType.Equals("Planning", StringComparison.OrdinalIgnoreCase))
-        {
-            PlanningId = Id;
-        }
-        else if (IdType.Equals("Start", StringComparison.OrdinalIgnoreCase))
-        {
-            StartId = Id;
-        }
-
-    }
+   
     protected override async Task OnInitializedAsync()
     {
-        ValidateIdType();
+     
         await GetAll();
     }
 
@@ -57,6 +44,7 @@ public partial class AcquisitionTable
         return string.IsNullOrEmpty(model.Name) ? true : false;
 
     }
+    string ProjectName {  get; set; }=string.Empty; 
     async Task GetAll()
     {
         var result = await GenericService.GetAll<AcquisitionResponseList, AcquisitionGetAll>(new AcquisitionGetAll()
@@ -66,9 +54,9 @@ public partial class AcquisitionTable
         });
         if (result.Succeeded)
         {
-            Items = StartId.HasValue ? result.Data.Items.Where(x => x.StartId == StartId).ToList() : result.Data.Items;
+            Items = result.Data.Items;
 
-
+            ProjectName = result.Data.ProjectName;  
             GetSelectedRowFromItems();
         }
     }
@@ -85,7 +73,8 @@ public partial class AcquisitionTable
     public async Task Create()
     {
         if (CreateRow == null) return;
-        CreateAcquisitionRequest create = CreateRow.ToCreate(StartId, PlanningId);
+        CreateAcquisitionRequest create = CreateRow.ToCreate();
+   
         var result = await GenericService.Create(create);
         if (result.Succeeded)
         {

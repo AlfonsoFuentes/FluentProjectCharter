@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems.Testings.Requests
+namespace Shared.Models.BudgetItems.IndividualItems.Testings.Requests
 {
     public class DeleteTestingRequest : DeleteMessageResponse, IRequest
     {
@@ -8,7 +8,7 @@ namespace Shared.Models.BudgetItems.Testings.Requests
         public override string Legend => Name;
         public Guid ProjectId { get; set; }
         public override string ClassName => StaticClass.Testings.ClassName;
-        public Guid? DeliverableId { get; set; }
+        public Guid? GanttTaskId { get; set; }
         public Guid Id { get; set; }
 
         public string EndPointName => StaticClass.Testings.EndPoint.Delete;

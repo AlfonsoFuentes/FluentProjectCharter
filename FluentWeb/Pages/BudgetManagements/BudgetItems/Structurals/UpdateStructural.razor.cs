@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.BudgetItems.Structurals.Records;
-using Shared.Models.BudgetItems.Structurals.Requests;
-using Shared.Models.BudgetItems.Structurals.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Structurals.Records;
+using Shared.Models.BudgetItems.IndividualItems.Structurals.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Structurals.Responses;
 
 namespace FluentWeb.Pages.BudgetManagements.BudgetItems.Structurals;
 public partial class UpdateStructural

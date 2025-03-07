@@ -12,7 +12,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Instruments.Requests
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public Guid? DeliverableId { get; set; }
+        public Guid? GanttTaskId { get; set; }
         public Guid ProjectId { get; set; }
         public string EndPointName => StaticClass.Instruments.EndPoint.Update;
 

@@ -5,5 +5,6 @@ namespace Shared.Models.Requirements.Responses
     public class RequirementResponseList : IResponseAll
     {
         public List<RequirementResponse> Items { get; set; } = new();
+        public string ProjectName { get; set; } = string.Empty;
     }
 }

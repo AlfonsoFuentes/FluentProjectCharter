@@ -39,8 +39,8 @@ namespace Server.EndPoint.Objectives.Queries
                 Id = row.Id,
                 Name = row.Name,
                 ProjectId = row.ProjectId,
-                StartId = row.StartId,
-                PlanningId = row.PlanningId,
+                
+                
                 Order = row.Order,
             };
 

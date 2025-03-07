@@ -36,15 +36,15 @@ namespace Shared.Models.Objectives.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateObjectiveRequest ToCreate(this ObjectiveResponse response, Guid? startid,Guid?plannid)
+        public static CreateObjectiveRequest ToCreate(this ObjectiveResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId=plannid,
+                
+                
          
             };
         }

@@ -12,11 +12,10 @@ namespace Server.EndPoint.Resources.Commands
             {
                 app.MapPost(StaticClass.Resources.EndPoint.Create, async (CreateResourceRequest Data, IRepository Repository) =>
                 {
-                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
-                        return Result.Fail();
+                  
                     var lastorder = await Repository.GetLastOrderAsync<Resource, Project>(Data.ProjectId);
 
-                    var row = Resource.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = Resource.Create(Data.ProjectId,lastorder);
 
                     await Repository.AddAsync(row);
 

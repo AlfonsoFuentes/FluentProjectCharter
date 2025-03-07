@@ -91,6 +91,11 @@ public partial class Home
         if (SelectedRow != null)
             Navigation.NavigateTo($"/UpdateProject/{SelectedRow.Id}");
     }
+    public void Approve()
+    {
+        if (SelectedRow != null)
+            Navigation.NavigateTo($"/ApproveProject/{SelectedRow.Id}");
+    }
     private void HandleRowClick(FluentDataGridRow<ProjectResponse> row)
     {
         SelectedRow = row.Item == null ? null : SelectedRow == null ? row.Item : SelectedRow.Id == row.Item.Id ? SelectedRow : row.Item;

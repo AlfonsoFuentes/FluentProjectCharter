@@ -36,15 +36,15 @@ namespace Shared.Models.Communications.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateCommunicationRequest ToCreate(this CommunicationResponse response, Guid? startid, Guid? planid)
+        public static CreateCommunicationRequest ToCreate(this CommunicationResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

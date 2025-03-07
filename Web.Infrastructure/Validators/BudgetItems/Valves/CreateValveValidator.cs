@@ -4,8 +4,8 @@ using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
 using Shared.Enums.ValvesEnum;
 using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
-using Shared.Models.BudgetItems.Valves.Requests;
-using Shared.Models.BudgetItems.Valves.Validators;
+using Shared.Models.BudgetItems.IndividualItems.Valves.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Valves.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.Valves

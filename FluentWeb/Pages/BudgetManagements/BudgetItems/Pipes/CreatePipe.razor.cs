@@ -20,14 +20,14 @@ public partial class CreatePipe
     [Parameter]
     public Guid ProjectId { get; set; }
     [Parameter]
-    public Guid? DeliverableId { get; set; }
+    public Guid? GanttTaskId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await GetAllPipeTemplate();
         await GetBrands();
         await GetEngineeringFluidCode();
-        Model.DeliverableId = DeliverableId;
+        Model.GanttTaskId = GanttTaskId;
         Model.ProjectId = ProjectId;
         Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Inlet });
         Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet });

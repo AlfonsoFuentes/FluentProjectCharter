@@ -7,10 +7,10 @@ using Shared.Models.BudgetItems.IndividualItems.Foundations.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Instruments.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Paintings.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Pipes.Responses;
-using Shared.Models.BudgetItems.Structurals.Responses;
-using Shared.Models.BudgetItems.Taxs.Responses;
-using Shared.Models.BudgetItems.Testings.Responses;
-using Shared.Models.BudgetItems.Valves.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Structurals.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Taxs.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Testings.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Valves.Responses;
 using Shared.Models.FileResults.Generics.Reponses;
 
 namespace Shared.Models.BudgetItems.Responses

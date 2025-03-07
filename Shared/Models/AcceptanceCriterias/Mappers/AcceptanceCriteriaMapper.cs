@@ -36,15 +36,15 @@ namespace Shared.Models.AcceptanceCriterias.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateAcceptanceCriteriaRequest ToCreate(this AcceptanceCriteriaResponse response, Guid? startid, Guid? planid)
+        public static CreateAcceptanceCriteriaRequest ToCreate(this AcceptanceCriteriaResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

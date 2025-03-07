@@ -227,7 +227,7 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("DeliverableId")
+                    b.Property<Guid?>("GanttTaskId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsDeleted")
@@ -259,7 +259,7 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DeliverableId");
+                    b.HasIndex("GanttTaskId");
 
                     b.HasIndex("ProjectId");
 
@@ -1011,81 +1011,6 @@ namespace Server.Migrations
                     b.ToTable("MeetingAttendants");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Milestone", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DependencyType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("DependentantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Duration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("ParentMilestoneId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DependentantId");
-
-                    b.HasIndex("ParentMilestoneId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Milestones");
-                });
-
             modelBuilder.Entity("Server.Database.Entities.Project", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1209,13 +1134,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -1260,13 +1179,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -1311,13 +1224,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -1407,13 +1314,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -1458,13 +1359,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -1509,13 +1404,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -1535,7 +1424,55 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Answer")
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsExpanded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Deliverables");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.DeliverableResource", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Avalabilty")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1547,6 +1484,103 @@ namespace Server.Migrations
 
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("GanttTaskId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GanttTaskId");
+
+                    b.ToTable("DeliverableResources");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.ExpertJudgement", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ExpertId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("TenantId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpertId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ExpertJudgements");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.GanttTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOnUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DeliverableId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DependencyType")
                         .IsRequired()
@@ -1586,10 +1620,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ParentDeliverableId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
+                    b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("ShowBudgetItems")
@@ -1608,117 +1639,13 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DependentantId");
-
-                    b.HasIndex("ParentDeliverableId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Deliverables");
-                });
-
-            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.DeliverableResource", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Avalabilty")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("DeliverableId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ResourceId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("DeliverableId");
 
-                    b.ToTable("DeliverableResources");
-                });
+                    b.HasIndex("DependentantId");
 
-            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.ExpertJudgement", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.HasIndex("ParentId");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOnUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ExpertId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExpertId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ExpertJudgements");
+                    b.ToTable("GanttTasks");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.KnownRisk", b =>
@@ -1756,13 +1683,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -1807,13 +1728,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -1854,13 +1769,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -1905,13 +1814,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -1959,9 +1862,6 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Priority")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1973,9 +1873,6 @@ namespace Server.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ResponsibleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -2028,13 +1925,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -2118,13 +2009,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TenantId")
@@ -2181,13 +2066,7 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("RoleInsideProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -2224,9 +2103,6 @@ namespace Server.Migrations
 
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeliverableId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("ExpectedDate")
                         .HasColumnType("datetime2");
@@ -2305,8 +2181,6 @@ namespace Server.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DeliverableId");
 
                     b.HasIndex("ProjectId");
 
@@ -3045,9 +2919,9 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.BudgetItems.BudgetItem", b =>
                 {
-                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Deliverable")
+                    b.HasOne("Server.Database.Entities.ProjectManagements.GanttTask", "GanttTask")
                         .WithMany("BudgetItems")
-                        .HasForeignKey("DeliverableId")
+                        .HasForeignKey("GanttTaskId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Server.Database.Entities.Project", "Project")
@@ -3056,7 +2930,7 @@ namespace Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Deliverable");
+                    b.Navigation("GanttTask");
 
                     b.Navigation("Project");
                 });
@@ -3219,31 +3093,6 @@ namespace Server.Migrations
                     b.Navigation("StakeHolder");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Milestone", b =>
-                {
-                    b.HasOne("Server.Database.Entities.Milestone", "Dependant")
-                        .WithMany("Dependants")
-                        .HasForeignKey("DependentantId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Server.Database.Entities.Milestone", "ParentMilestone")
-                        .WithMany("SubMilestones")
-                        .HasForeignKey("ParentMilestoneId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Server.Database.Entities.Project", "Project")
-                        .WithMany("Milestones")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Dependant");
-
-                    b.Navigation("ParentMilestone");
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("Server.Database.Entities.Project", b =>
                 {
                     b.HasOne("Server.Database.Entities.ProjectManagements.StakeHolder", "Manager")
@@ -3340,38 +3189,24 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Deliverable", b =>
                 {
-                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Dependant")
-                        .WithMany("Dependants")
-                        .HasForeignKey("DependentantId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "ParentDeliverable")
-                        .WithMany("SubDeliverables")
-                        .HasForeignKey("ParentDeliverableId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("Deliverables")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Dependant");
-
-                    b.Navigation("ParentDeliverable");
-
                     b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.DeliverableResource", b =>
                 {
-                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Deliverable")
+                    b.HasOne("Server.Database.Entities.ProjectManagements.GanttTask", "GanttTask")
                         .WithMany("DeliverableResources")
-                        .HasForeignKey("DeliverableId")
+                        .HasForeignKey("GanttTaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Deliverable");
+                    b.Navigation("GanttTask");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.ExpertJudgement", b =>
@@ -3390,6 +3225,31 @@ namespace Server.Migrations
                     b.Navigation("Expert");
 
                     b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.GanttTask", b =>
+                {
+                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Deliverable")
+                        .WithMany("GanttTasks")
+                        .HasForeignKey("DeliverableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Server.Database.Entities.ProjectManagements.GanttTask", "Dependant")
+                        .WithMany("Dependants")
+                        .HasForeignKey("DependentantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Server.Database.Entities.ProjectManagements.GanttTask", "Parent")
+                        .WithMany("SubTasks")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Deliverable");
+
+                    b.Navigation("Dependant");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.KnownRisk", b =>
@@ -3495,11 +3355,6 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrder", b =>
                 {
-                    b.HasOne("Server.Database.Entities.ProjectManagements.Deliverable", "Deliverable")
-                        .WithMany("PurchaseOrders")
-                        .HasForeignKey("DeliverableId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.HasOne("Server.Database.Entities.Project", "Project")
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("ProjectId")
@@ -3510,8 +3365,6 @@ namespace Server.Migrations
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Deliverable");
 
                     b.Navigation("Project");
 
@@ -3642,13 +3495,6 @@ namespace Server.Migrations
                     b.Navigation("MeetingAttendants");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Milestone", b =>
-                {
-                    b.Navigation("Dependants");
-
-                    b.Navigation("SubMilestones");
-                });
-
             modelBuilder.Entity("Server.Database.Entities.Project", b =>
                 {
                     b.Navigation("AcceptanceCriterias");
@@ -3677,8 +3523,6 @@ namespace Server.Migrations
 
                     b.Navigation("Meetings");
 
-                    b.Navigation("Milestones");
-
                     b.Navigation("Objectives");
 
                     b.Navigation("PurchaseOrders");
@@ -3694,15 +3538,18 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.Deliverable", b =>
                 {
+                    b.Navigation("GanttTasks");
+                });
+
+            modelBuilder.Entity("Server.Database.Entities.ProjectManagements.GanttTask", b =>
+                {
                     b.Navigation("BudgetItems");
 
                     b.Navigation("DeliverableResources");
 
                     b.Navigation("Dependants");
 
-                    b.Navigation("PurchaseOrders");
-
-                    b.Navigation("SubDeliverables");
+                    b.Navigation("SubTasks");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.RoleInsideProject", b =>

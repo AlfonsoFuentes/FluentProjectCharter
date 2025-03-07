@@ -1,5 +1,5 @@
-﻿using Shared.Models.BudgetItems.Structurals.Requests;
-using Shared.Models.BudgetItems.Structurals.Validators;
+﻿using Shared.Models.BudgetItems.IndividualItems.Structurals.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Structurals.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.Structurals

@@ -1,4 +1,4 @@
-﻿namespace Shared.Models.BudgetItems.Valves.Responses
+﻿namespace Shared.Models.BudgetItems.IndividualItems.Valves.Responses
 {
     public class ValveResponseList
     {

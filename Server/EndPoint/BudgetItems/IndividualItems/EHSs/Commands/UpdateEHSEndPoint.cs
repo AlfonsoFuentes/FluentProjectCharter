@@ -18,9 +18,9 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EHSs.Commands
                     if (row == null) { return Result.Fail(Data.NotFound); }
                     await Repository.UpdateAsync(row);
                     Data.Map(row);
-                    if (Data.DeliverableId.HasValue)
+                    if (Data.GanttTaskId.HasValue)
                     {
-                        var deliverable = await Repository.GetByIdAsync<Deliverable>(Data.DeliverableId.Value);
+                        var deliverable = await Repository.GetByIdAsync<GanttTask>(Data.GanttTaskId.Value);
                         if (deliverable != null)
                         {
                             deliverable.ShowBudgetItems = true;
@@ -38,9 +38,9 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EHSs.Commands
             }
             private string[] GetCacheKeys(BudgetItem row)
             {
-                var deliverable = row.DeliverableId.HasValue ? StaticClass.Deliverables.Cache.Key(row.DeliverableId!.Value, row.ProjectId) : new[] { string.Empty };
+                var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
                 List<string> cacheKeys = [
-                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.DeliverableId),
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.GanttTaskId),
                  ..deliverable
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

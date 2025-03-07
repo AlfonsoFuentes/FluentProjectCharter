@@ -4,8 +4,8 @@ namespace Shared.Models.Constrainsts.Requests
 {
     public class CreateConstrainstRequest : CreateMessageResponse, IRequest
     {
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
+        
+        
        
         public string Name { get; set; } = string.Empty;
         public Guid ProjectId { get; set; }

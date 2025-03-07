@@ -1,4 +1,5 @@
 ﻿using Server.Database.Entities.ProjectManagements;
+using Server.Repositories;
 using Shared.Models.Backgrounds.Records;
 
 namespace Server.EndPoint.BackGrounds.Queries
@@ -11,10 +12,11 @@ namespace Server.EndPoint.BackGrounds.Queries
             {
                 app.MapPost(StaticClass.BackGrounds.EndPoint.GetAll, async (BackGroundGetAll request, IQueryRepository Repository) =>
                 {
+                    Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x.Include(p => p.BackGrounds);
+                    Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
+                    string cacheKey = StaticClass.BackGrounds.Cache.GetAll;
 
-                    Expression<Func<BackGround, bool>> Criteria = x => x.ProjectId == request.ProjectId;
-                    string CacheKey = StaticClass.BackGrounds.Cache.GetAll;
-                    var rows = await Repository.GetAllAsync(Cache: CacheKey, Criteria: Criteria, OrderBy: x => x.Order);
+                    var rows = await Repository.GetAsync(Cache: cacheKey, Includes: includes, Criteria: criteria);
 
                     if (rows == null)
                     {
@@ -22,12 +24,15 @@ namespace Server.EndPoint.BackGrounds.Queries
                         StaticClass.ResponseMessages.ReponseNotFound(StaticClass.BackGrounds.ClassLegend));
                     }
 
-                    var maps = rows.Select(x => x.Map()).ToList();
+                    var maps = rows.BackGrounds.Select(x => x.Map()).ToList();
 
 
                     BackGroundResponseList response = new BackGroundResponseList()
                     {
-                        Items = maps
+                        ProjectName = rows.Name,
+
+                        Items = maps,
+
                     };
                     return Result<BackGroundResponseList>.Success(response);
 

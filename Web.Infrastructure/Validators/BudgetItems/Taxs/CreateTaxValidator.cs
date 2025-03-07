@@ -1,5 +1,5 @@
-﻿using Shared.Models.BudgetItems.Taxs.Requests;
-using Shared.Models.BudgetItems.Taxs.Validators;
+﻿using Shared.Models.BudgetItems.IndividualItems.Taxs.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Taxs.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.Taxs

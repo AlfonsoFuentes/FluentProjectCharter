@@ -11,35 +11,21 @@ namespace Server.EndPoint.Deliverables.Commands
             {
                 app.MapPost(StaticClass.Deliverables.EndPoint.Delete, async (DeleteDeliverableRequest Data, IRepository Repository) =>
                 {
-                    Func<IQueryable<Deliverable>, IIncludableQueryable<Deliverable, object>> Includes = x => null!;
-        
-
-                    Expression<Func<Deliverable, bool>> Criteria = x => x.Id == Data.Id;
-
-
-                    var row = await Repository.GetAsync(Criteria: Criteria);
-
-
+                    var row = await Repository.GetByIdAsync<Deliverable>(Data.Id);
                     if (row == null) { return Result.Fail(Data.NotFound); }
-                   
+
+
+                    List<string> cache = [
+                    ..StaticClass.Deliverables.Cache.Key(row.Id,row.ProjectId)];
+
                     await Repository.RemoveAsync(row);
-
-          
-
-                    var cache = StaticClass.Deliverables.Cache.GetAll(Data.ProjectId);
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
-
-
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
                 });
             }
-            
-
-
-
         }
 
 

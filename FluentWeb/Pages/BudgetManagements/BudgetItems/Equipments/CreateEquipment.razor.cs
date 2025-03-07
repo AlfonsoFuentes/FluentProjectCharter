@@ -18,7 +18,7 @@ public partial class CreateEquipment
     [Parameter]
     public Guid ProjectId { get; set; }
     [Parameter]
-    public Guid? DeliverableId { get; set; }
+    public Guid? GanttTaskId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -26,7 +26,7 @@ public partial class CreateEquipment
         await GetBrands();
 
         Model.ProjectId = ProjectId;
-        Model.DeliverableId = DeliverableId;
+        Model.GanttTaskId = GanttTaskId;
         await LoadFromLocalStorage();
         SelectedBrand = Model.Brand;
 

@@ -36,15 +36,15 @@ namespace Shared.Models.Bennefits.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateBennefitRequest ToCreate(this BennefitResponse response, Guid? startid, Guid? planid)
+        public static CreateBennefitRequest ToCreate(this BennefitResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

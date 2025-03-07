@@ -12,18 +12,18 @@ namespace Server.Database.Entities.ProjectManagements
 
         public StakeHolder? Expert { get; set; }
         public Guid? ExpertId { get; set; }
-        public static ExpertJudgement Create(Guid ProjectId, Guid? StartId, Guid? PlanningId, int Order)
+        public static ExpertJudgement Create(Guid ProjectId,  int Order)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
-                StartId = StartId,
+               
                 ProjectId = ProjectId,
                 Order = Order,
-                PlanningId = PlanningId,
+               
             };
         }
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
+       
+        
     }
 }

@@ -12,11 +12,10 @@ namespace Server.EndPoint.LearnedLessons.Commands
             {
                 app.MapPost(StaticClass.LearnedLessons.EndPoint.Create, async (CreateLearnedLessonRequest Data, IRepository Repository) =>
                 {
-                    if (!Data.StartId.HasValue && !Data.PlanningId.HasValue)
-                        return Result.Fail();
+                    
                     var lastorder = await Repository.GetLastOrderAsync<LearnedLesson, Project>(Data.ProjectId);
 
-                    var row = LearnedLesson.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = LearnedLesson.Create(Data.ProjectId,lastorder);
 
 
                     await Repository.AddAsync(row);

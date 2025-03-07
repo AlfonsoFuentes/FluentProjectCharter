@@ -36,15 +36,15 @@ namespace Shared.Models.ExpertJudgements.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateExpertJudgementRequest ToCreate(this ExpertJudgementResponse response, Guid? startid, Guid? planid)
+        public static CreateExpertJudgementRequest ToCreate(this ExpertJudgementResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

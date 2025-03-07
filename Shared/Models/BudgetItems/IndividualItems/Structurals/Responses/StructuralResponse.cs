@@ -3,7 +3,7 @@ using Shared.Enums.CostCenter;
 using Shared.Models.BudgetItems.Responses;
 using System.Globalization;
 
-namespace Shared.Models.BudgetItems.Structurals.Responses
+namespace Shared.Models.BudgetItems.IndividualItems.Structurals.Responses
 {
     public class StructuralResponse : BaseResponse, IBudgetItemResponse
     {

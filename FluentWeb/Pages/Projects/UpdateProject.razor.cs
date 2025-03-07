@@ -30,7 +30,7 @@ public partial class UpdateProject
                 Manager = result.Data.Manager,
                 Sponsor = result.Data.Sponsor,
                 InitialProjectDate = result.Data.InitialProjectDate,
-                Status = result.Data.Status,
+             
                 PercentageContingency = result.Data.PercentageContingency,
                 PercentageEngineering = result.Data.PercentageEngineering,
                 PercentageTaxProductive=result.Data.PercentageTaxes,

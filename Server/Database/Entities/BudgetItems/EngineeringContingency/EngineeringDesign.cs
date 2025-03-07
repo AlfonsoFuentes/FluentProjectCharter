@@ -5,14 +5,13 @@
 
         public override string Letter { get; set; } = "O";
 
-        public static EngineeringDesign Create(Guid ProjectId, Guid? DeliverableId)
+        public static EngineeringDesign Create(Guid ProjectId, Guid? GanttTaskId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                DeliverableId = DeliverableId,
-
+                GanttTaskId = GanttTaskId,
 
             };
         }

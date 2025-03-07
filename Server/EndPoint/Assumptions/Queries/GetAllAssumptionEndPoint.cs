@@ -24,7 +24,8 @@ namespace Server.EndPoint.Assumptions.Queries
 
                     var response = new AssumptionResponseList
                     {
-                        Items = maps
+                        Items = maps,
+                        ProjectName=rows.Name,
                     };
 
                     return Result<AssumptionResponseList>.Success(response);

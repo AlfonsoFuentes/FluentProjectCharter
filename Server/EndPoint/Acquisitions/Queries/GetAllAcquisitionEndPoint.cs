@@ -24,7 +24,8 @@ namespace Server.EndPoint.Acquisitions.Queries
 
                     var response = new AcquisitionResponseList
                     {
-                        Items = maps
+                        Items = maps,
+                        ProjectName=rows.Name,
                     };
 
                     return Result<AcquisitionResponseList>.Success(response);

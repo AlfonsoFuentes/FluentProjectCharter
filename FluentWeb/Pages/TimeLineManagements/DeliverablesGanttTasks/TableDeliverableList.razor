@@ -1,0 +1,112 @@
+﻿@page "/DeliverableGanttChart/{ProjectId:guid}"
+<div style="width: @(screenWidth > 0 ? $"{screenWidth}px" : "800px"); height: @(screenHeigth > 0 ? $"{screenHeigth}px" : "1200px"); overflow: auto;">
+
+    <FluentStack Orientation="Orientation.Vertical">
+        <!-- Barra de Herramientas -->
+        <GanttTaskToolBar OnNavigateBack="Navigation.NavigateBack"
+                          OnAddNew="AddNew"
+                          OnMoveUp="Up"
+                          OnMoveDown="Down"
+                          OnMoveRight="Right"
+                          OnMoveLeft="Left"
+                          DisableAddButton="@DisableAddButton"
+                          DisableUpButton="@DisableUpButton"
+                          DisableDownButton="@DisableDownButton"
+                          DisableRightButton="@DisableRightButton"
+                          DisableLeftButton="@DisableLeftButton"
+                          CurrentDeliverableName="@CurrentDeliverableName"
+                          ProjectName="@Response.ProjectName"
+                          CurrentRowName="@CurrentRowName">
+        </GanttTaskToolBar>
+        <table class="deliverable-table">
+            <thead>
+                <tr>
+                    <!-- Columnas Fijas -->
+                    <th class="col-expand"></th>
+                    <th class="col-id">ID</th>
+                    <th class="col-wbs">WBS</th>
+                    <th class="col-name">Name</th>
+                    <th class="col-start-date">Start Date</th>
+                    <th class="col-end-date">End Date</th>
+                    <th class="col-duration">Duration</th>
+                    <th class="col-dependencies">Dependencies</th>
+                    <th class="col-dependency-type">Type</th>
+                    <th class="col-lag">Lag</th>
+                    <th class="col-budget">Budget ($USD)</th>
+                    <th class="col-actions">Actions</th>
+
+                    <!-- Timeline Header -->
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var deliverable in Response.Deliverables)
+                {
+                    <DeliverableRow Deliverable="@deliverable"
+                                    GetAll="GetAll"
+                                    OnDelete="Delete"
+                                    OnEdit="RowEdit"
+                                    OnCancel="CancelEdit"
+                                    OnClick="RowClick"
+                                    OnClickDeliverable="OnClickDeliverable"
+                                    OnSave="Save">
+
+                    </DeliverableRow>
+                }
+            </tbody>
+        </table>
+
+    </FluentStack>
+</div>
+<script>
+    // Función para obtener el ancho de la pantalla
+    window.getScreenWidth = () => {
+    return window.innerWidth;
+    };
+    window.getScreenHeight = () => {
+    return window.innerHeight;
+    };
+
+    // Función para configurar un listener de cambio de tamaño
+    window.setupResizeListener = (dotNetHelper) => {
+    const handleResize = () => {
+    dotNetHelper.invokeMethodAsync('UpdateScreen', window.innerWidth,window.innerHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    // Devolver una función para limpiar el listener
+    return () => {
+    window.removeEventListener('resize', handleResize);
+    };
+    };
+</script>
+@code {
+    private int screenWidth = 0; // Ancho de la pantalla
+    private int screenHeigth = 0; // Ancho de la pantalla
+    private DotNetObjectReference<TableDeliverableList> dotNetHelper = null!;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Crear una referencia .NET para manejar eventos desde JavaScript
+            dotNetHelper = DotNetObjectReference.Create(this);
+
+            // Obtener el ancho inicial de la pantalla
+            screenWidth = await _jsRuntime.InvokeAsync<int>("getScreenWidth");
+            screenHeigth = await _jsRuntime.InvokeAsync<int>("getScreenHeight");
+
+            // Configurar el listener de cambio de tamaño
+            await _jsRuntime.InvokeVoidAsync("setupResizeListener", dotNetHelper);
+
+            StateHasChanged(); // Forzar actualización del componente
+        }
+    }
+
+    [JSInvokable]
+    public void UpdateScreen(int newWidth, int newHeigth)
+    {
+        screenWidth = newWidth;
+        screenHeigth = newHeigth;
+        StateHasChanged(); // Forzar actualización del componente
+    }
+}

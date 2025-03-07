@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Reponses;
 
-namespace Shared.Models.BudgetItems.Taxs.Responses
+namespace Shared.Models.BudgetItems.IndividualItems.Taxs.Responses
 {
     public class TaxItemResponseList : IResponseAll
     {

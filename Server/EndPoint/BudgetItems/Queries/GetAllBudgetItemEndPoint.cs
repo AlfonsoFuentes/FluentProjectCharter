@@ -13,9 +13,9 @@ using Server.EndPoint.BudgetItems.IndividualItems.Paintings.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Taxs.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Testings.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Queries;
+using Server.EndPoint.Communications.Queries;
 
-
-namespace Server.EndPoint.Communications.Queries
+namespace Server.EndPoint.BudgetItems.Queries
 {
     public static class GetAllBudgetItemEndPoint
     {

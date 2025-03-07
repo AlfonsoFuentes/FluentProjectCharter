@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems.Valves.Validators
+namespace Shared.Models.BudgetItems.IndividualItems.Valves.Validators
 {
     public class ValidateValveRequest : ValidateMessageResponse, IRequest
     {

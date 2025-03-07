@@ -2,7 +2,7 @@
 
 namespace Shared.Models.Deliverables.Validators
 {
-   
+
     public class ValidateDeliverableRequest : ValidateMessageResponse, IRequest
     {
         public Guid? Id { get; set; }

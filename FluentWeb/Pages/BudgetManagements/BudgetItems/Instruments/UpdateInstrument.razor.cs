@@ -42,7 +42,7 @@ public partial class UpdateInstrument
                 Model = result.Data.Model,
 
                 BrandResponse = result.Data.BrandResponse,
-                DeliverableId = result.Data.DeliverableId,
+                GanttTaskId = result.Data.DeliverableId,
                 Nozzles = result.Data.Nozzles,
 
                 ShowDetails = result.Data.ShowDetails,

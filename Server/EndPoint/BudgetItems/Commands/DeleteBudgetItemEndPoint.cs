@@ -1,8 +1,5 @@
-﻿using Server.Database.Entities.BudgetItems.Commons;
-using Server.Database.Entities.ProjectManagements;
-using Shared.Models.BudgetItems;
-using Shared.Models.BudgetItems.Valves.Requests;
-using System.Collections.Generic;
+﻿using Server.Database.Entities.ProjectManagements;
+using Shared.Models.BudgetItems.Requests;
 
 namespace Server.EndPoint.BudgetItems.Commands
 {
@@ -19,10 +16,10 @@ namespace Server.EndPoint.BudgetItems.Commands
 
 
                     List<string> cache = [
-                        .. StaticClass.BudgetItems.Cache.Key(row.Id,row.ProjectId,row.DeliverableId)];
-                    if (Data.DeliverableId.HasValue)
+                        .. StaticClass.BudgetItems.Cache.Key(row.Id,row.ProjectId,row.GanttTaskId)];
+                    if (Data.GanttTaskId.HasValue)
                     {
-                        var deliverable = await Repository.GetByIdAsync<Deliverable>(Data.DeliverableId.Value);
+                        var deliverable = await Repository.GetByIdAsync<GanttTask>(Data.GanttTaskId.Value);
                         if (deliverable != null)
                         {
                             deliverable.ShowBudgetItems = true;
@@ -30,7 +27,7 @@ namespace Server.EndPoint.BudgetItems.Commands
                         }
 
                     }
-                    cache.Add(StaticClass.Deliverables.Cache.GetAll(row.ProjectId));
+                    cache.Add(StaticClass.GanttTasks.Cache.GetAll(row.ProjectId));
                     await Repository.RemoveAsync(row);
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());

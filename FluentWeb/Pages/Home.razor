@@ -4,9 +4,10 @@
 @attribute [Authorize]
 <FluentStack Orientation="Orientation.Vertical" Width="100%">
     <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center">
-
+    
         <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@AddNew" ToolTip="Add New" Disabled="@(CreateRow!=null)"></IconButton>
         <IconButton IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@Edit" Disabled="@(SelectedRow==null)" ToolTip="Edit"></IconButton>
+        <IconButton IconEnd="@(new Icons.Regular.Size20.Checkmark())" OnClick="@Approve" Disabled="@(SelectedRow==null)" ToolTip="Approve"></IconButton>
         <IconButton IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@Delete" Disabled="@(SelectedRow==null)" ToolTip="Delete"></IconButton>
 
         @if (CurrentCompleteRow == null)

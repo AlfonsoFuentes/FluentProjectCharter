@@ -10,7 +10,6 @@
 	  <Content Remove="SharedComponents\EditableSelectField.razor" />
 	  <Content Remove="wwwroot\Assets\CPLogo.png" />
 	  <Content Remove="wwwroot\Assets\PMLogo.png" />
-	  <Content Remove="wwwroot\js\interop.js" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -62,14 +61,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Include="wwwroot\js\interop.js">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Resource>
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Content Update="SharedComponents\EditableDateField.razor">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\js\interop.js">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
 

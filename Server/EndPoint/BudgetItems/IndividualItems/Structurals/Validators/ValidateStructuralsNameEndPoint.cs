@@ -1,5 +1,5 @@
 ﻿using Server.Database.Entities.BudgetItems.Commons;
-using Shared.Models.BudgetItems.Structurals.Validators;
+using Shared.Models.BudgetItems.IndividualItems.Structurals.Validators;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Structurals.Validators
 {

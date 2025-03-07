@@ -1,10 +1,8 @@
 ﻿<MatrixRow RowName="Risk Management">
     <StartContent>
-        <FluentAnchor Href="@($"KnownRisks/{Project.Id}/{Project.StartId}/{"Start"}")" Appearance="Appearance.Hypertext">Know Risks</FluentAnchor>
+        <FluentAnchor Href="@($"KnownRisks/{Project.Id}")" Appearance="Appearance.Hypertext">Know Risks</FluentAnchor>
     </StartContent>
-    <PlannificationContent>
-        <FluentAnchor Href="@($"KnownRisks/{Project.Id}/{Project.PlanningId}/{"Planning"}")" Appearance="Appearance.Hypertext">Risks</FluentAnchor>
-    </PlannificationContent>
+
 </MatrixRow>
 
 @code {

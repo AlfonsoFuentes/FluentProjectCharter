@@ -21,13 +21,19 @@
 @using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip
 @using Microsoft.JSInterop
 @using FluentWeb
-@using Shared.Models.AcceptanceCriterias.Requests
+
 @using FluentWeb.Layout
 @using Blazored.FluentValidation
-@using Shared.Enums.TasksRelationTypeTypes
 
-@using Shared.Enums.CurrencyEnums
+
 @using Web.Infrastructure.Managers.Generic
+
+
+@using Shared.Models.BudgetItems.IndividualItems.Structurals.Requests
+@using Shared.Models.BudgetItems.IndividualItems.Testings.Requests
+@using Shared.Models.BudgetItems.IndividualItems.Valves.Requests
+@using Shared.Enums.CurrencyEnums
+@using Shared.Models.AcceptanceCriterias.Requests
 @using Shared.Models.Suppliers.Requests
 @using Shared.Models.Suppliers.Responses
 @using Shared.Models.Templates.Valves.Responses
@@ -42,7 +48,7 @@
 @using Shared.Models.KnownRisks.Requests
 @using Shared.Models.Bennefits.Requests
 @using Shared.Models.ExpertJudgements.Requests
-@using Shared.Models.Deliverables.Requests
+@using Shared.Models.GanttTasks.Responses
 @using Shared.Models.Projects.Reponses
 @using Shared.Models.Projects.Request
 @using Shared.Enums.ProjectNeedTypes
@@ -72,8 +78,7 @@
 @using Shared.Models.KnownRisks.Responses
 @using Shared.Models.Requirements.Responses
 @using Shared.Models.MeetingAttendants.Responses
-@using Shared.Models.Milestones.Requests
-@using Shared.Models.Milestones.Responses
+@using Shared.Enums.TasksRelationTypes
 
 @using FluentWeb.SharedComponents
 @using FluentWeb.Pages.StakeHolderManagements.StakeHolderInsideProjects

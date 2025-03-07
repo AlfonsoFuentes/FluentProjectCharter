@@ -12,11 +12,10 @@ namespace Server.EndPoint.Communications.Commands
             {
                 app.MapPost(StaticClass.Communications.EndPoint.Create, async (CreateCommunicationRequest Data, IRepository Repository) =>
                 {
-                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
-                        return Result.Fail();
+                    
                     var lastorder = await Repository.GetLastOrderAsync<Communication, Project>(Data.ProjectId);
 
-                    var row = Communication.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = Communication.Create(Data.ProjectId,lastorder);
 
                     await Repository.AddAsync(row);
 

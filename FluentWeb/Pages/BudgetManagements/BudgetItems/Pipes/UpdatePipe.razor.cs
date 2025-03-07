@@ -34,7 +34,7 @@ public partial class UpdatePipe
                 ProjectId = result.Data.ProjectId,
                 Budget = result.Data.Budget,
                 BrandResponse = result.Data.BrandResponse,
-                DeliverableId = result.Data.DeliverableId,
+                GanttTaskId = result.Data.DeliverableId,
                 Diameter = result.Data.Diameter,
                 LaborDayPrice = result.Data.LaborDayPrice,
                 Nozzles = result.Data.Nozzles,

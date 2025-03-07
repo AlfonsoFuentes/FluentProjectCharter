@@ -185,8 +185,9 @@ code {
         right: unset;
     }
 }
-
-/*Clases css para Deliverables con timeline*/
+/* ==============================
+  Estilos del Gant chart
+   ============================== */
 /* ==============================
    1. Variables Globales
    ============================== */
@@ -202,179 +203,146 @@ code {
 }
 
 /* ==============================
-   2. Contenedores Principales
+   2. Tabla Principal
    ============================== */
-.main-container {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-    box-sizing: border-box;
-}
-
-.scrollable-content {
-    flex-grow: 1;
-    overflow-y: auto;
-    overflow-x: auto;
-}
-
-/* ==============================
-   3. Encabezados de Tabla
-   ============================== */
-.header-section {
-    display: grid;
-    align-items: center;
-    background-color: var(--secondary-bg-color);
-    border-bottom: 1px solid var(--border-color);
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    font-weight: bold;
-    font-size: var(--font-size-medium);
-}
-
-    .header-section > span {
-        padding: var(--padding-small);
-        text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-/* ==============================
-   4. Filas y Celdas de Tabla
-   ============================== */
-.data-row {
-    display: grid;
-    align-items: center;
-    background-color: var(--primary-bg-color);
+.deliverable-table {
+    width: auto; /* Ancho automático para permitir desplazamiento */
+    border-collapse: collapse;
     font-size: var(--font-size-small);
-    border-bottom: 1px solid var(--border-color);
+    background-color: var(--primary-bg-color);
+    min-width: 100%; /* Asegura que la tabla ocupe al menos el ancho del contenedor */
+    overflow-x: auto; /* Scroll horizontal */
+    display: block; /* Necesario para que funcione overflow-x */
+    max-height: 100vh; /* Altura máxima para permitir scroll vertical */
+    overflow-y: auto; /* Scroll vertical */
 }
 
-    .data-row:nth-child(even) {
+    .deliverable-table thead {
         background-color: var(--secondary-bg-color);
+        border-bottom: 2px solid var(--border-color);
     }
 
-    .data-row > span {
+    .deliverable-table th,
+    .deliverable-table td {
         padding: var(--padding-small);
         text-align: center;
+        border: 1px solid var(--border-color);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        line-height: 1.2; /* Reduce la altura de las líneas de texto */
+    }
+
+    .deliverable-table th {
+        font-weight: bold;
+        font-size: var(--font-size-medium);
+        position: sticky;
+        top: 0; /* Fija los encabezados verticalmente */
+        background-color: var(--secondary-bg-color);
+        z-index: 2;
     }
 
 /* ==============================
-   5. Columnas Específicas
+   3. Filas de Datos
    ============================== */
+.data-row:nth-child(even) {
+    background-color: var(--secondary-bg-color);
+}
+
+.data-row:nth-child(odd) {
+    background-color: var(--primary-bg-color);
+}
+
+/* ==============================
+   4. Columnas
+   ============================== */
+.col-expand {
+    width: 40px; /* Ancho fijo */
+}
+
+.col-id {
+    width: 60px; /* Ancho fijo */
+}
+
+.col-wbs {
+    width: 80px; /* Ancho fijo */
+}
+
 .col-name {
     text-align: left !important;
     white-space: normal;
     word-wrap: break-word;
-}
-    /* ==============================
-   5. Estilos para Filas con Subdeliverables
-   ============================== */
-    .col-name.has-subdeliverables {
-        font-weight: bold; /* Texto en negrita */
-    }
-
-        .col-name.has-subdeliverables.edit-mode {
-            font-weight: normal; /* Evita que el texto editable también sea negrita */
-        }
-
-    .col-generic.edit-mode,
-    .col-name.edit-mode {
-        padding: 0 !important;
-        display: flex;
-        align-items: stretch;
-    }
-
-        .col-generic.edit-mode .fluent-text-field,
-        .col-generic.edit-mode .fluent-text-area,
-        .col-generic.edit-mode .fluent-date-picker,
-        .col-generic.edit-mode .task-relation-selector,
-        .col-name.edit-mode .fluent-text-area {
-            width: 100%;
-            height: auto;
-            box-sizing: border-box;
-        }
-/* ==============================
-   5. Estilos para Componentes Editables
-   ============================== */
-.fluent-text-field,
-.fluent-date-picker,
-.task-relation-selector {
-    width: 100%; /* Ocupa todo el ancho de la columna */
-    height: auto; /* Se ajusta al contenido */
-    min-height: 32px; /* Altura mínima consistente con Fluent components */
-    transition: all 0.3s ease; /* Transición suave para hover y focus */
+    min-width: 200px; /* Ancho mínimo para evitar recorte */
 }
 
-.task-relation-selector {
-    box-sizing: border-box; /* Incluye padding y borde en el cálculo del tamaño */
-    font-size: var(--font-size-small); /* Tamaño de fuente consistente */
-    padding: var(--padding-small); /* Espaciado interno */
-    border: 1px solid var(--border-color); /* Borde suave */
-    border-radius: 4px; /* Bordes redondeados */
-    appearance: none; /* Elimina la flecha predeterminada del navegador */
-    -webkit-appearance: none; /* Compatibilidad con navegadores basados en WebKit */
-    -moz-appearance: none; /* Compatibilidad con Firefox */
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e"); /* Flecha personalizada */
-    background-repeat: no-repeat;
-    background-position: right 8px center; /* Posición de la flecha */
-    background-size: 12px; /* Tamaño de la flecha */
-    line-height: normal; /* Asegura que el texto se alinee correctamente */
-}
-
-    .task-relation-selector:hover {
-        background-color: var(--secondary-bg-color); /* Cambio de fondo al pasar el mouse */
-        border-color: #007bff; /* Cambio de borde al pasar el mouse */
-    }
-
-    .task-relation-selector:focus {
-        border-color: #007bff; /* Borde destacado al hacer foco */
-        outline: none; /* Elimina el contorno predeterminado */
-        box-shadow: 0 0 4px rgba(0, 123, 255, 0.25); /* Sombra sutil al hacer foco */
-    }
-
-/* ==============================
-   6. Estados Especiales
-   ============================== */
-.data-row.edit-mode {
-    background-color: var(--secondary-bg-color);
-    border-left: 4px solid #007bff;
-}
-
-.success-notification {
-    color: green;
-    font-weight: bold;
-}
-
-.error-notification {
-    color: red;
-    font-weight: bold;
+.col-start-date,
+.col-end-date,
+.col-duration,
+.col-dependencies,
+.col-dependency-type,
+.col-lag,
+.col-budget {
+    min-width: 120px; /* Ancho mínimo para evitar recorte */
 }
 
 /* ==============================
-   7. Responsive Design
+   5. Barra de Duración
+   ============================== */
+.col-timeline {
+    min-width: 400px; /* Ancho mínimo para la barra */
+    position: relative;
+}
+
+.timeline-bar-container {
+    position: relative;
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    margin: var(--padding-small);
+}
+
+.bar-wrapper {
+    position: relative;
+    height: 100%;
+}
+
+.bar {
+    position: absolute;
+    height: 100%;
+    background-color: #33FF57;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* ==============================
+   6. Responsive Design
    ============================== */
 @media (max-width: 768px) {
-    .header-section,
-    .data-row {
-        grid-template-columns: repeat(6, minmax(0, 1fr));
+    .deliverable-table th,
+    .deliverable-table td {
+        font-size: var(--font-size-small);
+        padding: var(--padding-small);
     }
 
-    .col-wbs,
+    .col-timeline {
+        min-width: 300px; /* Reducir el ancho mínimo en pantallas pequeñas */
+    }
+
+    .col-name,
+    .col-start-date,
+    .col-end-date,
+    .col-duration,
     .col-dependencies,
     .col-dependency-type,
-    .col-lag {
-        display: none;
+    .col-lag,
+    .col-budget {
+        min-width: 100px; /* Reducir el ancho mínimo en pantallas pequeñas */
     }
 }
-/* Contenedor principal */
-.project-matrix {
+    /* ==============================
+   Estilos de pagina Inicial
+   ============================== */
+    /* Contenedor principal */
+    .project-matrix {
     overflow-x: auto; /* Responsividad horizontal */
     margin: 1rem 0;
     border: 1px solid #ccc; /* Borde externo de la tabla */
@@ -426,3 +394,70 @@ code {
             padding: 0.1rem; /* Espaciado reducido */
            
         }
+/* ==============================
+   1. Contenedor Principal
+   ============================== */
+.wbs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* ==============================
+   2. Nodo WBS
+   ============================== */
+.wbs-node {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: 20px; /* Indentación para niveles inferiores */
+}
+
+.wbs-label {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .wbs-label:hover {
+        background-color: #e0e0e0;
+    }
+
+/* ==============================
+   3. Hijos del Nodo
+   ============================== */
+.wbs-children {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+/* ==============================
+   1. Contenedor SVG
+   ============================== */
+svg {
+    font-family: Arial, sans-serif;
+}
+
+/* ==============================
+   2. Nodos
+   ============================== */
+rect {
+   
+    rx: 5px; /* Bordes redondeados */
+    ry: 5px;
+}
+
+text {
+    pointer-events: none; /* Evita que el texto sea interactivo */
+}
+
+line {
+    stroke-width: 2px;
+}

@@ -25,8 +25,8 @@ namespace Server.Database.Entities.BudgetItems
         public string Nomenclatore => $"{Letter}{Order}";
         public string Name { get; set; } = string.Empty;
 
-        public Deliverable? Deliverable { get; set; } = null!;
-        public Guid? DeliverableId { get; set; }
+        public GanttTask? GanttTask { get; set; } = null!;
+        public Guid? GanttTaskId { get; set; }
 
         [ForeignKey("BudgetItemId")]
         public List<PurchaseOrderItem> PurchaseOrderItems { get; set; } = new();

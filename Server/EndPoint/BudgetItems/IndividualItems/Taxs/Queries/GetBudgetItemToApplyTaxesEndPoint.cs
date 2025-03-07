@@ -1,5 +1,5 @@
-﻿using Shared.Models.BudgetItems.Taxs.Records;
-using Shared.Models.BudgetItems.Taxs.Responses;
+﻿using Shared.Models.BudgetItems.IndividualItems.Taxs.Records;
+using Shared.Models.BudgetItems.IndividualItems.Taxs.Responses;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Queries
 {

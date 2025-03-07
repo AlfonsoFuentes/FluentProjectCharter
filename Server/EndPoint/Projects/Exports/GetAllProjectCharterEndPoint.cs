@@ -42,21 +42,19 @@ namespace Server.EndPoint.Projects.Exports
                     Func<IQueryable<Project>, IIncludableQueryable<Project, object>> Includes = x => x
                     .Include(x => x.StakeHolders).ThenInclude(x => x.RoleInsideProject!)
                     .Include(x => x.BackGrounds.OrderBy(x => x.Order))
-                    .Include(x => x.Objectives.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
-                    .Include(x => x.Requirements.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
-                    .Include(x => x.Scopes.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
-                    .Include(x => x.AcceptanceCriterias.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
-                    .Include(x => x.Bennefits.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
-                    .Include(x => x.Constrainsts.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
-                    .Include(x => x.Assumptions.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
-                    .Include(x => x.LearnedLessons.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
-                    .Include(x => x.ExpertJudgements.Where(x => x.StartId.HasValue).OrderBy(x => x.Order)).ThenInclude(x => x.Expert!)
-                   
-                    .Include(x => x.Milestones.Where(x => x.StartId.HasValue).OrderBy(x => x.Order)).ThenInclude(x => x.Dependants.OrderBy(x => x.Order))
-                    .Include(x => x.Qualitys.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
-                    .Include(x => x.KnownRisks.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
-                    .Include(x => x.Resources.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
-                    .Include(x => x.Acquisitions.Where(x => x.StartId.HasValue).OrderBy(x => x.Order))
+                    .Include(x => x.Objectives.OrderBy(x => x.Order))
+                    .Include(x => x.Requirements.OrderBy(x => x.Order))
+                    .Include(x => x.Scopes.OrderBy(x => x.Order))
+                    .Include(x => x.AcceptanceCriterias.OrderBy(x => x.Order))
+                    .Include(x => x.Bennefits.OrderBy(x => x.Order))
+                    .Include(x => x.Constrainsts.OrderBy(x => x.Order))
+                    .Include(x => x.Assumptions.OrderBy(x => x.Order))
+                    .Include(x => x.LearnedLessons.OrderBy(x => x.Order))
+                    .Include(x => x.ExpertJudgements.OrderBy(x => x.Order)).ThenInclude(x => x.Expert!)
+                    .Include(x => x.Qualitys.OrderBy(x => x.Order))
+                    .Include(x => x.KnownRisks.OrderBy(x => x.Order))
+                    .Include(x => x.Resources.OrderBy(x => x.Order))
+                    .Include(x => x.Acquisitions.OrderBy(x => x.Order))
                     .Include(x => x.Manager!)
                     .Include(x => x.Sponsor!);
 
@@ -755,35 +753,35 @@ namespace Server.EndPoint.Projects.Exports
             }
             void Deliverables(IContainer container, Project response)
             {
-                if (response.Deliverables.Count == 0) return;
-                container.Column(col1 =>
-                {
+                //if (response.Deliverables.Count == 0) return;
+                //container.Column(col1 =>
+                //{
 
-                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
-                    {
-                        col2.Item().Text(txt =>
-                        {
-                            txt.Span("Deliverables:").FontSize(10).SemiBold();
+                //    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
+                //    {
+                //        col2.Item().Text(txt =>
+                //        {
+                //            txt.Span("Deliverables:").FontSize(10).SemiBold();
 
-                        });
-                    });
+                //        });
+                //    });
 
 
-                    col1.Item().Column(col2 =>
-                    {
+                //    col1.Item().Column(col2 =>
+                //    {
 
-                        foreach (var row in response.Deliverables)
-                        {
-                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
-                            {
-                                txt.Span($"{row.Name}").FontSize(10);
+                //        foreach (var row in response.Deliverables)
+                //        {
+                //            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
+                //            {
+                //                txt.Span($"{row.Name}").FontSize(10);
 
-                            });
+                //            });
 
-                        }
+                //        }
 
-                    });
-                });
+                //    });
+                //});
             }
             //void Milestones(IContainer container, Project response)
             //{

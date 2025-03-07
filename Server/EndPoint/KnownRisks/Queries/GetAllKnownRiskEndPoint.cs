@@ -22,7 +22,8 @@ namespace Server.EndPoint.KnownRisks.Queries
 
                     var response = new KnownRiskResponseList
                     {
-                        Items = maps
+                        Items = maps,
+                        ProjectName = rows.Name
                     };
 
                     return Result<KnownRiskResponseList>.Success(response);

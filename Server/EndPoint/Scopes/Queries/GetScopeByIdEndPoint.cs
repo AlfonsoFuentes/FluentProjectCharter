@@ -1,7 +1,5 @@
-﻿using Server.EndPoint.Deliverables.Queries;
+﻿using Server.Database.Entities.ProjectManagements;
 using Shared.Models.Scopes.Records;
-using Server.EndPoint.AcceptanceCriterias.Queries;
-using Server.Database.Entities.ProjectManagements;
 
 namespace Server.EndPoint.Scopes.Queries
 {
@@ -41,8 +39,8 @@ namespace Server.EndPoint.Scopes.Queries
                 Name = row.Name,
               
                 ProjectId = row.ProjectId,
-                StartId = row.StartId,
-                PlanningId = row.PlanningId,
+                
+                
 
                 Order = row.Order,
             };

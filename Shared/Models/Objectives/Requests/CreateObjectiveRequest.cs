@@ -5,8 +5,8 @@ namespace Shared.Models.Objectives.Requests
     public class CreateObjectiveRequest : CreateMessageResponse, IRequest
     {
 
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
+        
+        
 
         public Guid ProjectId { get; set; }
 

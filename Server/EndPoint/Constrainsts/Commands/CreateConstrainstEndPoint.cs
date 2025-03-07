@@ -12,11 +12,10 @@ namespace Server.EndPoint.Constrainsts.Commands
             {
                 app.MapPost(StaticClass.Constrainsts.EndPoint.Create, async (CreateConstrainstRequest Data, IRepository Repository) =>
                 {
-                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
-                        return Result.Fail();
+              
                     var lastorder = await Repository.GetLastOrderAsync<Constrainst, Project>(Data.ProjectId);
 
-                    var row = Constrainst.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = Constrainst.Create(Data.ProjectId,lastorder);
 
                     await Repository.AddAsync(row);
 

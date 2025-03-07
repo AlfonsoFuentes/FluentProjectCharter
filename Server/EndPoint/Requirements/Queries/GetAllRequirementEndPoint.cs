@@ -24,7 +24,9 @@ namespace Server.EndPoint.Requirements.Queries
 
                     var response = new RequirementResponseList
                     {
-                        Items = maps
+                        Items = maps,
+                        ProjectName=rows.Name,
+
                     };
 
                     return Result<RequirementResponseList>.Success(response);

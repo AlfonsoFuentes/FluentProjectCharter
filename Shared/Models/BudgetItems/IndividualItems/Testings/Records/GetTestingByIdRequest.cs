@@ -1,7 +1,7 @@
 ﻿using Shared.Models.FileResults.Generics.Records;
 using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems.Testings.Records
+namespace Shared.Models.BudgetItems.IndividualItems.Testings.Records
 {
     public class GetTestingByIdRequest : GetByIdMessageResponse, IGetById
     {

@@ -4,8 +4,8 @@ namespace Shared.Models.Acquisitions.Requests
 {
     public class CreateAcquisitionRequest : CreateMessageResponse, IRequest
     {
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
+        
+        
        
         public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;

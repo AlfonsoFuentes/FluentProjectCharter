@@ -36,15 +36,15 @@ namespace Shared.Models.Requirements.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateRequirementRequest ToCreate(this RequirementResponse response, Guid? startid, Guid? planid)
+        public static CreateRequirementRequest ToCreate(this RequirementResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

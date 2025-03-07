@@ -12,11 +12,10 @@ namespace Server.EndPoint.Bennefits.Commands
             {
                 app.MapPost(StaticClass.Bennefits.EndPoint.Create, async (CreateBennefitRequest Data, IRepository Repository) =>
                 {
-                    if (!Data.PlanningId.HasValue && !Data.StartId.HasValue)
-                        return Result.Fail();
+                    
                     var lastorder = await Repository.GetLastOrderAsync<Bennefit, Project>(Data.ProjectId);
 
-                    var row = Bennefit.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = Bennefit.Create(Data.ProjectId,lastorder);
 
                     await Repository.AddAsync(row);
 

@@ -13,12 +13,9 @@ namespace Server.EndPoint.Objectives.Commands
                 app.MapPost(StaticClass.Objectives.EndPoint.Create, async (CreateObjectiveRequest Data, IRepository Repository) =>
                 {
 
-
-                    if (!Data.StartId.HasValue && !Data.PlanningId.HasValue)
-                        return Result.Fail();
                     var lastorder = await Repository.GetLastOrderAsync<Objective, Project>(Data.ProjectId);
 
-                    var row = Objective.Create(Data.ProjectId, Data.StartId, Data.PlanningId, lastorder);
+                    var row = Objective.Create(Data.ProjectId,lastorder);
 
                     await Repository.AddAsync(row);
 

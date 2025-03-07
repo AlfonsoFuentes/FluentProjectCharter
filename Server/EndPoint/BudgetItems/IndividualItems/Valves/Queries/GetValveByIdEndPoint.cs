@@ -4,8 +4,8 @@ using Server.EndPoint.BudgetItems.IndividualItems.Valves.Queries;
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Enums.ValvesEnum;
-using Shared.Models.BudgetItems.Valves.Records;
-using Shared.Models.BudgetItems.Valves.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Valves.Records;
+using Shared.Models.BudgetItems.IndividualItems.Valves.Responses;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Valves.Queries
 {

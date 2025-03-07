@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems
+namespace Shared.Models.BudgetItems.Requests
 {
     public class DeleteBudgetItemRequest : DeleteMessageResponse, IRequest
     {
@@ -8,7 +8,7 @@ namespace Shared.Models.BudgetItems
         public override string Legend => Name;
 
         public override string ClassName => StaticClass.BudgetItems.ClassName;
-        public Guid? DeliverableId { get; set; }
+        public Guid? GanttTaskId { get; set; }
         public Guid Id { get; set; }
 
         public string EndPointName => StaticClass.BudgetItems.EndPoint.Delete;

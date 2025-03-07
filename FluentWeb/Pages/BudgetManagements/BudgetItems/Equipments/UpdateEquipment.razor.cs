@@ -34,7 +34,7 @@ public partial class UpdateEquipment
                 ProjectId = result.Data.ProjectId,
                 Budget = result.Data.Budget,
                 BrandResponse = result.Data.BrandResponse,
-                DeliverableId = result.Data.DeliverableId,
+                GanttTaskId = result.Data.DeliverableId,
                 ExternalMaterial = result.Data.ExternalMaterial,
                 InternalMaterial = result.Data.InternalMaterial,
                 Model = result.Data.Model,

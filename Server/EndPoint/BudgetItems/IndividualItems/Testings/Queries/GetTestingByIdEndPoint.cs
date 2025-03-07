@@ -1,7 +1,7 @@
 ﻿using Server.Database.Entities.BudgetItems.Commons;
 using Server.EndPoint.Projects.Queries;
-using Shared.Models.BudgetItems.Testings.Records;
-using Shared.Models.BudgetItems.Testings.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Testings.Records;
+using Shared.Models.BudgetItems.IndividualItems.Testings.Responses;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Testings.Queries
 {

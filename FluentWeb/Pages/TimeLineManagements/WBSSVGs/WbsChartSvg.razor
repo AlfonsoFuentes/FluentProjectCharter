@@ -1,0 +1,55 @@
+﻿@page "/wbs-chart-svg/{ProjectId:guid}"
+@inject IJSRuntime JSRuntime
+@if (Data != null && Data.Deliverables.Count > 0)
+{
+    <FluentStack Orientation="Orientation.Vertical" Width="100%" HorizontalAlignment="HorizontalAlignment.Start" VerticalAlignment="VerticalAlignment.Top">
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center">
+            <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowStepBack())" OnClick="@Navigation.NavigateBack" ToolTip="Go Back"></IconButton>
+            <FluentLabel Typo="Typography.Body"><strong>@($"Work breakdown structure for {Data.ProjectName}")</strong></FluentLabel>
+        </FluentStack>
+
+
+        <CascadingValue Value="this">
+            <!-- Contenedor principal -->
+            <div style="width: @(screenWidth > 0 ? $"{screenWidth}px" : "800px"); height: @(GetSvgHeight())px; overflow: auto; border: 1px solid #ccc;">
+                <svg width="@(screenWidth > 0 ? screenWidth : 800)" height="@(GetSvgHeight())" style="border: 1px solid #eee;">
+                    <g>
+                        @{
+                            int initialY = 50; // Posición inicial vertical fija para todos los deliverables
+                            var xPositions = GetXPositions(); // Calcular las posiciones X de los deliverables
+
+                            for (int i = 0; i < Data.Deliverables.Count; i++)
+                            {
+                                <DeliverableNode Node="@Data.Deliverables[i]" X="@xPositions[i]" Y="@initialY" />
+                            }
+                        }
+                    </g>
+                </svg>
+            </div>
+        </CascadingValue>
+
+    </FluentStack>
+}
+<script>
+    // Función para obtener el ancho de la pantalla
+    window.getScreenWidth = () => {
+        return window.innerWidth;
+    };
+
+    // Función para configurar un listener de cambio de tamaño
+    window.setupResizeListener = (dotNetHelper) => {
+        const handleResize = () => {
+            dotNetHelper.invokeMethodAsync('UpdateScreenWidth', window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+
+        // Devolver una función para limpiar el listener
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    };
+</script>
+
+@code {
+
+}

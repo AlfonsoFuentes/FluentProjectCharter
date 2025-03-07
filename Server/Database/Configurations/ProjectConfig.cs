@@ -94,11 +94,7 @@ namespace Server.Database.Configurations
           .OnDelete(DeleteBehavior.Cascade);
 
 
-            builder.HasMany(x => x.Milestones)
-       .WithOne(t => t.Project)
-       .HasForeignKey(e => e.ProjectId)
-       .IsRequired()
-       .OnDelete(DeleteBehavior.Cascade);
+           
 
             builder.HasMany(x => x.Requirements)
      .WithOne(t => t.Project)

@@ -13,28 +13,11 @@ public partial class LearnedLessonTable
 {
     [Parameter]
     public Guid ProjectId { get; set; }
-    [Parameter]
-    public string IdType { get; set; }
 
-    [Parameter]
-    public Guid Id { get; set; }
-    Guid? StartId;
-    Guid? PlanningId;
-    private void ValidateIdType()
-    {
-        if (IdType.Equals("Planning", StringComparison.OrdinalIgnoreCase))
-        {
-            PlanningId = Id;
-        }
-        else if (IdType.Equals("Start", StringComparison.OrdinalIgnoreCase))
-        {
-            StartId = Id;
-        }
-
-    }
+       
     protected override async Task OnInitializedAsync()
     {
-        ValidateIdType();
+       
         await GetAll();
     }
 
@@ -66,7 +49,7 @@ public partial class LearnedLessonTable
         });
         if (result.Succeeded)
         {
-            Items = StartId.HasValue ? result.Data.Items.Where(x => x.StartId == StartId).ToList() : result.Data.Items;
+            Items = result.Data.Items;
 
 
             GetSelectedRowFromItems();
@@ -85,7 +68,8 @@ public partial class LearnedLessonTable
     public async Task Create()
     {
         if (CreateRow == null) return;
-        CreateLearnedLessonRequest create = CreateRow.ToCreate(StartId,PlanningId);
+        CreateLearnedLessonRequest create = CreateRow.ToCreate();
+      
         var result = await GenericService.Create(create);
         if (result.Succeeded)
         {

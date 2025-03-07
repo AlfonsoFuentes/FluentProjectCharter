@@ -37,8 +37,8 @@ namespace Server.EndPoint.Constrainsts.Queries
             {
                 Id = row.Id,
                 Name = row.Name,
-                StartId = row.StartId,
-                PlanningId = row.PlanningId,
+                
+                
                 Order = row.Order,
                 ProjectId = row.ProjectId,
             };

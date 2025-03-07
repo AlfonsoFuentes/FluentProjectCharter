@@ -40,8 +40,8 @@ namespace Server.EndPoint.Requirements.Queries
                 Id = row.Id,
                 Name = row.Name,
                 Order = row.Order,
-                StartId = row.StartId,
-                PlanningId = row.PlanningId,
+                
+                
                 ProjectId = row.ProjectId,
 
             };

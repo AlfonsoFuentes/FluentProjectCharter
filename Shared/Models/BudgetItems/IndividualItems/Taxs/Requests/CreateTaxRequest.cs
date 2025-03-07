@@ -1,12 +1,12 @@
 ﻿using Shared.Enums.CostCenter;
-using Shared.Models.BudgetItems.Taxs.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Taxs.Responses;
 using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems.Taxs.Requests
+namespace Shared.Models.BudgetItems.IndividualItems.Taxs.Requests
 {
     public class CreateTaxRequest : CreateMessageResponse, IRequest
     {
-        public Guid? DeliverableId { get; set; }
+        public Guid? GanttTaskId { get; set; }
         public Guid ProjectId { get; set; }
         public string Name { get; set; } = string.Empty;
  

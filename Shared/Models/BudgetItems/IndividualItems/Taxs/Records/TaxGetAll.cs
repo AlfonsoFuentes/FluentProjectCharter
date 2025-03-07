@@ -1,4 +1,4 @@
-﻿namespace Shared.Models.BudgetItems.Taxs.Records
+﻿namespace Shared.Models.BudgetItems.IndividualItems.Taxs.Records
 {
     public record TaxGetAll();
 }

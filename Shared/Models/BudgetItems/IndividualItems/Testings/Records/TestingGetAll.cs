@@ -1,4 +1,4 @@
-﻿namespace Shared.Models.BudgetItems.Testings.Records
+﻿namespace Shared.Models.BudgetItems.IndividualItems.Testings.Records
 {
     public record TestingGetAll();
 }

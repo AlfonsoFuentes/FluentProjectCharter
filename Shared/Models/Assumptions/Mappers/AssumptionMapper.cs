@@ -36,15 +36,15 @@ namespace Shared.Models.Assumptions.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateAssumptionRequest ToCreate(this AssumptionResponse response, Guid? startid, Guid? planid)
+        public static CreateAssumptionRequest ToCreate(this AssumptionResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

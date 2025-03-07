@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using Shared.Models.AcceptanceCriterias.Responses;
-using Shared.Models.Milestones.Responses;
-using System.Globalization;
 using System.Text;
 namespace Server.EndPoint.Projects.Exports
 {
@@ -54,8 +51,8 @@ namespace Server.EndPoint.Projects.Exports
                     .Include(x => x.Assumptions.OrderBy(x => x.Order))
                     .Include(x => x.LearnedLessons.OrderBy(x => x.Order))
                     .Include(x => x.ExpertJudgements.OrderBy(x => x.Order)).ThenInclude(x => x.Expert!)
-                    .Include(x => x.Deliverables.OrderBy(x => x.Order))
-                    .Include(x => x.Milestones.OrderBy(x => x.Order)).ThenInclude(x => x.Dependants.OrderBy(x => x.Order))
+                    //.Include(x => x.Deliverables.OrderBy(x => x.Order))
+                    //.Include(x => x.Milestones.OrderBy(x => x.Order)).ThenInclude(x => x.Dependants.OrderBy(x => x.Order))
                     .Include(x => x.Qualitys.OrderBy(x => x.Order))
                     .Include(x => x.KnownRisks.OrderBy(x => x.Order))
                     .Include(x => x.Resources.OrderBy(x => x.Order))
@@ -758,67 +755,67 @@ namespace Server.EndPoint.Projects.Exports
             }
             void Deliverables(IContainer container, Project response)
             {
-                if (response.Deliverables.Count == 0) return;
-                container.Column(col1 =>
-                {
+                //if (response.Deliverables.Count == 0) return;
+                //container.Column(col1 =>
+                //{
 
-                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
-                    {
-                        col2.Item().Text(txt =>
-                        {
-                            txt.Span("Deliverables:").FontSize(10).SemiBold();
+                //    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
+                //    {
+                //        col2.Item().Text(txt =>
+                //        {
+                //            txt.Span("Deliverables:").FontSize(10).SemiBold();
 
-                        });
-                    });
+                //        });
+                //    });
 
 
-                    col1.Item().Column(col2 =>
-                    {
+                //    col1.Item().Column(col2 =>
+                //    {
 
-                        foreach (var row in response.Deliverables)
-                        {
-                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
-                            {
-                                txt.Span($"{row.Name}").FontSize(10);
+                //        foreach (var row in response.Deliverables)
+                //        {
+                //            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
+                //            {
+                //                txt.Span($"{row.Name}").FontSize(10);
 
-                            });
+                //            });
 
-                        }
+                //        }
 
-                    });
-                });
+                //    });
+                //});
             }
             void Milestones(IContainer container, Project response)
             {
-                if (response.Milestones.Count == 0) return;
-                container.Column(col1 =>
-                {
+                //if (response.Milestones.Count == 0) return;
+                //container.Column(col1 =>
+                //{
 
-                    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
-                    {
-                        col2.Item().Text(txt =>
-                        {
-                            txt.Span("Milestones:").FontSize(10).SemiBold();
+                //    col1.Item().TranslateX(15).PaddingBottom(5).Column(col2 =>
+                //    {
+                //        col2.Item().Text(txt =>
+                //        {
+                //            txt.Span("Milestones:").FontSize(10).SemiBold();
 
-                        });
-                    });
+                //        });
+                //    });
 
 
-                    col1.Item().Column(col2 =>
-                    {
+                //    col1.Item().Column(col2 =>
+                //    {
 
-                        foreach (var row in response.Milestones)
-                        {
-                            col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
-                            {
-                                txt.Span($"{row.Name}").FontSize(10);
+                //        //foreach (var row in response.Milestones)
+                //        //{
+                //        //    col1.Item().TranslateX(20).PaddingBottom(5).ShowEntire().AlignLeft().Text(txt =>
+                //        //    {
+                //        //        txt.Span($"{row.Name}").FontSize(10);
 
-                            });
+                //        //    });
 
-                        }
+                //        //}
 
-                    });
-                });
+                //    });
+                //});
             }
             void Qualitys(IContainer container, Project response)
             {

@@ -27,6 +27,7 @@ namespace Server.DatabaseImplementations.Databases
         public DbSet<Bennefit> Bennefits { get; set; }
         public DbSet<AcceptanceCriteria> AcceptanceCriterias { get; set; }
         public DbSet<KnownRisk> KnownRisks { get; set; }
+        public DbSet<GanttTask> GanttTasks { get; set; } = null!;
         public DbSet<Deliverable> Deliverables { get; set; } = null!;
         public DbSet<Requirement> Requirements { get; set; } = null!;
         public DbSet<Assumption> Assumptions { get; set; } = null!;
@@ -67,12 +68,12 @@ namespace Server.DatabaseImplementations.Databases
         public DbSet<PipingAccesoryImage> PipingAccesoryImages { get; set; } = null!;
         public DbSet<PipingConnectionType> PipingConnectionTypes { get; set; } = null!;
         public DbSet<PipingAccesoryCodeBrand> PipingAccesoryCodeBrands { get; set; } = null!;
-        public DbSet<Milestone> Milestones { get; set; } = null!;
+    
         public DbSet<Quality> Qualitys { get; set; } = null!;
         public DbSet<Communication> Communications { get; set; } = null!;
         public DbSet<Resource> Resources { get; set; } = null!;
         public DbSet<Acquisition> Acquisitions { get; set; } = null!;
-        //public DbSet<BudgetItemValue> BudgetItemValues { get; set; } = null!;
+
         public DbSet<DeliverableResource> DeliverableResources { get; set; } = null!;
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; } = null!;
         public DbSet<Supplier> Suppliers { get; set; } = null!;
@@ -90,6 +91,7 @@ namespace Server.DatabaseImplementations.Databases
             builder.Entity<KnownRisk>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<AcceptanceCriteria>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<DeliverableResource>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+            builder.Entity<GanttTask>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Deliverable>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Quality>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Communication>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
@@ -97,7 +99,7 @@ namespace Server.DatabaseImplementations.Databases
             builder.Entity<Acquisition>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Requirement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<Assumption>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            //builder.Entity<BudgetItemValue>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+        
             builder.Entity<Constrainst>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
            
             builder.Entity<ExpertJudgement>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
@@ -109,7 +111,7 @@ namespace Server.DatabaseImplementations.Databases
             builder.Entity<PurchaseOrderItemReceived>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<TaxesItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<IsometricItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
-            builder.Entity<Milestone>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
+        
             builder.Entity<Nozzle>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
             builder.Entity<BudgetItem>().HasQueryFilter(p => p.IsDeleted == false && EF.Property<string>(p, "TenantId") == _tenantId);
 

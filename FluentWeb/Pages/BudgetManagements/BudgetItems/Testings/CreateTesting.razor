@@ -1,6 +1,7 @@
-﻿@page "/CreateTestings/{ProjectId:guid}/{DeliverableId:guid}"
+﻿@page "/CreateTestings/{ProjectId:guid}/{GanttTaskId:guid}"
 @page "/CreateTestings/{ProjectId:guid}"
-@using Shared.Models.BudgetItems.Testings.Requests
+
+
 <CreateTemplate @ref=CreateForm TItem="CreateTestingRequest" @bind-Model="@Model"
                 Title="Create Testing">
     <Content>

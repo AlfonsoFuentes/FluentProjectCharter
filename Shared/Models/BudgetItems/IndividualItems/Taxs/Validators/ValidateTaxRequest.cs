@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems.Taxs.Validators
+namespace Shared.Models.BudgetItems.IndividualItems.Taxs.Validators
 {
     public class ValidateTaxRequest : ValidateMessageResponse, IRequest
     {

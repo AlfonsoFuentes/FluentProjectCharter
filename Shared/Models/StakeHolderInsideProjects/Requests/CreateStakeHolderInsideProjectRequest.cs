@@ -6,8 +6,8 @@ namespace Shared.Models.StakeHolderInsideProjects.Requests
 {
     public class CreateStakeHolderInsideProjectRequest : CreateMessageResponse, IRequest
     {
-        public Guid? StartId { get; set; }
-        public Guid? PlanningId { get; set; }
+        
+        
         public Guid ProjectId { get; set; }
 
 

@@ -1,4 +1,4 @@
-﻿@page "/Acquisitions/{ProjectId:guid}/{Id:guid}/{IdType}"
+﻿@page "/Acquisitions/{ProjectId:guid}"
 @using Shared.Models.Acquisitions.Responses
 
 
@@ -9,7 +9,7 @@
         <IconButton IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@Delete" Disabled="@(SelectedRow==null)" ToolTip="Delete"></IconButton>
         <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowUp())" OnClick="@Up" Disabled="@DisableUpButton" ToolTip="Up"></IconButton>
         <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowDown())" OnClick="@Down" Disabled="@DisableDownButton" ToolTip="Down"></IconButton>
-
+        <FluentLabel Typo="Typography.Subject"><strong>@($"Acquisitions for {ProjectName}")</strong></FluentLabel>
         <FluentSpacer />
         <FluentLabel Typo="Typography.Body">Selected: @CurrentRowName</FluentLabel>
         <FluentSearch type="search"  Autofocus=true @bind-Value=@nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Name..." />

@@ -36,15 +36,15 @@ namespace Shared.Models.KnownRisks.Mappers
                 ProjectId = response.ProjectId,
             };
         }
-        public static CreateKnownRiskRequest ToCreate(this KnownRiskResponse response, Guid? startid, Guid? planid)
+        public static CreateKnownRiskRequest ToCreate(this KnownRiskResponse response)
         {
             return new()
             {
 
                 Name = response.Name,
                 ProjectId = response.ProjectId,
-                StartId = startid,
-                PlanningId = planid
+                
+                
             };
         }
     }

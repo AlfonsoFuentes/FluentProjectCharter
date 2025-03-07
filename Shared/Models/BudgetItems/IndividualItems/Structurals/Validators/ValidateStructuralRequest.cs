@@ -1,6 +1,6 @@
 ﻿using Shared.Models.FileResults.Generics.Request;
 
-namespace Shared.Models.BudgetItems.Structurals.Validators
+namespace Shared.Models.BudgetItems.IndividualItems.Structurals.Validators
 {
     public class ValidateStructuralRequest : ValidateMessageResponse, IRequest
     {

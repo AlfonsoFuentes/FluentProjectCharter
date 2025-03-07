@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Models.BudgetItems.Testings.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Testings.Requests;
 using static Shared.StaticClasses.StaticClass;
 #nullable disable
 namespace FluentWeb.Pages.BudgetManagements.BudgetItems.Testings;
@@ -12,11 +12,11 @@ public partial class CreateTesting
     [Parameter]
     public Guid ProjectId { get; set; }
     [Parameter]
-    public Guid? DeliverableId { get; set; }
+    public Guid? GanttTaskId { get; set; }
     protected override void OnInitialized()
     {
         Model.ProjectId = ProjectId;
-        Model.DeliverableId = DeliverableId;
+        Model.GanttTaskId = GanttTaskId;
 
     }
 

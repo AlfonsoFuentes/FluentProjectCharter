@@ -23,7 +23,8 @@ namespace Server.EndPoint.Qualitys.Queries
 
                     var response = new QualityResponseList
                     {
-                        Items = maps
+                        Items = maps,
+                        ProjectName = rows.Name 
                     };
 
                     return Result<QualityResponseList>.Success(response);

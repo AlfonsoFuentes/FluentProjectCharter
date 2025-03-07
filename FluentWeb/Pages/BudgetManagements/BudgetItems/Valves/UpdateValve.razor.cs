@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Components;
 using Shared.Models.Brands.Records;
 using Shared.Models.Brands.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
-using Shared.Models.BudgetItems.Valves.Records;
-using Shared.Models.BudgetItems.Valves.Requests;
-using Shared.Models.BudgetItems.Valves.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Valves.Records;
+using Shared.Models.BudgetItems.IndividualItems.Valves.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Valves.Responses;
 using Shared.Models.Templates.Valves.Records;
 using Shared.Models.Templates.Valves.Responses;
 using Shared.StaticClasses;
@@ -46,7 +46,7 @@ public partial class UpdateValve
                 Model = result.Data.Model,
                 ActuatorType = result.Data.ActuatorType,
                 BrandResponse = result.Data.BrandResponse,
-                DeliverableId = result.Data.DeliverableId,
+                GanttTaskId = result.Data.DeliverableId,
                 Nozzles = result.Data.Nozzles,
 
                 ShowDetails = result.Data.ShowDetails,

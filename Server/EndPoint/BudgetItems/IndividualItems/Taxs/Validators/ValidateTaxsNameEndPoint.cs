@@ -1,5 +1,5 @@
 ﻿using Server.Database.Entities.BudgetItems.Commons;
-using Shared.Models.BudgetItems.Taxs.Validators;
+using Shared.Models.BudgetItems.IndividualItems.Taxs.Validators;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Validators
 {
