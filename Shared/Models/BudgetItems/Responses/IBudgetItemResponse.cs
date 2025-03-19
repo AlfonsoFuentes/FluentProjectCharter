@@ -7,9 +7,24 @@ namespace Shared.Models.BudgetItems.Responses
     {
         bool Selected { get; set; }
         string Nomenclatore { get; set; }
-        double Budget { get; }
-        string sBudget { get; }
+        double BudgetUSD { get; }
+        string sBudgetUSD { get; }
         string UpadtePageName { get; set; }
         string Tag { get; }
+        bool IsAlteration { get; set; }
+        bool IsTaxes { get; set; }
+    }
+    public interface IBudgetItemWithPurchaseOrderResponse : IBudgetItemResponse
+    {
+        double ActualUSD { get; set; }
+        double CommitmentUSD { get; set; }
+        double PotentialUSD { get; set; }
+        double AssignedUSD { get; }
+        double ToCommitUSD { get; }
+        string sActualUSD { get; }
+        string sCommitmentUSD { get; }
+        string sPotentialUSD { get; }
+        string sAssignedUSD { get; }
+        string sToCommitUSD { get; }
     }
 }

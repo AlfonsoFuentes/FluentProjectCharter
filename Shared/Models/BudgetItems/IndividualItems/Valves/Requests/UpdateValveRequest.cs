@@ -20,9 +20,9 @@ namespace Shared.Models.BudgetItems.IndividualItems.Valves.Requests
 
         public override string ClassName => StaticClass.Valves.ClassName;
         
-        public double Budget { get; set; }
+        public double BudgetUSD { get; set; }
 
-         public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
+         public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", BudgetUSD);
         public string Model { get; set; } = string.Empty;
         public MaterialEnum Material { get; set; } = MaterialEnum.None;
         public ActuatorTypeEnum ActuatorType { get; set; } = ActuatorTypeEnum.None;

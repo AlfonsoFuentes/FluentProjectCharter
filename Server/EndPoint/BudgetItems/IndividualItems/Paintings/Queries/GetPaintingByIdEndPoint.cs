@@ -42,6 +42,9 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Paintings.Queries
                 Nomenclatore = row.Nomenclatore,
                 UnitaryCost = row.UnitaryCost,
                 Quantity = row.Quantity,
+                ActualUSD = row.ActualUSD,
+                CommitmentUSD = row.CommitmentUSD,
+                PotentialUSD = row.PotentialUSD,
             };
         }
 

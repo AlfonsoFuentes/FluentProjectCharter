@@ -50,7 +50,7 @@ namespace Server.EndPoint.BackGrounds.Commands
                 List<string> cacheKeys = [
                   
                
-                    .. StaticClass.BackGrounds.Cache.Key(row.Id)
+                    .. StaticClass.BackGrounds.Cache.Key(row.Id, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

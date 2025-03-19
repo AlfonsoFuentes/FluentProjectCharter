@@ -18,7 +18,7 @@ namespace Web.Infrastructure.Validators.Valves
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
+            RuleFor(x => x.BudgetUSD).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
 
 
             RuleFor(x => x.ProvisionalTag).NotEmpty().When(x => x.ShowProvisionalTag && !x.ShowDetails)
@@ -161,7 +161,7 @@ namespace Web.Infrastructure.Validators.Valves
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
+            RuleFor(x => x.BudgetUSD).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
             RuleFor(x => x.Model).NotEmpty().When(x => x.ShowDetails)
           .WithMessage("Model must be defined!");
 

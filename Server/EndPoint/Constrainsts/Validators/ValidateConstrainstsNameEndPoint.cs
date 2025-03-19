@@ -15,7 +15,7 @@ namespace Server.EndPoint.Constrainsts.Validators
                     Expression<Func<Constrainst, bool>> CriteriaId = x => x.ProjectId == Data.ProjectId;
                     Func<Constrainst, bool> CriteriaExist = x => Data.Id == null ?
                     x.Name.Equals(Data.Name) : x.Id != Data.Id.Value && x.Name.Equals(Data.Name);
-                    string CacheKey = StaticClass.Constrainsts.Cache.GetAll;
+                    string CacheKey = StaticClass.Constrainsts.Cache.GetAll(Data.ProjectId);
 
                     return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId);
                 });

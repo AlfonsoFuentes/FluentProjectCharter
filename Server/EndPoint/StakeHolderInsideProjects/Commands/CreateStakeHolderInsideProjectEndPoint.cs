@@ -34,6 +34,14 @@ namespace Server.EndPoint.StakeHolderInsideProjects.Commands
 
                         await Repository.UpdateAsync(project);
                     }
+                    else
+                    {
+                        return Result.Fail($"Stake Holder {Data.StakeHolder.Name} is exist in project {project.Name}");
+                    }
+                    if (Data.Role.Id == StakeHolderRoleEnum.None.Id)
+                    {
+                        return Result.Fail($"Stake Holder Role must be defined!!");
+                    }
 
                     if (stakeholder.RoleInsideProject == null)
                     {
@@ -43,7 +51,7 @@ namespace Server.EndPoint.StakeHolderInsideProjects.Commands
                         await Repository.UpdateAsync(stakeholder);
                     }
 
-                    List<string> cache = [.. StaticClass.StakeHolderInsideProjects.Cache.Key(stakeholder.Id)];
+                    List<string> cache = [.. StaticClass.StakeHolderInsideProjects.Cache.Key(stakeholder.Id, project.Id)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

@@ -15,7 +15,7 @@ namespace Server.EndPoint.LearnedLessons.Validators
                     Expression<Func<LearnedLesson, bool>> CriteriaId = x => x.ProjectId == Data.ProjectId;
                     Func<LearnedLesson, bool> CriteriaExist = x => Data.Id == null ?
                     x.Name.Equals(Data.Name) : x.Id != Data.Id.Value && x.Name.Equals(Data.Name);
-                    string CacheKey = StaticClass.LearnedLessons.Cache.GetAll;
+                    string CacheKey = StaticClass.LearnedLessons.Cache.GetAll(Data.ProjectId);
 
                     return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId);
                 });

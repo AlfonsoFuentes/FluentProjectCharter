@@ -71,7 +71,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Command
         {
             row.Name = request.Name;
 
-            row.Budget = request.Budget;
+            row.BudgetUSD = request.BudgetUSD;
             return row;
         }
 

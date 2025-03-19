@@ -10,14 +10,14 @@ namespace Server.EndPoint.Projects.Queries
             {
                 app.MapPost(StaticClass.Projects.EndPoint.GetById, async (GetProjectByIdRequest request, IQueryRepository Repository) =>
                 {
-                    Func<IQueryable<Project>, IIncludableQueryable<Project, object>> Includes = x => x
-                      .Include(x => x.Manager!)
-                     .Include(x => x.Sponsor!);
+                    //Func<IQueryable<Project>, IIncludableQueryable<Project, object>> Includes = x => x
+                    //  .Include(x => x.Manager!)
+                    // .Include(x => x.Sponsor!);
 
                     Expression<Func<Project, bool>> Criteria = x => x.Id == request.Id;
 
                     string CacheKey = StaticClass.Projects.Cache.GetById(request.Id);
-                    var row = await Repository.GetAsync(Cache: CacheKey, Criteria: Criteria, Includes: Includes);
+                    var row = await Repository.GetAsync(Cache: CacheKey, Criteria: Criteria);
 
                     if (row == null)
                     {

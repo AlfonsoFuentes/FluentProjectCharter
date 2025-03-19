@@ -12,7 +12,7 @@ namespace Web.Infrastructure.Validators.EngineeringDesigns
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).WithMessage("Budget must be defined!");
+            RuleFor(x => x.BudgetUSD).GreaterThan(0).WithMessage("Budget must be defined!");
 
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
@@ -44,7 +44,7 @@ namespace Web.Infrastructure.Validators.EngineeringDesigns
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).WithMessage("Budget must be defined!");
+            RuleFor(x => x.BudgetUSD).GreaterThan(0).WithMessage("Budget must be defined!");
             
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)

@@ -7,10 +7,7 @@ namespace Server.Database.Entities.ProjectManagements
     public class StakeHolder : AuditableEntity<Guid>, ITenantCommon
     {
         public List<Project> Projects { get; } = [];
-        [ForeignKey("ManagerId")]
-        public List<Project> Managers { get; } = [];
-        [ForeignKey("SponsorId")]
-        public List<Project> Sponsors { get; } = [];
+    
 
         [ForeignKey("StakeHolderId")]
         public List<MeetingAttendant> MeetingAttendants { get; } = [];

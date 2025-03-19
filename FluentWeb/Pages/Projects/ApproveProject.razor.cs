@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Shared.Models.Projects.Mappers;
 using Shared.Models.Projects.Records;
 using Shared.Models.Projects.Reponses;
 using Shared.Models.Projects.Request;
@@ -20,24 +21,8 @@ public partial class ApproveProject
 
         if (result.Succeeded)
         {
-            Model = new()
-            {
-                Id = result.Data.Id,
-                Name = result.Data.Name,
-                ProjectNeedType = result.Data.ProjectNeedType,
-
-                Manager = result.Data.Manager,
-                Sponsor = result.Data.Sponsor,
-                InitialProjectDate = result.Data.InitialProjectDate,
-              
-                PercentageContingency = result.Data.PercentageContingency,
-                PercentageEngineering = result.Data.PercentageEngineering,
-                PercentageTaxProductive = result.Data.PercentageTaxes,
-                IsProductiveAsset = result.Data.IsProductive
-
-            };
-            manager = Model.Manager == null ? string.Empty : Model.Manager.Name;
-            sponsor = Model.Sponsor == null ? string.Empty : Model.Sponsor.Name;
+            Model = result.Data.ToApprove();
+   
         }
     }
     [Inject]

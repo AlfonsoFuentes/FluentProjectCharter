@@ -47,7 +47,7 @@ namespace Server.Database.Entities
         #endregion
         #region Timeline
         public List<Deliverable> Deliverables { get; set; } = new();
-  
+
 
         #endregion
         #region Budget
@@ -69,16 +69,10 @@ namespace Server.Database.Entities
         public List<PurchaseOrder> PurchaseOrders { get; set; } = new();
         public List<Acquisition> Acquisitions { get; set; } = new();
         public List<StakeHolder> StakeHolders { get; } = [];
-        public StakeHolder? Manager { get; set; } = null!;
-        public Guid? ManagerId { get; set; }
-        public StakeHolder? Sponsor { get; set; } = null!;
-        public Guid? SponsorId { get; set; }
+       
 
-        public Guid StartId { get; set; }
-        public Guid PlanningId { get; set; }
-        public Guid ExecutingId { get; set; }
-        public Guid MonitoringId { get; set; }
-        public Guid ClosingId { get; set; }
+        public string CostCenter { get; set; } = string.Empty;
+        public string Focus { get; set; } = string.Empty;
 
 
     }

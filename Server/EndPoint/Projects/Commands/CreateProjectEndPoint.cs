@@ -17,11 +17,7 @@
 
                     var row = Project.Create(lastorder);
                     row.Name = Data.Name;
-                    row.StartId = Guid.NewGuid();
-                    row.PlanningId = Guid.NewGuid();
-                    row.ExecutingId = Guid.NewGuid();
-                    row.MonitoringId = Guid.NewGuid();
-                    row.ClosingId = Guid.NewGuid();
+                   
                     await Repository.AddAsync(row);
 
 
@@ -45,15 +41,14 @@
             row.Name = request.Name;
             row.ProjectNeedType = request.ProjectNeedType.Name;
 
-            row.ManagerId = request.Manager == null ? null : request.Manager.Id;
-            row.SponsorId = request.Sponsor == null ? null : request.Sponsor.Id;
             row.StartDate = request.InitialProjectDate;
             row.Status = request.Status.Name;
             row.PercentageEngineering = request.PercentageEngineering;
             row.PercentageContingency = request.PercentageContingency;
             row.PercentageTaxProductive = request.PercentageTaxProductive;
             row.IsProductiveAsset = request.IsProductiveAsset;
-
+            row.CostCenter = request.CostCenter.Name;
+            row.Focus = request.Focus.Name;
             return row;
         }
 

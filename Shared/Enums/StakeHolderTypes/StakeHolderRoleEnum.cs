@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shared.Enums.StakeHolderTypes
+﻿namespace Shared.Enums.StakeHolderTypes
 {
     public class StakeHolderRoleEnum : ValueObject
     {
@@ -24,11 +18,11 @@ namespace Shared.Enums.StakeHolderTypes
         public static StakeHolderRoleEnum Other = Create(8, "Other");
         public static StakeHolderRoleEnum Manager = Create(9, "Manager");
         public static StakeHolderRoleEnum Sponsor = Create(10, "Sponsor");
-
+        public static StakeHolderRoleEnum ProjectLeader = Create(11, "Project Leader");
 
         public static List<StakeHolderRoleEnum> List = new List<StakeHolderRoleEnum>()
             {
-            None,FunctionalDirector, TeamMember, Client, FinalUser, Supplier, Partner, OrganizationalGroup,Expert, Other
+            None,FunctionalDirector, TeamMember, Client, FinalUser, Supplier, Partner, OrganizationalGroup,Expert,Manager,Sponsor,ProjectLeader, Other
             };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;
         public static StakeHolderRoleEnum GetType(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)! : None;

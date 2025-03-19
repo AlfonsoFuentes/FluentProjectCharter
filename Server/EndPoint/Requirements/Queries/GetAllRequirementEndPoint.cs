@@ -37,7 +37,7 @@ namespace Server.EndPoint.Requirements.Queries
             {
                 Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x.Include(p => p.Requirements);
                 Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
-                string cacheKey = StaticClass.Requirements.Cache.GetAll;
+                string cacheKey = StaticClass.Requirements.Cache.GetAll(request.ProjectId);
 
                 return await repository.GetAsync(Cache: cacheKey, Includes: includes, Criteria: criteria);
             }

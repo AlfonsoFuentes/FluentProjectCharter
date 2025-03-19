@@ -15,7 +15,7 @@ namespace Server.EndPoint.ExpertJudgements.Validators
                     Expression<Func<ExpertJudgement, bool>> CriteriaId = x => x.ProjectId == Data.ProjectId;
                     Func<ExpertJudgement, bool> CriteriaExist = x => Data.Id == null ?
                     x.Name.Equals(Data.Name) : x.Id != Data.Id.Value && x.Name.Equals(Data.Name);
-                    string CacheKey = StaticClass.ExpertJudgements.Cache.GetAll;
+                    string CacheKey = StaticClass.ExpertJudgements.Cache.GetAll(Data.ProjectId);
 
                     return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId);
                 });

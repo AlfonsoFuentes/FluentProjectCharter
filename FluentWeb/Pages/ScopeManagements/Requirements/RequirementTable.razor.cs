@@ -1,6 +1,7 @@
 using FluentWeb.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Shared.Models.Objectives.Responses;
 using Shared.Models.Projects.Mappers;
 using Shared.Models.Requirements.Mappers;
 using Shared.Models.Requirements.Records;
@@ -14,10 +15,10 @@ public partial class RequirementTable
 {
     [Parameter]
     public Guid ProjectId { get; set; }
-   
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnParametersSetAsync()
     {
-      
+        if (ProjectId == Guid.Empty) return;
         await GetAll();
     }
     public List<RequirementResponse> Items { get; set; } = new();
@@ -121,10 +122,16 @@ public partial class RequirementTable
     {
         SelectedRow = SelectedRow == null ? null : Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
     }
-    public async Task Delete()
+    void Edit(RequirementResponse model)
     {
-        if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+        EditRow = model;
+        SelectedRow = null;
+        CreateRow = null;
+    }
+    public async Task Delete(RequirementResponse response)
+    {
+       
+        var dialog = await DialogService.ShowWarningAsync($"Delete {response.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -134,8 +141,9 @@ public partial class RequirementTable
         {
             DeleteRequirementRequest request = new()
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = response.Id,
+                Name = response.Name,
+               
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

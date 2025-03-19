@@ -31,7 +31,7 @@ namespace Server.EndPoint.Assumptions.Commands
             private string[] GetCacheKeys(Assumption row)
             {
                 List<string> cacheKeys = [            
-                    .. StaticClass.Assumptions.Cache.Key(row.Id)
+                    .. StaticClass.Assumptions.Cache.Key(row.Id, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

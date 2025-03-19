@@ -46,8 +46,7 @@ namespace Server.EndPoint.Apps.Commands
             row.Name = request.Name;
             row.ProjectNeedType = request.ProjectNeedType.Name;
 
-            row.ManagerId = request.Manager == null ? null : request.Manager.Id;
-            row.SponsorId = request.Sponsor == null ? null : request.Sponsor.Id;
+          
             row.StartDate = request.InitialProjectDate;
             row.Status = request.Status.Name;
             row.PercentageEngineering = request.PercentageEngineering;

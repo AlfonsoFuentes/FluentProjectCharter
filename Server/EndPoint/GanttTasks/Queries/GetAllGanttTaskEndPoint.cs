@@ -1,4 +1,6 @@
 ﻿
+using Server.EndPoint.BudgetItems.IndividualItems.Contingencys.Queries;
+
 namespace Server.EndPoint.GanttTasks.Queries
 {
 

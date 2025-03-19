@@ -1,6 +1,7 @@
 using FluentWeb.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Shared.Models.Acquisitions.Responses;
 using Shared.Models.Communications.Mappers;
 using Shared.Models.Communications.Records;
 using Shared.Models.Communications.Requests;
@@ -13,11 +14,11 @@ public partial class CommunicationTable
 {
     [Parameter]
     public Guid ProjectId { get; set; }
-  
-  
-    protected override async Task OnInitializedAsync()
+
+
+    protected override async Task OnParametersSetAsync()
     {
-  
+        if (ProjectId == Guid.Empty) return;
         await GetAll();
     }
 
@@ -122,10 +123,16 @@ public partial class CommunicationTable
     {
         SelectedRow = SelectedRow == null ? null : Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
     }
-    public async Task Delete()
+    void Edit(CommunicationResponse model)
+    {
+        EditRow = model;
+        SelectedRow = null;
+        CreateRow = null;
+    }
+    public async Task Delete(CommunicationResponse model)
     {
         if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+        var dialog = await DialogService.ShowWarningAsync($"Delete {model.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -135,8 +142,9 @@ public partial class CommunicationTable
         {
             DeleteCommunicationRequest request = new()
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = model.Id,
+                Name = model.Name,
+                 
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

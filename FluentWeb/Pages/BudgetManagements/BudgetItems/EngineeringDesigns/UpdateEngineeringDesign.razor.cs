@@ -22,7 +22,7 @@ public partial class UpdateEngineeringDesign
                 Id = result.Data.Id,
                 Name = result.Data.Name,
                 ProjectId = result.Data.ProjectId,
-                Budget = result.Data.Budget,
+                BudgetUSD = result.Data.BudgetUSD,
 
             };
         }

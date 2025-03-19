@@ -42,7 +42,10 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Queries
 
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
-                Budget = row.Budget
+                BudgetUSD = row.BudgetUSD,
+                ActualUSD = row.ActualUSD,
+                CommitmentUSD = row.CommitmentUSD,
+                PotentialUSD = row.PotentialUSD,
             };
         }
 

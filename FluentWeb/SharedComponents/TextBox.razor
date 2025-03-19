@@ -1,14 +1,16 @@
-﻿
+﻿<FluentStack Orientation="Orientation.Vertical" Width="100%" >
+    <FluentLabel Typo="Typography.Body"><strong>@Label</strong></FluentLabel>
+    <FluentTextField @bind-Value="@Value"
+                     Style="width: 100%;"
+                     Placeholder="@PlaceHolder"
+                     TextFieldType="@TextFieldType"
+                     InputMode="@InputMode"
+                     @oninput=@((args) => OnValueChange(args.Value!.ToString()!))
+                     Disabled="@Disable" />
 
-<FluentTextField @bind-Value="@Value"
-          
-                 Label="@Label"
-                 Style="width: 100%;"
-                 Placeholder="@PlaceHolder"
-                 TextFieldType="@TextFieldType"
-                 InputMode="@InputMode"
-                 @oninput=@((args) => OnValueChange(args.Value!.ToString()!))
-                 Disabled="@Disable" />
+</FluentStack>
+
+
 
 
 

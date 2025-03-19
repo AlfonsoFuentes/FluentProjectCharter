@@ -16,9 +16,9 @@ namespace Shared.Models.BudgetItems.IndividualItems.Taxs.Requests
 
         public override string ClassName => StaticClass.Taxs.ClassName;
 
-        public double Budget => BudgetCalculated;
+        public double BudgetUSD => BudgetCalculated;
         public double Percentage { get; set; }
-        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
+        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", BudgetUSD);
         public List<TaxItemResponse> TaxItems { get; set; } = new List<TaxItemResponse>();
         public double BudgetTaxItem => TaxItems.Count == 0 ? 0 : TaxItems.Sum(x => x.Budget);
 

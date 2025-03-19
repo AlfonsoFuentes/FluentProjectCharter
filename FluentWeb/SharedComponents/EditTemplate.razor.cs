@@ -19,8 +19,7 @@ public partial class EditTemplate<TItem> where TItem : class, IRequest
     [Parameter]
     public EventCallback<TItem> ModelChanged { get; set; }
     [Parameter]
-    [EditorRequired]
-    public string Title { get; set; }
+    public string Title { get; set; }=string.Empty;
 
     [Parameter]
     [EditorRequired]
@@ -31,7 +30,8 @@ public partial class EditTemplate<TItem> where TItem : class, IRequest
         if (result.Succeeded)
         {
             _snackBar.ShowSuccess(result.Messages);
-            Cancel();
+            if (GoBack)
+                Cancel();
 
         }
         else
@@ -54,5 +54,6 @@ public partial class EditTemplate<TItem> where TItem : class, IRequest
     {
         Validated = _fluentValidationValidator == null ? false : await _fluentValidationValidator.ValidateAsync(options => { options.IncludeAllRuleSets(); });
     }
-
+    [Parameter]
+    public bool GoBack { get; set; } = true;
 }

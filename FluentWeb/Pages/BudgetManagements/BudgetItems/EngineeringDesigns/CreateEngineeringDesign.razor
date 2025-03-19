@@ -11,10 +11,10 @@
         <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
 
            
-        <NumberField @bind-Value="@Model.Budget" Label="Unitary Cost, USD" Validate="CreateForm.ValidateAsync">
+        <NumberField @bind-Value="@Model.BudgetUSD" Label="Unitary Cost, USD" Validate="CreateForm.ValidateAsync">
            
         </NumberField>
-        <ValidationMessage For="() => Model.Budget" style="color:red; font-size:x-small;" />
+        <ValidationMessage For="() => Model.BudgetUSD" style="color:red; font-size:x-small;" />
 
        
     </Content>

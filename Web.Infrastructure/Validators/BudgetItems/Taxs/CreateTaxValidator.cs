@@ -13,7 +13,7 @@ namespace Web.Infrastructure.Validators.Taxs
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
 
-            RuleFor(x => x.Budget).NotEqual(0).WithMessage("Budget must be defined!");
+            RuleFor(x => x.BudgetUSD).NotEqual(0).WithMessage("Budget must be defined!");
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
                 .When(x => !string.IsNullOrEmpty(x.Name))

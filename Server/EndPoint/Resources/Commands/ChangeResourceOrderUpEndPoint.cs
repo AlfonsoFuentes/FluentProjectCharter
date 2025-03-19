@@ -44,7 +44,7 @@ namespace Server.EndPoint.Resources.Commands
                 List<string> cacheKeys = [
                     
            
-                    .. StaticClass.Resources.Cache.Key(row.Id)
+                    .. StaticClass.Resources.Cache.Key(row.Id, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

@@ -16,7 +16,7 @@ namespace Server.EndPoint.Acquisitions.Commands
 
                     if (lastorder == Data.Order) return Result.Success(Data.Succesfully);
 
-                   
+
                     Expression<Func<Acquisition, bool>> Criteria = x => x.Id == Data.Id;
 
                     var row = await Repository.GetAsync(Criteria: Criteria);
@@ -48,9 +48,9 @@ namespace Server.EndPoint.Acquisitions.Commands
             private string[] GetCacheKeys(Acquisition row, Guid ProjectId)
             {
                 List<string> cacheKeys = [
-                    
-               
-                    .. StaticClass.Acquisitions.Cache.Key(row.Id)
+
+
+                    .. StaticClass.Acquisitions.Cache.Key(row.Id,ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

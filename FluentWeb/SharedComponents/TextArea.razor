@@ -1,14 +1,18 @@
-﻿
+﻿<FluentStack Orientation="Orientation.Vertical" Width="100%">
+    <FluentLabel Typo="Typography.Body"><strong>@Label</strong></FluentLabel>
+    <FluentTextArea 
+                    @bind-Value="@Value"
+                    Style="width: 100%;"
+                    Placeholder="@PlaceHolder"
+                    Rows="@Rows"
+                    Resize="TextAreaResize.Vertical"
+                    @oninput=@((args) => OnValueChange(args.Value!.ToString()!))
+                    Disabled="@Disable" />
+
+</FluentStack>
 
 
-<FluentTextArea Label="@Label"
-                @bind-Value="@Value"
-                Style="width: 100%;"
-                Placeholder="@PlaceHolder"
-                Rows="@Rows"
-                Resize="TextAreaResize.Vertical"
-                @oninput=@((args) => OnValueChange(args.Value!.ToString()!))
-                Disabled="@Disable" />
+
 
 
 @code {

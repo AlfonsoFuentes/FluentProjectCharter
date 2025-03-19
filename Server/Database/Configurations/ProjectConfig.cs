@@ -138,15 +138,7 @@ namespace Server.Database.Configurations
             builder.HasMany(e => e.StakeHolders)
                   .WithMany(e => e.Projects);
 
-            builder.HasOne(c => c.Sponsor)
-          .WithMany(t => t.Sponsors)
-          .HasForeignKey(x => x.SponsorId)
-          .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(c => c.Manager)
-         .WithMany(t => t.Managers)
-         .HasForeignKey(x => x.ManagerId)
-         .OnDelete(DeleteBehavior.NoAction);
+          
 
             builder.HasMany(x => x.PurchaseOrders)
           .WithOne(t => t.Project)

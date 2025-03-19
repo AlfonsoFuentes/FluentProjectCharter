@@ -133,7 +133,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Pipes.Commands
         static Pipe Map(this UpdatePipeRequest request, Pipe row)
         {
             row.Name = request.Name;
-            row.Budget = request.Budget;
+            row.BudgetUSD = request.BudgetUSD;
             row.FluidCodeId = request.FluidCode == null ? null : request.FluidCode.Id;
             row.LaborQuantity = request.LaborQuantity;
             row.MaterialQuantity = request.MaterialQuantity;

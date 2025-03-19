@@ -31,7 +31,7 @@ public partial class UpdateValve
                 Id = result.Data.Id,
                 Name = result.Data.Name,
                 ProjectId = result.Data.ProjectId,
-                Budget = result.Data.Budget,
+                BudgetUSD = result.Data.BudgetUSD,
 
                 TagNumber = result.Data.TagNumber,
 
@@ -98,7 +98,7 @@ public partial class UpdateValve
             NominalDiameter = row.NominalDiameter,
             NozzleType = row.NozzleType
         }).ToList();
-        Model.Budget = response.Value;
+        Model.BudgetUSD = response.Value;
         SelectedBrand = Model.Brand;
         StateHasChanged();
     }

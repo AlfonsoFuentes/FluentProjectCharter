@@ -1,184 +1,171 @@
 ﻿@page "/StakeHolderInsideProjects/{ProjectId:guid}"
 
-@using Shared.Enums.StakeHolderTypes
-@using Shared.Models.StakeHolderInsideProjects.Responses
-<FluentStack Orientation="Orientation.Vertical" Width="100%" HorizontalAlignment="HorizontalAlignment.Start" VerticalAlignment="VerticalAlignment.Top">
-    <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center">
-        <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowStepBack())" OnClick="@Navigation.NavigateBack" ToolTip="Go Back"></IconButton>
-        <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@AddNew" ToolTip="Add New" Disabled="@(CreateRow!=null)"></IconButton>
-        <IconButton IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@Delete" Disabled="@(SelectedRow==null)" ToolTip="Delete"></IconButton>
+
+<FluentCard Width="100%">
+    <FluentStack Orientation="Orientation.Vertical" Width="100%" HorizontalAlignment="HorizontalAlignment.Start" VerticalAlignment="VerticalAlignment.Top">
+        <FluentLabel Typo="Typography.Header"><strong>Stake Holders</strong></FluentLabel>
+        <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center">
+
+            <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@AddNew" ToolTip="Add New" Disabled="@(CreateRow!=null)"></IconButton>
 
 
-        <FluentSpacer />
-        <FluentLabel Typo="Typography.Body">Selected: @CurrentRowName</FluentLabel>
 
-    </FluentStack>
-    @if (Items.Count == 0)
-    {
-        <FluentLabel Typo="Typography.Body"><strong> No data to show!</strong></FluentLabel>
+            <FluentSpacer />
+            <FluentLabel Typo="Typography.Body">Selected: @CurrentRowName</FluentLabel>
+            <FluentSearch type="search" Autofocus=true @bind-Value=@nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Name..." />
 
-    }
-    else
-    {
+        </FluentStack>
+        <FluentDataGrid id="defaultGrid"
+                        Items=FilteredItems.AsQueryable()
+                        TGridItem=StakeHolderInsideProjectResponse
+                        OnRowClick="HandleRowClick"
+                        AutoFit="true"
+                        Pagination="@pagination"
+                        DisplayMode="DataGridDisplayMode.Table"
+                        MultiLine="true"
+                        RowSize="@DataGridRowSize.Medium" Style="width:100%">
 
-        <table class="data-grid">
-            <thead>
-                <tr>
-                    <th class="name">Name</th>
-       
-                    <th class="role">Role</th>
-                    <th class="actions">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Items)
+
+            <TemplateColumn Title="Name">
+                @if (context == CreateRow || context == EditRow)
                 {
-                    <tr @onclick="() => HandleRowClick(item)"
-                        @ondblclick="() => HandleRowDoubleClick(item)">
-
-                        <!-- Columna Name -->
-                        <td class="name">
-                            @if (CreateRow != null && CreateRow == item)
+                    <FluentStack Orientation="Orientation.Horizontal" Width="100%" VerticalAlignment="VerticalAlignment.Bottom">
+                        <select value="@context.StakeHolder.Id" @onchange="@((arg)=>OnChangeStakeHolderInsideProject(arg,context))"
+                                class="select-field">
+                            @foreach (var row in StakeHolderResponseList.Items)
                             {
-                                @RenderFluentSelectStakeHolder(item)
+                                <option value="@row.Id">@row.Name</option>
                             }
-                            else
-                            {
-                                @item.StakeHolder.Name
-                            }
+                        </select>
+                    
+                        <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@(()=>AddStakeHolder())" ToolTip="Add Sponsor"></IconButton>
+                    </FluentStack>
 
-                        </td>
-                        <!-- Columna Role -->
-                        <td class="role">
-                            @if (CreateRow != null && CreateRow == item)
-                            {
-                                @RenderFluentSelectRole(item)
-                            }
-                            else if (EditRow != null && EditRow == item)
-                            {
-                                @RenderFluentSelectRole(item)
-                            }
-                            else
-                            {
-                                @item.Role.Name
-                            }
-
-
-                        </td>
-                     
-
-                       
-
-                        <!-- Columna Actions -->
-                        <td class="actions">
-                            @if (CreateRow != null && CreateRow == item)
-                            {
-                                <FluentStack Orientation="Orientation.Horizontal">
-                                    <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@AddStakeHolder" ToolTip="Add New StakeHolder"></IconButton>
-                                    <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@Create" ToolTip="Save" Disabled="@DisableSaveButton(item)"></IconButton>
-                                    <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelCreate" ToolTip="Cancel"></IconButton>
-                                </FluentStack>
-
-                            }
-                            else if (EditRow != null && EditRow == item)
-                            {
-                                <FluentStack Orientation="Orientation.Horizontal">
-                                  
-                                    <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@(()=>Update(item))" ToolTip="Save" Disabled="@DisableSaveButton(item)"></IconButton>
-                                    <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelEdit" ToolTip="Cancel"></IconButton>
-                                </FluentStack>
-                            }
-                        </td>
-                    </tr>
                 }
-            </tbody>
-        </table>
-
-    }
-
-
-
-</FluentStack>
+                else
+                {
+                    @if (context.StakeHolder != null)
+                        @context.StakeHolder.Name
 
 
-<style>
-    /* Estilos para la tabla */
-    .data-grid {
-        width: 100%;
-        border-collapse: collapse;
-    }
+                }
 
-        .data-grid th, .data-grid td {
-            border-top: 1px solid #ccc; /* Borde superior */
-            border-bottom: 1px solid #ccc; /* Borde inferior */
-            padding: 2px;
-            text-align: left;
-            width: 33%; /* Ancho fijo para cada columna */
+            </TemplateColumn>
+            <TemplateColumn Title="Role">
+                @if (context == CreateRow || context == EditRow)
+                {
+                    <select value="@context.Role.Id" @onchange="@((arg)=>OnChangeRole(arg,context))"
+                            class="select-field">
+                        @foreach (var row in StakeHolderRoleEnum.List)
+                        {
+                            <option value="@row.Id">@row.Name</option>
+                        }
+                    </select>
+
+                   
+                }
+                else
+                {
+                    @context.Role.Name
+                }
+
+            </TemplateColumn>
+            <TemplateColumn Width="20%">
+                @if (CreateRow == context)
+                {
+                    <FluentStack Orientation="Orientation.Horizontal">
+                        <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@Create" ToolTip="Save" Disabled="@DisableSaveButton(context)"></IconButton>
+                        <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelCreate" ToolTip="Cancel"></IconButton>
+                    </FluentStack>
+
+                }
+                else if (EditRow == context)
+                {
+                    <FluentStack Orientation="Orientation.Horizontal">
+                        <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@(()=>Update(context))" ToolTip="Save" Disabled="@DisableSaveButton(context)"></IconButton>
+                        <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelEdit" ToolTip="Cancel"></IconButton>
+                    </FluentStack>
+                }
+                else
+                {
+                    <IconButton IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))" ToolTip="Delete"></IconButton>
+                    <IconButton IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))" ToolTip="Delete"></IconButton>
+                }
+
+
+            </TemplateColumn>
+
+        </FluentDataGrid>
+        @if (pages == MaxNumberOfPages)
+        {
+            <div class="page-buttons">
+                Page:
+                @if (pagination.TotalItemCount.HasValue)
+                {
+                    for (var pageIndex = 0; pageIndex <= pagination.LastPageIndex; pageIndex++)
+                    {
+                        var capturedIndex = pageIndex;
+                        <FluentButton @onclick="@(() => GoToPageAsync(capturedIndex))"
+                                      Appearance="@PageButtonAppearance(capturedIndex)"
+                                      aria-current="@AriaCurrentValue(capturedIndex)"
+                                      aria-label="@AriaLabel(capturedIndex + 1)">
+                            @(capturedIndex + 1)
+                        </FluentButton>
+                    }
+                }
+            </div>
+
         }
+    </FluentStack>
+</FluentCard>
+<style>
+    .select-field {
+        padding: 2px;
+        border-radius: 2px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s ease;
+        width: 100%;
+        height: 100%;
+    }
 
-            /* Ancho específico para cada columna */
-            .data-grid th.name, .data-grid td.name {
-                width: 35%;
-            }
-
-            .data-grid th.role, .data-grid td.role {
-                width: 35%;
-            }
-
-            .data-grid th.actions, .data-grid td.actions {
-                width: 30%;
-            }
+        .select-field:focus {
+            border-color: #007bff;
+            outline: none;
+        }
 </style>
 
 @code {
-    PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
-
-    string? stakeHolder;
-    void ChangeSelect(ChangeEventArgs args, StakeHolderInsideProjectResponse model)
+    int MaxNumberOfPages = 40;
+    int pages => Items.Count >= MaxNumberOfPages ? MaxNumberOfPages : Items.Count;
+    PaginationState pagination = new PaginationState { ItemsPerPage = 40 };
+    private async Task GoToPageAsync(int pageIndex)
     {
-        if (args == null || args.Value == null) return;
-        if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
+        await pagination.SetCurrentPageIndexAsync(pageIndex);
+    }
+
+    private Appearance PageButtonAppearance(int pageIndex)
+        => pagination.CurrentPageIndex == pageIndex ? Appearance.Accent : Appearance.Neutral;
+
+    private string? AriaCurrentValue(int pageIndex)
+        => pagination.CurrentPageIndex == pageIndex ? "page" : null;
+
+    private string AriaLabel(int pageIndex)
+        => $"Go to page {pageIndex}";
+    private void HandleNameFilter(ChangeEventArgs args)
+    {
+        if (args.Value is string value)
         {
-            model.StakeHolder = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
-            stakeHolder = args.Value.ToString();
-
+            nameFilter = value;
         }
-
     }
-    void ChangeRole(ChangeEventArgs args, StakeHolderInsideProjectResponse model)
+
+    private void HandleClear()
     {
-        if (args == null) return;
-        model.Role = StakeHolderRoleEnum.GetType(args!.Value!.ToString()!);
-
+        if (string.IsNullOrWhiteSpace(nameFilter))
+        {
+            nameFilter = string.Empty;
+        }
     }
 
-    private RenderFragment RenderFluentSelectStakeHolder(StakeHolderInsideProjectResponse model) => __builder =>
-       {
-           <FluentSelect TOption="StakeHolderResponse"
-                         Items="@StakeHolderResponseList.Items"
-                         Id="people-listbox"
-                         Width="100%"
-                         Immediate="true"
-                         @onchange="@((arg) => ChangeSelect(arg, model))"
-                         Placeholder="Make a selection..."
-                         OptionValue="@(p => p.Name)"
-                         OptionText="@(p => p.Name)"
-                         @bind-Value="@stakeHolder"
-                         @bind-SelectedOption="@model.StakeHolder" />
-
-
-       };
-    private RenderFragment RenderFluentSelectRole(StakeHolderInsideProjectResponse model) => __builder =>
-       {
-           <FluentSelect TOption="StakeHolderRoleEnum"
-                         Items="@StakeHolderRoleEnum.List"
-                         Id="people-listbox"
-                         @onchange=@((arg)=>ChangeRole(arg,model))
-                         Width="100%"
-                         Placeholder="Make a selection..."
-                         OptionValue="@(p => p.Name)"
-                         OptionText="@(p => p.Name)"
-                         @bind-Value="@model.Role.Name"
-                         @bind-SelectedOption="@model.Role" />
-       };
 }

@@ -22,7 +22,7 @@ namespace Server.EndPoint.Acquisitions.Commands
 
 
                     Data.Map(row);
-                    List<string> cache = [.. StaticClass.Acquisitions.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.Acquisitions.Cache.Key(row.Id, row.ProjectId)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

@@ -1,6 +1,5 @@
 ﻿using Server.EndPoint.Brands.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Nozzles.Queries;
-using Server.EndPoint.BudgetItems.IndividualItems.Valves.Queries;
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Enums.ValvesEnum;
@@ -48,7 +47,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Valves.Queries
 
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
-                Budget = row.Budget,
+                BudgetUSD = row.BudgetUSD,
 
                 TagNumber = row.TagNumber,
                 BrandResponse = row.ValveTemplate == null || row.ValveTemplate.BrandTemplate == null ? new() : row.ValveTemplate.BrandTemplate!.Map(),
@@ -66,7 +65,10 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Valves.Queries
                 Nozzles = row.Nozzles == null || row.Nozzles.Count == 0 ? new() : row.Nozzles.Select(x => x.Map()).ToList(),
                 IsExisting = row.IsExisting,
                 ProvisionalTag = row.ProvisionalTag,
-                ShowProvisionalTag = !string.IsNullOrWhiteSpace(row.ProvisionalTag)
+                ShowProvisionalTag = !string.IsNullOrWhiteSpace(row.ProvisionalTag),
+                ActualUSD = row.ActualUSD,
+                CommitmentUSD = row.CommitmentUSD,
+                PotentialUSD = row.PotentialUSD,
 
             };
 

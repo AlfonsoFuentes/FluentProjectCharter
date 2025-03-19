@@ -20,7 +20,10 @@ namespace Server.EndPoint.StakeHolderInsideProjects.Commands
 
                     var rolinsideproject = await Repository.GetByIdAsync<RoleInsideProject>(row.RoleInsideProjectId.Value);
                     if (rolinsideproject == null) return Result.Fail(Data.Fail);
-
+                    if (Data.Role.Id == StakeHolderRoleEnum.None.Id)
+                    {
+                        return Result.Fail($"Stake Holder Role must be defined!!");
+                    }
                     rolinsideproject.Name = Data.Role.Name;
 
                     await Repository.UpdateAsync(rolinsideproject);

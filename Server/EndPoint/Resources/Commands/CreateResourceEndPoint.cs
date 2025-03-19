@@ -20,7 +20,7 @@ namespace Server.EndPoint.Resources.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [.. StaticClass.Resources.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.Resources.Cache.Key(row.Id, row.ProjectId)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

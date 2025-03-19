@@ -1,11 +1,11 @@
 ﻿<FluentStack Orientation="Orientation.Horizontal">
-    <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowStepBack())" OnClick="@OnNavigateBack" ToolTip="Go Back"></IconButton>
+  
     <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@OnAddNew" ToolTip="Add New Deliverable" Disabled="@DisableAddButton"></IconButton>
     <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowUp())" OnClick="@OnMoveUp" ToolTip="Move Up" Disabled="@DisableUpButton"></IconButton>
     <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowDown())" OnClick="@OnMoveDown" ToolTip="Move Down" Disabled="@DisableDownButton"></IconButton>
     <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowRight())" OnClick="@OnMoveRight" ToolTip="Move Right" Disabled="@DisableRightButton"></IconButton>
     <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowLeft())" OnClick="@OnMoveLeft" ToolTip="Move Left" Disabled="@DisableLeftButton"></IconButton>
-    <FluentLabel Typo="Typography.Body"><strong>@($"Gantt  for {ProjectName}")</strong></FluentLabel>
+    
     <FluentSpacer />
     <FluentLabel Typo="Typography.Body">Selected Deliverable: <strong>@CurrentDeliverableName</strong></FluentLabel>
     <FluentLabel Typo="Typography.Body">Selected Task: <strong>@CurrentRowName</strong></FluentLabel>

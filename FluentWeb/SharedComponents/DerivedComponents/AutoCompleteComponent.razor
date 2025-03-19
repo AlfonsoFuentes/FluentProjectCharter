@@ -1,0 +1,92 @@
+﻿@typeparam TValue
+<FluentStack Orientation="Orientation.Vertical" Width="100%">
+    @if (LabelTemplate == null)
+    {
+        <FluentLabel Typo="Typography.Body"><strong>@Label</strong></FluentLabel>
+        
+    }
+   
+    <FluentAutocomplete AutoComplete="off"
+                        Width="100%"
+                        TOption="TValue"
+                        Placeholder="@PlaceHolder"
+                        OnOptionsSearch="@SearchAsync"
+                        SelectedOptions="@SelectedValues"
+                        SelectedOptionsChanged="OnValueChanged"
+                        Disabled=@Disable
+                        Immediate=true
+                        MaximumSelectedOptions="@MaximumSelectedOptions"
+                        OptionText="@OptionText">
+        <LabelTemplate>
+
+            @if (LabelTemplate != null)
+            {
+                @LabelTemplate
+            }
+        </LabelTemplate>
+
+
+    </FluentAutocomplete>
+
+</FluentStack>
+
+@code {
+    [Parameter]
+    public int MaximumSelectedOptions { get; set; } = 1;
+    [Parameter]
+    public RenderFragment LabelTemplate { get; set; } = null!;
+    [Parameter]
+    public bool Disable { get; set; } = false;
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+    [Parameter]
+    public string PlaceHolder { get; set; } = string.Empty;
+    [Parameter]
+    public TValue Value { get; set; } = default(TValue)!;
+    [Parameter]
+    public EventCallback<TValue> ValueChanged { get; set; }
+    [Parameter]
+
+    public EventCallback Validate { get; set; }
+
+    [Parameter]
+    public EventCallback<TValue> Change { get; set; }
+    [Parameter]
+    public EventCallback<IEnumerable<TValue>> ChangeValues { get; set; }
+    [Parameter]
+    [EditorRequired]
+    public Func<TValue, string?> OptionText { get; set; } = null!;
+    [Parameter]
+    public List<TValue> Items { get; set; } = new();
+    [Parameter]
+    public IEnumerable<TValue> SelectedValues { get; set; } = Array.Empty<TValue>();
+    [Parameter]
+    public EventCallback<IEnumerable<TValue>> SelectedValuesChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<OptionsSearchEventArgs<TValue>> SearchAsync { get; set; }
+    async Task OnSearchAsync(OptionsSearchEventArgs<TValue> e)
+    {
+        if (SearchAsync.HasDelegate) await SearchAsync.InvokeAsync(e);
+    }
+    public async Task OnValueChanged(IEnumerable<TValue> values)
+    {
+        SelectedValues = values;
+        if (MaximumSelectedOptions == 1)
+        {
+            Value = values.First();
+            await ValueChanged.InvokeAsync(Value);
+
+            if (Change.HasDelegate) await Change.InvokeAsync(Value);
+        }
+        else
+        {
+            await SelectedValuesChanged.InvokeAsync(SelectedValues);
+            if (ChangeValues.HasDelegate) await ChangeValues.InvokeAsync(SelectedValues);
+        }
+
+
+        if (Validate.HasDelegate) await Validate.InvokeAsync();
+
+    }
+}

@@ -17,7 +17,7 @@ public partial class BackGroundTable
 
 
     public List<BackGroundResponse> Items { get; set; } = new();
-   
+
     string nameFilter { get; set; } = string.Empty;
     Func<BackGroundResponse, bool> fiterexpresion => x =>
        x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase);
@@ -30,8 +30,10 @@ public partial class BackGroundTable
     bool DisableUpButton => SelectedRow == null ? true : SelectedRow.Order == 1;
     bool DisableDownButton => SelectedRow == null ? true : SelectedRow.Order == LastOrder;
     public int LastOrder => Items.Count == 0 ? 1 : Items.MaxBy(x => x.Order).Order;
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnParametersSetAsync()
     {
+        if (ProjectId == Guid.Empty) return;
         await GetAll();
     }
     bool DisableSaveButton(BackGroundResponse model)
@@ -41,11 +43,11 @@ public partial class BackGroundTable
     }
     async Task GetAll()
     {
-        var result = await GenericService.GetAll<BackGroundResponseList, BackGroundGetAll>(new BackGroundGetAll() { ProjectId=ProjectId});
+        var result = await GenericService.GetAll<BackGroundResponseList, BackGroundGetAll>(new BackGroundGetAll() { ProjectId = ProjectId });
         if (result.Succeeded)
         {
             Items = result.Data.Items;
-        
+
             GetSelectedRowFromItems();
         }
     }
@@ -57,7 +59,7 @@ public partial class BackGroundTable
         };
         //Si EditRow esta creada se desaparece Editrow 
         EditRow = null!;
-        Items.Add(CreateRow);
+        Items.Insert(0, CreateRow);
     }
     public async Task Create()
     {
@@ -100,7 +102,7 @@ public partial class BackGroundTable
 
     }
 
-
+ 
     async Task Update(BackGroundResponse model)
     {
 
@@ -116,10 +118,16 @@ public partial class BackGroundTable
     {
         SelectedRow = SelectedRow == null ? null : Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
     }
-    public async Task Delete()
+    void Edit(BackGroundResponse model)
     {
-        if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+        EditRow = model;
+        SelectedRow = null;
+        CreateRow = null;
+    }
+    public async Task Delete(BackGroundResponse response)
+    {
+
+        var dialog = await DialogService.ShowWarningAsync($"Delete {response.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -129,8 +137,9 @@ public partial class BackGroundTable
         {
             DeleteBackGroundRequest request = new()
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = response.Id,
+                Name = response.Name,
+
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

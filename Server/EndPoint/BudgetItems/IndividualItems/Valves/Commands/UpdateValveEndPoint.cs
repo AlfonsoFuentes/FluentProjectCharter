@@ -101,7 +101,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Valves.Commands
                     equipmentTemplate.FailType = Data.FailType.Name;
                     equipmentTemplate.SignalType = Data.SignalType.Name;
 
-                    equipmentTemplate.Value = Data.Budget;
+                    equipmentTemplate.Value = Data.BudgetUSD;
                     foreach (var nozzle in Data.Nozzles)
                     {
                         var nozzleTemplate = NozzleTemplate.Create(equipmentTemplate.Id);
@@ -152,7 +152,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Valves.Commands
             row.TagLetter = request.TagLetter;
             row.TagNumber = request.TagNumber;
 
-            row.Budget = request.Budget;
+            row.BudgetUSD = request.BudgetUSD;
             row.IsExisting = request.IsExisting;
             row.ProvisionalTag = request.ProvisionalTag;
             return row;

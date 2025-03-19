@@ -55,8 +55,7 @@ namespace Server.EndPoint.Projects.Exports
                     .Include(x => x.KnownRisks.OrderBy(x => x.Order))
                     .Include(x => x.Resources.OrderBy(x => x.Order))
                     .Include(x => x.Acquisitions.OrderBy(x => x.Order))
-                    .Include(x => x.Manager!)
-                    .Include(x => x.Sponsor!);
+                   ;
 
                     Expression<Func<Project, bool>> Criteria = x => x.Id == request.ProjectId;
                     string CacheKey = StaticClass.Projects.Cache.GetById(request.ProjectId);
@@ -150,8 +149,7 @@ namespace Server.EndPoint.Projects.Exports
                             });
 
                             col1.Item().Element((ele) => ProjectNameContent(ele, response));
-                            col1.Item().Element((ele) => ProjectManagerContent(ele, response));
-                            col1.Item().Element((ele) => SponsorContent(ele, response));
+                           
 
                             col1.Item().Padding(10).Column(col2 =>
                             {
@@ -230,39 +228,8 @@ namespace Server.EndPoint.Projects.Exports
                 });
             }
 
-            void ProjectManagerContent(IContainer container, Project response)
-            {
-                if (response.Manager == null) return;
-                container.Column(col1 =>
-                {
-
-                    col1.Item().PaddingBottom(5).Column(col2 =>
-                    {
-                        col2.Item().Text(txt =>
-                        {
-                            txt.Span("Project Manager: ").FontSize(11);
-                            txt.Span(response.Manager.Name).FontSize(11);
-                        });
-                    });
-                });
-            }
-            void SponsorContent(IContainer container, Project response)
-            {
-                if (response.Sponsor == null) return;
-                container.Column(col1 =>
-                {
-
-                    col1.Item().PaddingBottom(15).Column(col2 =>
-                    {
-                        col2.Item().Text(txt =>
-                        {
-                            txt.Span("Sponsor: ").FontSize(11);
-                            txt.Span(response.Sponsor.Name).FontSize(11);
-                        });
-                    });
-                });
-            }
-
+         
+        
 
             void StakeHoldersContent(IContainer container, Project response)
             {
@@ -294,26 +261,7 @@ namespace Server.EndPoint.Projects.Exports
 
 
                 });
-                if (response.Sponsor != null)
-                {
-                    tabla.Cell()
-                   .Padding(4).Text(response.Sponsor.Name).FontSize(10);
-
-                    tabla.Cell()
-                    .Padding(4).Text("Sponsor").FontSize(10);
-
-
-                }
-                if (response.Manager != null)
-                {
-                    tabla.Cell()
-                   .Padding(4).Text(response.Manager.Name).FontSize(10);
-
-                    tabla.Cell()
-                    .Padding(4).Text("Manager").FontSize(10);
-
-
-                }
+                
                 foreach (var expert in response.ExpertJudgements)
                 {
                     if (expert.Expert != null)
@@ -385,19 +333,7 @@ namespace Server.EndPoint.Projects.Exports
 
 
                 });
-                if (response.Sponsor != null)
-                {
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                   .Padding(4).Text(response.Sponsor.Name).FontSize(10);
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                   .Padding(4).Text(response.Sponsor.Area).FontSize(10);
-
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text(string.Empty).FontSize(10);
-
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text(string.Empty).FontSize(10);
-                }
+               
 
                 foreach (var expert in response.StakeHolders)
                 {
@@ -413,19 +349,7 @@ namespace Server.EndPoint.Projects.Exports
                     tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
                     .Padding(4).Text(string.Empty).FontSize(10);
                 }
-                if (response.Manager != null)
-                {
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                   .Padding(4).Text(response.Manager.Name).FontSize(10);
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                   .Padding(4).Text("Project Manager").FontSize(10);
-
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text(string.Empty).FontSize(10);
-
-                    tabla.Cell().Border(0.5f).BorderColor("#D9D9D9")
-                    .Padding(4).Text(string.Empty).FontSize(10);
-                }
+               
                 return tabla;
             }
 

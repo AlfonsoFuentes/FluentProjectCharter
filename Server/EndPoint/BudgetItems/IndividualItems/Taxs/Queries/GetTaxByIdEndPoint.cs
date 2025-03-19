@@ -43,10 +43,12 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Queries
 
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
-                Budget = row.Budget,
+                BudgetUSD = row.BudgetUSD,
                 Percentage = row.Percentage,
                 TaxItems = row.TaxesItems == null || row.TaxesItems.Count == 0 ? new() : row.TaxesItems.Select(x => x.Map()).ToList(),
-
+                ActualUSD = row.ActualUSD,
+                CommitmentUSD = row.CommitmentUSD,
+                PotentialUSD = row.PotentialUSD,
 
             };
         }
@@ -55,7 +57,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Queries
             return new()
             {
                 Id = row.Id,
-                Budget = row.Selected == null ? 0 : row.Selected.Budget,
+                Budget = row.Selected == null ? 0 : row.Selected.BudgetUSD,
                 BudgetItemId = row.SelectedId,
                 Name = row.Selected == null ? string.Empty : row.Selected.Name,
                 Nomenclatore = row.Selected == null ? string.Empty : row.Selected.Nomenclatore,

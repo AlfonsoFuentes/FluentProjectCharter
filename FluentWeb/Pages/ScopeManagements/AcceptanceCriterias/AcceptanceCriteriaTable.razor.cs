@@ -5,6 +5,7 @@ using Shared.Models.AcceptanceCriterias.Mappers;
 using Shared.Models.AcceptanceCriterias.Records;
 using Shared.Models.AcceptanceCriterias.Requests;
 using Shared.Models.AcceptanceCriterias.Responses;
+using Shared.Models.Backgrounds.Responses;
 using Shared.Models.Projects.Mappers;
 
 namespace FluentWeb.Pages.ScopeManagements.AcceptanceCriterias;
@@ -22,9 +23,10 @@ public partial class AcceptanceCriteriaTable
        x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase);
     public List<AcceptanceCriteriaResponse> FilteredItems => Items.Count == 0 ? new() : Items.Where(fiterexpresion).ToList();
 
-    protected override async Task OnInitializedAsync()
+   
+    protected override async Task OnParametersSetAsync()
     {
-        
+        if (ProjectId == Guid.Empty) return;
         await GetAll();
     }
     AcceptanceCriteriaResponse CreateRow = null!;
@@ -122,10 +124,16 @@ public partial class AcceptanceCriteriaTable
     {
         SelectedRow = SelectedRow == null ? null : Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
     }
-    public async Task Delete()
+    void Edit(AcceptanceCriteriaResponse model)
     {
-        if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+        EditRow = model;
+        SelectedRow = null;
+        CreateRow = null;
+    }
+    public async Task Delete(AcceptanceCriteriaResponse model)
+    {
+       
+        var dialog = await DialogService.ShowWarningAsync($"Delete {model.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -135,8 +143,9 @@ public partial class AcceptanceCriteriaTable
         {
             DeleteAcceptanceCriteriaRequest request = new()
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = model.Id,
+                Name = model.Name,
+                 
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

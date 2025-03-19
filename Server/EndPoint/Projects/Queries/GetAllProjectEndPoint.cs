@@ -10,13 +10,11 @@ namespace Server.EndPoint.Projects.Queries
             {
                 app.MapPost(StaticClass.Projects.EndPoint.GetAll, async (ProjectGetAll request, IQueryRepository Repository) =>
                 {
-                    var apps = await Repository.GetAllAsync<App>(Cache: StaticClass.Apps.Cache.GetAll);
-                    Guid? projectId = apps.Count == 1 ? apps[0].CurrentProjectId : null;
-
-                    Expression<Func<Project, bool>>? criteria = projectId.HasValue ? (x => x.Id == projectId.Value) : null;
+                  
+                    
 
                     string CacheKey = StaticClass.Projects.Cache.GetAll;
-                    var rows = await Repository.GetAllAsync<Project>(Cache: CacheKey, Criteria: criteria!, OrderBy: x => x.Order);
+                    var rows = await Repository.GetAllAsync<Project>(Cache: CacheKey,  OrderBy: x => x.Order);
                     if (rows == null)
                     {
                         return Result<ProjectResponseList>.Fail(
@@ -26,7 +24,7 @@ namespace Server.EndPoint.Projects.Queries
 
                     ProjectResponseList response = new ProjectResponseList()
                     {
-                        SelectedProjectId = projectId,
+                        
                         Items = maps
                     };
                     return Result<ProjectResponseList>.Success(response);

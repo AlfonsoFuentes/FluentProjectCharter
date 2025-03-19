@@ -72,7 +72,8 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Commands
             alteration.UnitaryCost = request.UnitaryCost;
             alteration.CostCenter = request.CostCenter.Name;
             alteration.Quantity = request.Quantity;
-            alteration.Budget = request.Budget;
+            alteration.BudgetUSD = request.BudgetUSD;
+            alteration.IsAlteration = true;
             return alteration;
         }
     }

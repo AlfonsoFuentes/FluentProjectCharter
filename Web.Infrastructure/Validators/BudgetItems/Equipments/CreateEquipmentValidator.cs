@@ -19,7 +19,7 @@ namespace Web.Infrastructure.Validators.BudgetItems.Equipments
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
+            RuleFor(x => x.BudgetUSD).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
 
             RuleFor(x => x.TagLetter).NotEmpty().When(x => x.ShowDetails)
               .WithMessage("Tag Letter must be defined!");
@@ -123,7 +123,7 @@ namespace Web.Infrastructure.Validators.BudgetItems.Equipments
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-            RuleFor(x => x.Budget).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
+            RuleFor(x => x.BudgetUSD).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
 
             RuleFor(x => x.ProvisionalTag).NotEmpty().When(x => x.ShowProvisionalTag && !x.ShowDetails)
             .WithMessage("Tag must be defined!");

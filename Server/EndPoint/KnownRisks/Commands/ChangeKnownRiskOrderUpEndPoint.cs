@@ -44,7 +44,7 @@ namespace Server.EndPoint.KnownRisks.Commands
                 List<string> cacheKeys = [
                
            
-                    .. StaticClass.KnownRisks.Cache.Key(row.Id)
+                    .. StaticClass.KnownRisks.Cache.Key(row.Id, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

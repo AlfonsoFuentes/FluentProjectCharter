@@ -22,8 +22,8 @@ namespace Shared.Models.BudgetItems.IndividualItems.Instruments.Requests
         public override string ClassName => StaticClass.Instruments.ClassName;
 
 
-        public double Budget { get; set; }
-        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
+        public double BudgetUSD { get; set; }
+        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", BudgetUSD);
         public string TagNumber { get; set; } = string.Empty;
         public SignalTypeEnum SignalType { get; set; } = SignalTypeEnum.None;
 

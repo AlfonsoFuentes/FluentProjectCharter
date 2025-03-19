@@ -377,9 +377,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id,Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -411,9 +410,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -445,9 +443,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -479,8 +476,8 @@ namespace Shared.StaticClasses
             public static class Cache
             {
 
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -513,8 +510,9 @@ namespace Shared.StaticClasses
             public static class Cache
             {
 
-                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll, GetById(Id), GanttTasks.Cache.GetAll(ProjectId) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id), GanttTasks.Cache.GetAll(ProjectId) };
+            
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -546,8 +544,8 @@ namespace Shared.StaticClasses
             public static class Cache
             {
 
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -600,47 +598,7 @@ namespace Shared.StaticClasses
 
 
         }
-        public static class Milestones
-        {
-            public static string ClassLegend = "Milestone";
-            public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
-            public static class EndPoint
-            {
-                public static string Create = $"{ClassName}/{Actions.Create}";
-                public static string UpdateState = $"{ClassName}/{Actions.Update}State";
-                public static string UpdateUp = $"{ClassName}/{Actions.Update}Up";
-                public static string UpdateDown = $"{ClassName}/{Actions.Update}Down";
-                public static string UpdateRight = $"{ClassName}/{Actions.Update}Right";
-                public static string UpdateLeft = $"{ClassName}/{Actions.Update}Left";
-                public static string Update = $"{ClassName}/{Actions.Update}";
-                public static string UpdateName = $"{ClassName}/{Actions.Update}Name";
-                public static string UpdateAllDates = $"{ClassName}/{Actions.Update}AllDates";
-                public static string UpdateDependency = $"{ClassName}/{Actions.Update}Dependency";
-                public static string UpdateDependencyType = $"{ClassName}/{Actions.Update}DependencyType";
-                public static string GetAll = $"{ClassName}/{Actions.GetAll}";
-                public static string GetAllProject = $"{ClassName}/{Actions.GetAll}Project";
-                public static string GetById = $"{ClassName}/{Actions.GetById}";
-                public static string Delete = $"{ClassName}/{Actions.Delete}";
-                public static string Export = $"{ClassName}/{Actions.Export}";
-                public static string Validate = $"{ClassName}/{Actions.Validate}";
-            }
-            public static class Cache
-            {
 
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
-                public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
-            }
-            public static class PageName
-            {
-                public static string Create = $"Create{ClassName}";
-                public static string Update = $"Update{ClassName}";
-                public static string GetAll = $"GetAll{ClassName}";
-
-            }
-
-
-        }
 
         public static class KnownRisks
         {
@@ -660,9 +618,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -693,9 +650,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -726,9 +682,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -759,9 +714,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -792,9 +746,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -825,9 +778,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -957,9 +909,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -991,9 +942,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -1024,9 +974,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -1059,8 +1008,8 @@ namespace Shared.StaticClasses
             public static class Cache
             {
 
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -1127,9 +1076,8 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id) => new[] { GetAll, GetById(Id) };
-                public static string GetAll => $"GetAll-{ClassName}";
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll(ProjectId), GetById(Id) };
+                public static string GetAll(Guid ProjectId) => $"GetAll-{ProjectId}{ClassName}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName
@@ -1152,8 +1100,10 @@ namespace Shared.StaticClasses
 
                 public static string Update = $"{ClassName}/{Actions.Update}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
+                public static string GetAllWithPurchaseorder = $"{ClassName}/{Actions.GetAll}WithPurchaseorder";
                 public static string GetAllByDeliverable = $"{ClassName}/{Actions.GetAll}ByDeliverable";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
+                public static string GetWithPurchaseorderById = $"{ClassName}/{Actions.GetById}WithPurchaseorder";
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
                 public static string DeleteGroup = $"{ClassName}/{Actions.Delete}DeleteGroup";
                 public static string MoveGroup = $"{ClassName}/{Actions.Delete}MoveGroup";
@@ -1170,13 +1120,17 @@ namespace Shared.StaticClasses
                     var result = new[] {
                         GetAll(projectId)
                         ,GetById(Id),
-                        deliverablecache
+                        deliverablecache,
+                        GetAllWithPurchaseOrder(projectId),
+                        GetByIdWithPurchaseOrder(Id),
                     };
                     return result;
                 }
                 public static string GetAll(Guid projectId) => $"GetAll-{ClassName}-{projectId}";
+                public static string GetAllWithPurchaseOrder(Guid projectId) => $"GetAllWithPurchaseOrder-{ClassName}-{projectId}";
                 public static string GetAllByDeliverable(Guid deliverableid) => $"GetAllByDeliverable-{ClassName}-{deliverableid}";
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
+                public static string GetByIdWithPurchaseOrder(Guid Id) => $"GetByIdWithPurchaseOrder-{ClassName}-{Id}";
             }
             public static class PageName
             {
@@ -1690,6 +1644,8 @@ namespace Shared.StaticClasses
                 public static string Export = $"{ClassName}/{Actions.Export}";
 
                 public static string ValidateNumber = $"{ClassName}/{Actions.Validate}Number";
+                public static string ValidateName = $"{ClassName}/{Actions.Validate}Name";
+                public static string ValidatePR = $"{ClassName}/{Actions.Validate}PR";
             }
             public static class Cache
             {

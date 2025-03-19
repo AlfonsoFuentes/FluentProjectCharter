@@ -6,6 +6,7 @@ using Shared.Models.Acquisitions.Records;
 using Shared.Models.Acquisitions.Requests;
 using Shared.Models.Acquisitions.Responses;
 using Shared.Models.Projects.Mappers;
+using Shared.Models.Qualitys.Responses;
 
 namespace FluentWeb.Pages.MinorManagements.Acquisitions;
 #nullable disable
@@ -18,13 +19,12 @@ public partial class AcquisitionTable
 
     [Parameter]
     public Guid Id { get; set; }
-   
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnParametersSetAsync()
     {
-     
+        if (ProjectId == Guid.Empty) return;
         await GetAll();
     }
-
     public List<AcquisitionResponse> Items { get; set; } = new();
     string nameFilter { get; set; } = string.Empty;
     Func<AcquisitionResponse, bool> fiterexpresion => x =>
@@ -128,10 +128,16 @@ public partial class AcquisitionTable
     {
         SelectedRow = SelectedRow == null ? null : Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
     }
-    public async Task Delete()
+    void Edit(AcquisitionResponse model)
     {
-        if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+        EditRow = model;
+        SelectedRow = null;
+        CreateRow = null;
+    }
+    public async Task Delete(AcquisitionResponse model)
+    {
+     
+        var dialog = await DialogService.ShowWarningAsync($"Delete {model.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -141,8 +147,9 @@ public partial class AcquisitionTable
         {
             DeleteAcquisitionRequest request = new()
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = model.Id,
+                Name = model.Name,
+                 
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

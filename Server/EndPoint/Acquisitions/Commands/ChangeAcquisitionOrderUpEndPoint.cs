@@ -43,7 +43,7 @@ namespace Server.EndPoint.Acquisitions.Commands
             {
                 List<string> cacheKeys = [
                              
-                    .. StaticClass.Acquisitions.Cache.Key(row.Id)
+                    .. StaticClass.Acquisitions.Cache.Key(row.Id,row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

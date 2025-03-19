@@ -30,7 +30,7 @@ namespace Server.EndPoint.Constrainsts.Commands
             private string[] GetCacheKeys(Constrainst row)
             {
                 List<string> cacheKeys = [
-                  ..StaticClass.Constrainsts.Cache.Key(row.Id),
+                  ..StaticClass.Constrainsts.Cache.Key(row.Id, row.ProjectId),
 
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();

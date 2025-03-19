@@ -44,7 +44,7 @@ namespace Server.EndPoint.LearnedLessons.Commands
                 List<string> cacheKeys = [
                    
            
-                    .. StaticClass.LearnedLessons.Cache.Key(row.Id)
+                    .. StaticClass.LearnedLessons.Cache.Key(row.Id, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

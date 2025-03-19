@@ -42,8 +42,8 @@ namespace Server.EndPoint.AcceptanceCriterias.Commands
             private string[] GetCacheKeys(AcceptanceCriteria row)
             {
                 List<string> cacheKeys = [
-                            
-                    .. StaticClass.AcceptanceCriterias.Cache.Key(row.Id)
+
+                    .. StaticClass.AcceptanceCriterias.Cache.Key(row.Id,row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

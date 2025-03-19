@@ -16,8 +16,8 @@ namespace Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Requests
         public override string ClassName => StaticClass.EngineeringDesigns.ClassName;
         public CostCenterEnum CostCenter { get; set; } = CostCenterEnum.None;
 
-        public double Budget { get; set; }
+        public double BudgetUSD { get; set; }
 
-        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
+        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", BudgetUSD);
     }
 }

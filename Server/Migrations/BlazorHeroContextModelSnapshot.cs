@@ -215,7 +215,7 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Budget")
+                    b.Property<double>("BudgetUSD")
                         .HasColumnType("float");
 
                     b.Property<string>("CreatedBy")
@@ -230,7 +230,13 @@ namespace Server.Migrations
                     b.Property<Guid?>("GanttTaskId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsAlteration")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTaxes")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastModifiedBy")
@@ -1017,8 +1023,9 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ClosingId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CostCenter")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(128)");
@@ -1029,8 +1036,9 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("ExecutingId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Focus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -1043,12 +1051,6 @@ namespace Server.Migrations
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("ManagerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MonitoringId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -1066,9 +1068,6 @@ namespace Server.Migrations
                     b.Property<double>("PercentageTaxProductive")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("PlanningId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ProjectNeedType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1077,14 +1076,8 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("SponsorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("StartId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -1095,10 +1088,6 @@ namespace Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ManagerId");
-
-                    b.HasIndex("SponsorId");
 
                     b.ToTable("Projects");
                 });
@@ -3093,23 +3082,6 @@ namespace Server.Migrations
                     b.Navigation("StakeHolder");
                 });
 
-            modelBuilder.Entity("Server.Database.Entities.Project", b =>
-                {
-                    b.HasOne("Server.Database.Entities.ProjectManagements.StakeHolder", "Manager")
-                        .WithMany("Managers")
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Server.Database.Entities.ProjectManagements.StakeHolder", "Sponsor")
-                        .WithMany("Sponsors")
-                        .HasForeignKey("SponsorId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Manager");
-
-                    b.Navigation("Sponsor");
-                });
-
             modelBuilder.Entity("Server.Database.Entities.ProjectManagements.AcceptanceCriteria", b =>
                 {
                     b.HasOne("Server.Database.Entities.Project", "Project")
@@ -3561,15 +3533,11 @@ namespace Server.Migrations
                 {
                     b.Navigation("Judgements");
 
-                    b.Navigation("Managers");
-
                     b.Navigation("MeetingAttendants");
 
                     b.Navigation("RequirementRequestedBys");
 
                     b.Navigation("RequirementResponsibles");
-
-                    b.Navigation("Sponsors");
                 });
 
             modelBuilder.Entity("Server.Database.Entities.PurchaseOrders.PurchaseOrder", b =>

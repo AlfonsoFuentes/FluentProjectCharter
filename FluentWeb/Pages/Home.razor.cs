@@ -14,13 +14,13 @@ public partial class Home
     [CascadingParameter]
     public App App { get; set; }
 
-
-
+   
     string nameFilter { get; set; } = string.Empty;
     Func<ProjectResponse, bool> fiterexpresion => x =>
        x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase);
     public List<ProjectResponse> FilteredItems => ProjectList.Items.Count == 0 ? new() : ProjectList.Items.Where(fiterexpresion).ToList();
-
+   
+   
     public ProjectResponseList ProjectList { get; set; } = new();
     bool DisableSaveButton(ProjectResponse model)
     {
@@ -42,7 +42,7 @@ public partial class Home
     protected override async Task OnInitializedAsync()
     {
         await GetAll();
-
+        pagination.TotalItemCountChanged += (sender, eventArgs) => StateHasChanged();
     }
     public async Task GetAll()
     {
@@ -51,16 +51,16 @@ public partial class Home
         if (result.Succeeded)
         {
             ProjectList = result.Data;
-            SelectedRow = SelectedRow == null ? null : ProjectList.Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
-            CurrentCompleteRow = ProjectList.SelectedProjectId.HasValue ? ProjectList.Items.FirstOrDefault(x => x.Id == ProjectList.SelectedProjectId.Value) : null;
+         
         }
 
     }
     public void AddNew()
     {
-        CreateRow = new();
+        CreateRow = new() { Id = Guid.NewGuid(), Name = "New MWO" };
         EditRow = null!;
-        ProjectList.Items.Add(CreateRow);
+        ProjectList.Items.Insert(0, CreateRow);
+        StateHasChanged();
     }
     public async Task Create()
     {
@@ -86,15 +86,13 @@ public partial class Home
         if (EditRow == null) return;
         EditRow = null;
     }
-    public void Edit()
+    public void Edit(ProjectResponse response)
     {
-        if (SelectedRow != null)
-            Navigation.NavigateTo($"/UpdateProject/{SelectedRow.Id}");
+       Navigation.NavigateTo($"/UpdateProject/{response.Id}");
     }
-    public void Approve()
+    public void Approve(ProjectResponse response)
     {
-        if (SelectedRow != null)
-            Navigation.NavigateTo($"/ApproveProject/{SelectedRow.Id}");
+        Navigation.NavigateTo($"/ApproveProject/{response.Id}");
     }
     private void HandleRowClick(FluentDataGridRow<ProjectResponse> row)
     {
@@ -110,10 +108,10 @@ public partial class Home
 
         CancelCreate();
     }
-    public async Task Delete()
+    public async Task Delete(ProjectResponse response)
     {
-        if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+      
+        var dialog = await DialogService.ShowWarningAsync($"Delete {response.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -123,8 +121,8 @@ public partial class Home
         {
             DeleteProjectRequest request = new()
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = response.Id,
+                Name = response.Name,
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)
@@ -141,13 +139,13 @@ public partial class Home
         }
 
     }
-    async Task Show()
+    async Task Show(ProjectResponse response)
     {
-        if (SelectedRow == null) return;
-        CurrentCompleteRow = SelectedRow;
+    
+        CurrentCompleteRow = response;
         CreateUpdateAppRequest model = new()
         {
-            ProjectId = SelectedRow.Id,
+            ProjectId = response.Id,
         };
         var result = await GenericService.Update(model);
         if (result.Succeeded)

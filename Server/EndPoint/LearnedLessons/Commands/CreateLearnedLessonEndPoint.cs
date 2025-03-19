@@ -21,7 +21,7 @@ namespace Server.EndPoint.LearnedLessons.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [.. StaticClass.LearnedLessons.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.LearnedLessons.Cache.Key(row.Id, row.ProjectId)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

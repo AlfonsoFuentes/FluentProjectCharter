@@ -22,7 +22,7 @@ namespace Server.EndPoint.BackGrounds.Commands
                     await Repository.AddAsync(row);
 
                     row.Name = Data.Name;
-                    List<string> cache = [.. StaticClass.BackGrounds.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.BackGrounds.Cache.Key(row.Id, row.ProjectId)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

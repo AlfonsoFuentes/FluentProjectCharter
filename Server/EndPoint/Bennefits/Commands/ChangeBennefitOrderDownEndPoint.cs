@@ -50,7 +50,7 @@ namespace Server.EndPoint.Bennefits.Commands
                 List<string> cacheKeys = [
                   
                
-                    .. StaticClass.Bennefits.Cache.Key(row.Id)
+                    .. StaticClass.Bennefits.Cache.Key(row.Id, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

@@ -6,6 +6,7 @@ using Shared.Models.Scopes.Records;
 using Shared.Models.Scopes.Requests;
 using Shared.Models.Scopes.Responses;
 using Shared.Models.Projects.Mappers;
+using Shared.Models.Backgrounds.Responses;
 
 namespace FluentWeb.Pages.ScopeManagements.Scopes;
 #nullable disable
@@ -13,10 +14,10 @@ public partial class ScopeTable
 {
     [Parameter]
     public Guid ProjectId { get; set; }
-    
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnParametersSetAsync()
     {
-     
+        if (ProjectId == Guid.Empty) return;
         await GetAll();
     }
     public List<ScopeResponse> Items { get; set; } = new();
@@ -121,10 +122,16 @@ public partial class ScopeTable
     {
         SelectedRow = SelectedRow == null ? null : Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
     }
-    public async Task Delete()
+    void Edit(ScopeResponse model)
     {
-        if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+        EditRow = model;
+        SelectedRow = null;
+        CreateRow = null;
+    }
+    public async Task Delete(ScopeResponse model)
+    {
+      
+        var dialog = await DialogService.ShowWarningAsync($"Delete {model.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -134,8 +141,9 @@ public partial class ScopeTable
         {
             DeleteScopeRequest request = new()
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = model.Id,
+                Name = model.Name,
+                 ProjectId = model.ProjectId,
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

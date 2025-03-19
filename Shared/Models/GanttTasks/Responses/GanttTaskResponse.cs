@@ -55,7 +55,7 @@ namespace Shared.Models.GanttTasks.Responses
         public string sEndDateValue => EndDateValue.ToString("d");
         public string sStartDateValue => StartDateValue.ToString("d");
         public TasksRelationTypeEnum DependencyType { get; set; } = TasksRelationTypeEnum.None;
-        
+
         public string? Duration
         {
             get
@@ -218,6 +218,9 @@ namespace Shared.Models.GanttTasks.Responses
 
             if (string.IsNullOrWhiteSpace(rawinput))
             {
+                _lagInDays = 0;
+                _unitLag = string.Empty;
+                _lag = string.Empty;
                 return;
             }
             var input = rawinput.Trim();
@@ -225,6 +228,9 @@ namespace Shared.Models.GanttTasks.Responses
             var match = System.Text.RegularExpressions.Regex.Match(input, @"^(\d+)\s*([dwmy]?)$");
             if (!match.Success)
             {
+                _lagInDays = 0;
+                _unitLag = string.Empty;
+                _lag = string.Empty;
                 return;
             }
             if (!int.TryParse(match.Groups[1].Value, out var numericValue) || numericValue < 0)
@@ -295,10 +301,10 @@ namespace Shared.Models.GanttTasks.Responses
 
         public List<IBudgetItemResponse> Items => BudgetItems.OrderBy(x => x.Nomenclatore).ToList();
         public List<IBudgetItemResponse> BudgetItems => [.. Expenses, .. Capital];
-        public double TotalCapital => Capital.Sum(x => x.Budget) + TaxesBudget;
+        public double TotalCapital => Capital.Sum(x => x.BudgetUSD) + TaxesBudget;
 
-        public double TotalCapitalWithOutVAT => Capital.Sum(x => x.Budget);
-        public double TotalExpenses => Expenses.Sum(x => x.Budget);
+        public double TotalCapitalWithOutVAT => Capital.Sum(x => x.BudgetUSD);
+        public double TotalExpenses => Expenses.Sum(x => x.BudgetUSD);
         public double PercentageEngineering { get; set; }
         public double PercentageContingency { get; set; }
         public double PercentageTaxes { get; set; }

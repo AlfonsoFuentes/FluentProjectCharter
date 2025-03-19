@@ -1,12 +1,14 @@
-﻿
+﻿<FluentStack Orientation="Orientation.Vertical" Width="100%">
+    <FluentLabel Typo="Typography.Body"><strong>@Label</strong></FluentLabel>
+    <FluentNumberField @bind-Value="@Value"
+                       Style="width: 100%;"
+                       Placeholder="@PlaceHolder"
+                       @oninput=@((args) => OnValueChange(args!.Value!.ToString()!))
+                       Disabled="@Disable" />
 
-<FluentNumberField @bind-Value="@Value"
-Label="@Label"
-Style="width: 100%;"
-Placeholder="@PlaceHolder"
+</FluentStack>
 
-@oninput=@((args) => OnValueChange(args!.Value!.ToString()!))
-Disabled="@Disable" />
+
 
 
 
@@ -47,6 +49,6 @@ Disabled="@Disable" />
             if (Change.HasDelegate) await Change.InvokeAsync(Value);
             if (Validate.HasDelegate) await Validate.InvokeAsync();
         }
-        
+
     }
 }

@@ -2,6 +2,8 @@
 using Server.EndPoint.Constrainsts.Queries;
 using Server.EndPoint.Objectives.Queries;
 using Server.EndPoint.StakeHolders.Queries;
+using Shared.Enums.CostCenter;
+using Shared.Enums.Focuses;
 
 namespace Server.EndPoint.Projects.Queries
 {
@@ -13,7 +15,7 @@ namespace Server.EndPoint.Projects.Queries
             {
                 app.MapPost(StaticClass.Projects.EndPoint.GetCompleteById, async (GetCompleteProjectByIdRequest request, IQueryRepository Repository) =>
                 {
-                   
+
                     Expression<Func<Project, bool>> Criteria = x => x.Id == request.Id;
 
                     string CacheKey = StaticClass.Projects.Cache.GetCompleteById(request.Id);
@@ -42,18 +44,17 @@ namespace Server.EndPoint.Projects.Queries
                 PercentageEngineering = row.PercentageEngineering,
                 PercentageContingency = row.PercentageContingency,
                 ProjectNeedType = ProjectNeedTypeEnum.GetType(row.ProjectNeedType),
-                Manager = row.Manager == null ? null! : row.Manager.Map(),
+             
                 ProjectNumber = row.ProjectNumber,
-                Sponsor = row.Sponsor == null ? null! : row.Sponsor.Map(),
+     
                 Status = ProjectStatusEnum.GetType(row.Status),
                 IsProductive = row.IsProductiveAsset,
                 PercentageTaxes = row.PercentageTaxProductive,
-                
-                
-                ClosingId = row.ClosingId,
-                ExecutingId = row.ExecutingId,
+
+                CostCenter = CostCenterEnum.GetTypeByName(row.CostCenter),
+                Focus = FocusEnum.GetType(row.Focus),
                 InitialProjectDate = row.StartDate,
-                MonitoringId = row.MonitoringId,
+
 
 
             };

@@ -14,7 +14,7 @@ namespace Server.EndPoint.BackGrounds.Queries
                 {
                     Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x.Include(p => p.BackGrounds);
                     Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
-                    string cacheKey = StaticClass.BackGrounds.Cache.GetAll;
+                    string cacheKey = StaticClass.BackGrounds.Cache.GetAll(request.ProjectId);
 
                     var rows = await Repository.GetAsync(Cache: cacheKey, Includes: includes, Criteria: criteria);
 

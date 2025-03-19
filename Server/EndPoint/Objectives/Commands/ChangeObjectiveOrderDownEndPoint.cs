@@ -50,7 +50,7 @@ namespace Server.EndPoint.Objectives.Commands
                 List<string> cacheKeys = [
               
                
-                    .. StaticClass.Objectives.Cache.Key(row.Id)
+                    .. StaticClass.Objectives.Cache.Key(row.Id, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

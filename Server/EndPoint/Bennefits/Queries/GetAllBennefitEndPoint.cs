@@ -12,7 +12,7 @@ namespace Server.EndPoint.Bennefits.Queries
                 {
                     Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x.Include(p => p.Bennefits);
                     Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
-                    string cacheKey = StaticClass.Bennefits.Cache.GetAll;
+                    string cacheKey = StaticClass.Bennefits.Cache.GetAll(request.ProjectId);
 
                     var rows = await repository.GetAsync(Cache: cacheKey, Includes: includes, Criteria: criteria);
 
@@ -38,7 +38,7 @@ namespace Server.EndPoint.Bennefits.Queries
             {
 
                 Expression<Func<Bennefit, bool>> criteria = x => x.ProjectId == request.ProjectId;
-                string cacheKey = StaticClass.Bennefits.Cache.GetAll;
+                string cacheKey = StaticClass.Bennefits.Cache.GetAll(request.ProjectId);
 
                 return await repository.GetAllAsync(Cache: cacheKey, Criteria: criteria);
             }

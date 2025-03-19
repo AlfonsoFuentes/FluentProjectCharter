@@ -10,7 +10,7 @@ namespace Shared.Models.Projects.Mappers
             {
                 Id = response.Id,
                 Name = response.Name,
-         
+
                 Order = response.Order,
 
 
@@ -20,7 +20,7 @@ namespace Shared.Models.Projects.Mappers
         {
             return new()
             {
-              
+
                 Id = response.Id,
                 Name = response.Name,
                 Order = response.Order,
@@ -32,7 +32,7 @@ namespace Shared.Models.Projects.Mappers
             {
                 Id = response.Id,
                 Name = response.Name,
-               
+
             };
         }
         public static CreateProjectRequest ToCreate(this ProjectResponse response)
@@ -40,6 +40,52 @@ namespace Shared.Models.Projects.Mappers
             return new()
             {
                 Name = response.Name,
+                CostCenter = response.CostCenter,
+                Focus = response.Focus,
+                InitialProjectDate = response.InitialProjectDate,
+                IsProductiveAsset = response.IsProductive,
+                PercentageContingency = response.PercentageContingency,
+                PercentageEngineering = response.PercentageEngineering,
+                PercentageTaxProductive = response.PercentageTaxes,
+                ProjectNeedType = response.ProjectNeedType,
+                Status = response.Status,
+
+            };
+        }
+        public static UpdateProjectRequest ToUpdate(this ProjectResponse response)
+        {
+            return new()
+            {
+                Name = response.Name,
+                CostCenter = response.CostCenter,
+                Focus = response.Focus,
+                InitialProjectDate = response.InitialProjectDate,
+                IsProductiveAsset = response.IsProductive,
+                PercentageContingency = response.PercentageContingency,
+                PercentageEngineering = response.PercentageEngineering,
+                PercentageTaxProductive = response.PercentageTaxes,
+                ProjectNeedType = response.ProjectNeedType,
+                Status = response.Status,
+                Id = response.Id
+
+            };
+        }
+        public static ApproveProjectRequest ToApprove(this ProjectResponse response)
+        {
+            return new()
+            {
+                Name = response.Name,
+
+                InitialProjectDate = response.InitialProjectDate,
+                IsProductiveAsset = response.IsProductive,
+                PercentageContingency = response.PercentageContingency,
+                PercentageEngineering = response.PercentageEngineering,
+                PercentageTaxProductive = response.PercentageTaxes,
+                ProjectNeedType = response.ProjectNeedType,
+                Status = response.Status,
+                Id = response.Id,
+                CostCenter = response.CostCenter,
+                Focus = response.Focus,
 
             };
         }

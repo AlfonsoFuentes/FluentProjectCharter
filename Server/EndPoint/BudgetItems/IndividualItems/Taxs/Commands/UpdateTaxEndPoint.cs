@@ -82,7 +82,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Commands
         {
             row.Name = request.Name;
 
-            row.Budget = request.Budget;
+            row.BudgetUSD = request.BudgetUSD;
             row.Percentage = request.Percentage;
             return row;
         }

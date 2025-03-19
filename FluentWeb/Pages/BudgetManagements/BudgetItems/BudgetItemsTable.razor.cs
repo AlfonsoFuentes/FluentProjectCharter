@@ -24,10 +24,12 @@ public partial class BudgetItemsTable
             Response = result.Data;
         }
     }
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        await GetAll();
+        if (ProjectId == Guid.Empty) return;
+        await GetAll(); 
     }
+
 
     public List<IBudgetItemResponse> Selecteds => Response.Items.Where(x => x.Selected).ToList();
 

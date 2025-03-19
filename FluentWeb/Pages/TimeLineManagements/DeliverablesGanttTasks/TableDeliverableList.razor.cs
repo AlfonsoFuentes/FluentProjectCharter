@@ -38,11 +38,12 @@ public partial class TableDeliverableList
     {
         SelectedDeliverable = deliverable;
     }
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
+        if (ProjectId == Guid.Empty) return;
         await GetAll();
     }
-   
+
 
     GanttTaskResponse CreateRow = null!;
     GanttTaskResponse EditRow = null!;

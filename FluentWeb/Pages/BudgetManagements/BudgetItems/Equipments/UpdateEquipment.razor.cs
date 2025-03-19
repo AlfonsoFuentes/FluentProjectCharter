@@ -32,7 +32,7 @@ public partial class UpdateEquipment
                 Id = result.Data.Id,
                 Name = result.Data.Name,
                 ProjectId = result.Data.ProjectId,
-                Budget = result.Data.Budget,
+                BudgetUSD = result.Data.BudgetUSD,
                 BrandResponse = result.Data.BrandResponse,
                 GanttTaskId = result.Data.DeliverableId,
                 ExternalMaterial = result.Data.ExternalMaterial,
@@ -79,7 +79,7 @@ public partial class UpdateEquipment
         Model.SubType = response.SubType;
         Model.TagLetter = response.TagLetter;
         Model.Type = response.Type;
-        Model.Budget = response.Value;
+        Model.BudgetUSD = response.Value;
         Model.Nozzles = response.Nozzles.Select((row, index) => new NozzleResponse
         {
             Order = index + 1,

@@ -20,7 +20,7 @@ namespace Server.EndPoint.AcceptanceCriterias.Commands
                     await Repository.AddAsync(row);
 
                     Data.Map(row);
-                    List<string> cache = [.. StaticClass.AcceptanceCriterias.Cache.Key(row.Id)];
+                    List<string> cache = [.. StaticClass.AcceptanceCriterias.Cache.Key(row.Id, row.ProjectId)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 

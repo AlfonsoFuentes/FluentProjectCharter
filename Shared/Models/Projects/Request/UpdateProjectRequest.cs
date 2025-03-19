@@ -1,4 +1,6 @@
-﻿using Shared.Enums.ProjectNeedTypes;
+﻿using Shared.Enums.CostCenter;
+using Shared.Enums.Focuses;
+using Shared.Enums.ProjectNeedTypes;
 using Shared.Models.FileResults.Generics.Request;
 using Shared.Models.StakeHolders.Responses;
 using Shared.StaticClasses;
@@ -16,12 +18,12 @@ namespace Shared.Models.Projects.Request
         public double PercentageEngineering { get; set; }
         public double PercentageContingency { get; set; }
         public override string ClassName => StaticClass.Projects.ClassName;
-        public StakeHolderResponse Manager { get; set; } = null!;
-        public StakeHolderResponse Sponsor { get; set; } = null!;
+       
         public DateTime? InitialProjectDate { get; set; } = DateTime.Today;
-
-    
+        public FocusEnum Focus { get; set; } = FocusEnum.None;
+        public CostCenterEnum CostCenter { get; set; } = CostCenterEnum.None;
         public double PercentageTaxProductive { get; set; }
         public bool IsProductiveAsset { get; set; } = true;
+        public ProjectStatusEnum Status { get; set; } = ProjectStatusEnum.Created;
     }
 }

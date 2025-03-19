@@ -19,9 +19,9 @@ namespace Shared.Models.BudgetItems.IndividualItems.Equipments.Requests
 
         public override string ClassName => StaticClass.Equipments.ClassName;
 
-        public double Budget { get; set; }
+        public double BudgetUSD { get; set; }
 
-        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
+        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", BudgetUSD);
 
         public string Reference { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;

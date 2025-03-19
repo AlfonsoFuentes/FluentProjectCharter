@@ -15,7 +15,7 @@ namespace Server.EndPoint.Bennefits.Commands
 
 
                     List<string> cache = [
-                    ..StaticClass.Bennefits.Cache.Key(row.Id)];
+                    ..StaticClass.Bennefits.Cache.Key(row.Id, row.ProjectId)];
 
                     await Repository.RemoveAsync(row);
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());

@@ -15,7 +15,7 @@ namespace Server.EndPoint.Resources.Validators
                     Expression<Func<Resource, bool>> CriteriaId = x => x.ProjectId == Data.ProjectId;
                     Func<Resource, bool> CriteriaExist = x => Data.Id == null ?
                     x.Name.Equals(Data.Name) : x.Id != Data.Id.Value && x.Name.Equals(Data.Name);
-                    string CacheKey = StaticClass.Resources.Cache.GetAll;
+                    string CacheKey = StaticClass.Resources.Cache.GetAll(Data.ProjectId);
 
                     return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId);
                 });

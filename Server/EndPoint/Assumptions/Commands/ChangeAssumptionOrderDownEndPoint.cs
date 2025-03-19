@@ -49,7 +49,7 @@ namespace Server.EndPoint.Assumptions.Commands
             {
                 List<string> cacheKeys = [
                                
-                    .. StaticClass.Assumptions.Cache.Key(row.Id)
+                    .. StaticClass.Assumptions.Cache.Key(row.Id, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

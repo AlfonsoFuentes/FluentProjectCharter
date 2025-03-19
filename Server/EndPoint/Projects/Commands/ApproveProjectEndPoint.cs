@@ -42,8 +42,7 @@ namespace Server.EndPoint.Projects.Commands
             row.Name = request.Name;
             row.ProjectNeedType = request.ProjectNeedType.Name;
 
-            row.ManagerId = request.Manager == null ? null : request.Manager.Id;
-            row.SponsorId = request.Sponsor == null ? null : request.Sponsor.Id;
+          
             row.StartDate = request.InitialProjectDate == null ? null : request.InitialProjectDate.Value;
             row.Status = ProjectStatusEnum.Approved.Name;
             row.ProjectNumber = request.ProjectNumber;
@@ -51,6 +50,8 @@ namespace Server.EndPoint.Projects.Commands
             row.PercentageContingency = request.PercentageContingency;
             row.PercentageTaxProductive = request.PercentageTaxProductive;
             row.IsProductiveAsset = request.IsProductiveAsset;
+            row.CostCenter=request.CostCenter.Name;
+            row.Focus=request.Focus.Name;
             return row;
         }
 

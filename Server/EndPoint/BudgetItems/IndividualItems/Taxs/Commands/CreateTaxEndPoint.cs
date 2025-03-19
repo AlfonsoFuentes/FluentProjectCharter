@@ -77,7 +77,8 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Commands
         {
             row.Name = request.Name;
             row.Percentage = request.Percentage;
-            row.Budget = request.Budget;
+            row.BudgetUSD = request.BudgetUSD;
+            row.IsTaxes = true;
             return row;
         }
 

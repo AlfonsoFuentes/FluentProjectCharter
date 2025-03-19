@@ -1,0 +1,142 @@
+﻿@page "/UpdateProject/{Id:guid}"
+
+<FluentStack Orientation="Orientation.Vertical" VerticalGap="6" Style="width:100%">
+    <EditTemplate @ref=Form TItem="UpdateProjectRequest" @bind-Model=@Model GoBack=false Title="">
+        <Content>
+            <FluentStack Orientation="Orientation.Vertical">
+
+                <FluentStack Orientation="Orientation.Horizontal" Width="100%">
+                    <TextArea Label="Name"
+                              @bind-Value=@Model.Name
+                              Rows="5"
+                              Placeholder="Define name"
+                              Validate="Form.ValidateAsync"></TextArea>
+                    <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+                    <FluentStack Orientation="Orientation.Horizontal" Width="100%">
+                        <FluentStack Orientation="Orientation.Vertical" Width="100%">
+                            <SelectedListComponent Label="Select Focus"
+                                                   TValue="FocusEnum"
+                                                   Items="FocusEnum.List"
+                                                   @bind-Value=@Model.Focus
+                                                   OptionText="@(p => p.Name)"
+                                                   Validate="Form.ValidateAsync">
+                            </SelectedListComponent>
+                            <SelectedListComponent Label="Select Cost Center"
+                                                   TValue="CostCenterEnum"
+                                                   Items="CostCenterEnum.List"
+                                                   @bind-Value=@Model.CostCenter
+                                                   OptionText="@(p => p.Name)"
+                                                   Validate="Form.ValidateAsync">
+                            </SelectedListComponent>
+                        </FluentStack>
+                        <FluentStack Orientation="Orientation.Vertical" Width="100%">
+
+                            <SelectedListComponent Label="Select Project Need"
+                                                   TValue="ProjectNeedTypeEnum"
+                                                   Items="ProjectNeedTypeEnum.List"
+                                                   @bind-Value=@Model.ProjectNeedType
+                                                   OptionText="@(p => p.Name)"
+                                                   Validate="Form.ValidateAsync">
+                            </SelectedListComponent>
+                            <DatePickerComponent Label="Project Initial Date" @bind-Value=@Model.InitialProjectDate Validate="Form.ValidateAsync"></DatePickerComponent>
+                            <ValidationMessage For="() => Model.InitialProjectDate" style="color:red; font-size:x-small;" />
+
+                        </FluentStack>
+                    </FluentStack>
+
+
+                </FluentStack>
+
+                <FluentStack Orientation="Orientation.Horizontal" Width="100%" VerticalAlignment="VerticalAlignment.Bottom">
+                    <FluentStack Orientation="Orientation.Horizontal" Width="100%">
+                        <NumericDoubleComponent Validate="Form.ValidateAsync"
+                                                @bind-Value="@Model.PercentageEngineering"
+                                                Label="%Engineering" />
+                        <ValidationMessage For="() => Model.PercentageEngineering" style="color:red; font-size:x-small;" />
+                    </FluentStack>
+                    <FluentStack Orientation="Orientation.Horizontal" Width="100%">
+                        <NumericDoubleComponent Validate="Form.ValidateAsync"
+                                                @bind-Value="@Model.PercentageContingency"
+                                                Label="%Contingency" />
+                        <ValidationMessage For="() => Model.PercentageContingency" style="color:red; font-size:x-small;" />
+                    </FluentStack>
+                    <FluentStack Orientation="Orientation.Horizontal" Width="100%">
+                        <FluentCheckbox Label="Is Productive Asset?" @bind-Value=@Model.IsProductiveAsset></FluentCheckbox>
+                    </FluentStack>
+                    <FluentStack Orientation="Orientation.Horizontal" Width="100%">
+                        @if (!Model.IsProductiveAsset)
+                        {
+                            <NumericDoubleComponent Label="%Tax (VAT)" @bind-Value=@Model.PercentageTaxProductive Validate="Form.ValidateAsync"></NumericDoubleComponent>
+                            <ValidationMessage For="() => Model.PercentageTaxProductive" style="color:red; font-size:x-small;" />
+                        }
+                    </FluentStack>
+                </FluentStack>
+            </FluentStack>
+
+        </Content>
+
+    </EditTemplate>
+
+    @if (_loaded)
+    {
+        <StakeHolderInsideProjectTable ProjectId="@Model.Id"></StakeHolderInsideProjectTable>
+        <BackGroundTable ProjectId="@Model.Id"></BackGroundTable>
+        <ObjectiveTable ProjectId="@Model.Id"></ObjectiveTable>
+        <BennefitTable ProjectId="@Model.Id"></BennefitTable>
+        <ScopeTable ProjectId="@Model.Id"></ScopeTable>
+        <RequirementTable ProjectId="@Model.Id"></RequirementTable>
+        <AcceptanceCriteriaTable ProjectId="@Model.Id"></AcceptanceCriteriaTable>
+        <ConstrainstTable ProjectId="@Model.Id"></ConstrainstTable>
+        <AssumptionTable ProjectId="@Model.Id"></AssumptionTable>
+        <LearnedLessonTable ProjectId="@Model.Id"></LearnedLessonTable>
+        <ExpertJudgementTable ProjectId="@Model.Id"></ExpertJudgementTable>
+        <DeliverableTable ProjectId="@Model.Id"></DeliverableTable>
+        <TableDeliverableList ProjectId="@Model.Id"></TableDeliverableList>
+        <WbsChartSvg ProjectId="@Model.Id"></WbsChartSvg>
+        <BudgetItemsTable ProjectId="@Model.Id"></BudgetItemsTable>
+        <QualityTable ProjectId="@Model.Id"></QualityTable>
+        <KnownRiskTable ProjectId="@Model.Id"></KnownRiskTable>
+        <ResourceTable ProjectId="@Model.Id"></ResourceTable>
+        <CommunicationTable ProjectId="@Model.Id"></CommunicationTable>
+        <AcquisitionTable ProjectId="@Model.Id"></AcquisitionTable>
+    }
+</FluentStack>
+
+@code {
+    EditTemplate<UpdateProjectRequest> Form = null!;
+
+
+
+
+    // async Task ChangeSelectProjectNeed(ChangeEventArgs args)
+    // {
+    //     if (args == null) return;
+    //     Model.ProjectNeedType = ProjectNeedTypeEnum.GetType(args!.Value!.ToString()!);
+    //     await Form.ValidateAsync();
+    // }
+
+    // string? manager;
+    // async Task ChangeManager(ChangeEventArgs args)
+    // {
+    //     if (args == null || args.Value == null) return;
+    //     if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
+    //     {
+    //         Model.Manager = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
+    //         manager = args.Value.ToString();
+    //         await Form.ValidateAsync();
+    //     }
+
+    // }
+    // string? sponsor;
+    // async Task ChangeSponsor(ChangeEventArgs args)
+    // {
+    //     if (args == null || args.Value == null) return;
+    //     if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
+    //     {
+    //         Model.Sponsor = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
+    //         sponsor = args.Value.ToString();
+    //         await Form.ValidateAsync();
+    //     }
+
+    // }
+}

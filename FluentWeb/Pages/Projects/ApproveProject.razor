@@ -37,57 +37,12 @@
                         </FluentStack>
                     </FluentGridItem>
                     <FluentGridItem xs="12">
-                        <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="1" Width="100%">
-                            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="1" Width="100%">
-                                <FluentSelect TOption="StakeHolderResponse"
-                                              Label="Select a Manager"
-                                              Items="@StakeHolderResponseList.Items"
-                                              Id="people-listbox"
-                                              Width="60%"
-                                              Height="350px"
-                                              Immediate="true"
-                                              @onchange="ChangeManager"
-                                              Placeholder="Make a selection..."
-                                              OptionValue="@(p => p.Name)"
-                                              OptionText="@(p => p.Name)"
-                                              @bind-Value="@manager"
-                                              @bind-SelectedOption="@Model.Manager" />
-
-                                <FluentButton Id="addmanager" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@(()=>AddStakeHolder())">
-
-                                </FluentButton>
-                                <FluentTooltip Anchor="addmanager" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Manager</FluentTooltip>
-
-                            </FluentStack>
-                            <ValidationMessage For="() => Model.Manager" style="color:red; font-size:x-small;" />
-                        </FluentStack>
+                  
                     </FluentGridItem>
                     <FluentGridItem xs="12">
                         <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="1" Width="100%">
 
-                            <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="1" Width="100%">
-                                <FluentSelect TOption="StakeHolderResponse"
-                                              Label="Select a Sponsor"
-                                              Items="@StakeHolderResponseList.Items"
-                                              Id="people-listbox"
-                                              Width="60%"
-                                              Height="350px"
-                                              Immediate="true"
-                                              @onchange="ChangeSponsor"
-                                              Placeholder="Make a selection..."
-                                              OptionValue="@(p => p.Name)"
-                                              OptionText="@(p => p.Name)"
-                                              @bind-Value="@sponsor"
-                                              @bind-SelectedOption="@Model.Sponsor" />
-
-                                <FluentButton Id="addsponsor" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@(()=>AddStakeHolder())">
-
-                                </FluentButton>
-                                <FluentTooltip Anchor="addsponsor" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Sponsor</FluentTooltip>
-
-
-                            </FluentStack>
-                            <ValidationMessage For="() => Model.Sponsor" style="color:red; font-size:x-small;" />
+                        
 
                         </FluentStack>
                     </FluentGridItem>
@@ -149,28 +104,6 @@
         await Form.ValidateAsync();
     }
    
-    string? manager;
-    async Task ChangeManager(ChangeEventArgs args)
-    {
-        if (args == null || args.Value == null) return;
-        if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
-        {
-            Model.Manager = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
-            manager = args.Value.ToString();
-            await Form.ValidateAsync();
-        }
 
-    }
-    string? sponsor;
-    async Task ChangeSponsor(ChangeEventArgs args)
-    {
-        if (args == null || args.Value == null) return;
-        if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
-        {
-            Model.Sponsor = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
-            sponsor = args.Value.ToString();
-            await Form.ValidateAsync();
-        }
-
-    }
+   
 }

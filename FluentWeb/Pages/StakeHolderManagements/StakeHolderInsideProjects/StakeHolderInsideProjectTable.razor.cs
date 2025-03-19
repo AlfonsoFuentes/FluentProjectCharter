@@ -1,13 +1,14 @@
 using FluentWeb.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.FluentUI.AspNetCore.Components;
 using Shared.Enums.StakeHolderTypes;
+using Shared.Enums.TasksRelationTypes;
 using Shared.Models.Projects.Mappers;
 using Shared.Models.StakeHolderInsideProjects.Mappers;
 using Shared.Models.StakeHolderInsideProjects.Records;
 using Shared.Models.StakeHolderInsideProjects.Requests;
 using Shared.Models.StakeHolderInsideProjects.Responses;
 using Shared.Models.StakeHolders.Responses;
-using Shared.StaticClasses;
 using Web.Infrastructure.Managers.StakeHolders;
 using static Shared.StaticClasses.StaticClass;
 
@@ -25,7 +26,10 @@ public partial class StakeHolderInsideProjectTable
     private IStakeHolderService StakeHolderService { get; set; }
     StakeHolderResponseList StakeHolderResponseList = new();
 
-
+    string nameFilter { get; set; } = string.Empty;
+    Func<StakeHolderInsideProjectResponse, bool> fiterexpresion => x =>
+      x.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase);
+    public List<StakeHolderInsideProjectResponse> FilteredItems => Items.Count == 0 ? new() : Items.Where(fiterexpresion).ToList();
     async Task UpdateStakeHolder()
     {
         var result = await StakeHolderService.GetAll();
@@ -40,15 +44,18 @@ public partial class StakeHolderInsideProjectTable
         }
     }
 
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnParametersSetAsync()
     {
+        if (ProjectId == Guid.Empty) return;
+
         await UpdateStakeHolder();
-
-        await GetAll();
-
-
+        await LoadFromLocalStorage();
+        if (Items == null)
+        {
+            await GetAll();
+        }
     }
-   
 
     StakeHolderInsideProjectResponse CreateRow = null!;
     StakeHolderInsideProjectResponse EditRow = null!;
@@ -57,14 +64,16 @@ public partial class StakeHolderInsideProjectTable
 
     async Task GetAll()
     {
+
         var result = await GenericService.GetAll<StakeHolderInsideProjectResponseList, StakeHolderInsideProjectGetAll>(
             new StakeHolderInsideProjectGetAll() { ProjectId = ProjectId });
         if (result.Succeeded)
         {
             Items = result.Data.Items;
 
-            GetSelectedRowFromItems();
+
         }
+        GetSelectedRowFromItems();
     }
 
     void AddNew()
@@ -75,9 +84,9 @@ public partial class StakeHolderInsideProjectTable
             ProjectId = ProjectId,
         };
         //Si EditRow esta creada se desaparece Editrow 
-        stakeHolder = string.Empty;
+        //stakeHolder = string.Empty;
         EditRow = null!;
-        Items.Add(CreateRow);
+        Items.Insert(0, CreateRow);
     }
     public async Task Create()
     {
@@ -89,6 +98,10 @@ public partial class StakeHolderInsideProjectTable
             CreateRow = null;
             await GetAll();
 
+        }
+        else
+        {
+            _snackBar.ShowError(result.Messages);
         }
     }
     void CancelCreate()
@@ -103,23 +116,17 @@ public partial class StakeHolderInsideProjectTable
         if (EditRow == null) return;
         EditRow = null;
     }
-    private void HandleRowClick(StakeHolderInsideProjectResponse row)
+    private void HandleRowClick(FluentDataGridRow<StakeHolderInsideProjectResponse> row)
     {
-        SelectedRow = row == null ? null : SelectedRow == null ? row : SelectedRow.Id == row.Id ? SelectedRow : row;
+        SelectedRow = row.Item == null ? null : SelectedRow == null ? row.Item : SelectedRow.Id == row.Item.Id ? SelectedRow : row.Item;
         //Si EditRow es diferente al seleccionado se vuelve null para desaparecer la caja de texto
         EditRow = EditRow == null ? null : SelectedRow == null ? null : EditRow.Id != SelectedRow.Id ? null : EditRow;
 
 
 
     }
-    private void HandleRowDoubleClick(StakeHolderInsideProjectResponse row)
-    {
-        EditRow = row == null ? null : SelectedRow == null ? row : SelectedRow.Id == row.Id ? SelectedRow : row;
-        stakeHolder = EditRow == null ? string.Empty : EditRow.StakeHolder == null ? string.Empty : EditRow.StakeHolder.Name;
-        //Si CreateRow esta creada se elimina del listado y se vueleve null
-        CancelCreate();
+   
 
-    }
     async Task Update(StakeHolderInsideProjectResponse model)
     {
 
@@ -130,6 +137,10 @@ public partial class StakeHolderInsideProjectTable
             await GetAll();
             EditRow = null!;
         }
+        else
+        {
+            _snackBar.ShowError(result.Messages);
+        }
     }
 
     bool DisableSaveButton(StakeHolderInsideProjectResponse model)
@@ -137,17 +148,22 @@ public partial class StakeHolderInsideProjectTable
         return model.StakeHolder == null || model.Role.Id == StakeHolderRoleEnum.None.Id;
 
     }
-
+    void Edit(StakeHolderInsideProjectResponse model)
+    {
+        EditRow = model;
+        SelectedRow = null;
+        CreateRow = null;
+    }
 
 
     void GetSelectedRowFromItems()
     {
         SelectedRow = SelectedRow == null ? null : Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
     }
-    public async Task Delete()
+    public async Task Delete(StakeHolderInsideProjectResponse response)
     {
-        if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+
+        var dialog = await DialogService.ShowWarningAsync($"Delete {response.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -157,8 +173,9 @@ public partial class StakeHolderInsideProjectTable
         {
             DeleteStakeHolderInsideProjectRequest request = new()
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = response.Id,
+                Name = response.Name,
+                ProjectId = ProjectId
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)
@@ -175,11 +192,43 @@ public partial class StakeHolderInsideProjectTable
         }
 
     }
+
     void AddStakeHolder()
     {
-        Navigation.NavigateTo(StaticClass.StakeHolders.PageName.Create);
+        SaveModelToLocalStorage().ContinueWith(_ =>
+        {
+            Navigation.NavigateTo("/CreateStakeHolder");
+        });
     }
-    
-   
+    private async Task SaveModelToLocalStorage()
+    {
+        await _localModelStorage.SaveToLocalStorage(Items);
+    }
+    async Task LoadFromLocalStorage()
+    {
+        Items = await _localModelStorage.LoadFromLocalStorage(Items) ?? null!;
+    }
+    void OnChangeStakeHolderInsideProject(ChangeEventArgs e, StakeHolderInsideProjectResponse response)
+    {
+        if (Guid.TryParse(e.Value?.ToString(), out Guid selectedId))
+        {
+            var selected = StakeHolderResponseList.Items.First(x => x.Id == selectedId);
+            response.StakeHolder = selected;
+        }
+
+
+
+    }
+    void OnChangeRole(ChangeEventArgs e, StakeHolderInsideProjectResponse response)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int selectedId))
+        {
+            var selected = StakeHolderRoleEnum.List.First(x => x.Id == selectedId);
+            response.Role = selected;
+        }
+
+
+
+    }
 
 }

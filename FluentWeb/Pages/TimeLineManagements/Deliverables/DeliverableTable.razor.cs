@@ -1,6 +1,7 @@
 using FluentWeb.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Shared.Models.AcceptanceCriterias.Responses;
 using Shared.Models.Deliverables.Mappers;
 using Shared.Models.Deliverables.Records;
 using Shared.Models.Deliverables.Requests;
@@ -18,10 +19,10 @@ public partial class DeliverableTable
 
     [Parameter]
     public Guid Id { get; set; }
-   
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnParametersSetAsync()
     {
-     
+        if (ProjectId == Guid.Empty) return;
         await GetAll();
     }
 
@@ -129,10 +130,16 @@ public partial class DeliverableTable
     {
         SelectedRow = SelectedRow == null ? null : Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
     }
-    public async Task Delete()
+    void Edit(DeliverableResponse model)
     {
-        if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+        EditRow = model;
+        SelectedRow = null;
+        CreateRow = null;
+    }
+    public async Task Delete(DeliverableResponse model)
+    {
+        
+        var dialog = await DialogService.ShowWarningAsync($"Delete {model.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -142,8 +149,9 @@ public partial class DeliverableTable
         {
             DeleteDeliverableRequest request = new()
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = model.Id,
+                Name = model.Name,
+                 ProjectId=ProjectId,
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

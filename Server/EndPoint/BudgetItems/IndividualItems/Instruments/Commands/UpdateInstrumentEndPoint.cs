@@ -96,7 +96,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Instruments.Commands
                     equipmentTemplate.Reference = Data.Reference;
                     equipmentTemplate.Material = Data.Material.Name;
                     equipmentTemplate.SignalType = Data.SignalType.Name;
-                    equipmentTemplate.Value = Data.Budget;
+                    equipmentTemplate.Value = Data.BudgetUSD;
                     foreach (var nozzle in Data.Nozzles)
                     {
                         var nozzleTemplate = NozzleTemplate.Create(equipmentTemplate.Id);
@@ -149,7 +149,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Instruments.Commands
             row.TagLetter = request.TagLetter;
             row.TagNumber = request.TagNumber;
             row.IsExisting = request.IsExisting;
-            row.Budget = request.Budget;
+            row.BudgetUSD = request.BudgetUSD;
             row.ProvisionalTag = request.ProvisionalTag;
             return row;
         }

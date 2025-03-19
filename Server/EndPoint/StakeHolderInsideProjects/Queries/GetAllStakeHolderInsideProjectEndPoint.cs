@@ -21,7 +21,7 @@ namespace Server.EndPoint.StakeHolderInsideProjects.Queries
 
 
 
-                    string CacheKey = StaticClass.StakeHolderInsideProjects.Cache.GetAll;
+                    string CacheKey = StaticClass.StakeHolderInsideProjects.Cache.GetAll(request.ProjectId);
                     var rows = await Repository.GetAsync(Cache: CacheKey, Criteria: Criteria, Includes: Includes);
 
                     if (rows == null)

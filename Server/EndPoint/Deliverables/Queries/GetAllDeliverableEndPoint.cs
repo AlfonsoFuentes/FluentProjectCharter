@@ -13,7 +13,7 @@ namespace Server.EndPoint.Deliverables.Queries
                 {
                     Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x.Include(p => p.Deliverables);
                     Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
-                    string cacheKey = StaticClass.Deliverables.Cache.GetAll;
+                    string cacheKey = StaticClass.Deliverables.Cache.GetAll(request.ProjectId);
 
                     var rows = await repository.GetAsync(Cache: cacheKey, Includes: includes, Criteria: criteria);
 
@@ -39,7 +39,7 @@ namespace Server.EndPoint.Deliverables.Queries
             {
 
                 Expression<Func<Deliverable, bool>> criteria = x => x.ProjectId == request.ProjectId;
-                string cacheKey = StaticClass.Deliverables.Cache.GetAll;
+                string cacheKey = StaticClass.Deliverables.Cache.GetAll(request.ProjectId);
 
                 return await repository.GetAllAsync(Cache: cacheKey, Criteria: criteria);
             }

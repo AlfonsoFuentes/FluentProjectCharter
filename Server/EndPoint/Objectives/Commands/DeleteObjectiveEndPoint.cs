@@ -30,7 +30,7 @@ namespace Server.EndPoint.Objectives.Commands
             private string[] GetCacheKeys(Objective row)
             {
                 List<string> cacheKeys = [
-                    .. StaticClass.Objectives.Cache.Key(row.Id),
+                    .. StaticClass.Objectives.Cache.Key(row.Id, row.ProjectId),
              
 
                 ];

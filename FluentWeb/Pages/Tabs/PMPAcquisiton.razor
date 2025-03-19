@@ -2,6 +2,13 @@
     <StartContent>
         <FluentAnchor Href="@($"Acquisitions/{Project.Id}")" Appearance="Appearance.Hypertext">Acquisitions</FluentAnchor>
     </StartContent>
+    <ExecutionContent>
+        @if (Project.Status.Id == ProjectStatusEnum.Approved.Id)
+        {
+            <FluentAnchor Href="@($"BudgetItemsWithPurchaseOrders/{Project.Id}")" Appearance="Appearance.Hypertext">Purchase Orders</FluentAnchor>
+        }
+      
+    </ExecutionContent>
   
 </MatrixRow>
 

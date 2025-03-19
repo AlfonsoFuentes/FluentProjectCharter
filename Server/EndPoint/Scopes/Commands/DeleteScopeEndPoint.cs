@@ -29,7 +29,7 @@ namespace Server.EndPoint.Scopes.Commands
             {
                 List<string> cacheKeys = [
                    
-                    .. StaticClass.Scopes.Cache.Key(row.Id),
+                    .. StaticClass.Scopes.Cache.Key(row.Id, row.ProjectId),
                  
 
                 ];

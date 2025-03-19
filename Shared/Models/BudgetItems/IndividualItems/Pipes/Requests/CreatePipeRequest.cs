@@ -20,8 +20,8 @@ namespace Shared.Models.BudgetItems.IndividualItems.Pipes.Requests
         public override string ClassName => StaticClass.Pipes.ClassName;
 
         double BudgetCalculated => materialQuantity * equivalentLenghPrice + laborDayPrice * laborQuantity;
-        public double Budget { get; set; }
-        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
+        public double BudgetUSD { get; set; }
+        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", BudgetUSD);
         public string Nomenclatore { get; set; } = string.Empty;
         public BrandResponse BrandResponse { get; set; } = new();
         public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
@@ -45,7 +45,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Pipes.Requests
             {
                 materialQuantity = value;
                 if (ShowDetails)
-                    Budget = BudgetCalculated;
+                    BudgetUSD = BudgetCalculated;
             }
         }
         public double LaborDayPrice
@@ -55,7 +55,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Pipes.Requests
             {
                 laborDayPrice = value;
                 if (ShowDetails)
-                    Budget = BudgetCalculated;
+                    BudgetUSD = BudgetCalculated;
             }
         }
         public double EquivalentLenghPrice
@@ -65,7 +65,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Pipes.Requests
             {
                 equivalentLenghPrice = value;
                 if (ShowDetails)
-                    Budget = BudgetCalculated;
+                    BudgetUSD = BudgetCalculated;
             }
         }
         public double LaborQuantity
@@ -75,7 +75,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Pipes.Requests
             {
                 laborQuantity = value;
                 if (ShowDetails)
-                    Budget = BudgetCalculated;
+                    BudgetUSD = BudgetCalculated;
             }
         }
         public NominalDiameterEnum Diameter { get; set; } = NominalDiameterEnum.None;

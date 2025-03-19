@@ -13,8 +13,7 @@ namespace Server.EndPoint.StakeHolders.Commands
                 {
                     Func<IQueryable<StakeHolder>, IIncludableQueryable<StakeHolder, object>> Includes = x => x
                    
-                     .Include(x => x.Managers)
-                     .Include(x => x.Sponsors)
+                    
                       .Include(x => x.MeetingAttendants)
                       .Include(x => x.Judgements)
                       .Include(x => x.RequirementRequestedBys)
@@ -24,16 +23,7 @@ namespace Server.EndPoint.StakeHolders.Commands
                     var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
                     if (row == null) { return Result.Fail(Data.NotFound); }
 
-                    foreach (var rowintem in row.Managers)
-                    {
-                        rowintem.ManagerId=null;
-                        await Repository.UpdateAsync(rowintem);
-                    }
-                    foreach (var rowintem in row.Sponsors)
-                    {
-                        rowintem.SponsorId = null;
-                        await Repository.UpdateAsync(rowintem);
-                    }
+                   
                     foreach (var rowintem in row.MeetingAttendants)
                     {
                         rowintem.StakeHolderId = null;

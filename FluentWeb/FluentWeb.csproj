@@ -7,15 +7,8 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-	  <Content Remove="SharedComponents\EditableSelectField.razor" />
 	  <Content Remove="wwwroot\Assets\CPLogo.png" />
 	  <Content Remove="wwwroot\Assets\PMLogo.png" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <EmbeddedResource Include="SharedComponents\EditableSelectField.razor">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>

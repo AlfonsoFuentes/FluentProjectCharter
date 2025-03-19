@@ -7,7 +7,7 @@ namespace Shared.Models.PurchaseOrders.Responses
 {
     public class PurchaseOrderResponse : BaseResponse
     {
-        public ProjectResponsePurchaseorder Project { get; set; } = null!;
+      
         public SupplierResponse Supplier { get; set; } = null!;     
         public CurrencyEnum PurchaseOrderCurrency { get; set; } = CurrencyEnum.None;
       
@@ -29,10 +29,6 @@ namespace Shared.Models.PurchaseOrders.Responses
         public bool IsCapitalizedSalary { get; set; } = false;
         public bool IsTaxEditable { get; set; } = false;
 
-    }
-    public class ProjectResponsePurchaseorder
-    {
-        public string ProjectNumber { get; set; } = string.Empty;
-        public Guid ProjectId { get; set; } 
+        public List<PurchaseOrderItemResponse> PurchaseOrderItems { get; set; } = new();
     }
 }

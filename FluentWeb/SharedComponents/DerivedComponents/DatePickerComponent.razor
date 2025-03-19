@@ -1,0 +1,42 @@
+﻿<FluentStack Orientation="Orientation.Vertical" Width="100%">
+    <FluentLabel Typo="Typography.Body"><strong>@Label</strong></FluentLabel>
+
+    <FluentDatePicker Value="@Value"
+                      ValueChanged="@OnValueChanged"
+                      Style="width: 100%;"
+                      Placeholder="@PlaceHolder"
+                      Immediate=true
+                      Disabled="@Disable" />
+
+
+</FluentStack>
+
+@code {
+
+    [Parameter]
+    public bool Disable { get; set; } = false;
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+    [Parameter]
+    public string PlaceHolder { get; set; } = string.Empty;
+    [Parameter]
+    public DateTime? Value { get; set; } = DateTime.UtcNow;
+    [Parameter]
+    public EventCallback<DateTime?> ValueChanged { get; set; }
+    [Parameter]
+
+    public EventCallback Validate { get; set; }
+
+    [Parameter]
+    public EventCallback<DateTime?> Change { get; set; }
+
+    public async Task OnValueChanged(DateTime? value)
+    {
+        Value = value;
+        await ValueChanged.InvokeAsync(Value);
+
+        if (Change.HasDelegate) await Change.InvokeAsync(Value);
+        if (Validate.HasDelegate) await Validate.InvokeAsync();
+
+    }
+}

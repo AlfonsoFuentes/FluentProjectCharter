@@ -59,7 +59,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Queries
         {
             return new()
             {
-                Budget = row.Budget,
+                Budget = row.BudgetUSD,
                 BudgetItemId = row.Id,
 
                 Name = row.Name,

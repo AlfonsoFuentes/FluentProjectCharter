@@ -68,8 +68,11 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Pipes.Queries
                 FluidCode = row.FluidCode == null ? null : row.FluidCode.Map(),
                 PipeClass = row.PipeTemplate == null ? PipeClassEnum.None : PipeClassEnum.GetType(row.PipeTemplate.Class),
                 FluidCodefromDB = row.FluidCodeCode,
-                Budget = row.Budget,
+                BudgetUSD = row.BudgetUSD,
                 IsExisting = row.IsExisting,
+                ActualUSD = row.ActualUSD,
+                CommitmentUSD = row.CommitmentUSD,
+                PotentialUSD = row.PotentialUSD,
 
 
             };

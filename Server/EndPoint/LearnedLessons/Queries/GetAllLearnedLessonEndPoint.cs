@@ -36,7 +36,7 @@ namespace Server.EndPoint.LearnedLessons.Queries
             {
                 Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x.Include(p => p.LearnedLessons);
                 Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
-                string cacheKey = StaticClass.LearnedLessons.Cache.GetAll;
+                string cacheKey = StaticClass.LearnedLessons.Cache.GetAll(request.ProjectId);
 
                 return await repository.GetAsync(Cache: cacheKey, Includes: includes, Criteria: criteria);
             }

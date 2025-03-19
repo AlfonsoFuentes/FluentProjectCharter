@@ -24,7 +24,7 @@ namespace Server.EndPoint.StakeHolderInsideProjects.Commands
 
                     await Repository.UpdateAsync(project);
 
-                    List<string> cache = [.. StaticClass.StakeHolders.Cache.Key(stakeholder.Id)];
+                    List<string> cache = [.. StaticClass.StakeHolderInsideProjects.Cache.Key(stakeholder.Id,project.Id)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
                     return Result.EndPointResult(result,

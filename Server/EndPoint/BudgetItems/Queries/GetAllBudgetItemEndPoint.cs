@@ -3,7 +3,6 @@ using Shared.Models.BudgetItems.Responses;
 using Server.EndPoint.BudgetItems.IndividualItems.Valves.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Alterations.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Structurals.Queries;
-using Server.EndPoint.BudgetItems.IndividualItems.Foundations.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Equipments.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Electricals.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Pipes.Queries;
@@ -14,6 +13,8 @@ using Server.EndPoint.BudgetItems.IndividualItems.Taxs.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Testings.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Queries;
 using Server.EndPoint.Communications.Queries;
+using Server.EndPoint.BudgetItems.IndividualItems.Contingencys.Queries;
+using Shared.Enums.CostCenter;
 
 namespace Server.EndPoint.BudgetItems.Queries
 {
@@ -56,7 +57,8 @@ namespace Server.EndPoint.BudgetItems.Queries
                         PercentageContingency = row.PercentageContingency,
                         PercentageEngineering = row.PercentageEngineering,
                         PercentageTaxes = row.PercentageTaxProductive,
-                        
+                        CostCenter=CostCenterEnum.GetTypeByName(row.CostCenter),
+                        ProjectNumber =$"CEC0000{row.ProjectNumber}" ,
                     };
 
 

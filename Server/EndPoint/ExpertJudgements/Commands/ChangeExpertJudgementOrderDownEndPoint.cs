@@ -50,7 +50,7 @@ namespace Server.EndPoint.ExpertJudgements.Commands
                 List<string> cacheKeys = [
                   
                
-                    .. StaticClass.ExpertJudgements.Cache.Key(row.Id)
+                    .. StaticClass.ExpertJudgements.Cache.Key(row.Id, row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

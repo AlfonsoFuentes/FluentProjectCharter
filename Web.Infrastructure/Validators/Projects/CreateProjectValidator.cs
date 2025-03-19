@@ -19,8 +19,7 @@ namespace Web.Infrastructure.Validators.Projects
             RuleFor(x => x.Status).Must(ReviewProjeStatus).WithMessage("Status must be defined!");
             RuleFor(x => x.PercentageContingency).GreaterThan(0).WithMessage("%Contingency must be defined!");
             RuleFor(x => x.PercentageEngineering).GreaterThan(0).WithMessage("%Engineering must be defined!");
-            RuleFor(x => x.Sponsor).NotNull().WithMessage("Sponsor must be defined!");
-            RuleFor(x => x.Manager).NotNull().WithMessage("Manager must be defined!");
+          
             RuleFor(x => x.InitialProjectDate).NotNull().WithMessage("Initial project date must be defined!");
             RuleFor(x => x.PercentageTaxProductive).GreaterThan(0).When(x => x.IsProductiveAsset == false).WithMessage("%Tax (VAT) must be defined!");
 
@@ -60,9 +59,8 @@ namespace Web.Infrastructure.Validators.Projects
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
             RuleFor(x => x.InitialProjectDate).NotNull().WithMessage("Initial project date must be defined!");
             RuleFor(x => x.ProjectNeedType).Must(ReviewProjecNeedType).WithMessage("Type must be defined!");
-            RuleFor(x => x.Sponsor).NotNull().WithMessage("Sponsor must be defined!");
-            RuleFor(x => x.Manager).NotNull().WithMessage("Manager must be defined!");
-            RuleFor(x => x.Manager).NotNull().WithMessage("Initial project date must be defined!");
+            
+    
             
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
                 .When(x => !string.IsNullOrEmpty(x.Name))
@@ -100,9 +98,7 @@ namespace Web.Infrastructure.Validators.Projects
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
             RuleFor(x => x.InitialProjectDate).NotNull().WithMessage("Initial project date must be defined!");
             RuleFor(x => x.ProjectNeedType).Must(ReviewProjecNeedType).WithMessage("Type must be defined!");
-            RuleFor(x => x.Sponsor).NotNull().WithMessage("Sponsor must be defined!");
-            RuleFor(x => x.Manager).NotNull().WithMessage("Manager must be defined!");
-            RuleFor(x => x.Manager).NotNull().WithMessage("Initial project date must be defined!");
+           
             RuleFor(x => x.ProjectNumber).Matches("^[0-9]*$").WithMessage("Project Number must be number!");
             RuleFor(x => x.ProjectNumber).NotNull().WithMessage("Project Number must be defined");
             RuleFor(x => x.ProjectNumber).NotEmpty().WithMessage("Project Number must be defined");

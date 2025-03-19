@@ -52,6 +52,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="EndPoint\PurchaseOrders\Commands\" />
+    <Folder Include="EndPoint\PurchaseOrders\Queries\" />
     <Folder Include="EndPoint\StakeHolderInsideProjects\Validators\" />
   </ItemGroup>
 

@@ -1,6 +1,7 @@
 using FluentWeb.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Shared.Models.Backgrounds.Responses;
 using Shared.Models.Objectives.Mappers;
 using Shared.Models.Objectives.Records;
 using Shared.Models.Objectives.Requests;
@@ -29,9 +30,9 @@ public partial class ObjectiveTable
     bool DisableUpButton => SelectedRow == null ? true : SelectedRow.Order == 1;
     bool DisableDownButton => SelectedRow == null ? true : SelectedRow.Order == LastOrder;
     public int LastOrder => Items.Count == 0 ? 1 : Items.MaxBy(x => x.Order).Order;
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-       
+        if (ProjectId == Guid.Empty) return;
         await GetAll();
     }
 
@@ -104,7 +105,12 @@ public partial class ObjectiveTable
         CancelCreate();
 
     }
-
+    void Edit(ObjectiveResponse model)
+    {
+        EditRow = model;
+        SelectedRow = null;
+        CreateRow = null;
+    }
 
     async Task Update(ObjectiveResponse model)
     {
@@ -121,10 +127,10 @@ public partial class ObjectiveTable
     {
         SelectedRow = SelectedRow == null ? null : Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
     }
-    public async Task Delete()
+    public async Task Delete(ObjectiveResponse response)
     {
-        if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+   
+        var dialog = await DialogService.ShowWarningAsync($"Delete {response.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -134,8 +140,9 @@ public partial class ObjectiveTable
         {
             DeleteObjectiveRequest request = new()
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = response.Id,
+                Name = response.Name,
+                 ProjectId = response.ProjectId,
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)

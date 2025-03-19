@@ -14,7 +14,9 @@ namespace Server.Database.Entities.BudgetItems
         public string TenantId { get; set; } = string.Empty;
 
         public virtual string Letter { get; set; } = string.Empty;
-        public virtual double Budget { get; set; }
+        public virtual double BudgetUSD { get; set; }
+        public bool IsAlteration { get; set; } = false;
+        public bool IsTaxes { get; set; } = false;
         public Project Project { get; set; } = null!;
         public Guid ProjectId { get; set; }
 
@@ -33,6 +35,10 @@ namespace Server.Database.Entities.BudgetItems
 
         [NotMapped]
         public string NomenclatoreName => $"{Nomenclatore}-{Name}";
+
+        public double ActualUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.ActualUSD);
+        public double CommitmentUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.CommitmentUSD);
+        public double PotentialUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.PotentialCommitmentUSD);
     }
 
 }

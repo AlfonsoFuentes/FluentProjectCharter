@@ -29,7 +29,7 @@ namespace Server.EndPoint.ExpertJudgements.Commands
             private string[] GetCacheKeys(ExpertJudgement row)
             {
                 List<string> cacheKeys = [
-                    StaticClass.ExpertJudgements.Cache.GetAll
+                    StaticClass.ExpertJudgements.Cache.GetAll(row.ProjectId)
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

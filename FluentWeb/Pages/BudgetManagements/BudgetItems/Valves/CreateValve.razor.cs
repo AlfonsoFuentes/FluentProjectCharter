@@ -68,7 +68,7 @@ public partial class CreateValve
             NominalDiameter = row.NominalDiameter,
             NozzleType = row.NozzleType
         }).ToList();
-        Model.Budget = response.Value;
+        Model.BudgetUSD = response.Value;
         SelectedBrand = Model.Brand;
         StateHasChanged();
     }

@@ -7,7 +7,7 @@ using Shared.Models.GanttTasks.Responses;
 namespace FluentWeb.Pages.TimeLineManagements.WBSSVGs;
 public partial class WbsChartSvg
 {
- 
+
 
     async Task GetAll()
     {
@@ -27,14 +27,15 @@ public partial class WbsChartSvg
         }
 
     }
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
+        if (ProjectId == Guid.Empty) return;
         await GetAll();
     }
     [Parameter]
     public Guid ProjectId { get; set; }
 
-    [Parameter]
+
     public DeliverableWithGanttTaskResponseList Data { get; set; } = null!;
 
     private int paddingX = 80; // Espaciado horizontal entre deliverables
@@ -51,7 +52,7 @@ public partial class WbsChartSvg
             dotNetHelper = DotNetObjectReference.Create(this);
 
             // Obtener el ancho inicial de la pantalla
-            screenWidth = await JSRuntime.InvokeAsync<int>("getScreenWidth");
+            screenWidth = await JSRuntime.InvokeAsync<int>("getScreenWidth") - 200;
 
             // Configurar el listener de cambio de tamaño
             await JSRuntime.InvokeVoidAsync("setupResizeListener", dotNetHelper);
@@ -63,7 +64,7 @@ public partial class WbsChartSvg
     [JSInvokable]
     public void UpdateScreenWidth(int newWidth)
     {
-        screenWidth = newWidth;
+        screenWidth = newWidth - 100;
         StateHasChanged(); // Forzar actualización del componente
     }
 
@@ -90,7 +91,7 @@ public partial class WbsChartSvg
             totalHeight = Math.Max(totalHeight, GetNodeHeight(deliverable) + 10); // Tomar la altura máxima
         }
 
-        return totalHeight;
+        return totalHeight + 100;
     }
 
     private int GetNodeHeight(DeliverableWithGanttTaskResponse node)

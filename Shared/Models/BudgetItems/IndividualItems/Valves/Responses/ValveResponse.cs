@@ -10,19 +10,14 @@ using System.Globalization;
 
 namespace Shared.Models.BudgetItems.IndividualItems.Valves.Responses
 {
-    public class ValveResponse : BaseResponse, IBudgetItemResponse
+    public class ValveResponse : BudgetItemWithPurchaseOrdersResponse
     {
-        public bool Selected { get; set; }
+     
         public Guid DeliverableId { get; set; }
-        public Guid ProjectId { get; set; }
 
-        public double Budget { get; set; }
 
-        public string sBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", Budget);
-
-        public string Nomenclatore { get; set; } = string.Empty;
-
-        public string UpadtePageName { get; set; } = StaticClass.Valves.PageName.Update;
+    
+        public override string UpadtePageName { get; set; } = StaticClass.Valves.PageName.Update;
 
         public string Model { get; set; } = string.Empty;
         public MaterialEnum Material { get; set; } = MaterialEnum.None;
@@ -36,7 +31,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Valves.Responses
         public ValveTypesEnum Type { get; set; } = ValveTypesEnum.None;
 
         public string TagNumber { get; set; } = string.Empty;
-        public string Tag => ShowProvisionalTag ? ProvisionalTag : !string.IsNullOrEmpty(TagLetter)
+        public override string Tag => ShowProvisionalTag ? ProvisionalTag : !string.IsNullOrEmpty(TagLetter)
                && !string.IsNullOrEmpty(TagNumber) ? $"{TagLetter}-{TagNumber}" : string.Empty;
 
 
@@ -49,5 +44,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Valves.Responses
         public bool IsExisting { get; set; }
         public string ProvisionalTag {  get; set; } = string.Empty;
         public bool ShowProvisionalTag { get; set; } = false;
+
+       
     }
 }

@@ -56,7 +56,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Commands
             row.UnitaryCost = request.UnitaryCost;
             row.CostCenter = request.CostCenter.Name;
             row.Quantity = request.Quantity;
-            row.Budget = request.Budget;
+            row.BudgetUSD = request.BudgetUSD;
 
             return row;
         }

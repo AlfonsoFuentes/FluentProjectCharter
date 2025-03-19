@@ -1,0 +1,12 @@
+﻿<FluentStack Orientation="Orientation.Vertical" Width="100%">
+    <FluentLabel Typo="Typography.Body"><strong>@Label</strong></FluentLabel>
+    <FluentLabel Typo="Typography.Body">@Value</FluentLabel>
+
+</FluentStack>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+    [Parameter]
+    public string Value { get; set; } = string.Empty;
+}

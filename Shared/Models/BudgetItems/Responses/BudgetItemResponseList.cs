@@ -1,4 +1,5 @@
-﻿using Shared.Models.BudgetItems.IndividualItems.Alterations.Responses;
+﻿using Shared.Enums.CostCenter;
+using Shared.Models.BudgetItems.IndividualItems.Alterations.Responses;
 using Shared.Models.BudgetItems.IndividualItems.EHSs.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Electricals.Responses;
 using Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Responses;
@@ -17,7 +18,7 @@ namespace Shared.Models.BudgetItems.Responses
 {
     public class BudgetItemResponseList : IResponseAll
     {
-
+        public string ProjectNumber { get; set; } = string.Empty;
         public string ProjectName { get; set; } = string.Empty;
         public List<AlterationResponse> Alterations { get; set; } = new();
         public List<FoundationResponse> Foundations { get; set; } = new();
@@ -38,15 +39,15 @@ namespace Shared.Models.BudgetItems.Responses
 
         public List<IBudgetItemResponse> Items => BudgetItems.OrderBy(x => x.Nomenclatore).ToList();
         public List<IBudgetItemResponse> BudgetItems => [.. Expenses, .. Capital];
-        public double TotalCapital => Capital.Sum(x => x.Budget) + TaxesBudget;
+        public double TotalCapital => Capital.Sum(x => x.BudgetUSD) + TaxesBudget;
 
-        public double TotalCapitalWithOutVAT => Capital.Sum(x => x.Budget);
-        public double TotalExpenses => Expenses.Sum(x => x.Budget);
+        public double TotalCapitalWithOutVAT => Capital.Sum(x => x.BudgetUSD);
+        public double TotalExpenses => Expenses.Sum(x => x.BudgetUSD);
         public double PercentageEngineering { get; set; }
         public double PercentageContingency { get; set; }
         public double PercentageTaxes { get; set; }
         public bool IsProductive { get; set; } = true;
-
+        public CostCenterEnum CostCenter { get; set; }= CostCenterEnum.None;
         public double EngineeringBudget => TotalCapital * PercentageEngineering / 100;
         public double ContingenyBudget => TotalCapital * PercentageContingency / 100;
         public double TaxesBudget => IsProductive ? 0 : TotalCapitalWithOutVAT * PercentageTaxes / 100;

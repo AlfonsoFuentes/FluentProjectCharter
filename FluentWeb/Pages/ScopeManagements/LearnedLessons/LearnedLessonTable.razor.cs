@@ -1,6 +1,7 @@
 using FluentWeb.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Shared.Models.Assumptions.Responses;
 using Shared.Models.LearnedLessons.Mappers;
 using Shared.Models.LearnedLessons.Records;
 using Shared.Models.LearnedLessons.Requests;
@@ -14,10 +15,9 @@ public partial class LearnedLessonTable
     [Parameter]
     public Guid ProjectId { get; set; }
 
-       
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-       
+        if (ProjectId == Guid.Empty) return;
         await GetAll();
     }
 
@@ -123,10 +123,16 @@ public partial class LearnedLessonTable
     {
         SelectedRow = SelectedRow == null ? null : Items.FirstOrDefault(x => x.Id == SelectedRow.Id);
     }
-    public async Task Delete()
+    void Edit(LearnedLessonResponse model)
     {
-        if (SelectedRow == null) return;
-        var dialog = await DialogService.ShowWarningAsync($"Delete {SelectedRow.Name}?");
+        EditRow = model;
+        SelectedRow = null;
+        CreateRow = null;
+    }
+    public async Task Delete(LearnedLessonResponse model)
+    {
+        
+        var dialog = await DialogService.ShowWarningAsync($"Delete {model.Name}?");
         var result = await dialog.Result;
         var canceled = result.Cancelled;
 
@@ -136,8 +142,9 @@ public partial class LearnedLessonTable
         {
             DeleteLearnedLessonRequest request = new()
             {
-                Id = SelectedRow.Id,
-                Name = SelectedRow.Name,
+                Id = model.Id,
+                Name = model.Name,
+                 
             };
             var resultDelete = await GenericService.Delete(request);
             if (resultDelete.Succeeded)
