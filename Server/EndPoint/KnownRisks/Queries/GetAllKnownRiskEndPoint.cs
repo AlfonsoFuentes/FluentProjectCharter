@@ -23,7 +23,7 @@ namespace Server.EndPoint.KnownRisks.Queries
                     var response = new KnownRiskResponseList
                     {
                         Items = maps,
-                        ProjectName = rows.Name
+                        ProjectId = request.ProjectId,
                     };
 
                     return Result<KnownRiskResponseList>.Success(response);
@@ -41,7 +41,7 @@ namespace Server.EndPoint.KnownRisks.Queries
 
             private static List<KnownRiskResponse> FilterKnownRisk(KnownRiskGetAll request, Project project)
             {
-                return  project.KnownRisks.OrderBy(x => x.Order).Select(ac => ac.Map()).ToList();
+                return project.KnownRisks.OrderBy(x => x.Order).Select(ac => ac.Map()).ToList();
             }
         }
     }

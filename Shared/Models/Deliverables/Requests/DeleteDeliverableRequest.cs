@@ -10,7 +10,7 @@ namespace Shared.Models.Deliverables.Requests
         public override string ClassName => StaticClass.Deliverables.ClassName;
 
         public Guid Id { get; set; }
-        public Guid ProjectId {  get; set; }
+      
 
         public string EndPointName => StaticClass.Deliverables.EndPoint.Delete;
     }

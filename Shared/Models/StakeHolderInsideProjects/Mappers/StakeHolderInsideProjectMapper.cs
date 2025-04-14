@@ -30,26 +30,7 @@ namespace Shared.Models.StakeHolderInsideProjects.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateStakeHolderInsideProjectRequest ToUpdate(this StakeHolderInsideProjectResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                StakeHolder = response.StakeHolder,
-                Role = response.Role,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateStakeHolderInsideProjectRequest ToCreate(this StakeHolderInsideProjectResponse response)
-        {
-            return new CreateStakeHolderInsideProjectRequest()
-            {
-                ProjectId = response.ProjectId,
-               
-                Role = response.Role,
-                StakeHolder = response.StakeHolder,
-            };
-        }
+       
     }
 
 }

@@ -10,6 +10,7 @@ public partial class App
     public IRate _CurrencyService { get; set; }
     public ConversionRate RateList { get; set; }
 
+    public string AccordionUpdateProject { get; set; }= "Background";
     public Guid ProjectId { get; set; }
     protected override async Task OnInitializedAsync()
     {

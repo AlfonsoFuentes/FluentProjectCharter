@@ -36,6 +36,7 @@ namespace Server.EndPoint.BudgetItems.Queries
 
                     BudgetItemResponseList response = new()
                     {
+                        ProjectId = request.ProjectId,
                         Alterations = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Alteration>().Select(x => x.Map()).ToList(),
                         Structurals = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Structural>().Select(x => x.Map()).ToList(),
                         Foundations = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Foundation>().Select(x => x.Map()).ToList(),
@@ -53,12 +54,12 @@ namespace Server.EndPoint.BudgetItems.Queries
 
                         EngineeringDesigns = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<EngineeringDesign>().Select(x => x.Map()).ToList(),
                         IsProductive = row.IsProductiveAsset,
-                        ProjectName = row.Name,
+
                         PercentageContingency = row.PercentageContingency,
                         PercentageEngineering = row.PercentageEngineering,
                         PercentageTaxes = row.PercentageTaxProductive,
-                        CostCenter=CostCenterEnum.GetTypeByName(row.CostCenter),
-                        ProjectNumber =$"CEC0000{row.ProjectNumber}" ,
+                        CostCenter = CostCenterEnum.GetTypeByName(row.CostCenter),
+                        ProjectNumber = $"CEC0000{row.ProjectNumber}",
                     };
 
 
@@ -69,7 +70,14 @@ namespace Server.EndPoint.BudgetItems.Queries
 
             private static async Task<Project?> GetBudgetItemAsync(BudgetItemGetAll request, IQueryRepository repository)
             {
-                Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x.Include(p => p.BudgetItems);
+                Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x
+                .Include(p => p.BudgetItems)
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Instrument)!.InstrumentTemplate!)
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Pipe)!.FluidCode!)
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Pipe)!.PipeTemplate!)
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Valve)!.ValveTemplate!)
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Equipment)!.EquipmentTemplate!);
+
                 Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
                 string cacheKey = StaticClass.BudgetItems.Cache.GetAll(request.ProjectId);
 

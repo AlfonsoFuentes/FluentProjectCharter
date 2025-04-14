@@ -1,16 +1,16 @@
-﻿@typeparam TItem
+﻿
+@typeparam TItem
 <EditForm Model="@Model" OnValidSubmit="SaveAsync" style="width:100%">
     <FluentValidationValidator @ref="_fluentValidationValidator" />
- 
-    <Card Title="@Title" >
+@*     <ValidationSummary></ValidationSummary> *@
+    <Card Title="@Title">
         <Content>
             @Content
-
         </Content>
         <Actions>
-
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Disabled="@(!Validated)">Save</FluentButton>
-            <FluentButton OnClick="Cancel" Appearance="Appearance.Outline">Cancel</FluentButton>
+          
+            <MudButton  ButtonType=ButtonType.Submit Color=Color.Primary Disabled="@(!Validated)">Save</MudButton >
+            <MudButton  OnClick="Cancel">Cancel</MudButton >
         </Actions>
     </Card>
 

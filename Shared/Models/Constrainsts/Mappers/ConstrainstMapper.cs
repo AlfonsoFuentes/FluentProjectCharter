@@ -27,26 +27,7 @@ namespace Shared.Models.Constrainsts.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateConstrainstRequest ToUpdate(this ConstrainstResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateConstrainstRequest ToCreate(this ConstrainstResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+       
     }
 
 }

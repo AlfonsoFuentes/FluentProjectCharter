@@ -1,6 +1,8 @@
 ﻿@typeparam TValue
-<FluentStack Orientation="Orientation.Vertical" Width="100%">
-    <FluentLabel Typo="Typography.Body"><strong>@Label</strong></FluentLabel>
+@* <FluentStack Orientation="Orientation.Vertical" Width="100%">
+    <MudField  Typo="Typo.Body"><strong>@Label</strong></MudField >
+
+
     <FluentSelect TOption="TValue"
                   Items="@Items"
                   Id="people-listbox"
@@ -15,7 +17,7 @@
 
 
 </FluentStack>
-
+ *@
 @code {
     [Parameter]
     public List<TValue> Items { get; set; } = new();
@@ -32,6 +34,8 @@
     [Parameter]
     public Func<TValue, string?> OptionText { get; set; } = null!;
     [Parameter]
+    public Func<TValue, string?> OptionValue { get; set; } = null!;
+    [Parameter]
 
     public EventCallback Validate { get; set; }
 
@@ -47,4 +51,5 @@
         if (Validate.HasDelegate) await Validate.InvokeAsync();
 
     }
+
 }

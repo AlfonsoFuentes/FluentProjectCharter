@@ -1,5 +1,6 @@
 ﻿using Server.Database.Entities.ProjectManagements;
 using Shared.Models.StakeHolderInsideProjects.Requests;
+using Shared.Models.StakeHolderInsideProjects.Responses;
 
 namespace Server.EndPoint.StakeHolderInsideProjects.Commands
 {
@@ -10,7 +11,7 @@ namespace Server.EndPoint.StakeHolderInsideProjects.Commands
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.StakeHolderInsideProjects.EndPoint.Create, async (CreateStakeHolderInsideProjectRequest Data, IRepository Repository) =>
+                app.MapPost(StaticClass.StakeHolderInsideProjects.EndPoint.Create, async (StakeHolderInsideProjectResponse Data, IRepository Repository) =>
                 {
                     Func<IQueryable<Project>, IIncludableQueryable<Project, object>> ProjectIncludes = x => x.Include(x => x.StakeHolders);
 
@@ -19,7 +20,7 @@ namespace Server.EndPoint.StakeHolderInsideProjects.Commands
 
                     Expression<Func<Project, bool>> CriteriaProject = x => x.Id == Data.ProjectId;
 
-                    Expression<Func<StakeHolder, bool>> CriteriaStakeHolder = x => x.Id == Data.StakeHolder.Id;
+                    Expression<Func<StakeHolder, bool>> CriteriaStakeHolder = x => x.Id == Data.StakeHolder!.Id;
 
                     var project = await Repository.GetAsync(Includes: ProjectIncludes, Criteria: CriteriaProject);
 
@@ -36,13 +37,8 @@ namespace Server.EndPoint.StakeHolderInsideProjects.Commands
                     }
                     else
                     {
-                        return Result.Fail($"Stake Holder {Data.StakeHolder.Name} is exist in project {project.Name}");
+                        return Result.Fail($"Stake Holder {Data.StakeHolder!.Name} is exist in project {project.Name}");
                     }
-                    if (Data.Role.Id == StakeHolderRoleEnum.None.Id)
-                    {
-                        return Result.Fail($"Stake Holder Role must be defined!!");
-                    }
-
                     if (stakeholder.RoleInsideProject == null)
                     {
                         var roleinsideProject = RoleInsideProject.Create(Data.ProjectId, Data.Role.Name);

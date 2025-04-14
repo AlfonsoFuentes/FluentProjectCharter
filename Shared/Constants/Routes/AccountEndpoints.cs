@@ -23,6 +23,7 @@
         public static class User
         {
             public static string Register = "user/register";
+            public static string GetUser = "user/getuser";
         }
     }
     public static class TokenEndpoints

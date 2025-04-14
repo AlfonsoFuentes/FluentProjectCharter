@@ -1,0 +1,49 @@
+﻿
+@* <MudTextField Label="@Label"
+              Value="@Value"
+              Margin="Margin.Dense"
+              ValueChanged="OnValueChange"
+              Style="width: 100%;"
+              Placeholder="@PlaceHolder"
+              InputMode="@InputMode"
+              For="@For"
+              Disabled="@Disable"></MudTextField> *@
+
+
+
+
+
+@code {
+
+
+    // [Parameter]
+    // public InputMode InputMode { get; set; } = InputMode.Text;
+    [Parameter]
+    public bool Disable { get; set; } = false;
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+    [Parameter]
+    public string PlaceHolder { get; set; } = string.Empty;
+    [Parameter]
+    public string Value { get; set; } = string.Empty;
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+    [Parameter]
+
+    public EventCallback Validate { get; set; }
+
+    [Parameter]
+    public EventCallback<string> Change { get; set; }
+
+
+    async Task OnValueChange(string value)
+    {
+        Value = value;
+        await ValueChanged.InvokeAsync(Value);
+
+        if (Change.HasDelegate) await Change.InvokeAsync(Value);
+        if (Validate.HasDelegate) await Validate.InvokeAsync();
+    }
+    [Parameter]
+    public Expression<Func<string>>? For { get; set; } = null!;
+}

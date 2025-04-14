@@ -3,11 +3,11 @@ using Shared.Models.BudgetItems.Responses;
 
 namespace Shared.Models.PurchaseOrders.Responses
 {
-    public class PurchaseOrderItemResponse
+    public class PurchaseOrderItemResponse : BaseResponse
     {
-        public Guid BudgetItemId { get; set; }
+        public Guid? BudgetItemId { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+
         public double UnitaryValueCurrency { get; set; }
         public double Quantity { get; set; }
 
@@ -35,7 +35,7 @@ namespace Shared.Models.PurchaseOrders.Responses
         public string sCommitmentUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", CommitmentUSD);
         public string sPotentialUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", PotentialUSD);
         public string sAssignedUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", AssignedUSD);
-        
+
 
 
     }

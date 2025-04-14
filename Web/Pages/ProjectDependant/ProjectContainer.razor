@@ -1,0 +1,206 @@
+﻿@using Web.Pages.BudgetItems
+@using Web.Pages.ProjectDependant.AcceptanceCriterias
+@using Web.Pages.ProjectDependant.Acquisitions
+@using Web.Pages.ProjectDependant.Assumptions
+@using Web.Pages.ProjectDependant.BackGrounds
+@using Web.Pages.ProjectDependant.Bennefits
+@using Web.Pages.ProjectDependant.Communications
+@using Web.Pages.ProjectDependant.Constrainsts
+@using Web.Pages.ProjectDependant.Deliverables
+@using Web.Pages.ProjectDependant.ExpertJudgements
+@using Web.Pages.ProjectDependant.GanttTasks
+@using Web.Pages.ProjectDependant.KnownRisks
+@using Web.Pages.ProjectDependant.LearnedLessons
+@using Web.Pages.ProjectDependant.Objectives
+@using Web.Pages.ProjectDependant.Qualitys
+@using Web.Pages.ProjectDependant.Requirements
+@using Web.Pages.ProjectDependant.Resources
+@using Web.Pages.ProjectDependant.Scopes
+@using Web.Pages.ProjectDependant.StakeHolderInsideProjects
+@using Web.Pages.ProjectDependant.WorkBreakownStructures
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-1">
+    <MudTabPanel Text="Start/Planning">
+        <MudExpansionPanels>
+            <MudExpansionPanel Text="Stake Holders" ExpandedChanged="@(()=>StakeHolderInside=!StakeHolderInside)">
+                @if (StakeHolderInside)
+                {
+                    <StakeHolderInsideProjectsTable Project=@Project></StakeHolderInsideProjectsTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Background" ExpandedChanged="@(()=>BackGrounds=!BackGrounds)">
+                @if (BackGrounds)
+                {
+                    <BackGroundsTable Project="@Project"></BackGroundsTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Objectives" ExpandedChanged="@(()=>Objectives=!Objectives)">
+                @if (Objectives)
+                {
+                    <ObjectivesTable Project="@Project"></ObjectivesTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Requirements" ExpandedChanged="@(()=>Requirements=!Requirements)">
+                @if (Requirements)
+                {
+                    <RequirementsTable Project="@Project"></RequirementsTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Scopes" ExpandedChanged="@(()=>Scopes=!Scopes)">
+                @if (Scopes)
+                {
+                    <ScopesTable Project="@Project"></ScopesTable>
+                }
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Bennefits" ExpandedChanged="@(()=>Bennefits=!Bennefits)">
+                @if (Bennefits)
+                {
+                    <BennefitsTable Project="@Project"></BennefitsTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Acceptance Criterias" ExpandedChanged="@(()=>AcceptanceCriterias=!AcceptanceCriterias)">
+                @if (AcceptanceCriterias)
+                {
+                    <AcceptanceCriteriasTable Project="@Project"></AcceptanceCriteriasTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Contraints" ExpandedChanged="@(()=>Constrainsts=!Constrainsts)">
+                @if (Constrainsts)
+                {
+                    <ConstrainstsTable Project="@Project"></ConstrainstsTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Assumptions" ExpandedChanged="@(()=>Assumptions=!Assumptions)">
+                @if (Assumptions)
+                {
+                    <AssumptionsTable Project="@Project"></AssumptionsTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Learned Lessons" ExpandedChanged="@(()=>LearnedLessons=!LearnedLessons)">
+                @if (LearnedLessons)
+                {
+                    <LearnedLessonsTable Project="@Project"></LearnedLessonsTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Expert Judgement" ExpandedChanged="@(()=>ExpertJudgement=!ExpertJudgement)">
+                @if (ExpertJudgement)
+                {
+                    <ExpertJudgementsTable Project="@Project"></ExpertJudgementsTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Deliverables" ExpandedChanged="@(()=>Deliverables=!Deliverables)">
+                @if (Deliverables)
+                {
+                    <DeliverablesTable Project="@Project"></DeliverablesTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Gantt" ExpandedChanged="@(()=>Gantt=!Gantt)">
+                @if (Gantt)
+                {
+                    <GanttTaskTable Project="@Project"></GanttTaskTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Work Breakdowon structure" ExpandedChanged="@(()=>Wbs=!Wbs)">
+                @if (Wbs)
+                {
+                    <WbsChartSvg Project="@Project"></WbsChartSvg>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Budget" ExpandedChanged="@(()=>Budget=!Budget)">
+                @if (Budget)
+                {
+                    <BudgetItemsTable Project="@Project"></BudgetItemsTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Quality" ExpandedChanged="@(()=>Quality=!Quality)">
+                @if (Quality)
+                {
+                    <QualitysTable Project="@Project"></QualitysTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Known risk" ExpandedChanged="@(()=>KnownRisk=!KnownRisk)">
+                @if (KnownRisk)
+                {
+                    <KnownRisksTable Project="@Project"></KnownRisksTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Resources" ExpandedChanged="@(()=>Resources=!Resources)">
+                @if (Resources)
+                {
+                    <ResourcesTable Project="@Project"></ResourcesTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Communications" ExpandedChanged="@(()=>Communications=!Communications)">
+                @if (Communications)
+                {
+                    <CommunicationsTable Project="@Project"></CommunicationsTable>
+                }
+
+            </MudExpansionPanel>
+            <MudExpansionPanel Text="Acquisitions" ExpandedChanged="@(()=>Acquisitions=!Acquisitions)">
+                @if (Acquisitions)
+                {
+                    <AcquisitionsTable Project="@Project"></AcquisitionsTable>
+                }
+
+            </MudExpansionPanel>
+        </MudExpansionPanels>
+    </MudTabPanel>
+    <MudTabPanel Text="Execution" Disabled="true">
+        <MudText>Content Two</MudText>
+    </MudTabPanel>
+    <MudTabPanel Text="Monitoring" Disabled="true">
+        <MudText>Content Three</MudText>
+    </MudTabPanel>
+    <MudTabPanel Text="Closing" Disabled="true">
+        <MudText>Content Disabled</MudText>
+    </MudTabPanel>
+</MudTabs>
+
+
+
+
+
+
+
+@code {
+    [Parameter]
+    public ProjectResponse Project { get; set; } = null!;
+    bool StakeHolderInside = false;
+    bool BackGrounds = false;
+    bool Objectives = false;
+    bool Requirements = false;
+    bool Scopes = false;
+    bool Bennefits = false;
+    bool AcceptanceCriterias = false;
+    bool Constrainsts = false;
+    bool Assumptions = false;
+    bool LearnedLessons = false;
+    bool ExpertJudgement = false;
+    bool Deliverables = false;
+    bool Gantt = false;
+    bool Wbs = false;
+    bool Budget = false;
+    bool Quality = false;
+    bool KnownRisk = false;
+    bool Resources = false;
+    bool Communications = false;
+    bool Acquisitions = false;
+
+}

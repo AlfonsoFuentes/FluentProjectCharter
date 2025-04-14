@@ -16,47 +16,25 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
-@using Microsoft.FluentUI.AspNetCore.Components
-@using Icons = Microsoft.FluentUI.AspNetCore.Components.Icons
-@using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip
+@using MudBlazor
 @using Microsoft.JSInterop
+@using System.Linq.Expressions
 
 @using Blazored.FluentValidation
 @using FluentWeb
 @using FluentWeb.SharedComponents.DerivedComponents
 @using FluentWeb.SharedComponents
 @using FluentWeb.Layout
-@using FluentWeb.Pages.MinorManagements.Acquisitions
-@using FluentWeb.Pages.MinorManagements.Communications
-@using FluentWeb.Pages.MinorManagements.KnownRisks
-@using FluentWeb.Pages.MinorManagements.Qualitys
-@using FluentWeb.Pages.MinorManagements.Resources
-@using FluentWeb.Pages.TimeLineManagements.Deliverables
-@using FluentWeb.Pages.TimeLineManagements.DeliverablesGanttTasks
-@using FluentWeb.Pages.TimeLineManagements.WBSSVGs
-@using FluentWeb.Pages.StakeHolderManagements.StakeHolderInsideProjects
-@using FluentWeb.Pages.ScopeManagements.AcceptanceCriterias
-@using FluentWeb.Pages.ScopeManagements.Assumptions
-@using FluentWeb.Pages.ScopeManagements.BackGrounds
-@using FluentWeb.Pages.ScopeManagements.Bennefits
-@using FluentWeb.Pages.ScopeManagements.Constrainsts
-@using FluentWeb.Pages.ScopeManagements.ExpertJudgements
-@using FluentWeb.Pages.ScopeManagements.LearnedLessons
-@using FluentWeb.Pages.ScopeManagements.Objectives
-@using FluentWeb.Pages.ScopeManagements.Requirements
-@using FluentWeb.Pages.ScopeManagements.Scopes
+
+
+
 @using FluentWeb.Pages.Projects
-@using FluentWeb.Pages.BudgetManagements.BudgetItems
+
 @using FluentWeb.Pages.Meetings
 @using FluentWeb.Pages.MeetingAgreements
 @using FluentWeb.Pages.MeetingAttendants
-@using FluentWeb.Pages.BudgetManagements.BudgetItems.NozzleTemplates
-@using FluentWeb.Pages.BudgetManagements.BudgetItems.EquipmentTemplates
-@using FluentWeb.Pages.BudgetManagements.BudgetItems.NozzleBudgetarys
-@using FluentWeb.Pages.BudgetManagements.BudgetItems.ValveTemplates
-@using FluentWeb.Pages.BudgetManagements.BudgetItems.InstrumentTemplates
-@using FluentWeb.Pages.BudgetManagements.BudgetItems.PipeTemplates
 
+@using FluentWeb.SharedComponentsMudBlazor
 
 @using Shared.Enums.StakeHolderTypes
 @using Shared.Models.StakeHolderInsideProjects.Responses
@@ -113,9 +91,9 @@
 @using Shared.Enums.TasksRelationTypes
 @using Shared.Enums.CostCenter
 @using Shared.Enums.Focuses
-
+@using Shared.Models.PurchaseOrders.Requests
 @using Web.Infrastructure.Managers.Generic
-
+@using Shared.Models.PurchaseOrders.Responses;
 
 
 @attribute [Authorize]

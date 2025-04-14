@@ -1,5 +1,4 @@
-﻿using Server.Database.Entities.ProjectManagements;
-using Shared.Models.Scopes.Requests;
+﻿using Shared.Models.Scopes.Requests;
 
 namespace Server.EndPoint.Scopes.Commands
 {

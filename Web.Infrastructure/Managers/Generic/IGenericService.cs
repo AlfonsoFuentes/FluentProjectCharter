@@ -12,7 +12,7 @@ namespace Web.Infrastructure.Managers.Generic
         Task<IResult> Create<T>(T request) where T : class, IRequest;
         Task<bool> Validate<T>(T request) where T : class, IRequest;
         Task<IResult> Update<T>(T request) where T : class, IRequest;
-
+        Task<IResult> Post<T>(T request) where T : class, IRequest;
         Task<IResult> UpdateState<T>(T request) where T : class, IUpdateStateResponse;
 
         Task<IResult> Delete<T>(T request) where T : class, IRequest;
@@ -33,7 +33,11 @@ namespace Web.Infrastructure.Managers.Generic
         {
             this.http = http;
         }
-
+        public async Task<IResult> Post<T>(T request) where T : class, IRequest
+        {
+            var result = await http.PostAsJsonAsync(request.EndPointName, request);
+            return await result.ToResult();
+        }
         public async Task<IResult> Create<T>(T request) where T : class, IRequest
         {
             var result = await http.PostAsJsonAsync(request.EndPointName, request);

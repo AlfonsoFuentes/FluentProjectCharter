@@ -1,4 +1,5 @@
-﻿using Shared.Models.Templates.Instruments.Records;
+﻿using Server.ExtensionsMethods.InstrumentTemplateMapper;
+using Shared.Models.Templates.Instruments.Records;
 using Shared.Models.Templates.Instruments.Responses;
 
 namespace Server.EndPoint.Templates.Instruments.Queries

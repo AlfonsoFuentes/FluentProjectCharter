@@ -1,52 +1,16 @@
 ﻿using Shared.Models.BudgetItems.IndividualItems.Taxs.Requests;
+using Shared.Models.BudgetItems.IndividualItems.Taxs.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Taxs.Validators;
 using Web.Infrastructure.Managers.Generic;
 
-namespace Web.Infrastructure.Validators.Taxs
+namespace Web.Infrastructure.Validators.BudgetItems.Taxs
 {
-    public class CreateTaxValidator : AbstractValidator<CreateTaxRequest>
+ 
+    public class TaxValidator : AbstractValidator<TaxResponse>
     {
         private readonly IGenericService Service;
 
-        public CreateTaxValidator(IGenericService service)
-        {
-            Service = service;
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
-
-            RuleFor(x => x.BudgetUSD).NotEqual(0).WithMessage("Budget must be defined!");
-
-            RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)
-                .When(x => !string.IsNullOrEmpty(x.Name))
-                .WithMessage(x => $"{x.Name} already exist");
-
-        }
-
-        async Task<bool> ReviewIfNameExist(CreateTaxRequest request, string name, CancellationToken cancellationToken)
-        {
-            try
-            {
-                ValidateTaxRequest validate = new()
-                {
-                    Name = name,
-                    ProjectId = request.ProjectId,
-
-                };
-                var result = await Service.Validate(validate);
-                return !result;
-            }
-            catch (Exception ex)
-            {
-                string message = ex.Message;
-            }
-            return false;
-
-        }
-    }
-    public class UpdateTaxValidator : AbstractValidator<UpdateTaxRequest>
-    {
-        private readonly IGenericService Service;
-
-        public UpdateTaxValidator(IGenericService service)
+        public TaxValidator(IGenericService service)
         {
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
@@ -57,7 +21,7 @@ namespace Web.Infrastructure.Validators.Taxs
 
         }
 
-        async Task<bool> ReviewIfNameExist(UpdateTaxRequest request, string name, CancellationToken cancellationToken)
+        async Task<bool> ReviewIfNameExist(TaxResponse request, string name, CancellationToken cancellationToken)
         {
             ValidateTaxRequest validate = new()
             {

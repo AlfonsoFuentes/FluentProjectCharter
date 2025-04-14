@@ -17,7 +17,7 @@ namespace Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.12")
+                .HasAnnotation("ProductVersion", "8.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -182,7 +182,7 @@ namespace Server.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("CurrentProjectId")
+                    b.Property<Guid>("CurrentProjectId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedOnUtc")
@@ -316,9 +316,8 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ConnectionType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ConnectionType")
+                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(128)");
@@ -358,13 +357,11 @@ namespace Server.Migrations
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NominalDiameter")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("NominalDiameter")
+                        .HasColumnType("int");
 
-                    b.Property<string>("NozzleType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("NozzleType")
+                        .HasColumnType("int");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -402,9 +399,8 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ConnectionType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ConnectionType")
+                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(128)");
@@ -424,13 +420,11 @@ namespace Server.Migrations
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NominalDiameter")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("NominalDiameter")
+                        .HasColumnType("int");
 
-                    b.Property<string>("NozzleType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("NozzleType")
+                        .HasColumnType("int");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
@@ -803,15 +797,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<string>("SubType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TagLetter")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -2628,19 +2614,25 @@ namespace Server.Migrations
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template");
 
-                    b.Property<string>("ExternalMaterial")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ExternalMaterial")
+                        .HasColumnType("int");
 
-                    b.Property<string>("InternalMaterial")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("InternalMaterial")
+                        .HasColumnType("int");
 
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Reference")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -2654,24 +2646,31 @@ namespace Server.Migrations
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template");
 
-                    b.Property<string>("Material")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ConnectionType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Material")
+                        .HasColumnType("int");
 
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ModifierVariable")
+                        .HasColumnType("int");
+
                     b.Property<string>("Reference")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SignalType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SignalType")
+                        .HasColumnType("int");
 
                     b.Property<double>("Value")
                         .HasColumnType("float");
+
+                    b.Property<int>("Variable")
+                        .HasColumnType("int");
 
                     b.ToTable("InstrumentTemplates");
                 });
@@ -2680,13 +2679,11 @@ namespace Server.Migrations
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template");
 
-                    b.Property<string>("Class")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Class")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Diameter")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Diameter")
+                        .HasColumnType("int");
 
                     b.Property<double>("EquivalentLenghPrice")
                         .HasColumnType("float");
@@ -2697,9 +2694,8 @@ namespace Server.Migrations
                     b.Property<double>("LaborDayPrice")
                         .HasColumnType("float");
 
-                    b.Property<string>("Material")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Material")
+                        .HasColumnType("int");
 
                     b.ToTable("PipeTemplates");
                 });
@@ -2708,36 +2704,33 @@ namespace Server.Migrations
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template");
 
-                    b.Property<string>("ActuatorType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ActuatorType")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Diameter")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Diameter")
+                        .HasColumnType("int");
 
-                    b.Property<string>("FailType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("FailType")
+                        .HasColumnType("int");
 
                     b.Property<bool>("HasFeedBack")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Material")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Material")
+                        .HasColumnType("int");
 
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PositionerType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PositionerType")
+                        .HasColumnType("int");
 
-                    b.Property<string>("SignalType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SignalType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.Property<double>("Value")
                         .HasColumnType("float");
@@ -2750,9 +2743,6 @@ namespace Server.Migrations
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem");
 
                     b.Property<Guid?>("EquipmentTemplateId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("EquipmentTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SerialNumber")
@@ -2784,9 +2774,8 @@ namespace Server.Migrations
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem");
 
-                    b.Property<string>("Diameter")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Diameter")
+                        .HasColumnType("int");
 
                     b.Property<double>("EquivalentLenghPrice")
                         .HasColumnType("float");
@@ -2807,9 +2796,8 @@ namespace Server.Migrations
                     b.Property<double>("LaborQuantity")
                         .HasColumnType("float");
 
-                    b.Property<string>("Material")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Material")
+                        .HasColumnType("int");
 
                     b.Property<double>("MaterialQuantity")
                         .HasColumnType("float");

@@ -1,4 +1,5 @@
 ﻿using Shared.Models.Templates.Valves.Validators;
+using static Shared.StaticClasses.StaticClass;
 
 namespace Server.EndPoint.Templates.Valves.Validators
 {
@@ -11,41 +12,47 @@ namespace Server.EndPoint.Templates.Valves.Validators
                 app.MapPost(StaticClass.ValveTemplates.EndPoint.Validate, async (ValidateValveTemplateRequest Data, IQueryRepository Repository) =>
                 {
                     Func<IQueryable<ValveTemplate>, IIncludableQueryable<ValveTemplate, object>> Includes = x => x
+                     .Where(x => x.Id != Data.Id)
                     .Include(x => x.BrandTemplate!)
+                    .Include(x=>x.NozzleTemplates)
                      ;
 
 
-                    Expression<Func<ValveTemplate, bool>> CriteriaId = null!;
-                    Func<ValveTemplate, bool> CriteriaExist = x => Data.Id == null ?
-                    x.Material.Equals(Data.Material) &&
-                    x.SignalType.Equals(Data.SignalType) &&
-                    x.FailType.Equals(Data.FailType) &&
-                    x.Type.Equals(Data.Type) &&
-                    x.ActuatorType.Equals(Data.ActuadorType) &&
-                    x.Diameter.Equals(Data.Diameter) &&
+                  
+                    Expression<Func<ValveTemplate, bool>> CriteriaValve = x =>
+                    x.Material==Data.Material &&
+                    x.SignalType==Data.SignalType &&
+                    x.FailType == Data.FailType &&
+                    x.Type == Data.Type &&
+                    x.ActuatorType == Data.ActuadorType &&
+                    x.Diameter == Data.Diameter &&
                     x.HasFeedBack == Data.HasFeedBack &&
-                    x.PositionerType.Equals(Data.PositionerType) &&
-                    x.Brand.Equals(Data.Brand) &&
-                    x.Model.Equals(Data.Model) &&
-                    x.TagLetter.Equals(Data.TagLetter)
+                    x.PositionerType == Data.PositionerType &&
+                    x.BrandName.Equals(Data.Brand) &&
+                    x.Model.Equals(Data.Model) 
+              
 
-                    : x.Id != Data.Id.Value &&
-                   x.Material.Equals(Data.Material) &&
-                    x.SignalType.Equals(Data.SignalType) &&
-                    x.FailType.Equals(Data.FailType) &&
-                    x.Type.Equals(Data.Type) &&
-                    x.ActuatorType.Equals(Data.ActuadorType) &&
-                    x.Diameter.Equals(Data.Diameter) &&
-                    x.HasFeedBack == Data.HasFeedBack &&
-                    x.PositionerType.Equals(Data.PositionerType) &&
-                    x.Brand.Equals(Data.Brand) &&
-                    x.Model.Equals(Data.Model) &&
-                    x.TagLetter.Equals(Data.TagLetter)
+                  
                     ;
 
                     string CacheKey = StaticClass.ValveTemplates.Cache.GetAll;
 
-                    return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId, Includes: Includes);
+                    var valveTemplates = await Repository.GetAllAsync(Cache: CacheKey, Includes: Includes, Criteria: CriteriaValve);
+
+                    valveTemplates = Data.Id.HasValue ? valveTemplates.Where(x => x.Id != Data.Id.Value).ToList() : valveTemplates;
+                    if (valveTemplates == null || !valveTemplates.Any())
+                    {
+                        return false;
+                    }
+                    // Validar las boquillas para cada template coincidente
+                    foreach (var instrumentTemplate in valveTemplates)
+                    {
+                        if (instrumentTemplate.NozzleTemplates.ValidateNozzles(Data.NozzleTemplates))
+                        {
+                            return true; // Si todas las boquillas coinciden, retornar true
+                        }
+                    }
+                    return false;
                 });
 
 

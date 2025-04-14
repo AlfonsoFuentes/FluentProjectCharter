@@ -29,7 +29,7 @@ namespace Server.EndPoint.BackGrounds.Queries
 
                     BackGroundResponseList response = new BackGroundResponseList()
                     {
-                        ProjectName = rows.Name,
+                        ProjectId = request.ProjectId,
 
                         Items = maps,
 

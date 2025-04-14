@@ -1,13 +1,25 @@
 ﻿using Shared.Enums.CostCenter;
 using Shared.Models.BudgetItems.Responses;
+using Shared.Models.FileResults.Generics.Request;
 
 namespace Shared.Models.BudgetItems.IndividualItems.Alterations.Responses
 {
-    public class AlterationResponse : BudgetItemWithPurchaseOrdersResponse
+    public class AlterationResponse : BudgetItemWithPurchaseOrdersResponse, IMessageResponse, IRequest
     {
 
-        public Guid DeliverableId { get; set; }
-      
+
+        public string EndPointName => StaticClass.Alterations.EndPoint.CreateUpdate;
+
+        public string Legend => Name;
+
+        public string ActionType => Id == Guid.Empty ? "created" : "updated";
+        public string ClassName => StaticClass.Alterations.ClassName;
+        public string Succesfully => StaticClass.ResponseMessages.ReponseSuccesfullyMessage(Legend, ClassName, ActionType);
+        public string Fail => StaticClass.ResponseMessages.ReponseFailMessage(Legend, ClassName, ActionType);
+        public string NotFound => StaticClass.ResponseMessages.ReponseNotFound(ClassName);
+
+        public Guid? GanttTaskId { get; set; }
+
         public override bool IsAlteration { get; set; } = true;
         public CostCenterEnum CostCenter { get; set; } = CostCenterEnum.None;
         double _UnitaryCost;
@@ -37,7 +49,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Alterations.Responses
         public string sQuantity => $"{Quantity}";
        
 
-        public override string UpadtePageName { get; set; } = StaticClass.Alterations.PageName.Update;
+      
      
        
     }

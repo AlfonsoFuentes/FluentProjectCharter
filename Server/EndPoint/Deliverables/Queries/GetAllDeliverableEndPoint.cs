@@ -28,21 +28,14 @@ namespace Server.EndPoint.Deliverables.Queries
                     var response = new DeliverableResponseList
                     {
                         Items = maps,
-                        ProjectName = rows.Name
+                        ProjectId = rows.Id,
                     };
 
                     return Result<DeliverableResponseList>.Success(response);
                 });
             }
 
-            private static async Task<List<Deliverable>> GetDeliverableAsync(DeliverableGetAll request, IQueryRepository repository)
-            {
-
-                Expression<Func<Deliverable, bool>> criteria = x => x.ProjectId == request.ProjectId;
-                string cacheKey = StaticClass.Deliverables.Cache.GetAll(request.ProjectId);
-
-                return await repository.GetAllAsync(Cache: cacheKey, Criteria: criteria);
-            }
+          
 
 
         }

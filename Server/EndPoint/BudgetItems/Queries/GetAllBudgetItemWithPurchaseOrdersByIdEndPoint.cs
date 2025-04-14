@@ -11,8 +11,9 @@ namespace Server.EndPoint.BudgetItems.Queries
             {
                 app.MapPost(StaticClass.BudgetItems.EndPoint.GetWithPurchaseorderById, async (BudgetItemWithPurchaseOrderGetById request, IQueryRepository repository) =>
                 {
-                    Func<IQueryable<BudgetItem>, IIncludableQueryable<BudgetItem, object>> includes = x =>
-                    x.Include(p => p.PurchaseOrderItems).ThenInclude(x => x.PurchaseOrderReceiveds)
+                    Func<IQueryable<BudgetItem>, IIncludableQueryable<BudgetItem, object>> includes = x => x
+                    .Include(p => p.PurchaseOrderItems).ThenInclude(x => x.PurchaseOrder)
+                    .Include(p => p.PurchaseOrderItems).ThenInclude(x => x.PurchaseOrderReceiveds)
                     ;
 
                     Expression<Func<BudgetItem, bool>> criteria = x => x.Id == request.Id;

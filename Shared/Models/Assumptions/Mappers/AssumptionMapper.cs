@@ -27,26 +27,7 @@ namespace Shared.Models.Assumptions.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateAssumptionRequest ToUpdate(this AssumptionResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateAssumptionRequest ToCreate(this AssumptionResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+       
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using Shared.Models.FileResults.Generics.Request;
+﻿using Shared.Models.ExpertJudgements.Responses;
+using Shared.Models.FileResults.Generics.Request;
 
 namespace Shared.Models.EngineeringFluidCodes.Requests
 {

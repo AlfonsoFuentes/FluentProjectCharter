@@ -25,7 +25,7 @@ namespace Server.EndPoint.Requirements.Queries
                     var response = new RequirementResponseList
                     {
                         Items = maps,
-                        ProjectName=rows.Name,
+                       ProjectId = request.ProjectId,
 
                     };
 

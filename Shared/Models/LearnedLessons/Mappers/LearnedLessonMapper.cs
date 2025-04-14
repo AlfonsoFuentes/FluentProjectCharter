@@ -27,26 +27,7 @@ namespace Shared.Models.LearnedLessons.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateLearnedLessonRequest ToUpdate(this LearnedLessonResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateLearnedLessonRequest ToCreate(this LearnedLessonResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+   
     }
 
 }

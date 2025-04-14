@@ -1,142 +1,193 @@
 ﻿@page "/UpdateProject/{Id:guid}"
+@inject IJSRuntime JS
+@* <FluentStack Orientation="Orientation.Vertical" VerticalGap="6" Style="width:100%">
+    <div id="form-section" style="width:100%">
 
-<FluentStack Orientation="Orientation.Vertical" VerticalGap="6" Style="width:100%">
-    <EditTemplate @ref=Form TItem="UpdateProjectRequest" @bind-Model=@Model GoBack=false Title="">
-        <Content>
-            <FluentStack Orientation="Orientation.Vertical">
-
-                <FluentStack Orientation="Orientation.Horizontal" Width="100%">
-                    <TextArea Label="Name"
-                              @bind-Value=@Model.Name
-                              Rows="5"
-                              Placeholder="Define name"
-                              Validate="Form.ValidateAsync"></TextArea>
-                    <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
-                    <FluentStack Orientation="Orientation.Horizontal" Width="100%">
+        <EditTemplate @ref=Form TItem="UpdateProjectRequest" @bind-Model=@Model GoBack=false Title="">
+            <Content>
+                <MudGrid AdaptiveRendering=true Style="width:100%">
+                    <MudItem  xs="12" sm="6">
+                        <TextArea Label="Name"
+                        @bind-Value=@Model.Name
+                        Rows="5"
+                        Placeholder="Define name"
+                        Validate="Form.ValidateAsync"></TextArea>
+                        <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
+                    </MudItem >
+                    <MudItem  xs="12" sm="3">
                         <FluentStack Orientation="Orientation.Vertical" Width="100%">
                             <SelectedListComponent Label="Select Focus"
-                                                   TValue="FocusEnum"
-                                                   Items="FocusEnum.List"
-                                                   @bind-Value=@Model.Focus
-                                                   OptionText="@(p => p.Name)"
-                                                   Validate="Form.ValidateAsync">
+                            TValue="FocusEnum"
+                            Items="FocusEnum.List"
+                            @bind-Value=@Model.Focus
+                            OptionText="@(p => p.Name)"
+                            Validate="Form.ValidateAsync">
                             </SelectedListComponent>
                             <SelectedListComponent Label="Select Cost Center"
-                                                   TValue="CostCenterEnum"
-                                                   Items="CostCenterEnum.List"
-                                                   @bind-Value=@Model.CostCenter
-                                                   OptionText="@(p => p.Name)"
-                                                   Validate="Form.ValidateAsync">
+                            TValue="CostCenterEnum"
+                            Items="CostCenterEnum.List"
+                            @bind-Value=@Model.CostCenter
+                            OptionText="@(p => p.Name)"
+                            Validate="Form.ValidateAsync">
                             </SelectedListComponent>
                         </FluentStack>
+                    </MudItem >
+                    <MudItem  xs="12" sm="3">
                         <FluentStack Orientation="Orientation.Vertical" Width="100%">
 
                             <SelectedListComponent Label="Select Project Need"
-                                                   TValue="ProjectNeedTypeEnum"
-                                                   Items="ProjectNeedTypeEnum.List"
-                                                   @bind-Value=@Model.ProjectNeedType
-                                                   OptionText="@(p => p.Name)"
-                                                   Validate="Form.ValidateAsync">
+                            TValue="ProjectNeedTypeEnum"
+                            Items="ProjectNeedTypeEnum.List"
+                            @bind-Value=@Model.ProjectNeedType
+                            OptionText="@(p => p.Name)"
+                            Validate="Form.ValidateAsync">
                             </SelectedListComponent>
                             <DatePickerComponent Label="Project Initial Date" @bind-Value=@Model.InitialProjectDate Validate="Form.ValidateAsync"></DatePickerComponent>
                             <ValidationMessage For="() => Model.InitialProjectDate" style="color:red; font-size:x-small;" />
 
                         </FluentStack>
-                    </FluentStack>
-
-
-                </FluentStack>
-
-                <FluentStack Orientation="Orientation.Horizontal" Width="100%" VerticalAlignment="VerticalAlignment.Bottom">
-                    <FluentStack Orientation="Orientation.Horizontal" Width="100%">
+                    </MudItem >
+                </MudGrid>
+                <MudGrid AdaptiveRendering=true>
+                    <MudItem  xs="12" sm="3">
                         <NumericDoubleComponent Validate="Form.ValidateAsync"
-                                                @bind-Value="@Model.PercentageEngineering"
-                                                Label="%Engineering" />
+                        @bind-Value="@Model.PercentageEngineering"
+                        Label="%Engineering" />
                         <ValidationMessage For="() => Model.PercentageEngineering" style="color:red; font-size:x-small;" />
-                    </FluentStack>
-                    <FluentStack Orientation="Orientation.Horizontal" Width="100%">
+                    </MudItem >
+                    <MudItem  xs="12" sm="3">
                         <NumericDoubleComponent Validate="Form.ValidateAsync"
-                                                @bind-Value="@Model.PercentageContingency"
-                                                Label="%Contingency" />
+                        @bind-Value="@Model.PercentageContingency"
+                        Label="%Contingency" />
                         <ValidationMessage For="() => Model.PercentageContingency" style="color:red; font-size:x-small;" />
-                    </FluentStack>
-                    <FluentStack Orientation="Orientation.Horizontal" Width="100%">
+                    </MudItem >
+                    <MudItem  xs="12" sm="3">
                         <FluentCheckbox Label="Is Productive Asset?" @bind-Value=@Model.IsProductiveAsset></FluentCheckbox>
-                    </FluentStack>
-                    <FluentStack Orientation="Orientation.Horizontal" Width="100%">
+                    </MudItem >
+                    <MudItem  xs="12" sm="3">
                         @if (!Model.IsProductiveAsset)
                         {
                             <NumericDoubleComponent Label="%Tax (VAT)" @bind-Value=@Model.PercentageTaxProductive Validate="Form.ValidateAsync"></NumericDoubleComponent>
                             <ValidationMessage For="() => Model.PercentageTaxProductive" style="color:red; font-size:x-small;" />
                         }
-                    </FluentStack>
-                </FluentStack>
-            </FluentStack>
+                    </MudItem >
+                </MudGrid>
 
-        </Content>
 
-    </EditTemplate>
 
+            </Content>
+
+        </EditTemplate>
+    </div>
     @if (_loaded)
     {
-        <StakeHolderInsideProjectTable ProjectId="@Model.Id"></StakeHolderInsideProjectTable>
-        <BackGroundTable ProjectId="@Model.Id"></BackGroundTable>
-        <ObjectiveTable ProjectId="@Model.Id"></ObjectiveTable>
-        <BennefitTable ProjectId="@Model.Id"></BennefitTable>
-        <ScopeTable ProjectId="@Model.Id"></ScopeTable>
-        <RequirementTable ProjectId="@Model.Id"></RequirementTable>
-        <AcceptanceCriteriaTable ProjectId="@Model.Id"></AcceptanceCriteriaTable>
-        <ConstrainstTable ProjectId="@Model.Id"></ConstrainstTable>
-        <AssumptionTable ProjectId="@Model.Id"></AssumptionTable>
-        <LearnedLessonTable ProjectId="@Model.Id"></LearnedLessonTable>
-        <ExpertJudgementTable ProjectId="@Model.Id"></ExpertJudgementTable>
-        <DeliverableTable ProjectId="@Model.Id"></DeliverableTable>
-        <TableDeliverableList ProjectId="@Model.Id"></TableDeliverableList>
-        <WbsChartSvg ProjectId="@Model.Id"></WbsChartSvg>
-        <BudgetItemsTable ProjectId="@Model.Id"></BudgetItemsTable>
-        <QualityTable ProjectId="@Model.Id"></QualityTable>
-        <KnownRiskTable ProjectId="@Model.Id"></KnownRiskTable>
-        <ResourceTable ProjectId="@Model.Id"></ResourceTable>
-        <CommunicationTable ProjectId="@Model.Id"></CommunicationTable>
-        <AcquisitionTable ProjectId="@Model.Id"></AcquisitionTable>
+        <FluentTabs @bind-ActiveTabId="@activeid" OnTabChange="HandleOnTabChange" Width="100%">
+            <FluentTab Label="Start/Plan" Id="tab-1">
+                <Content>
+                    <FluentAccordion @ref=@_FluentAccordion @bind-ActiveId="@MainApp.AccordionUpdateProject" 
+                    ExpandMode="AccordionExpandMode.Single"  
+                    OnAccordionItemChange="HandleOnAccordionItemChange" Style="width:100%">
+                        <FluentAccordionItem Heading="StakeHolders" Id="StakeHolders">
+                            <StakeHolderInsideProjectTable GetAll="GetAllStakeHolderInsideProject"
+                            Response="@StakeHolderInsideProjectResponseList"
+                            UpdateStakeHolder="UpdateStakeHolder" StakeHolderResponseList="@StakeHolderResponseList">
+                            </StakeHolderInsideProjectTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Background" Id="Background">
+                            <BackGroundTable GetAll="GetAllBackground" Response="@BackGroundResponseList"></BackGroundTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Objetives" Id="Objetives">
+                            <ObjectiveTable GetAll="GetAllObjective" Response="@ObjectiveResponseList"></ObjectiveTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Bennefits" Id="Bennefits">
+                            <BennefitTable GetAll="GetAllBennefit" Response="@BennefitResponseList"></BennefitTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Scopes" Id="Scopes">
+                            <ScopeTable GetAll="GetAllScope" Response="@ScopeResponseList"></ScopeTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Requirements" Id="Requirements">
+                            <RequirementTable GetAll="GetAllRequirement" Response="@RequirementResponseList"></RequirementTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Acceptances Criterias" Id="AcceptancesCriterias">
+                            <AcceptanceCriteriaTable GetAll="GetAllAcceptanceCriteria" Response="@AcceptanceCriteriaResponseList"></AcceptanceCriteriaTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Constraints" Id="Constraints">
+                            <ConstrainstTable GetAll="GetAllConstrainst" Response="@ConstrainstResponseList"></ConstrainstTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Assumptions" Id="Assumptions">
+                            <AssumptionTable GetAll="GetAllAssumption" Response="AssumptionResponseList"></AssumptionTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Learned Lessons" Id="LearnedLessons">
+                            <LearnedLessonTable GetAll=GetAllLearnedLesson Response="LearnedLessonResponseList"></LearnedLessonTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Expert Judgements" Id="ExpertJudgements">
+                            <ExpertJudgementTable GetAll=GetAllExpertJudgement Response="@ExpertJudgementResponseList"></ExpertJudgementTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Deliverables" Id="Deliverables">
+                            <DeliverableTable GetAll="GetAllDeliverables" Response="@DeliverableResponse"></DeliverableTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Timeline" Id="Timeline">
+                            <GanttTaskTable GetAll="GetAllGantt" Response="@GanttTaskResponse"></GanttTaskTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Work break down structure" Id="WBS">
+                            <WbsChartSvg Response="@GanttTaskResponse"></WbsChartSvg>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Budget Items" Id="Budget Items">
+                            <BudgetItemsTable Response="@BudgetItemResponseList" GetAll="GetAllBudgetItems"></BudgetItemsTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Quality" Id="Quality">
+                            <QualityTable GetAll=GetAllQuality Response="@QualityResponseList"></QualityTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Knwon Risks" Id="KnwonRisks">
+                            <KnownRiskTable GetAll="GetAllKnownRisk" Response="@KnownRiskResponseList"></KnownRiskTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Resources" Id="Resources">
+                            <ResourceTable GetAll="GetAllResource" Response="ResourceResponseList"></ResourceTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Communication Plan" Id="CommunicationPlan">
+                            <CommunicationTable GetAll="GetAllCommunication" Response="@CommunicationResponseList"></CommunicationTable>
+                        </FluentAccordionItem>
+                        <FluentAccordionItem Heading="Acquisitions" Id="Acquisitions">
+                            <AcquisitionTable GetAll="GetAllAcquisition" Response="@AcquisitionResponseList"></AcquisitionTable>
+                        </FluentAccordionItem>
+
+                    </FluentAccordion>
+
+                </Content>
+            </FluentTab>
+            <FluentTab Label="Execution" Id="tab-2">
+                <Content>
+
+                </Content>
+            </FluentTab>
+            <FluentTab Label="Monitoring" Id="tab-3">
+                <Content></Content>
+            </FluentTab>
+        </FluentTabs>
+
     }
 </FluentStack>
-
+ *@
 @code {
-    EditTemplate<UpdateProjectRequest> Form = null!;
+    // EditTemplate<UpdateProjectRequest> Form = null!;
 
+    // [CascadingParameter]
+    // public App MainApp { get; set; } = null!;
+    // string? activeid = "tab-1";
+    // FluentTab? changedto;
 
-
-
-    // async Task ChangeSelectProjectNeed(ChangeEventArgs args)
+    // private void HandleOnTabChange(FluentTab tab)
     // {
-    //     if (args == null) return;
-    //     Model.ProjectNeedType = ProjectNeedTypeEnum.GetType(args!.Value!.ToString()!);
-    //     await Form.ValidateAsync();
+    //     changedto = tab;
     // }
 
-    // string? manager;
-    // async Task ChangeManager(ChangeEventArgs args)
-    // {
-    //     if (args == null || args.Value == null) return;
-    //     if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
-    //     {
-    //         Model.Manager = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
-    //         manager = args.Value.ToString();
-    //         await Form.ValidateAsync();
-    //     }
+    // FluentAccordion _FluentAccordion;
+    // FluentAccordionItem? changed;
 
-    // }
-    // string? sponsor;
-    // async Task ChangeSponsor(ChangeEventArgs args)
+    // private void HandleOnAccordionItemChange(FluentAccordionItem itemAccordion)
     // {
-    //     if (args == null || args.Value == null) return;
-    //     if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
-    //     {
-    //         Model.Sponsor = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
-    //         sponsor = args.Value.ToString();
-    //         await Form.ValidateAsync();
-    //     }
-
+    //     changed = itemAccordion;
+    //     MainApp.AccordionUpdateProject = itemAccordion.Id;
     // }
+
 }

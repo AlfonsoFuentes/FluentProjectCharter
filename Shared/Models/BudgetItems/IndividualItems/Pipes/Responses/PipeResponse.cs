@@ -4,34 +4,31 @@ using Shared.Models.Brands.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Shared.Models.BudgetItems.Responses;
 using Shared.Models.EngineeringFluidCodes.Responses;
+using Shared.Models.FileResults.Generics.Request;
 
 namespace Shared.Models.BudgetItems.IndividualItems.Pipes.Responses
 {
-    public class PipeResponse : BudgetItemWithPurchaseOrdersResponse
+    public class PipeResponse : BudgetItemWithPurchaseOrdersResponse, IMessageResponse, IRequest
     {
-    
-        public override string UpadtePageName { get; set; } = StaticClass.Pipes.PageName.Update;
-        public Guid DeliverableId { get; set; }
-  
 
+
+        public string EndPointName => StaticClass.Pipes.EndPoint.CreateUpdate;
+
+        public string Legend => Name;
+
+        public string ActionType => Id == Guid.Empty ? "created" : "updated";
+        public string ClassName => StaticClass.Pipes.ClassName;
+        public string Succesfully => StaticClass.ResponseMessages.ReponseSuccesfullyMessage(Legend, ClassName, ActionType);
+        public string Fail => StaticClass.ResponseMessages.ReponseFailMessage(Legend, ClassName, ActionType);
+        public string NotFound => StaticClass.ResponseMessages.ReponseNotFound(ClassName);
+        public Guid? GanttTaskId { get; set; }
         public double BudgetCalculated => MaterialQuantity * EquivalentLenghPrice + LaborDayPrice * LaborQuantity;
-       
-        public BrandResponse BrandResponse { get; set; } = new();
-        public string Brand => BrandResponse == null ? string.Empty : BrandResponse.Name;
         public string TagNumber { get; set; } = string.Empty;
-        public bool ShowDetails { get; set; } = false;
-        public List<NozzleResponse> Nozzles { get; set; } = new();
-
-
-        public override string Tag => !string.IsNullOrEmpty(TagNumber) ?
-            $"{Diameter.Name}-{FluidCodeNameCode}-{TagNumber}-{Material.Name}-{InsulationCode}" :
-            string.Empty;
+        public override string Tag => $"{Diameter.Name}-{FluidCodeCode}-{TagNumber}-{Material.Name}-{InsulationCode}";
         double materialQuantity;
         double laborDayPrice;
         double equivalentLenghPrice;
         double laborQuantity;
-      
-
         public double MaterialQuantity
         {
             get
@@ -76,17 +73,15 @@ namespace Shared.Models.BudgetItems.IndividualItems.Pipes.Responses
             }
         }
         public NominalDiameterEnum Diameter { get; set; } = NominalDiameterEnum.None;
-        public EngineeringFluidCodeResponse? FluidCode { get; set; } = null!;
-        public string FluidCodefromDB { get; set; } = string.Empty;
-        public string FluidCodeName => FluidCode == null ? string.Empty : FluidCode.Name;
-        public string FluidCodeNameCode => FluidCode == null ? FluidCodefromDB : FluidCode.Code;
+        public EngineeringFluidCodeResponse? FluidCode { get; set; }
+        public string FluidCodeCode => FluidCode != null ? FluidCode.Code : string.Empty;
         public MaterialEnum Material { get; set; } = MaterialEnum.None;
         public bool Insulation { get; set; }
         public string InsulationCode => Insulation ? "1" : "0";
         public PipeClassEnum PipeClass { get; set; } = PipeClassEnum.None;
         public bool IsExisting { get; set; }
 
-       
+
 
     }
 }

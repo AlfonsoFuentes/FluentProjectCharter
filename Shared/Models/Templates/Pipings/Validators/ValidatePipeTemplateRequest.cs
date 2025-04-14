@@ -21,7 +21,7 @@ namespace Shared.Models.Templates.Pipings.Validators
         public string Diameter { get; set; } = string.Empty;
         public string Class { get; set; } = string.Empty;
         public bool Insulation { get; set; }
-        public string Brand { get; set; } = string.Empty;
+       
 
     }
 

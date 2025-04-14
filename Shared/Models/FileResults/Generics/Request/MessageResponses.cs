@@ -2,6 +2,14 @@
 
 namespace Shared.Models.FileResults.Generics.Request
 {
+    public interface IMessageResponse
+    {
+        string Legend { get; }
+        string ClassName { get; }
+        string Succesfully { get; }
+        string Fail { get; }
+        string NotFound { get; }
+    }
     public abstract class ValidateMessageResponse
     {
         public abstract string Legend { get; }
@@ -11,7 +19,14 @@ namespace Shared.Models.FileResults.Generics.Request
 
 
     }
-    public abstract class CreateMessageResponse
+    public interface ICreateMessageResponse
+    {
+         string Legend { get; }
+        string ClassName { get; }
+        string Succesfully => StaticClass.ResponseMessages.ReponseSuccesfullyMessageCreated(Legend, ClassName);
+        string Fail => StaticClass.ResponseMessages.ReponseFailMessageCreated(Legend, ClassName);
+    }
+    public abstract class CreateMessageResponse: ICreateMessageResponse
     {
         public abstract string Legend { get; }
         public abstract string ClassName { get; }

@@ -5,6 +5,6 @@ namespace Shared.Models.Bennefits.Responses
     public class BennefitResponseList : IResponseAll
     {
         public List<BennefitResponse> Items { get; set; } = new();
-        public string ProjectName { get; set; } = string.Empty;
+        public Guid ProjectId { get; set; }
     }
 }

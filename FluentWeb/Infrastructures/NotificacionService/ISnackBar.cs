@@ -1,5 +1,4 @@
 ﻿using FluentWeb.Infrastructures.Identity.Account;
-using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace FluentWeb.Infrastructures.NotificacionService
 {
@@ -12,16 +11,16 @@ namespace FluentWeb.Infrastructures.NotificacionService
     }
     public class SnackBar : ISnackBar
     {
-        IToastService ToastService;
+        //IToastService ToastService;
 
-        public SnackBar(IToastService toastService)
+        public SnackBar(/*IToastService toastService*/)
         {
-            ToastService = toastService;
+            //ToastService = toastService;
         }
 
         public void ShowSuccess(string message)
         {
-            ToastService.ShowSuccess(message, 4000);
+            //ToastService.ShowSuccess(message, 4000);
         }
 
         public void ShowSuccess(List<string> message)
@@ -33,7 +32,7 @@ namespace FluentWeb.Infrastructures.NotificacionService
         }
         public void ShowError(string message)
         {
-            ToastService.ShowError(message,4000);
+            //ToastService.ShowError(message,4000);
         }
 
         public void ShowError(List<string> message)

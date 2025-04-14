@@ -9,7 +9,7 @@
 
         public static PipeClassEnum Create(int id, string name) => new PipeClassEnum() { Id = id, Name = name };
 
-        public static PipeClassEnum None = Create(-1, "NONE");
+        public static PipeClassEnum None = Create(-1, "None");
         public static PipeClassEnum Sanitary3A = Create(0, "Sanitary 3A");
         public static PipeClassEnum SCH10 = Create(1, "SCH 10");
         public static PipeClassEnum SCH40 = Create(1, "SCH 40");

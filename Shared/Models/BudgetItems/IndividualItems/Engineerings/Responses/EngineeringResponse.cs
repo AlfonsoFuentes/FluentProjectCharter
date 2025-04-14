@@ -11,7 +11,6 @@ namespace Shared.Models.BudgetItems.IndividualItems.Engineerings.Responses
         public Guid DeliverableId { get; set; }
     
 
-        public override string UpadtePageName { get; set; } = StaticClass.Paintings.PageName.Update;
 
 
     }

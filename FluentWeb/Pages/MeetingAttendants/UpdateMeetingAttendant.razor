@@ -1,10 +1,10 @@
 ﻿@page "/UpdateMeetingAttendant/{Id:guid}"
 
-
+@* 
 <EditTemplate @ref=Form TItem="UpdateMeetingAttendantRequest" @bind-Model=@Model 
               Title="Edit Attendant">
     <Content>
-        <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center">
+      <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center">
             <FluentStack Orientation="Orientation.Horizontal">
                 <FluentSelect TOption="StakeHolderResponse"
                               Label="Select a Attendant"
@@ -17,9 +17,9 @@
                               OptionText="@(p => p.Name)"
                               @bind-Value="@stakeholder"
                               @bind-SelectedOption="@Model.StakeHolder" />
-                <FluentButton Id="addmanager" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@(()=>AddStakeHolder())">
+                <MudButton  Id="addmanager" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@(()=>AddStakeHolder())">
 
-                </FluentButton>
+                </MudButton >
                 <FluentTooltip Anchor="addmanager" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Add Attendant</FluentTooltip>
 
             </FluentStack>
@@ -32,20 +32,20 @@
 
     </Content>
 
-</EditTemplate>
+</EditTemplate> *@
 
 @code {
-    EditTemplate<UpdateMeetingAttendantRequest> Form = null!;
-    string? stakeholder;
-    async Task ChangeManager(ChangeEventArgs args)
-    {
-        if (args == null || args.Value == null) return;
-        if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
-        {
-            Model.StakeHolder = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
-            stakeholder = args.Value.ToString();
-            await Form.ValidateAsync();
-        }
+    // EditTemplate<UpdateMeetingAttendantRequest> Form = null!;
+    // string? stakeholder;
+    // async Task ChangeManager(ChangeEventArgs args)
+    // {
+    //     if (args == null || args.Value == null) return;
+    //     if (StakeHolderResponseList.Items.Any(x => x.Name == args.Value.ToString()))
+    //     {
+    //         Model.StakeHolder = StakeHolderResponseList.Items.Single(x => x.Name == args.Value.ToString());
+    //         stakeholder = args.Value.ToString();
+    //         await Form.ValidateAsync();
+    //     }
 
-    }
+    // }
 }

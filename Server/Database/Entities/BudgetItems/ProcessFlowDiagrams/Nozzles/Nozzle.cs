@@ -12,9 +12,9 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles
         public Guid? ItemConnectedId { get; set; }
         [NotMapped]
         public string Name => $"N{Order}";
-        public string ConnectionType { get; set; } = string.Empty;
-        public string NominalDiameter { get; set; } = string.Empty;
-        public string NozzleType { get; set; } = string.Empty;
+        public int ConnectionType { get; set; }
+        public int NominalDiameter { get; set; } 
+        public int NozzleType { get; set; } 
   
         public double OuterDiameter { get; set; }
         public double InnerDiameter { get; set; }

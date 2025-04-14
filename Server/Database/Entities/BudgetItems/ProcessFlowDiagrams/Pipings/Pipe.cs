@@ -31,9 +31,9 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings
         public Guid? PipeTemplateId { get; set; }
 
         public string FluidCodeCode { get; set; } = string.Empty;
-        public string Material { get; set; } = string.Empty;
+        public int Material { get; set; } 
         public bool Insulation { get; set; }
-        public string Diameter { get; set; } = string.Empty;
+        public int Diameter { get; set; } 
         public double MaterialQuantity { get; set; }
         public double LaborDayPrice { get; set; }
         public double EquivalentLenghPrice { get; set; }

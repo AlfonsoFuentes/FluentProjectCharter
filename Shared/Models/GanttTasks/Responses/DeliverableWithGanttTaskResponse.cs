@@ -35,7 +35,7 @@ namespace Shared.Models.GanttTasks.Responses
         public int LastOrder => Items.Count == 0 ? 1 : OrderedItems.Last().Order;
         public List<GanttTaskResponse> OrderedItems => Items.Count == 0 ? new() : Items.OrderBy(x => x.Order).ToList();
         public List<GanttTaskResponse> FlatOrderedItems => GanttTaskHelper.FlattenCompletedOrderedItems(Items);
-       
+
         public double TotalBudget => OrderedItems.Count == 0 ? 0 : OrderedItems.Sum(x => x.TotalBudget);
         public string sTotalBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalBudget);
         public void Calculate()
@@ -466,7 +466,7 @@ namespace Shared.Models.GanttTasks.Responses
         {
             //return false;
             //Conjunto para rastrear los nodos visitados durante la búsqueda
-            var visited = new HashSet<Guid>();
+            var visited = new HashSet<Guid?>();
             var stack = new Stack<GanttTaskResponse>();
 
             // Guardar el estado original de los Dependants
@@ -740,6 +740,13 @@ namespace Shared.Models.GanttTasks.Responses
             {
 
                 Items.Remove(selectedRow);
+            }
+            //Si selected row tiene dependencia del ancestor se debe remover porque crea referencia circular
+            var dependantSelectedRow = selectedRow.Dependants.FirstOrDefault(x => x.Id == ancestor.Id);
+            if (dependantSelectedRow != null)
+            {
+          
+                selectedRow.Dependants.Remove(dependantSelectedRow);
             }
 
             // Agregar el selectedRow como subdeliverable del ancestro encontrado

@@ -23,7 +23,7 @@ namespace Server.EndPoint.Scopes.Queries
                     var response = new ScopeResponseList
                     {
                         Items = maps,
-                        ProjectName = rows.Name
+                        ProjectId = request.ProjectId,
                     };
 
                     return Result<ScopeResponseList>.Success(response);

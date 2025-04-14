@@ -27,26 +27,7 @@ namespace Shared.Models.Acquisitions.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateAcquisitionRequest ToUpdate(this AcquisitionResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateAcquisitionRequest ToCreate(this AcquisitionResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+        
     }
 
 }

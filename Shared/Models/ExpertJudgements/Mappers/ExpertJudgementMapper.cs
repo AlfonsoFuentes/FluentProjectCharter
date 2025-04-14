@@ -27,26 +27,7 @@ namespace Shared.Models.ExpertJudgements.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateExpertJudgementRequest ToUpdate(this ExpertJudgementResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateExpertJudgementRequest ToCreate(this ExpertJudgementResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+        
     }
 
 }

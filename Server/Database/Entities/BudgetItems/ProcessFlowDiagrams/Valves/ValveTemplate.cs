@@ -5,14 +5,16 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves
 {
     public class ValveTemplate : Template
     {
+        public int Type { get; set; } 
         public string Model { get; set; } = string.Empty;
-        public string Material { get; set; } = string.Empty;
-        public string ActuatorType { get; set; } = string.Empty;
-        public string PositionerType { get; set; } = string.Empty;
+        public int Material { get; set; }
+        public int ActuatorType { get; set; } 
+        public int PositionerType { get; set; } 
         public bool HasFeedBack { get; set; }
-        public string Diameter { get; set; } = string.Empty;
-        public string FailType { get; set; } = string.Empty;
-        public string SignalType { get; set; } = string.Empty;
+        public int Diameter { get; set; }
+        public int FailType { get; set; } 
+        public int SignalType { get; set; } 
+ 
         public double Value { get; set; }
 
         [ForeignKey("ValveTemplateId")]

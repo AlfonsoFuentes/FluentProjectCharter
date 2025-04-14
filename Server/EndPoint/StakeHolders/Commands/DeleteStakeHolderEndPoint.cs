@@ -1,5 +1,4 @@
-﻿using Server.Database.Entities.ProjectManagements;
-using Shared.Models.StakeHolders.Requests;
+﻿using Shared.Models.StakeHolders.Requests;
 
 namespace Server.EndPoint.StakeHolders.Commands
 {
@@ -80,5 +79,4 @@ namespace Server.EndPoint.StakeHolders.Commands
 
 
     }
-
 }

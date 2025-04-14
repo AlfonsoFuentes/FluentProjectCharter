@@ -27,25 +27,8 @@ namespace Shared.Models.BackGrounds.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateBackGroundRequest ToUpdate(this BackGroundResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateBackGroundRequest ToCreate(this BackGroundResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-         
-            };
-        }
+       
+       
     }
 
 }

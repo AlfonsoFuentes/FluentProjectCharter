@@ -10,11 +10,12 @@ namespace Server.EndPoint.Projects.Queries
             {
                 app.MapPost(StaticClass.Projects.EndPoint.GetAll, async (ProjectGetAll request, IQueryRepository Repository) =>
                 {
-                  
-                    
+                    Func<IQueryable<Project>, IIncludableQueryable<Project, object>> Includes = x => x
+                     .Include(x => x.BudgetItems)
+                    ;
 
                     string CacheKey = StaticClass.Projects.Cache.GetAll;
-                    var rows = await Repository.GetAllAsync<Project>(Cache: CacheKey,  OrderBy: x => x.Order);
+                    var rows = await Repository.GetAllAsync(Cache: CacheKey, OrderBy: x => x.Order,Includes:Includes);
                     if (rows == null)
                     {
                         return Result<ProjectResponseList>.Fail(
@@ -24,7 +25,7 @@ namespace Server.EndPoint.Projects.Queries
 
                     ProjectResponseList response = new ProjectResponseList()
                     {
-                        
+
                         Items = maps
                     };
                     return Result<ProjectResponseList>.Success(response);

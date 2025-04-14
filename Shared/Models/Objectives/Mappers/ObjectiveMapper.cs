@@ -27,27 +27,7 @@ namespace Shared.Models.Objectives.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateObjectiveRequest ToUpdate(this ObjectiveResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateObjectiveRequest ToCreate(this ObjectiveResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-         
-            };
-        }
+       
     }
 
 }

@@ -2,7 +2,7 @@
 {
     public abstract class ValueObject
     {
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
         public virtual string Name { get; set; } = string.Empty;
         public override string ToString()
         {

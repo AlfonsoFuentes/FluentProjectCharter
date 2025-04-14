@@ -6,44 +6,44 @@
 <EditForm Model="@_registerUserModel" OnValidSubmit="SubmitAsync">
 
     <FluentValidationValidator @ref="_fluentValidationValidator" />
-    <FluentStack Orientation="Orientation.Vertical" VerticalGap="2" Style="width:400px" VerticalAlignment="VerticalAlignment.Center" HorizontalAlignment="HorizontalAlignment.Center">
-        <FluentGrid AdaptiveRendering="true" Justify="JustifyContent.Center">
-            <FluentGridItem xs="12" sm="12">
-                <FluentLabel Typo="Typography.H1">
+    <MudStack Spacing="2" Style="width:400px" AlignItems=AlignItems.Center Justify=Justify.Center>
+        <MudGrid  Justify="Justify.Center">
+            <MudItem xs="12" sm="12">
+                <MudField Typo=Typo.h1>
                     <strong> CP Project Management</strong>
-                </FluentLabel>
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="12">
-                <FluentLabel Typo="Typography.H2">
+                </MudField>
+            </MudItem>
+            <MudItem xs="12" sm="12">
+                <MudField Typo="Typo.h2">
                     Interactive Software to plan and follow projects
-                </FluentLabel>
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="12">
-                <FluentLabel Typo="Typography.H6">
-                   Colgate-Palmolive - Cali
-                </FluentLabel>
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="12">
-                <FluentLabel Typo="Typography.H4">
-                    Don't have an account? <FluentAnchor Appearance="Appearance.Hypertext" Href="/register">Register here</FluentAnchor>
-                </FluentLabel>
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="12">
+                </MudField>
+            </MudItem>
+            <MudItem xs="12" sm="12">
+                <MudField Typo="Typo.h6">
+                    Colgate-Palmolive - Cali
+                </MudField>
+            </MudItem>
+            <MudItem xs="12" sm="12">
+                <MudField Typo="Typo.h4">
+                    Don't have an account? <MudLink Href="/register">Register here</MudLink>
+                </MudField>
+            </MudItem>
+            <MudItem xs="12" sm="12">
 
                 <TextBox Label="E-mail" @bind-Value=@_registerUserModel.Email TextFieldType="TextFieldType.Email" Validate="ValidateAsync"></TextBox>
                 <ValidationMessage For="() => _registerUserModel.Email" style="color:red; font-size:x-small;" />
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="12">
+            </MudItem>
+            <MudItem xs="12" sm="12">
 
-                <TextBox  Label="Password" @bind-Value="_registerUserModel.Password" TextFieldType="TextFieldType.Password" Validate="ValidateAsync"></TextBox>
+                <TextBox Label="Password" @bind-Value="_registerUserModel.Password" TextFieldType="TextFieldType.Password" Validate="ValidateAsync"></TextBox>
                 <ValidationMessage For="() => _registerUserModel.Password" style="color:red; font-size:x-small;" />
 
-            </FluentGridItem>
-        </FluentGrid>
-        <FluentButton Type="ButtonType.Submit"
-                      Appearance=Appearance.Accent
-                      Disabled="@(!Validated)">Login</FluentButton>
-    </FluentStack>
+            </MudItem>
+        </MudGrid>
+        <MudButton ButtonType=ButtonType.Submit
+                   Color="Color.Primary"
+                   Disabled="@(!Validated)">Login</MudButton>
+    </MudStack>
 
 
 </EditForm>

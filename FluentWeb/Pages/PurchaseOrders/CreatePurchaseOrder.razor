@@ -1,57 +1,81 @@
 ﻿@page "/CreatePurchaseOrder/{BudgetItemId:guid}"
 
-@using Shared.Models.PurchaseOrders.Requests
 <CreateTemplate @ref=Form TItem="CreatePurchaseOrderRequest" @bind-Model="@Model"
                 Title="Create Purchase Order">
     <Content>
-        @if (Model != null)
+   @*      @if (Model != null)
         {
-            <FluentGrid>
-                <FluentGridItem sm="6" xs="12">
-                    <TextBoxComponent Label="Name"
-                                      @bind-Value=@Model.Name
-                                      Placeholder="Define name"
-                                      Validate="Form.ValidateAsync"></TextBoxComponent>
+            <MudGrid>
+                <MudItem  sm="4" xs="12">
+                    <TextAreaComponent Label="Name"
+                                       Rows="6"
+                                       @bind-Value=@Model.Name
+                                       Placeholder="Define name"
+                                       Validate="Form.ValidateAsync"></TextAreaComponent>
                     <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
-                </FluentGridItem>
-                <FluentGridItem sm="3" xs="12">
-                    <TextBoxComponent Label="PR" @bind-Value=@Model.PurchaseRequisition Validate="Form.ValidateAsync"></TextBoxComponent>
-                    <ValidationMessage For="() => Model.PurchaseRequisition" style="color:red; font-size:x-small;" />
-                </FluentGridItem>
-                <FluentGridItem sm="3" xs="12">
-                    <DatePickerComponent Label="Create Purchase Order Date" @bind-Value=@Model.CurrencyDate Validate="Form.ValidateAsync"
-                                         Change="ChangedCurrencyDate"></DatePickerComponent>
-                    <ValidationMessage For="() => Model.CurrencyDate" style="color:red; font-size:x-small;" />
-                </FluentGridItem>
-            </FluentGrid>
-            <FluentGrid>
-                <FluentGridItem xs="12" sm="3">
-                    <LabelComponent Label="Project number:" Value="@Model.ProjectAccount"></LabelComponent>
+                </MudItem >
+                <MudItem  sm="8" xs="12">
+                    <MudGrid>
+                        <MudItem  sm="3" xs="12">
+                            <TextBoxComponent Label="PR" @bind-Value=@Model.PurchaseRequisition Validate="Form.ValidateAsync"></TextBoxComponent>
+                            <ValidationMessage For="() => Model.PurchaseRequisition" style="color:red; font-size:x-small;" />
+                        </MudItem >
+                        <MudItem  sm="3" xs="12">
+                            <LabelComponent Label="Project number:" Value="@Model.ProjectAccount"></LabelComponent>
+                        </MudItem >
+                        <MudItem  sm="3" xs="12">
+                            <LabelComponent Label="Tax Code:" Value="@Model.TaxCode"></LabelComponent>
+                        </MudItem >
+                        <MudItem  sm="3" xs="12">
+                            <DatePickerComponent Label="TRM Date" @bind-Value=@Model.CurrencyDate Validate="Form.ValidateAsync"
+                                                 Change="ChangedCurrencyDate"></DatePickerComponent>
+                            <ValidationMessage For="() => Model.CurrencyDate" style="color:red; font-size:x-small;" />
+                        </MudItem >
 
-                </FluentGridItem>
-                <FluentGridItem xs="12" sm="3">
-                    <LabelComponent Label="Cost Center:" Value="@Model.CostCenter.Name"></LabelComponent>
+                    </MudGrid>
+                    <MudGrid>
+                        <MudItem  sm="3" xs="12">
+                            <TextBoxComponent Label="Quote No" @bind-Value=@Model.QuoteNo Validate="Form.ValidateAsync"></TextBoxComponent>
+                            <ValidationMessage For="() => Model.QuoteNo" style="color:red; font-size:x-small;" />
+                        </MudItem >
+                        <MudItem  sm="3" xs="12">
+                            <LabelComponent Label="Cost Center:" Value="@Model.CostCenter.Name"></LabelComponent>
+                        </MudItem >
+                        <MudItem  sm="3" xs="12">
+                            <LabelComponent Label="SPL:" Value="@Model.SPL"></LabelComponent>
+                        </MudItem >
+                        <MudItem  sm="3" xs="12">
+                            @if (Model.PurchaseOrderCurrency.Id == CurrencyEnum.COP.Id)
+                            {
 
-                </FluentGridItem>
-                <FluentGridItem xs="12" sm="3">
-                    <LabelComponent Label="Tax Code:" Value="@Model.TaxCode"></LabelComponent>
+                                <NumberField Validate="Form.ValidateAsync"
+                                                        @bind-Value="@Model.USDCOP"
+                                                        Label="@($"TRM $COP/$USD")" />
+                                <ValidationMessage For="() => Model.USDCOP" style="color:red; font-size:x-small;" />
 
-                </FluentGridItem>
-                <FluentGridItem xs="12" sm="3">
-                    <LabelComponent Label="SPL:" Value="@Model.SPL"></LabelComponent>
+                            }
+                            else if (Model.PurchaseOrderCurrency.Id == CurrencyEnum.EUR.Id)
+                            {
+                                <NumberField Validate="Form.ValidateAsync"
+                                                        @bind-Value="@Model.USDEUR"
+                                                        Label="@($"TRM $EUR/$USD")" />
+                                <ValidationMessage For="() => Model.USDEUR" style="color:red; font-size:x-small;" />
+                            }
+                        </MudItem >
 
-                </FluentGridItem>
-
-            </FluentGrid>
-            <FluentGrid>
-                <FluentGridItem xs="12" sm="3">
+                    </MudGrid>
+                </MudItem >
+            </MudGrid>
+            <MudGrid>
+                <MudItem  xs="12" sm="3">
                     <AutoCompleteComponent Items="@Suppliers" TValue="SupplierResponse"
                                            SearchAsync="OnSearchAsync"
                                            OptionText="@(item => item.Name)"
+                                           Validate="Form.ValidateAsync"
                                            @bind-Value=@Model.Supplier>
                         <LabelTemplate>
                             <FluentStack Orientation="Orientation.Horizontal" Width="100%" HorizontalAlignment="HorizontalAlignment.SpaceBetween">
-                                <FluentLabel Typo="Typography.H5">Supplier</FluentLabel>
+                                <MudField  Typo="Typo.H5">Supplier</MudField >
                                 <IconButton IconEnd="@(new Icons.Regular.Size12.Add())" OnClick="@AddSuplier" ToolTip="Add Supplier"></IconButton>
                             </FluentStack>
                         </LabelTemplate>
@@ -60,13 +84,17 @@
                     <ValidationMessage For="() => Model.Supplier" style="color:red; font-size:x-small;" />
 
 
-                </FluentGridItem>
-                <FluentGridItem xs="12" sm="3">
+                </MudItem >
+                <MudItem  xs="12" sm="3">
+                    <LabelComponent Label="PO Currency:" Value="@Model.PurchaseOrderCurrency.Name"></LabelComponent>
+                </MudItem >
+                <MudItem  xs="12" sm="3">
                     <LabelComponent Label="Vendor Code:" Value="@Model.VendorCode"></LabelComponent>
 
 
-                </FluentGridItem>
-                <FluentGridItem xs="12" sm="3">
+                </MudItem >
+
+                <MudItem  xs="12" sm="3">
                     <SelectedListComponent Label="Select Quote Qurrency"
                                            TValue="CurrencyEnum"
                                            Items="CurrencyEnum.List"
@@ -76,107 +104,194 @@
                     </SelectedListComponent>
 
                     <ValidationMessage For="() => Model.QuoteCurrency" style="color:red; font-size:x-small;" />
-                </FluentGridItem>
+                </MudItem >
+            </MudGrid>
+            <FluentStack Orientation="Orientation.Vertical" Width="100%" HorizontalAlignment="HorizontalAlignment.Start" VerticalAlignment="VerticalAlignment.Top">
 
-                <FluentGridItem xs="12" sm="3">
-                    <TextBoxComponent Label="Quote No" @bind-Value=@Model.QuoteNo Validate="Form.ValidateAsync"></TextBoxComponent>
-                    <ValidationMessage For="() => Model.QuoteNo" style="color:red; font-size:x-small;" />
-                </FluentGridItem>
+                <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@AddNew" ToolTip="Add New" Disabled="@(CreateRow!=null)"></IconButton>
+                <FluentDataGrid id="defaultGrid"
+                                Items=@Model.PurchaseOrderItems.AsQueryable()
+                                TGridItem=PurchaseOrderItemRequest
+                                AutoFit="true"
+                                DisplayMode="DataGridDisplayMode.Table"
+                                ResizableColumns=true
+                                RowSize="@DataGridRowSize.Smaller" Style="width:100%">
 
-
-            </FluentGrid>
-            <FluentGrid>
-                <FluentGridItem xs="12" sm="3">
-                    <LabelComponent Label="PO Currency:" Value="@Model.PurchaseOrderCurrency.Name"></LabelComponent>
-
-
-                </FluentGridItem>
-                <FluentGridItem xs="12" sm="3">
-                    @if (Model.PurchaseOrderCurrency.Id == CurrencyEnum.COP.Id)
-                    {
-                                    
-                        <NumericDoubleComponent Validate="Form.ValidateAsync"
-                                        
-                                                @bind-Value="@Model.USDCOP"
-                                                Label="@($"PO TRM COP to USD {Model.CurrencyDateString}")" />
-                        <ValidationMessage For="() => Model.USDCOP" style="color:red; font-size:x-small;" />
-
-                    }
-                    else if (Model.PurchaseOrderCurrency.Id == CurrencyEnum.EUR.Id)
-                    {
-                        <NumericDoubleComponent Validate="Form.ValidateAsync"
-                                                @bind-Value="@Model.USDEUR"
-                                                Label="@($"PO TRM EUR to USD {Model.CurrencyDateString}")" />
-                        <ValidationMessage For="() => Model.USDEUR" style="color:red; font-size:x-small;" />
-                    }
-                </FluentGridItem>
-                <FluentGridItem xs="12" sm="3">
-                </FluentGridItem>
-                <FluentGridItem xs="12" sm="3">
-                </FluentGridItem>
-            </FluentGrid>
-            <FluentGrid>
-                <FluentGridItem xs="12" sm="12">
-                    <FluentDataGrid id="defaultGrid"
-                                    Items=@Model.PurchaseOrderItems.AsQueryable()
-                                    TGridItem=CreatePurchaseOrderItemRequest
-                                    OnRowClick="HandleRowClick"
-                                    OnRowDoubleClick="HandleRowDoubleClick"
-                                    AutoFit="true"
-                                 
-                                    DisplayMode="DataGridDisplayMode.Table"
-                                    MultiLine="true"
-                                    RowSize="@DataGridRowSize.Medium" Style="width:100%">
+                    <TemplateColumn Title="Budget Item" Width="10%">
+                        @if (CreateRow == context)
+                        {
+                            <select value="@context.BudgetItem.Id" @onchange="@((arg)=>HandleBudgetItemChanged(arg,context))"
+                                    class="select-field">
+                                @foreach (var row in NonSelectedBudgetItems)
+                                {
+                                    <option value="@row.Id">@row.NomenclatoreName</option>
+                                }
+                            </select>
 
 
-                        <TemplateColumn Title="Name" Width="100%">
+
+                        }
+                        else if (EditRow == context && context.BudgetItemId != Model.MainBudgetItemId)
+                        {
+
+                            <select value="@context.BudgetItem.Id" @onchange="@((arg)=>HandleBudgetItemChanged(arg,context))"
+                                    class="select-field">
+                                @foreach (var row in NonSelectedBudgetItems)
+                                {
+                                    <option value="@row.Id">@row.NomenclatoreName</option>
+                                }
+                            </select>
+
+                        }
+                        else if (context.BudgetItemId != Guid.Empty)
+                        {
+                            @context.NomenclatoreName
+                        }
+                        <ValidationMessage For="() => context.BudgetItemId" style="color:red; font-size:x-small;" />
+
+                    </TemplateColumn>
+                    <TemplateColumn Title="Item Name" Width="10%">
+
+                        @if (CreateRow == context || EditRow == context)
+                        {
+                            <TextAreaComponent @bind-Value=@context.Name
+                                               Rows="2"
+                                               Placeholder="Define name"
+                                               Validate="Form.ValidateAsync"></TextAreaComponent>
+
+                        }
+                        else
+                        {
                             @context.Name
+                        }
+                        <ValidationMessage For="() => context.Name" style="color:red; font-size:x-small;" />
+                    </TemplateColumn>
+                    <TemplateColumn Title="Qty" Width="10%">
+                        @if (CreateRow == context || EditRow == context)
+                        {
+                            <NumberField Validate="Form.ValidateAsync"
+                                                    @bind-Value="@context.Quantity" />
 
-                        </TemplateColumn>
-                        <TemplateColumn Title="Qty" Width="100%">
+                        }
+                        else
+                        {
                             @context.Quantity
+                        }
+
+                        <ValidationMessage For="() => context.Quantity" style="color:red; font-size:x-small;" />
+                    </TemplateColumn>
+                    <TemplateColumn Title="@($" ${Model.QuoteCurrency.Name}/EA")" Width="10%">
+                        @if (CreateRow == context || EditRow == context)
+                        {
+
+                            <NumberField Validate="Form.ValidateAsync"
+                                                    @bind-Value="@context.UnitaryQuoteCurrency" />
+
+                        }
+                        else
+                        {
+                            @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C0}", Math.Round(context.UnitaryQuoteCurrency))
+
+                        }
+                        <ValidationMessage For="() => context.UnitaryQuoteCurrency" style="color:red; font-size:x-small;" />
+
+                    </TemplateColumn>
+                    <TemplateColumn Title="@($"Total, {Model.QuoteCurrency.Name}")" Width="10%">
+                        @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C0}", Math.Round(context.TotalQuoteCurrency))
+
+                    </TemplateColumn>
+                    @if (!IsSameCurrency)
+                    {
+                        <TemplateColumn Title="@($" ${Model.PurchaseOrderCurrency.Name}/EA")" Width="10%">
+                            @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C0}", Math.Round(context.UnitaryPurchaseOrderCurrency))
 
                         </TemplateColumn>
-                        <TemplateColumn Title="unitaryValue" Width="100%">
-                            @context.UnitaryValueCurrency
+                        <TemplateColumn Title="@($"Total, {Model.PurchaseOrderCurrency.Name}")" Width="10%">
+                            @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C0}", Math.Round(context.TotalPurchaseOrderCurrency))
 
                         </TemplateColumn>
-                        <TemplateColumn Width="100%">
-                           @*  @if (CreateRow == context)
+                    }
+                    @if (Model.QuoteCurrency.Id != CurrencyEnum.USD.Id)
+                    {
+                        <TemplateColumn Title="@($" $USD/EA")" Width="10%">
+                            @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C0}", Math.Round(context.UnitaryUSD))
+
+                        </TemplateColumn>
+                        <TemplateColumn Title="@($"Total, USD")" Width="10%">
+                            @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C0}", Math.Round(context.TotalUSD))
+
+                        </TemplateColumn>
+                    }
+
+                    <PropertyColumn Property="@(p => p.sBudgetUSD)" Width="10%" Title="Budget" />
+                    <PropertyColumn Property="@(p => p.sAssignedUSD)" Width="10%" Title="Assigned" />
+                    <PropertyColumn Property="@(p => p.sToCommitUSD)" Width="10%" Title="ToCommit" />
+
+
+                    <TemplateColumn Width="5%">
+                        @if (CreateRow == context)
+                        {
+                            <IconButton IconEnd="@(new Icons.Regular.Size16.CalendarCancel())" OnClick="@CancelCreate" ToolTip="Cancel"></IconButton>
+                        }
+                        else if (EditRow == context)
+                        {
+                            <IconButton IconEnd="@(new Icons.Regular.Size16.CalendarCancel())" OnClick="@CancelEdit" ToolTip="Cancel"></IconButton>
+                        }
+                        else
+                        {
+                            <IconButton IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(()=>Edit(context))" ToolTip="Edit"></IconButton>
+                            @if (context.BudgetItemId != Model.MainBudgetItemId)
                             {
-                                <FluentStack Orientation="Orientation.Horizontal">
-                                    <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@Create" ToolTip="Save" Disabled="@DisableSaveButton(context)"></IconButton>
-                                    <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelCreate" ToolTip="Cancel"></IconButton>
-                                </FluentStack>
-
+                                <IconButton IconEnd="@(new Icons.Regular.Size16.Delete())" OnClick="@(()=>Delete(context))" ToolTip="Edit"></IconButton>
                             }
-                            else if (EditRow == context)
-                            {
-                                <FluentStack Orientation="Orientation.Horizontal">
-                                    <IconButton IconEnd="@(new Icons.Regular.Size20.Save())" OnClick="@(()=>Update(context))" ToolTip="Save" Disabled="@DisableSaveButton(context)"></IconButton>
-                                    <IconButton IconEnd="@(new Icons.Regular.Size20.CalendarCancel())" OnClick="@CancelEdit" ToolTip="Cancel"></IconButton>
-                                </FluentStack>
-                            } *@
+                        }
 
-                        </TemplateColumn>
+                    </TemplateColumn>
 
-                    </FluentDataGrid>
-                </FluentGridItem>
-            </FluentGrid>
-        }
+                </FluentDataGrid>
+
+            </FluentStack>
+
+        } *@
 
     </Content>
 
 </CreateTemplate>
-@code {
-   
-    CreateTemplate<CreatePurchaseOrderRequest> Form = null!;
-    IEnumerable<SupplierResponse> SelectedItems = Array.Empty<SupplierResponse>();
-    private void OnSearchAsync(OptionsSearchEventArgs<SupplierResponse> e)
-    {
-        var allCountries = Suppliers;
-        e.Items = allCountries.Where(i => i.Name.StartsWith(e.Text, StringComparison.OrdinalIgnoreCase))
-          .OrderBy(i => i.Name);
+<style>
+    .select-field {
+        padding: 2px;
+        border-radius: 2px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s ease;
+        width: 100%;
     }
 
+        .select-field:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+</style>
+@code {
+
+    CreateTemplate<CreatePurchaseOrderRequest> Form = null!;
+    IEnumerable<SupplierResponse> SelectedItems = Array.Empty<SupplierResponse>();
+    // private void OnSearchAsync(OptionsSearchEventArgs<SupplierResponse> e)
+    // {
+    //     var allCountries = Suppliers;
+    //     e.Items = allCountries.Where(i => i.Name.StartsWith(e.Text, StringComparison.OrdinalIgnoreCase))
+    //       .OrderBy(i => i.Name);
+    // }
+
+    async Task HandleBudgetItemChanged(ChangeEventArgs e, PurchaseOrderItemRequest response)
+    {
+        if (Guid.TryParse(e.Value?.ToString(), out Guid selectedId))
+        {
+            var selected = NonSelectedBudgetItems.First(x => x.Id == selectedId);
+            response.BudgetItem = selected;
+        }
+        await Form.ValidateAsync();
+
+
+    }
 }

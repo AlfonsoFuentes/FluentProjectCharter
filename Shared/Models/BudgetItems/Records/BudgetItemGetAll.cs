@@ -7,6 +7,7 @@ namespace Shared.Models.BudgetItems.Records
       
         public string EndPointName => StaticClass.BudgetItems.EndPoint.GetAll;
         public Guid ProjectId { get; set; }
-    
+
     }
+    
 }

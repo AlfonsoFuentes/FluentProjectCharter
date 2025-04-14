@@ -27,7 +27,7 @@ namespace Server.EndPoint.Bennefits.Queries
                     var response = new BennefitResponseList
                     {
                         Items = maps,
-                        ProjectName = rows.Name,
+                      ProjectId = request.ProjectId,
                     };
 
                     return Result<BennefitResponseList>.Success(response);

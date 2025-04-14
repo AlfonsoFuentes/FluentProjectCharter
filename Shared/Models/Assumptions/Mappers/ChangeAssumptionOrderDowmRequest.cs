@@ -5,7 +5,7 @@ namespace Shared.Models.Assumptions.Mappers
     public class ChangeAssumptionOrderDowmRequest : UpdateMessageResponse, IRequest
     {
 
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public Guid ProjectId { get; set; }
         public string EndPointName => StaticClass.Assumptions.EndPoint.UpdateDown;

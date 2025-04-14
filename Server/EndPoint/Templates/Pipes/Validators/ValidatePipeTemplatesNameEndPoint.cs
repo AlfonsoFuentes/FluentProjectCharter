@@ -18,21 +18,15 @@ namespace Server.EndPoint.Templates.Pipes.Validators
                     Expression<Func<PipeTemplate, bool>> CriteriaId = null!;
                     Func<PipeTemplate, bool> CriteriaExist = x => Data.Id == null ?
                     x.Material.Equals(Data.Material) &&
-                    x.Brand.Equals(Data.Brand) &&
+                 
                     x.Insulation == Data.Insulation &&
                     x.Class.Equals(Data.Class) &&
-                    x.Brand.Equals(Data.Brand) &&
                     x.Diameter.Equals(Data.Diameter)
-
-
-
-
                     : x.Id != Data.Id.Value &&
-                      x.Material.Equals(Data.Material) &&
-                    x.Brand.Equals(Data.Brand) &&
+                     x.Material.Equals(Data.Material) &&
+          
                     x.Insulation == Data.Insulation &&
                     x.Class.Equals(Data.Class) &&
-                    x.Brand.Equals(Data.Brand) &&
                     x.Diameter.Equals(Data.Diameter);
 
                     string CacheKey = StaticClass.PipeTemplates.Cache.GetAll;

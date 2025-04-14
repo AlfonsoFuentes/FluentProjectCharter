@@ -9,13 +9,15 @@ namespace Shared.Models.BudgetItems.Responses
         string Nomenclatore { get; set; }
         double BudgetUSD { get; }
         string sBudgetUSD { get; }
-        string UpadtePageName { get; set; }
         string Tag { get; }
         bool IsAlteration { get; set; }
         bool IsTaxes { get; set; }
+        bool ShowDetails { get; set; }
     }
     public interface IBudgetItemWithPurchaseOrderResponse : IBudgetItemResponse
     {
+
+        string NomenclatoreName { get; }
         double ActualUSD { get; set; }
         double CommitmentUSD { get; set; }
         double PotentialUSD { get; set; }

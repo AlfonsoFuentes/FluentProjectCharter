@@ -1,15 +1,15 @@
-﻿<FluentButton Id="@Id" IconEnd="@IconEnd" OnClick="OnClick" Disabled="@Disabled" Class="@Class"></FluentButton>
+﻿@* <MudButton  Id="@Id" IconEnd="@IconEnd" OnClick="OnClick" Disabled="@Disabled" Class="@Class"></MudButton >
 <FluentTooltip Anchor="@Id" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>@ToolTip</FluentTooltip>
-
+ *@
 @code {
     [Parameter]
     [EditorRequired]
     public string ToolTip { get; set; } = string.Empty;
     string Id = Guid.NewGuid().ToString();
 
-    [Parameter]
-    [EditorRequired]
-    public Icon? IconEnd { get; set; }
+    // [Parameter]
+    // [EditorRequired]
+    // public Icon? IconEnd { get; set; }
     [Parameter]
     [EditorRequired]
     public EventCallback<MouseEventArgs> OnClick { get; set; }

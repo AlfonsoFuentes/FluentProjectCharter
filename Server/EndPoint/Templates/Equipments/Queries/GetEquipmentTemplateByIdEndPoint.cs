@@ -1,12 +1,6 @@
 ﻿using Server.EndPoint.Brands.Queries;
-using Server.EndPoint.Templates.Equipments.Queries;
-using Shared.Enums.ConnectionTypes;
-using Shared.Enums.DiameterEnum;
-using Shared.Enums.Materials;
-using Shared.Enums.NozzleTypes;
+using Server.ExtensionsMethods.EquipmentTemplateMapper;
 using Shared.Models.Templates.Equipments.Records;
-using Shared.Models.Templates.Equipments.Responses;
-using Shared.Models.Templates.NozzleTemplates;
 
 namespace Server.EndPoint.Templates.Equipments.Queries
 {
@@ -19,8 +13,8 @@ namespace Server.EndPoint.Templates.Equipments.Queries
                 app.MapPost(StaticClass.EquipmentTemplates.EndPoint.GetById,
                     async (GetEquipmentTemplateByIdRequest request, IQueryRepository Repository) =>
                 {
-                    Func<IQueryable<EquipmentTemplate>, IIncludableQueryable<EquipmentTemplate, object>> Includes = x =>
-                    x.Include(x => x.NozzleTemplates)
+                    Func<IQueryable<EquipmentTemplate>, IIncludableQueryable<EquipmentTemplate, object>> Includes = x =>x
+                    .Include(x => x.NozzleTemplates)
                     .Include(x => x.BrandTemplate!);
                     ;
 
@@ -42,35 +36,6 @@ namespace Server.EndPoint.Templates.Equipments.Queries
         }
 
 
-        public static EquipmentTemplateResponse Map(this EquipmentTemplate row)
-        {
-            return new()
-            {
-                Id = row.Id,
-                BrandResponse = row.BrandTemplate == null ? new() : row.BrandTemplate.Map(),
-                ExternalMaterial = MaterialEnum.GetType(row.ExternalMaterial),
-                InternalMaterial = MaterialEnum.GetType(row.InternalMaterial),
-                Model = row.Model,
-                Reference = row.Reference,
-                SubType = row.SubType,
-                TagLetter = row.TagLetter,
-                Type = row.Type,
-                Value = row.Value,
-                Nozzles = row.NozzleTemplates.Count == 0 ? new() : row.NozzleTemplates.Select(x => x.Map()).ToList(),
-
-            };
-        }
-        static NozzleTemplateResponse Map(this NozzleTemplate row)
-        {
-
-            return new()
-            {
-                Id = row.Id,
-                ConnectionType = ConnectionTypeEnum.GetType(row.ConnectionType),
-                NominalDiameter = NominalDiameterEnum.GetType(row.NominalDiameter),
-                NozzleType = NozzleTypeEnum.GetType(row.NozzleType),
-
-            };
-        }
+       
     }
 }

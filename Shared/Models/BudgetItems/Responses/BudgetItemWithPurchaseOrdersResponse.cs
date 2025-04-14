@@ -4,15 +4,16 @@ namespace Shared.Models.BudgetItems.Responses
 {
     public class BudgetItemWithPurchaseOrdersResponse : IBudgetItemWithPurchaseOrderResponse
     {
+        public bool ShowDetails { get; set; } = false;  
         public Guid ProjectId { get; set; }
         public bool Selected { get; set; }
         public string Nomenclatore { get; set; } = string.Empty;
         public virtual bool IsAlteration { get; set; } = false;
         public virtual bool IsTaxes { get; set; } = false;
+        public string NomenclatoreName => $"{Nomenclatore}-{Name}";
 
-        public virtual string UpadtePageName { get; set; } = string.Empty;
-        public virtual string Tag { get;  } = string.Empty;
-        public Guid Id { get; set; }
+        public virtual string Tag { get; } = string.Empty;
+        public Guid Id { get; set; }=Guid.Empty;    
         public string Name { get; set; } = string.Empty;
         public List<PurchaseOrderResponse> PurchaseOrders { get; set; } = new();
         public double ActualUSD { get; set; }

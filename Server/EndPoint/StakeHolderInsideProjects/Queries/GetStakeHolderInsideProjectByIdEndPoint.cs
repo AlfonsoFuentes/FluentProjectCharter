@@ -65,6 +65,7 @@ namespace Server.EndPoint.StakeHolderInsideProjects.Queries
                     Area = row.Area,
 
                 },
+                OriginalStakeHolderId = row.Id,
                 ProjectId = _projectid,
                 Role = row.RoleInsideProject == null ? StakeHolderRoleEnum.None : StakeHolderRoleEnum.GetType(row.RoleInsideProject.Name),
 

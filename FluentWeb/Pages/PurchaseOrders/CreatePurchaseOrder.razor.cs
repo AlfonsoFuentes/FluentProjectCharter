@@ -1,19 +1,12 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.FluentUI.AspNetCore.Components;
-using Shared.Commons;
 using Shared.Enums.CurrencyEnums;
-using Shared.Models.AcceptanceCriterias.Responses;
 using Shared.Models.BudgetItems.Records;
 using Shared.Models.BudgetItems.Responses;
-using Shared.Models.FileResults.Generics.Reponses;
 using Shared.Models.PurchaseOrders.Requests;
 using Shared.Models.Suppliers.Records;
 using Shared.Models.Suppliers.Responses;
 using Shared.StaticClasses;
-using System.Diagnostics.Metrics;
 using Web.Infrastructure.Services.Currencies;
-using static Shared.StaticClasses.StaticClass;
 
 namespace FluentWeb.Pages.PurchaseOrders;
 public partial class CreatePurchaseOrder
@@ -25,7 +18,8 @@ public partial class CreatePurchaseOrder
     [Parameter]
     public Guid BudgetItemId { get; set; }
 
-    List<IBudgetItemResponse> BudgetItems = new();
+    List<BudgetItemWithPurchaseOrdersResponse> OriginalBudgetItems = new();
+    List<BudgetItemWithPurchaseOrdersResponse> NonSelectedBudgetItems => OriginalBudgetItems.Where(x => x.Id != Model.MainBudgetItemId).ToList();
     List<SupplierResponse> Suppliers { get; set; } = new();
     public CreatePurchaseOrderRequest Model = new();
     protected override async Task OnInitializedAsync()
@@ -46,8 +40,7 @@ public partial class CreatePurchaseOrder
             });
             if (resultMainBudgetItem.Succeeded)
             {
-                Model.AddPurchaseorderItem(resultMainBudgetItem.Data);
-                var resultProjectt = await GenericService.GetAll<BudgetItemResponseList, BudgetItemGetAll>(new BudgetItemGetAll()
+                var resultProjectt = await GenericService.GetAll<BudgetItemWithPurchaseOrderResponseList, BudgetItemWithPurchaseOrderGetAll>(new BudgetItemWithPurchaseOrderGetAll()
                 {
                     ProjectId = resultMainBudgetItem.Data.ProjectId,
                 });
@@ -55,26 +48,35 @@ public partial class CreatePurchaseOrder
                 {
                     if (resultMainBudgetItem.Data.IsAlteration)
                     {
-                        BudgetItems = resultProjectt.Data.Expenses;
+                        OriginalBudgetItems = resultProjectt.Data.Expenses;
                     }
                     else
                     {
-                        BudgetItems = resultProjectt.Data.Capital;
+                        OriginalBudgetItems = resultProjectt.Data.Capital;
                     }
                     Model.IsProductive = resultProjectt.Data.IsProductive;
                     Model.CostCenter = resultProjectt.Data.CostCenter;
+                    Model.ProjectId = resultProjectt.Data.ProjectId;
                     Model.ProjectAccount = resultProjectt.Data.ProjectNumber;
+                    Model.QuoteCurrency = CurrencyEnum.COP;
+                    Model.PurchaseOrderCurrency = CurrencyEnum.COP;
+                    PurchaseOrderItemRequest item = new();
+                    if (OriginalBudgetItems.Any(x => x.Id == BudgetItemId))
+                    {
+                        item.BudgetItem = OriginalBudgetItems.First(x => x.Id == BudgetItemId) ;
+                        Model.AddItem(item);
+
+                        Model.MainBudgetItemId = BudgetItemId;
+
+                    }
+
+
                 }
 
 
             }
         }
-        
 
-
-        //Consultar Budget Item para sacar datos del BudgetItem Principal
-        //Consultar Project para sacar datos
-        //Sacar el listado de posibles budgetitems
     }
     async Task GetSuppliers()
     {
@@ -84,9 +86,19 @@ public partial class CreatePurchaseOrder
             Suppliers = result.Data.Items;
         }
     }
+    void Edit(PurchaseOrderItemRequest row)
+    {
+        EditRow = row;
+        CancelCreate();
+    }
+    void Delete(PurchaseOrderItemRequest row)
+    {
+        Model.PurchaseOrderItems.Remove(row);
+        EditRow = null!;
+        CreateRow = null!;
+    }
 
-  
-    
+
     void AddSuplier()
     {
         SaveModelToLocalStorage().ContinueWith(_ =>
@@ -117,14 +129,20 @@ public partial class CreatePurchaseOrder
 
 
     }
-    CreatePurchaseOrderItemRequest CreateRow = null!;
-    CreatePurchaseOrderItemRequest EditRow = null!;
-    CreatePurchaseOrderItemRequest SelectedRow = null!;
+    bool IsSameCurrency => Model == null ? false : Model.QuoteCurrency.Id == Model.PurchaseOrderCurrency.Id;
+    PurchaseOrderItemRequest CreateRow = null!;
+    PurchaseOrderItemRequest EditRow = null!;
+
+    void AddNew()
+    {
+        CreateRow = new();
+        Model.AddItem(CreateRow);
+    }
     void CancelCreate()
     {
         if (CreateRow == null) return;
 
-        
+
         CreateRow = null!;
     }
     void CancelEdit()
@@ -132,21 +150,9 @@ public partial class CreatePurchaseOrder
         if (EditRow == null) return;
         EditRow = null!;
     }
-    private void HandleRowClick(FluentDataGridRow<CreatePurchaseOrderItemRequest> row)
+    void SetSupplier(SupplierResponse supplier)
     {
-        SelectedRow = row.Item == null ? null! : SelectedRow == null! ? row.Item : null!;
-        //Si EditRow es diferente al seleccionado se vuelve null para desaparecer la caja de texto
-        EditRow = EditRow == null ? null! : SelectedRow == null ? null! :  EditRow;
-
-
-
-    }
-    private void HandleRowDoubleClick(FluentDataGridRow<CreatePurchaseOrderItemRequest> row)
-    {
-        EditRow = EditRow == null ? null! : SelectedRow == null ? null! : EditRow;
-        //Si CreateRow esta creada se elimina del listado y se vueleve null
-        CancelCreate();
-
+        Model.PurchaseOrderCurrency = supplier.SupplierCurrency;
     }
 
 }

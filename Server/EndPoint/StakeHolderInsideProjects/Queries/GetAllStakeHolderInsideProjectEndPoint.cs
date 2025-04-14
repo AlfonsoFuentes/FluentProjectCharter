@@ -36,7 +36,7 @@ namespace Server.EndPoint.StakeHolderInsideProjects.Queries
                     StakeHolderInsideProjectResponseList response = new StakeHolderInsideProjectResponseList()
                     {
                         Items = maps,
-                        ProjectName = rows.Name 
+                        ProjectId = request.ProjectId,
                     };
                     return Result<StakeHolderInsideProjectResponseList>.Success(response);
 

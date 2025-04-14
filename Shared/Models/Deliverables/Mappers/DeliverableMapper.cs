@@ -27,26 +27,7 @@ namespace Shared.Models.Deliverables.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateDeliverableRequest ToUpdate(this DeliverableResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateDeliverableRequest ToCreate(this DeliverableResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+        
     }
 
 }

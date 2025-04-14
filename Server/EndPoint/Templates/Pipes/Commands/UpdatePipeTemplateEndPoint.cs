@@ -1,5 +1,6 @@
 ﻿using Shared.Models.Templates.Pipings.Requests;
-
+using Shared.Models.Templates.Pipings.Responses;
+using Server.ExtensionsMethods.Pipings;
 namespace Server.EndPoint.Templates.Pipes.Commands
 {
     public static class UpdatePipeTemplateEndPoint
@@ -8,7 +9,7 @@ namespace Server.EndPoint.Templates.Pipes.Commands
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.PipeTemplates.EndPoint.Update, async (UpdatePipeTemplateRequest Data, IRepository Repository) =>
+                app.MapPost(StaticClass.PipeTemplates.EndPoint.Update, async (PipeTemplateResponse Data, IRepository Repository) =>
                 {
                     var row = await Repository.GetByIdAsync<PipeTemplate>(Data.Id);
                     if (row == null) { return Result.Fail(Data.NotFound); }
@@ -31,19 +32,7 @@ namespace Server.EndPoint.Templates.Pipes.Commands
         }
 
 
-        static PipeTemplate Map(this UpdatePipeTemplateRequest request, PipeTemplate row)
-        {
-            row.BrandTemplateId = request.BrandResponse!.Id;
-            row.Diameter = request.Diameter.Name;
-            row.Class = request.Class.Name;
-            row.EquivalentLenghPrice = request.EquivalentLenghPrice;
-            row.LaborDayPrice = request.LaborDayPrice;
-            row.Insulation = request.Insulation;
-            row.Material = request.Material.Name;
-
-
-            return row;
-        }
+       
 
     }
 

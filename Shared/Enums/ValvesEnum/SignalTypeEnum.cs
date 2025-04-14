@@ -22,9 +22,14 @@
         {
             None,mA_4_20, VDC24, VAC110,Ethernet, ModBus, DeviceNet, Hart, NotApplicable
         };
-        public static List<SignalTypeEnum> ListForValves = new List<SignalTypeEnum>()
+      
+        public static List<SignalTypeEnum> ListForValvesONOFF = new List<SignalTypeEnum>()
         {
-            None,mA_4_20, VDC24, VAC110,NotApplicable,
+            None, VDC24, VAC110
+        };
+        public static List<SignalTypeEnum> ListForValvesProportional = new List<SignalTypeEnum>()
+        {
+            None, mA_4_20
         };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;
 

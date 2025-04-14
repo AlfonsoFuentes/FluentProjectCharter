@@ -28,7 +28,7 @@ namespace Server.DatabaseImplementations.Storage
             , Dictionary<string, Func<TData, object>> mappers
             , string sheetName = "Sheet1")
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            //ExcelPackage.License =  
             using var p = new ExcelPackage();
             p.Workbook.Properties.Author = "BlazorHero";
             p.Workbook.Worksheets.Add("Audit Trails");
@@ -88,7 +88,7 @@ namespace Server.DatabaseImplementations.Storage
         public async Task<IResult<IEnumerable<TEntity>>> ImportAsync<TEntity>(Stream stream, Dictionary<string, Func<DataRow, TEntity, object>> mappers, string sheetName = "Sheet1")
         {
             var result = new List<TEntity>();
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using var p = new ExcelPackage();
             stream.Position = 0;
             await p.LoadAsync(stream);

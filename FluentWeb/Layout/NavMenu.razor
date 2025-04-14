@@ -1,28 +1,28 @@
-﻿
-<div class="navmenu">
-    <input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon" />
-    <label for="navmenu-toggle" class="navmenu-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Navigation())" Color="Color.Fill" /></label>
-    <nav class="sitenav" aria-labelledby="main-menu">
-        <AuthorizeView>
-            <FluentNavMenu Id="main-menu" Width="250" Collapsible="true" Title="Navigation menu" @bind-Expanded="expanded" CustomToggle="true">
-                <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Projects</FluentNavLink>
-            
-                <FluentNavLink Href="StakeHolders" Icon="@(new Icons.Regular.Size20.PeopleAudience())" IconColor="Color.Accent">Persons</FluentNavLink>
-                <FluentNavLink Href="Suppliers" Icon="@(new Icons.Regular.Size20.Ram())" IconColor="Color.Accent">Suppliers</FluentNavLink>
-                <FluentNavLink Href="Brands" Icon="@(new Icons.Regular.Size20.Storage())" IconColor="Color.Accent">Brands</FluentNavLink>
-                <FluentNavGroup Expanded="true" Title="Templates" Icon="@(new Icons.Regular.Size20.BookTemplate())">
-                    <FluentNavLink Href="templates/equipment-templates" Icon="@(new Icons.Regular.Size20.LeafOne())">Equipments</FluentNavLink>
-                    <FluentNavLink Href="templates/valve-templates" Icon="@(new Icons.Regular.Size20.LeafOne())">Valves</FluentNavLink>
-                    <FluentNavLink Href="templates/instrument-templates" Icon="@(new Icons.Regular.Size20.LeafOne())">Instruments</FluentNavLink>
-                    <FluentNavLink Href="templates/pipe-templates" Icon="@(new Icons.Regular.Size20.LeafOne())">Piping</FluentNavLink>
-                    <FluentNavLink Href="EngineeringFluidCodes" Icon="@(new Icons.Regular.Size20.DataWaterfall())">Fluid Names</FluentNavLink>
+﻿<MudNavMenu Class="mud-width-full">
+    <AuthorizeView>
+        <MudNavLink Href="/" Icon="@Icons.Material.Outlined.Home">Projects</MudNavLink>
+        <MudNavGroup Title="Purchase Orders" Icon="@Icons.Material.Outlined.Business" Expanded="true">
+            <MudNavLink Href="/PurchaseOrderCreated" Icon="@Icons.Material.Outlined.CreditScore" IconColor="Color.Info">Created</MudNavLink>
+            <MudNavLink Href="/PurchaseOrderApproved" Icon="@Icons.Material.Outlined.CreditCard" IconColor="Color.Info">Approved</MudNavLink>
+            <MudNavLink Href="/PurchaseOrderClosed" Icon="@Icons.Material.Outlined.CreditCardOff" IconColor="Color.Info">Closed</MudNavLink>
+        </MudNavGroup>
+        <MudNavLink Href="/StakeHolders" Icon="@Icons.Material.Outlined.People">StakeHolders</MudNavLink>
+        <MudNavLink Href="/Suppliers" Icon="@Icons.Material.Outlined.Store">Suppliers</MudNavLink>
+        <MudNavLink Href="/Brands" Icon="@Icons.Material.Outlined.BrandingWatermark">Brands</MudNavLink>
+        <MudNavGroup Title="Templates" Icon="@Icons.Material.Outlined.TableRows" Expanded="true">
+            <MudNavLink Href="/templates/equipment-templates" Icon="@Icons.Material.Outlined.CreditScore" IconColor="Color.Info">Created</MudNavLink>
+            <MudNavLink Href="/templates/valve-templates" Icon="@Icons.Material.Outlined.CreditCard" IconColor="Color.Info">Approved</MudNavLink>
+            <MudNavLink Href="/templates/instrument-templates" Icon="@Icons.Material.Outlined.CreditCardOff" IconColor="Color.Info">Closed</MudNavLink>
+            <MudNavLink Href="/templates/pipe-templates" Icon="@Icons.Material.Outlined.CreditCardOff" IconColor="Color.Info">Closed</MudNavLink>
+            <MudNavLink Href="/EngineeringFluidCodes" Icon="@Icons.Material.Outlined.CreditCardOff" IconColor="Color.Info">Closed</MudNavLink>
+        </MudNavGroup>
 
-                </FluentNavGroup>
-            </FluentNavMenu>
-        </AuthorizeView>
-    </nav>
-</div>
+    </AuthorizeView>
+   
+   
+</MudNavMenu>
+
 
 @code {
-    private bool expanded = true;
+  
 }

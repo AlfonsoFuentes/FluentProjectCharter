@@ -9,6 +9,7 @@
         public List<GanttTaskResponse> Items { get; set; } = new();
         public int LabelOrder { get; set; }
         public string WBS { get; set; } = string.Empty;
-        public bool IsExpanded { get; set; }   
+        public bool IsExpanded { get; set; }
+        public bool ShowBudgetItems { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace Server.EndPoint.Communications.Queries
                     var response = new CommunicationResponseList
                     {
                         Items = maps,
-                        ProjectName = rows.Name,
+                        ProjectId = request.ProjectId,
                     };
 
                     return Result<CommunicationResponseList>.Success(response);

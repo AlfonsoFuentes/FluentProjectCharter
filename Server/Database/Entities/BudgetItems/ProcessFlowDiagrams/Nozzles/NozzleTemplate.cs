@@ -2,9 +2,9 @@
 {
     public class NozzleTemplate : AuditableEntity<Guid>, ITenantCommon
     {
-        public string ConnectionType { get; set; } = string.Empty;
-        public string NominalDiameter { get; set; } = string.Empty;
-        public string NozzleType { get; set; } = string.Empty;
+        public int ConnectionType { get; set; }
+        public int NominalDiameter { get; set; }
+        public int NozzleType { get; set; }
         public Template Template { get; set; } = null!;
         public Guid? TemplateId { get; set; }
         public static NozzleTemplate Create(Guid templateId)

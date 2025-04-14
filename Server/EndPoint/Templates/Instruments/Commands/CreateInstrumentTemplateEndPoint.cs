@@ -1,6 +1,7 @@
-﻿using Server.EndPoint.Templates.Instruments.Commands;
+﻿
 using Server.EndPoint.Templates.Instruments.Queries;
-using Shared.Models.Templates.Instruments.Requests;
+using Server.ExtensionsMethods.InstrumentTemplateMapper;
+using Shared.Models.Templates.Instruments.Responses;
 
 namespace Server.EndPoint.Templates.Instruments.Commands
 {
@@ -11,7 +12,7 @@ namespace Server.EndPoint.Templates.Instruments.Commands
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.InstrumentTemplates.EndPoint.Create, async (CreateInstrumentTemplateRequest Data, IRepository Repository) =>
+                app.MapPost(StaticClass.InstrumentTemplates.EndPoint.Create, async (InstrumentTemplateResponse Data, IRepository Repository) =>
                 {
                     var row = Template.AddInstrumentTemplate();
 
@@ -19,20 +20,11 @@ namespace Server.EndPoint.Templates.Instruments.Commands
 
                     Data.Map(row);
 
-                    var response = row.Map();
-                    foreach (var nozzle in Data.Nozzles)
-                    {
+                    await NozzleMapper.CreateNozzleTemplates(Repository, row.Id, Data.Nozzles);
 
-                        var nozzleTemplate = NozzleTemplate.Create(row.Id);
-                        nozzleTemplate.NominalDiameter = nozzle.NominalDiameter.Name;
-                        nozzleTemplate.ConnectionType = nozzle.ConnectionType.Name;
-                        nozzleTemplate.NozzleType = nozzle.NozzleType.Name;
-                        await Repository.AddAsync(nozzleTemplate);
-                    }
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.InstrumentTemplates.Cache.Key(row.Id));
 
-                    return Result.EndPointResult(response, result,
-                        Data.Succesfully,
+                    return Result.EndPointResult(result,Data.Succesfully,
                         Data.Fail);
 
 
@@ -43,22 +35,7 @@ namespace Server.EndPoint.Templates.Instruments.Commands
         }
 
 
-        static InstrumentTemplate Map(this CreateInstrumentTemplateRequest request, InstrumentTemplate row)
-        {
-            row.Value = request.Value;
-            row.TagLetter = request.TagLetter;
-            row.Reference = request.Reference;
-            row.Material = request.Material.Name;
-
-            row.Model = request.Model;
-            row.BrandTemplateId = request.BrandResponse!.Id;
-            row.SubType = request.SubType.Name;
-            row.Type = request.Type.Name;
-            row.SignalType = request.SignalType.Name;
-
-
-            return row;
-        }
+       
 
     }
 

@@ -1,0 +1,12 @@
+﻿<MudField Label="@Label" Variant="Variant.Outlined" Typo="@Typo" Margin="Margin.Dense" >@ChildContent</MudField>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+    [Parameter]
+    [Category(CategoryTypes.Field.Appearance)]
+    public Typo Typo { get; set; } = Typo.subtitle1;
+    [Parameter]
+    [Category(CategoryTypes.Field.Data)]
+    public RenderFragment? ChildContent { get; set; }
+}

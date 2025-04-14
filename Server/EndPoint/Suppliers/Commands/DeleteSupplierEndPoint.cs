@@ -26,9 +26,5 @@ namespace Server.EndPoint.Suppliers.Commands
             }
         }
 
-
-
-
     }
-
 }

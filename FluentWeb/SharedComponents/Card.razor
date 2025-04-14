@@ -1,48 +1,36 @@
-﻿<FluentCard AreaRestricted="false" Style="width:100%;padding:2px;">
-    <FluentStack Orientation="Orientation.Vertical" Class="stack">
-        <FluentLabel Typo="Typography.H6">@Title</FluentLabel>
+﻿<MudCard>
+    @if (Title != null)
+    {
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">@Title</MudText>
+            </CardHeaderContent>
+          @*   @if(HeaderActions!=null)
+            {
+            <CardHeaderActions>
+                @HeaderActions
+            </CardHeaderActions>
+            } *@
 
-        @if (TitleContent != null)
-        {
-            @TitleContent
-        }
-        @if (Content != null)
-        {
-            <div style="width:100%">
-                @Content
-            </div>
+        </MudCardHeader>
+    }
+    @if (Content != null)
+    {
+        <MudCardContent>
+            @Content
+        </MudCardContent>
 
-        }
-        @if (Actions != null)
-        {
-            <FluentStack Orientation="Orientation.Horizontal" style="padding:4px;">
-                @Actions
-            </FluentStack>
-        }
-    </FluentStack>
-</FluentCard>
-<style>
-    .card {
-        width: 100%;
-        height: 100%;
-        padding: 4px;
-        overflow: auto;
+    }
+    @if (Actions != null)
+    {
+        <MudCardActions>
+            @Actions
+        </MudCardActions>
     }
 
-    .stack {
-        width: 100%;
-        height: 100%;
-    }
 
-    .content {
-        overflow: auto;
-        max-height: calc(100% - 50px);
-    }
+</MudCard>
 
-    .actions {
-        padding: 4px;
-    }
-</style>
 @code {
     [Parameter]
     public string Title { get; set; } = string.Empty;
@@ -52,7 +40,7 @@
 
     [Parameter]
     public RenderFragment? Actions { get; set; }
-
     [Parameter]
-    public RenderFragment? TitleContent { get; set; }
+    public RenderFragment? HeaderActions { get; set; }
+
 }

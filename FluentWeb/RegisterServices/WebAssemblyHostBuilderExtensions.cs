@@ -3,8 +3,7 @@ using FluentWeb.Infrastructures.Identity.Account;
 using FluentWeb.Infrastructures.NotificacionService;
 using FluentWeb.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.FluentUI.AspNetCore.Components;
-using Microsoft.FluentUI.AspNetCore.Components.Components.Tooltip;
+using MudBlazor.Services;
 using System.Globalization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 using Web.Infrastructure.Managers;
@@ -33,7 +32,7 @@ namespace FluentWeb.RegisterServices
                 .AddAuthorizationCore()
                 .AddBlazoredLocalStorage()
 
-                .AddFluentUIComponents()
+               .AddMudServices()
                 .AddScoped<BlazorHeroStateProvider>()
                 .AddScoped<AuthenticationStateProvider, BlazorHeroStateProvider>()
                 .AddManagers()
@@ -47,12 +46,12 @@ namespace FluentWeb.RegisterServices
                     client.DefaultRequestHeaders.AcceptLanguage.Clear();
                     client.DefaultRequestHeaders.AcceptLanguage.ParseAdd(CultureInfo.DefaultThreadCurrentCulture?.TwoLetterISOLanguageName);
                     client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); // Fix: Use builder.HostEnvironment.BaseAddress
-                  
+
                 })
                 .AddHttpMessageHandler<AuthenticationHeaderHandler>();
             builder.Services.AddHttpClientInterceptor();
             builder.Services.AddScoped<IHttpClientService, HttpClientService>();
-            builder.Services.AddScoped<ITooltipService, TooltipService>();
+
             builder.Services.CurrencyService();
             builder.Services.AddScoped<ISnackBar, SnackBar>();
             builder.Services.AddScoped<IModelLocalStorage, ModelLocalStorage>();

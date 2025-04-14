@@ -18,8 +18,9 @@ namespace Shared.Models.BudgetItems.Responses
 {
     public class BudgetItemResponseList : IResponseAll
     {
-        public string ProjectNumber { get; set; } = string.Empty;
-        public string ProjectName { get; set; } = string.Empty;
+        public Guid ProjectId { get; set; } 
+     
+  
         public List<AlterationResponse> Alterations { get; set; } = new();
         public List<FoundationResponse> Foundations { get; set; } = new();
         public List<StructuralResponse> Structurals { get; set; } = new();
@@ -33,8 +34,8 @@ namespace Shared.Models.BudgetItems.Responses
         public List<TestingResponse> Testings { get; set; } = new();
         public List<ValveResponse> Valves { get; set; } = new();
         public List<EngineeringDesignResponse> EngineeringDesigns { get; set; } = new();
-        public List<IBudgetItemResponse> Expenses => [.. Alterations];
-        public List<IBudgetItemResponse> Capital => [..Foundations,..Structurals,..Equipments,..Valves,..Electricals,
+        public List<BudgetItemWithPurchaseOrdersResponse> Expenses => [.. Alterations];
+        public List<BudgetItemWithPurchaseOrdersResponse> Capital => [..Foundations,..Structurals,..Equipments,..Valves,..Electricals,
             ..Pipings,..Instruments,..EHSs,..Paintings,..Taxes,..Testings,..EngineeringDesigns];
 
         public List<IBudgetItemResponse> Items => BudgetItems.OrderBy(x => x.Nomenclatore).ToList();
@@ -48,6 +49,7 @@ namespace Shared.Models.BudgetItems.Responses
         public double PercentageTaxes { get; set; }
         public bool IsProductive { get; set; } = true;
         public CostCenterEnum CostCenter { get; set; }= CostCenterEnum.None;
+        public string ProjectNumber { get; set; } = string.Empty;
         public double EngineeringBudget => TotalCapital * PercentageEngineering / 100;
         public double ContingenyBudget => TotalCapital * PercentageContingency / 100;
         public double TaxesBudget => IsProductive ? 0 : TotalCapitalWithOutVAT * PercentageTaxes / 100;

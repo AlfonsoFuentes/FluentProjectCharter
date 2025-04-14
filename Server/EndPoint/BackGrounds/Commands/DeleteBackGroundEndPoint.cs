@@ -1,5 +1,4 @@
-﻿using Server.Database.Entities.ProjectManagements;
-using Shared.Models.Backgrounds.Requests;
+﻿using Shared.Models.Backgrounds.Requests;
 
 namespace Server.EndPoint.BackGrounds.Commands
 {

@@ -1,4 +1,5 @@
-﻿using Shared.Models.BudgetItems.IndividualItems.Alterations.Responses;
+﻿using Shared.Enums.CostCenter;
+using Shared.Models.BudgetItems.IndividualItems.Alterations.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Contingencys.Responses;
 using Shared.Models.BudgetItems.IndividualItems.EHSs.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Electricals.Responses;
@@ -20,7 +21,7 @@ namespace Shared.Models.BudgetItems.Responses
     public class BudgetItemWithPurchaseOrderResponseList : IResponseAll
     {
 
-        public string ProjectName { get; set; } = string.Empty;
+  
         public List<AlterationResponse> Alterations { get; set; } = new();
         public List<FoundationResponse> Foundations { get; set; } = new();
         public List<StructuralResponse> Structurals { get; set; } = new();
@@ -36,12 +37,12 @@ namespace Shared.Models.BudgetItems.Responses
         public List<EngineeringDesignResponse> EngineeringDesigns { get; set; } = new();
         public List<EngineeringResponse> Engineerings { get; set; } = new();
         public List<ContingencyResponse> Contingencies { get; set; } = new();
-        public List<IBudgetItemWithPurchaseOrderResponse> Expenses => [.. Alterations];
-        public List<IBudgetItemWithPurchaseOrderResponse> Capital => [..Foundations,..Structurals,..Equipments,..Valves,..Electricals,
+        public List<BudgetItemWithPurchaseOrdersResponse> Expenses => [.. Alterations];
+        public List<BudgetItemWithPurchaseOrdersResponse> Capital => [..Foundations,..Structurals,..Equipments,..Valves,..Electricals,
             ..Pipings,..Instruments,..EHSs,..Paintings,..Taxes,..Testings,..EngineeringDesigns,..Engineerings,..Contingencies];
 
-        public List<IBudgetItemWithPurchaseOrderResponse> Items => BudgetItems.OrderBy(x => x.Nomenclatore).ToList();
-        public List<IBudgetItemWithPurchaseOrderResponse> BudgetItems => [.. Expenses, .. Capital];
+        public List<BudgetItemWithPurchaseOrdersResponse> Items => BudgetItems.OrderBy(x => x.Nomenclatore).ToList();
+        public List<BudgetItemWithPurchaseOrdersResponse> BudgetItems => [.. Expenses, .. Capital];
         public double TotalCapital => Capital.Sum(x => x.BudgetUSD) + TaxesBudget;
 
         public double TotalCapitalWithOutVAT => Capital.Sum(x => x.BudgetUSD);
@@ -50,6 +51,10 @@ namespace Shared.Models.BudgetItems.Responses
         public double PercentageContingency { get; set; }
         public double PercentageTaxes { get; set; }
         public bool IsProductive { get; set; } = true;
+
+        public CostCenterEnum CostCenter {  get; set; }= CostCenterEnum.None;
+        public Guid ProjectId {  get; set; }
+        public string ProjectNumber { get; set; }=string.Empty;
 
         public double EngineeringBudget => TotalCapital * PercentageEngineering / 100;
         public double ContingenyBudget => TotalCapital * PercentageContingency / 100;

@@ -2,15 +2,15 @@
 @using FluentWeb.Pages.Tabs
 
 @attribute [Authorize]
-<FluentStack Orientation="Orientation.Vertical" Width="100%">
+@* <FluentStack Orientation="Orientation.Vertical" Width="100%">
     <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" VerticalAlignment="VerticalAlignment.Center">
 
         <IconButton IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="@AddNew" ToolTip="Add New" Disabled="@(CreateRow!=null)"></IconButton>
         <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowUp())" OnClick="@Up" Disabled="@DisableUpButton" ToolTip="Up"></IconButton>
         <IconButton IconEnd="@(new Icons.Regular.Size20.ArrowDown())" OnClick="Down" Disabled="@DisableDownButton" ToolTip="Down"></IconButton>
-        
+
         <FluentSpacer />
-        <FluentLabel Typo="Typography.Body">Selected: @CurrentRowName</FluentLabel>
+        <MudField  Typo="Typo.Body">Selected: @CurrentRowName</MudField >
         <FluentSearch type="search" Autofocus=true @bind-Value=nameFilter @oninput="HandleNameFilter" @bind-Value:after="HandleClear" Placeholder="Name..." />
 
     </FluentStack>
@@ -19,7 +19,6 @@
         <FluentDataGrid id="defaultGrid"
                         Items=@FilteredItems.AsQueryable()
                         TGridItem="ProjectResponse"
-                       
                         AutoFit="true"
                         Pagination="@pagination"
                         DisplayMode="DataGridDisplayMode.Table"
@@ -30,20 +29,20 @@
                     if (CreateRow != null && CreateRow.Id == context.Id)
                     {
                         <FluentTextArea Spellcheck="true"
-                                        Resize="TextAreaResize.Vertical"
-                                        @bind-Value=@CreateRow.Name
-                                        Immediate="true"
-                                        Style="width: 100%;" />
+                        Resize="TextAreaResize.Vertical"
+                        @bind-Value=@CreateRow.Name
+                        Immediate="true"
+                        Style="width: 100%;" />
 
 
                     }
                     else if (EditRow == context)
                     {
                         <FluentTextArea Spellcheck="true"
-                                        Resize="TextAreaResize.Vertical"
-                                        @bind-Value=@context.Name
-                                        Immediate="true"
-                                        Style="width: 100%;" />
+                        Resize="TextAreaResize.Vertical"
+                        @bind-Value=@context.Name
+                        Immediate="true"
+                        Style="width: 100%;" />
                     }
                     else
                     {
@@ -74,8 +73,15 @@
                 else
                 {
                     <IconButton IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(()=>Edit(context))" ToolTip="Edit"></IconButton>
-                    <IconButton IconEnd="@(new Icons.Regular.Size16.Checkmark())" OnClick="@(()=>Approve(context))" ToolTip="Approve"></IconButton>
-              
+                  
+                    @if (context.Status.Id == ProjectStatusEnum.Approved.Id)
+                    {
+                        <IconButton IconEnd="@(new Icons.Regular.Size16.Money())" OnClick="@(()=>GotBudgetItems(context))" ToolTip="Budget Items"></IconButton>
+                    }
+                    else
+                    {
+                        <IconButton IconEnd="@(new Icons.Regular.Size16.Checkmark())" OnClick="@(()=>Approve(context))" ToolTip="Approve"></IconButton>
+                    }
 
                     <IconButton IconEnd="@(new Icons.Regular.Size16.Delete())" OnClick="@(()=>Delete(context))" ToolTip="Delete"></IconButton>
 
@@ -94,19 +100,19 @@
                 for (var pageIndex = 0; pageIndex <= pagination.LastPageIndex; pageIndex++)
                 {
                     var capturedIndex = pageIndex;
-                    <FluentButton @onclick="@(() => GoToPageAsync(capturedIndex))"
+                    <MudButton  @onclick="@(() => GoToPageAsync(capturedIndex))"
                                   Appearance="@PageButtonAppearance(capturedIndex)"
                                   aria-current="@AriaCurrentValue(capturedIndex)"
                                   aria-label="@AriaLabel(capturedIndex + 1)">
                         @(capturedIndex + 1)
-                    </FluentButton>
+                    </MudButton >
                 }
             }
         </div>
 
     }
 
-   
+
 </FluentStack>
 
 @if (debug)
@@ -114,44 +120,44 @@
 
 }
 
-
+ *@
 
 
 @code {
-    bool debug = true;
-    int pages => ProjectList.Items.Count >= MaxNumberOfPages ? MaxNumberOfPages : ProjectList.Items.Count;
-    int MaxNumberOfPages = 20;
-    PaginationState pagination = new PaginationState { ItemsPerPage = 20 };
-    private async Task GoToPageAsync(int pageIndex)
-    {
-        await pagination.SetCurrentPageIndexAsync(pageIndex);
-    }
+    // bool debug = true;
+    // int pages => ProjectList.Items.Count >= MaxNumberOfPages ? MaxNumberOfPages : ProjectList.Items.Count;
+    // int MaxNumberOfPages = 20;
+    // PaginationState pagination = new PaginationState { ItemsPerPage = 20 };
+    // private async Task GoToPageAsync(int pageIndex)
+    // {
+    //     await pagination.SetCurrentPageIndexAsync(pageIndex);
+    // }
 
-    private Appearance PageButtonAppearance(int pageIndex)
-        => pagination.CurrentPageIndex == pageIndex ? Appearance.Accent : Appearance.Neutral;
+    // private Appearance PageButtonAppearance(int pageIndex)
+    //     => pagination.CurrentPageIndex == pageIndex ? Appearance.Accent : Appearance.Neutral;
 
-    private string? AriaCurrentValue(int pageIndex)
-        => pagination.CurrentPageIndex == pageIndex ? "page" : null;
+    // private string? AriaCurrentValue(int pageIndex)
+    //     => pagination.CurrentPageIndex == pageIndex ? "page" : null;
 
-    private string AriaLabel(int pageIndex)
-        => $"Go to page {pageIndex}";
+    // private string AriaLabel(int pageIndex)
+    //     => $"Go to page {pageIndex}";
 
-    private void HandleNameFilter(ChangeEventArgs args)
-    {
-        if (args.Value is string value)
-        {
-            nameFilter = value;
-        }
-    }
+    // private void HandleNameFilter(ChangeEventArgs args)
+    // {
+    //     if (args.Value is string value)
+    //     {
+    //         nameFilter = value;
+    //     }
+    // }
 
-    private void HandleClear()
-    {
-        if (string.IsNullOrWhiteSpace(nameFilter))
-        {
-            nameFilter = string.Empty;
-        }
-    }
-    
+    // private void HandleClear()
+    // {
+    //     if (string.IsNullOrWhiteSpace(nameFilter))
+    //     {
+    //         nameFilter = string.Empty;
+    //     }
+    // }
+
 
 
 }

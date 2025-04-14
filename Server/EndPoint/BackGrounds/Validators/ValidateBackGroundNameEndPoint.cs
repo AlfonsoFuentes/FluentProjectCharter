@@ -16,7 +16,8 @@ namespace Server.EndPoint.BackGrounds.Validators
                     x.Name.Equals(Data.Name) : x.Id != Data.Id.Value && x.Name.Equals(Data.Name);
                     string CacheKey = StaticClass.BackGrounds.Cache.GetAll(Data.ProjectId);
 
-                    return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId);
+                    var result= await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId);
+                    return result;
                 });
 
 

@@ -1,7 +1,6 @@
 ﻿using Server.EndPoint.Brands.Queries;
-using Server.EndPoint.BudgetItems.IndividualItems.Nozzles.Queries;
-using Server.EndPoint.BudgetItems.IndividualItems.Pipes.Queries;
 using Server.EndPoint.EngineeringFluidCodes.Queries;
+using Server.ExtensionsMethods.Pipings;
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Models.BudgetItems.IndividualItems.Pipes.Records;
@@ -20,8 +19,8 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Pipes.Queries
                     Func<IQueryable<Pipe>, IIncludableQueryable<Pipe, object>> Includes = x => x
                     .Include(x => x.Nozzles)
                     .Include(x => x.FluidCode)
-                    .Include(x => x.PipeTemplate!).ThenInclude(x => x.BrandTemplate!)
-                    .Include(x => x.PipeTemplate!).ThenInclude(x => x.NozzleTemplates);
+                    .Include(x => x.PipeTemplate!).ThenInclude(x => x.BrandTemplate!);
+            
                     Expression<Func<Pipe, bool>> Criteria = x => x.Id == request.Id;
 
                     string CacheKey = StaticClass.Pipes.Cache.GetById(request.Id);
@@ -43,42 +42,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Pipes.Queries
                 });
             }
         }
-        public static PipeResponse Map(this Pipe row)
-        {
-            PipeResponse result = new()
-            {
-                Id = row.Id,
-                Name = row.Name,
-
-                ProjectId = row.ProjectId,
-                Nomenclatore = row.Nomenclatore,
-
-                TagNumber = row.TagNumber,
-                BrandResponse = row.PipeTemplate == null || row.PipeTemplate!.BrandTemplate == null ? new() : row.PipeTemplate!.BrandTemplate!.Map(),
-
-                ShowDetails = row.PipeTemplate == null ? false : true,
-                Nozzles = row.Nozzles == null || row.Nozzles.Count == 0 ? new() : row.Nozzles.Select(x => x.Map()).ToList(),
-                Diameter = NominalDiameterEnum.GetType(row.Diameter),
-                EquivalentLenghPrice = row.PipeTemplate == null ? row.EquivalentLenghPrice : row.PipeTemplate.EquivalentLenghPrice,
-                Insulation = row.Insulation,
-                LaborDayPrice = row.PipeTemplate == null ? row.LaborDayPrice : row.PipeTemplate.LaborDayPrice,
-                Material = MaterialEnum.GetType(row.Material),
-                LaborQuantity = row.LaborQuantity,
-                MaterialQuantity = row.MaterialQuantity,
-                FluidCode = row.FluidCode == null ? null : row.FluidCode.Map(),
-                PipeClass = row.PipeTemplate == null ? PipeClassEnum.None : PipeClassEnum.GetType(row.PipeTemplate.Class),
-                FluidCodefromDB = row.FluidCodeCode,
-                BudgetUSD = row.BudgetUSD,
-                IsExisting = row.IsExisting,
-                ActualUSD = row.ActualUSD,
-                CommitmentUSD = row.CommitmentUSD,
-                PotentialUSD = row.PotentialUSD,
-
-
-            };
-            return result;
-
-        }
+       
 
     }
 }

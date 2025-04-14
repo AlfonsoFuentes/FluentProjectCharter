@@ -23,23 +23,7 @@ namespace Server.Database.Entities.PurchaseOrders
             
         }
 
-        public PurchaseOrderItem AddPurchaseOrderItem(Guid mwobudgetitemid)
-        {
-            var row = PurchaseOrderItem.Create(Id, mwobudgetitemid);
-            return row;
-        }
-        public PurchaseOrderItem AddPurchaseOrderItemForNoProductiveTax(Guid mwobudgetitemid)
-        {
-            var row = PurchaseOrderItem.Create(Id, mwobudgetitemid);
-            row.IsTaxNoProductive = true;
-            return row;
-        }
-        public PurchaseOrderItem AddPurchaseOrderItemForAlteration(Guid mwobudgetitemid)
-        {
-            var row = PurchaseOrderItem.Create(Id, mwobudgetitemid);
-            row.IsTaxAlteration = true;
-            return row;
-        }
+       
         public string QuoteNo { get; set; } = "";
         public string QuoteCurrency { get; set; } = string.Empty;
         public string PurchaseOrderCurrency { get; set; } = string.Empty;

@@ -27,26 +27,7 @@ namespace Shared.Models.Requirements.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateRequirementRequest ToUpdate(this RequirementResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateRequirementRequest ToCreate(this RequirementResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+       
     }
 
 }

@@ -1,8 +1,8 @@
 ﻿@* <TemplatedList T="MeetingResponse" FilteredItems="@FilteredItems" Title="@($"Manage {Title}")" Context="context">
     <MenuButtons>
-        <FluentButton Id="addmeeting" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
+        <MudButton  Id="addmeeting" IconEnd="@(new Icons.Regular.Size20.Add())" OnClick="AddNew">
 
-        </FluentButton>
+        </MudButton >
         <FluentTooltip Anchor="addmeeting" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>@($"Add {Title}")"</FluentTooltip>
 
         <FluentSpacer />
@@ -10,30 +10,30 @@
                       @oninput="@((arg)=>nameFilter=arg.Value==null?string.Empty:arg.Value!.ToString())" Placeholder="Search..." />
     </MenuButtons>
     <Content>
-        <FluentGrid AdaptiveRendering="true" Style="width:100%" Justify="JustifyContent.FlexStart">
-            <FluentGridItem xs="12" sm="7">
-                <FluentLabel Typo="Typography.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</FluentLabel>
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="2">
-                <FluentLabel Typo="Typography.Body">@context.MeetingType</FluentLabel>
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="3">
-                <FluentLabel Typo="Typography.Body">@context.sDateOfMeeting</FluentLabel>
-            </FluentGridItem>
+        <MudGrid AdaptiveRendering="true" Style="width:100%" Justify="JustifyContent.FlexStart">
+            <MudItem  xs="12" sm="7">
+                <MudField  Typo="Typo.Body" Style="overflow-wrap: break-word; padding:2px;">@context.Name</MudField >
+            </MudItem >
+            <MudItem  xs="12" sm="2">
+                <MudField  Typo="Typo.Body">@context.MeetingType</MudField >
+            </MudItem >
+            <MudItem  xs="12" sm="3">
+                <MudField  Typo="Typo.Body">@context.sDateOfMeeting</MudField >
+            </MudItem >
 
-        </FluentGrid>
+        </MudGrid>
 
 
     </Content>
     <Buttons>
-        <FluentButton Id="@($"edit{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))"></FluentButton>
+        <MudButton  Id="@($"edit{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Edit())" OnClick="@(()=>Edit(context))"></MudButton >
         <FluentTooltip Anchor="@($"edit{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Edit</FluentTooltip>
 
-        <FluentButton Id="@($"delete{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))"></FluentButton>
+        <MudButton  Id="@($"delete{context.Id}")" IconEnd="@(new Icons.Regular.Size20.Delete())" OnClick="@(()=>Delete(context))"></MudButton >
         <FluentTooltip Anchor="@($"delete{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Delete</FluentTooltip>
 
 
-        <FluentButton Id="@($"Show{context.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(context))"></FluentButton>
+        <MudButton  Id="@($"Show{context.Id}")" IconEnd="@(new Icons.Regular.Size20.ArrowBidirectionalUpDown())" OnClick="@(()=>Show(context))"></MudButton >
         <FluentTooltip Anchor="@($"Show{context.Id}")" HideTooltipOnCursorLeave="true" Position=TooltipPosition.Top Delay=200>Show</FluentTooltip>
     </Buttons>
     <ContentNode>

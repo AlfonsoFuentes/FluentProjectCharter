@@ -17,7 +17,9 @@ global using Server.Database.Entities.BudgetItems.Taxes;
 global using Server.EndPoint.Assumptions.Queries;
 global using Server.EndPoint.BackGrounds.Queries;
 global using Server.EndPoint.Bennefits.Queries;
-
+global using Shared.Models.Templates.Pipings.Records;
+global using Shared.Models.Templates.Pipings.Responses;
+global using Server.ExtensionsMethods.Pipings;
 global using Server.EndPoint.ExpertJudgements.Queries;
 global using Server.EndPoint.KnownRisks.Queries;
 global using Server.EndPoint.MeetingsGroup.Meetings.Queries;
@@ -62,7 +64,7 @@ global using System.Linq.Expressions;
 global using System.Reflection;
 global using UnitSystem;
 global using IResult = Shared.Commons.IResult;
-
+global using Server.ExtensionsMethods.Nozzles;
 global using Server.Database.Entities.ProjectManagements;
 global using Server.EndPoint.BudgetItems.IndividualItems.Alterations.Queries;
 global using Server.EndPoint.BudgetItems.IndividualItems.EHSs.Queries;
@@ -82,3 +84,7 @@ global using Shared.Models.GanttTasks.Records;
 global using Shared.Models.GanttTasks.Responses;
 global using System.Collections.Concurrent;
 global using System.Diagnostics;
+global using Server.ExtensionsMethods.ValveTemplateMappers;
+
+global using Server.ExtensionsMethods.EquipmentTemplateMapper;
+global using Shared.Models.BudgetItems.IndividualItems.Equipments.Responses;

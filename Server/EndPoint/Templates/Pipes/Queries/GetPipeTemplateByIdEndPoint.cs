@@ -1,5 +1,6 @@
 ﻿using Server.EndPoint.Brands.Queries;
 using Server.EndPoint.Templates.Pipes.Queries;
+using Server.ExtensionsMethods.Pipings;
 using Shared.Enums.ConnectionTypes;
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
@@ -19,8 +20,8 @@ namespace Server.EndPoint.Templates.Pipes.Queries
                 app.MapPost(StaticClass.PipeTemplates.EndPoint.GetById,
                     async (GetPipeTemplateByIdRequest request, IQueryRepository Repository) =>
                 {
-                    Func<IQueryable<PipeTemplate>, IIncludableQueryable<PipeTemplate, object>> Includes = x =>
-                    x.Include(x => x.NozzleTemplates)
+                    Func<IQueryable<PipeTemplate>, IIncludableQueryable<PipeTemplate, object>> Includes = x =>x
+                    //.Include(x => x.NozzleTemplates)
                     .Include(x => x.BrandTemplate!);
 
 
@@ -42,23 +43,6 @@ namespace Server.EndPoint.Templates.Pipes.Queries
         }
 
 
-        public static PipeTemplateResponse Map(this PipeTemplate row)
-        {
-            return new()
-            {
-                Id = row.Id,
-                BrandResponse = row.BrandTemplate == null ? new() : row.BrandTemplate.Map(),
-                Material = MaterialEnum.GetType(row.Material),
-                Class = PipeClassEnum.GetType(row.Class),
-                Diameter = NominalDiameterEnum.GetType(row.Diameter),
-                EquivalentLenghPrice = row.EquivalentLenghPrice,
-                Insulation = row.Insulation,
-                LaborDayPrice = row.LaborDayPrice,
-
-
-
-            };
-        }
-
+       
     }
 }

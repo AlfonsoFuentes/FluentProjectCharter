@@ -3,29 +3,29 @@
 
 <AuthorizeView>
     <Authorized>
-        <FluentProfileMenu Initials="@MainApp.Initials"
+       @*  <FluentProfileMenu Initials="@MainApp.Initials"
                            Style="padding: 4px;">
             <StartTemplate>
                 @MainApp.FullName
             </StartTemplate>
             <HeaderTemplate>
-                <FluentLabel Typo="@Typography.Header">Current User</FluentLabel>
+                <MudField  Typo="@Typo.Header">Current User</MudField >
             </HeaderTemplate>
             <ChildContent>
                 <div style="width: 250px; height: 80px">
-                    <FluentLabel Typo="@Typography.Header" Style="font-weight: bold;">@MainApp.FullName</FluentLabel>
-                    <FluentLabel>@MainApp.Email</FluentLabel>
+                    <MudField  Typo="@Typo.Header" Style="font-weight: bold;">@MainApp.FullName</MudField >
+                    <MudField >@MainApp.Email</MudField >
                 </div>
             </ChildContent>
             <FooterTemplate>
                 <FluentStack>
                     <FluentSpacer />
-                    <FluentAnchor Appearance="@Appearance.Hypertext"
+                    <MudLink Appearance="@Appearance.Hypertext"
                                   Href="logout"
-                                  >Logout</FluentAnchor>
+                                  >Logout</MudLink>
                 </FluentStack>
             </FooterTemplate>
-        </FluentProfileMenu>
+        </FluentProfileMenu> *@
       
        
 

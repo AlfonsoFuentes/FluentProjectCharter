@@ -24,7 +24,7 @@ namespace Server.EndPoint.Objectives.Queries
                     var response = new ObjectiveResponseList
                     {
                         Items = maps,
-                        ProjectName = rows.Name 
+                        ProjectId = request.ProjectId,
                     };
 
                     return Result<ObjectiveResponseList>.Success(response);

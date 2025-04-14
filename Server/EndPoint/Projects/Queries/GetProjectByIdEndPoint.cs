@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
+using Shared.Enums.CostCenter;
+using Shared.Enums.Focuses;
 
 namespace Server.EndPoint.Projects.Queries
 {
@@ -10,14 +12,14 @@ namespace Server.EndPoint.Projects.Queries
             {
                 app.MapPost(StaticClass.Projects.EndPoint.GetById, async (GetProjectByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //Func<IQueryable<Project>, IIncludableQueryable<Project, object>> Includes = x => x
-                    //  .Include(x => x.Manager!)
-                    // .Include(x => x.Sponsor!);
+                    Func<IQueryable<Project>, IIncludableQueryable<Project, object>> Includes = x => x
+                      .Include(x => x.BudgetItems)
+                     ;
 
                     Expression<Func<Project, bool>> Criteria = x => x.Id == request.Id;
 
                     string CacheKey = StaticClass.Projects.Cache.GetById(request.Id);
-                    var row = await Repository.GetAsync(Cache: CacheKey, Criteria: Criteria);
+                    var row = await Repository.GetAsync(Cache: CacheKey, Criteria: Criteria, Includes: Includes);
 
                     if (row == null)
                     {
@@ -30,7 +32,35 @@ namespace Server.EndPoint.Projects.Queries
                 });
             }
         }
+        public static ProjectResponse Map(this Project row)
+        {
+            var result = new ProjectResponse()
+            {
+                Id = row.Id,
 
+                Name = row.Name,
+                Order = row.Order,
+
+                PercentageEngineering = row.PercentageEngineering,
+                PercentageContingency = row.PercentageContingency,
+                ProjectNeedType = ProjectNeedTypeEnum.GetType(row.ProjectNeedType),
+
+                ProjectNumber = row.ProjectNumber,
+
+                Status = ProjectStatusEnum.GetType(row.Status),
+                IsProductiveAsset= row.IsProductiveAsset,
+                PercentageTaxProductive = row.PercentageTaxProductive,
+                
+                CostCenter = CostCenterEnum.GetTypeByName(row.CostCenter),
+                Focus = FocusEnum.GetType(row.Focus),
+                InitialProjectDate = row.StartDate,
+
+                BudgetItems=row.BudgetItems.Count,
+
+            };
+
+            return result;
+        }
 
 
     }

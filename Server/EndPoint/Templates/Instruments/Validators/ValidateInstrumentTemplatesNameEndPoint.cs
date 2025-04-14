@@ -1,4 +1,11 @@
-﻿using Shared.Models.Templates.Instruments.Validators;
+﻿using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments;
+using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Nozzles;
+using Server.ExtensionsMethods.EquipmentTemplateMapper;
+using Server.ExtensionsMethods.InstrumentTemplateMapper;
+using Shared.Commons;
+using Shared.Models.Templates.Instruments.Validators;
+using Shared.Models.Templates.NozzleTemplates;
+using static Shared.StaticClasses.StaticClass;
 
 namespace Server.EndPoint.Templates.Instruments.Validators
 {
@@ -11,29 +18,43 @@ namespace Server.EndPoint.Templates.Instruments.Validators
                 app.MapPost(StaticClass.InstrumentTemplates.EndPoint.Validate, async (ValidateInstrumentTemplateRequest Data, IQueryRepository Repository) =>
                 {
                     Func<IQueryable<InstrumentTemplate>, IIncludableQueryable<InstrumentTemplate, object>> Includes = x => x
+                     .Where(x => x.Id != Data.Id)
                     .Include(x => x.BrandTemplate!)
-                     ;
+                    .Include(x => x.NozzleTemplates);
 
+                    Expression<Func<InstrumentTemplate, bool>> CriteriaInstrument = x =>
+                    x.Material == Data.Material &&
+                       x.SignalType == Data.SignalType &&
+                       x.Variable == Data.VariableInstrument &&
+                       x.ModifierVariable == Data.ModifierVariable &&
 
-                    Expression<Func<InstrumentTemplate, bool>> CriteriaId = null!;
-                    Func<InstrumentTemplate, bool> CriteriaExist = x =>
-                        (Data.Id == null || x.Id != Data.Id.Value) &&
-                        x.Material.Equals(Data.Material, StringComparison.OrdinalIgnoreCase) &&
-                        x.Brand.Equals(Data.Brand, StringComparison.OrdinalIgnoreCase) &&
-                        x.Model.Equals(Data.Model, StringComparison.OrdinalIgnoreCase) &&
-                        x.Type.Equals(Data.Type, StringComparison.OrdinalIgnoreCase) &&
-                        x.SubType.Equals(Data.SubType, StringComparison.OrdinalIgnoreCase) &&
-                        x.TagLetter.Equals(Data.TagLetter, StringComparison.OrdinalIgnoreCase) &&
-                        x.Reference.Equals(Data.Reference, StringComparison.OrdinalIgnoreCase) &&
-                        x.SignalType.Equals(Data.SignalType, StringComparison.OrdinalIgnoreCase);
+                        x.BrandName.Equals(Data.Brand, StringComparison.OrdinalIgnoreCase) &&
+                        x.Model.Equals(Data.Model, StringComparison.OrdinalIgnoreCase) 
+                       ;
+
 
                     string CacheKey = StaticClass.InstrumentTemplates.Cache.GetAll;
+                    var instrumentTemplates = await Repository.GetAllAsync(Cache: CacheKey, Includes: Includes, Criteria: CriteriaInstrument);
 
-                    return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId, Includes: Includes);
+                    instrumentTemplates = Data.Id.HasValue ? instrumentTemplates.Where(x => x.Id != Data.Id.Value).ToList() : instrumentTemplates;
+                    if (instrumentTemplates == null||!instrumentTemplates.Any())
+                    {
+                        return false;
+                    }
+                    // Validar las boquillas para cada template coincidente
+                    foreach (var instrumentTemplate in instrumentTemplates)
+                    {
+                        if (instrumentTemplate.NozzleTemplates.ValidateNozzles(Data.NozzleTemplates))
+                        {
+                            return true; // Si todas las boquillas coinciden, retornar true
+                        }
+                    }
+                    return false;
                 });
 
 
             }
+            
         }
 
 

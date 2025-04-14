@@ -40,7 +40,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Queries
             {
                 Id = row.Id,
                 Name = row.Name,
-
+                GanttTaskId = row.GanttTaskId,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
                 BudgetUSD = row.BudgetUSD,

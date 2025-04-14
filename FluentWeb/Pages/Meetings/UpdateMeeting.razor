@@ -3,7 +3,7 @@
 <EditTemplate @ref=Form TItem="UpdateMeetingRequest" @bind-Model=@Model 
               Title="Edit Meeting">
     <Content>
-        <TextArea Label="Name"
+   @*      <TextArea Label="Name"
                   @bind-Value=@Model.Name
                   Placeholder="Define name"
                   Validate="Form.ValidateAsync"></TextArea>
@@ -31,7 +31,7 @@
         <ValidationMessage For="() => Model.MeetingType" style="color:red; font-size:x-small;" />
 
         <FluentDatePicker Label="Meeting Date" AriaLabel="To" @bind-Value="@Model.DateofMeeting" DoubleClickToDate="@Model.DateofMeeting" />
-        <ValidationMessage For="() => Model.DateofMeeting" style="color:red; font-size:x-small;" />
+        <ValidationMessage For="() => Model.DateofMeeting" style="color:red; font-size:x-small;" /> *@
     </Content>
 
 </EditTemplate>

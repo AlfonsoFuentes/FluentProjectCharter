@@ -9,8 +9,8 @@ namespace Server.Database.Configurations.BudgetItems
         public void Configure(EntityTypeBuilder<Instrument> builder)
         {
             builder.HasOne(x => x.InstrumentTemplate)
-         .WithMany(t => t.Instruments)
-         .HasForeignKey(e => e.InstrumentTemplateId)
+                 .WithMany(t => t.Instruments)
+                 .HasForeignKey(e => e.InstrumentTemplateId)
 
          .OnDelete(DeleteBehavior.NoAction);
         }

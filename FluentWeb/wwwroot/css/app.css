@@ -211,10 +211,7 @@ code {
     font-size: var(--font-size-small);
     background-color: var(--primary-bg-color);
     min-width: 100%; /* Asegura que la tabla ocupe al menos el ancho del contenedor */
-    /*overflow-x: auto;*/ /* Scroll horizontal */
-    /*display: block;*/ /* Necesario para que funcione overflow-x */
-    /*max-height: 100vh;*/ /* Altura máxima para permitir scroll vertical */
-    /*overflow-y: auto;*/ /* Scroll vertical */
+    margin:5px;
 }
 
     .deliverable-table thead {

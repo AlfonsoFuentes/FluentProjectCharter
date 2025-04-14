@@ -63,7 +63,7 @@ namespace Server.DatabaseImplementations.Identity
             await _userManager.UpdateAsync(user);
 
             var token = await GenerateJwtAsync(user);
-            var response = new TokenResponse { Token = token, RefreshToken = user.RefreshToken };
+            var response = new TokenResponse { Token = token, RefreshToken = user.RefreshToken, UserId = user.Id };
             return await Result<TokenResponse>.SuccessAsync(response);
         }
 

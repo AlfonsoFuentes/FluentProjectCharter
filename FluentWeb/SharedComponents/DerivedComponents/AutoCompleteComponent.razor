@@ -1,11 +1,11 @@
 ﻿@typeparam TValue
-<FluentStack Orientation="Orientation.Vertical" Width="100%">
+@* <FluentStack Orientation="Orientation.Vertical" Width="100%">
     @if (LabelTemplate == null)
     {
-        <FluentLabel Typo="Typography.Body"><strong>@Label</strong></FluentLabel>
-        
+        <MudField  Typo="Typo.Body"><strong>@Label</strong></MudField >
+
     }
-   
+
     <FluentAutocomplete AutoComplete="off"
                         Width="100%"
                         TOption="TValue"
@@ -28,7 +28,7 @@
 
     </FluentAutocomplete>
 
-</FluentStack>
+</FluentStack> *@
 
 @code {
     [Parameter]
@@ -63,18 +63,27 @@
     [Parameter]
     public EventCallback<IEnumerable<TValue>> SelectedValuesChanged { get; set; }
 
-    [Parameter]
-    public EventCallback<OptionsSearchEventArgs<TValue>> SearchAsync { get; set; }
-    async Task OnSearchAsync(OptionsSearchEventArgs<TValue> e)
-    {
-        if (SearchAsync.HasDelegate) await SearchAsync.InvokeAsync(e);
-    }
+    // [Parameter]
+    // public EventCallback<OptionsSearchEventArgs<TValue>> SearchAsync { get; set; }
+    // async Task OnSearchAsync(OptionsSearchEventArgs<TValue> e)
+    // {
+    //     if (SearchAsync.HasDelegate) await SearchAsync.InvokeAsync(e);
+    // }
     public async Task OnValueChanged(IEnumerable<TValue> values)
     {
         SelectedValues = values;
         if (MaximumSelectedOptions == 1)
         {
-            Value = values.First();
+            if (values.Count() == 0)
+            {
+                Value = default(TValue)!;
+            }
+
+            else
+            {
+                Value = values.First();
+            }
+
             await ValueChanged.InvokeAsync(Value);
 
             if (Change.HasDelegate) await Change.InvokeAsync(Value);

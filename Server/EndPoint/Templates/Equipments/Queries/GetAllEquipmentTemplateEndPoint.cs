@@ -1,4 +1,5 @@
-﻿using Shared.Models.Templates.Equipments.Records;
+﻿using Server.ExtensionsMethods.EquipmentTemplateMapper;
+using Shared.Models.Templates.Equipments.Records;
 using Shared.Models.Templates.Equipments.Responses;
 
 namespace Server.EndPoint.Templates.Equipments.Queries

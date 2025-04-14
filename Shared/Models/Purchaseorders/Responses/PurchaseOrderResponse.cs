@@ -7,12 +7,13 @@ namespace Shared.Models.PurchaseOrders.Responses
 {
     public class PurchaseOrderResponse : BaseResponse
     {
-      
-        public SupplierResponse Supplier { get; set; } = null!;     
+
+        public string SupplierName => Supplier == null ? string.Empty : Supplier.NickName;
+        public SupplierResponse Supplier { get; set; } = null!;
         public CurrencyEnum PurchaseOrderCurrency { get; set; } = CurrencyEnum.None;
-      
+
         public string QuoteNo { get; set; } = "";
-        public CurrencyEnum QuoteCurrency { get; set; } = CurrencyEnum.None;  
+        public CurrencyEnum QuoteCurrency { get; set; } = CurrencyEnum.None;
         public string PurchaseOrderStatus { get; set; } = string.Empty;
         public string PurchaseRequisition { get; set; } = "";
         public DateTime? ApprovedDate { get; set; }
@@ -24,11 +25,13 @@ namespace Shared.Models.PurchaseOrders.Responses
         public double USDCOP { get; set; }
         public double USDEUR { get; set; }
         public DateTime CurrencyDate { get; set; }
-        public string AccountAssigment { get; set; } = ""; 
+        public string AccountAssigment { get; set; } = "";
         public bool IsAlteration { get; set; } = false;
         public bool IsCapitalizedSalary { get; set; } = false;
         public bool IsTaxEditable { get; set; } = false;
 
         public List<PurchaseOrderItemResponse> PurchaseOrderItems { get; set; } = new();
+        public double TotalUSD => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.TotalUSD);
+        public string sTotalUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalUSD);
     }
 }

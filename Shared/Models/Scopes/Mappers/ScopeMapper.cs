@@ -27,26 +27,7 @@ namespace Shared.Models.Scopes.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateScopeRequest ToUpdate(this ScopeResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateScopeRequest ToCreate(this ScopeResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+        
     }
 
 }

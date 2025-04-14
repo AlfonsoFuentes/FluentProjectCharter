@@ -27,26 +27,7 @@ namespace Shared.Models.AcceptanceCriterias.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateAcceptanceCriteriaRequest ToUpdate(this AcceptanceCriteriaResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateAcceptanceCriteriaRequest ToCreate(this AcceptanceCriteriaResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+      
     }
 
 }

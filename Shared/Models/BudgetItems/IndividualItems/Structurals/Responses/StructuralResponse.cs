@@ -1,17 +1,26 @@
-﻿using Shared.Enums.BudgetItemTypes;
-using Shared.Enums.CostCenter;
-using Shared.Models.BudgetItems.Responses;
-using System.Globalization;
+﻿using Shared.Models.BudgetItems.Responses;
+using Shared.Models.FileResults.Generics.Request;
 
 namespace Shared.Models.BudgetItems.IndividualItems.Structurals.Responses
 {
-    public class StructuralResponse : BudgetItemWithPurchaseOrdersResponse
+    public class StructuralResponse : BudgetItemWithPurchaseOrdersResponse, IMessageResponse, IRequest
     {
 
-        public Guid DeliverableId { get; set; }
+
+        public string EndPointName => StaticClass.Structurals.EndPoint.CreateUpdate;
+
+        public string Legend => Name;
+
+        public string ActionType => Id == Guid.Empty ? "created" : "updated";
+        public string ClassName => StaticClass.Structurals.ClassName;
+        public string Succesfully => StaticClass.ResponseMessages.ReponseSuccesfullyMessage(Legend, ClassName, ActionType);
+        public string Fail => StaticClass.ResponseMessages.ReponseFailMessage(Legend, ClassName, ActionType);
+        public string NotFound => StaticClass.ResponseMessages.ReponseNotFound(ClassName);
+
+        public Guid? GanttTaskId { get; set; }
 
 
-      
+
         double _UnitaryCost;
         double _Quantity;
         public double UnitaryCost
@@ -37,8 +46,6 @@ namespace Shared.Models.BudgetItems.IndividualItems.Structurals.Responses
         public string sUnitaryCost => string.Format(new CultureInfo("en-US"), "{0:C0}", UnitaryCost);
         public string sQuantity => $"{Quantity}";
        
-
-        public override string UpadtePageName { get; set; } = StaticClass.Structurals.PageName.Update;
         
 
         

@@ -3,6 +3,7 @@ using Shared.Models.BudgetItems.Responses;
 using Server.EndPoint.Communications.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Contingencys.Queries;
 using Server.EndPoint.BudgetItems.IndividualItems.Engineerings.Queries;
+using Shared.Enums.CostCenter;
 
 namespace Server.EndPoint.BudgetItems.Queries
 {
@@ -42,10 +43,13 @@ namespace Server.EndPoint.BudgetItems.Queries
                         Contingencies = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Contingency>().Select(x => x.Map()).ToList(),
                         EngineeringDesigns = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<EngineeringDesign>().Select(x => x.Map()).ToList(),
                         IsProductive = row.IsProductiveAsset,
-                        ProjectName = row.Name,
+
                         PercentageContingency = row.PercentageContingency,
                         PercentageEngineering = row.PercentageEngineering,
                         PercentageTaxes = row.PercentageTaxProductive,
+                        CostCenter = CostCenterEnum.GetTypeByName(row.CostCenter),
+                        ProjectId = row.Id,
+                        ProjectNumber =$"CEC0000{row.ProjectNumber}" ,
 
                     };
 
@@ -57,8 +61,9 @@ namespace Server.EndPoint.BudgetItems.Queries
 
             private static async Task<Project?> GetBudgetItemAsync(BudgetItemWithPurchaseOrderGetAll request, IQueryRepository repository)
             {
-                Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x =>
-                x.Include(p => p.BudgetItems).ThenInclude(x => x.PurchaseOrderItems).ThenInclude(x => x.PurchaseOrder);
+                Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x
+                .Include(p => p.BudgetItems).ThenInclude(x => x.PurchaseOrderItems).ThenInclude(x => x.PurchaseOrder)
+                .Include(p => p.BudgetItems).ThenInclude(x => x.PurchaseOrderItems).ThenInclude(x => x.PurchaseOrderReceiveds);
                 Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
                 string cacheKey = StaticClass.BudgetItems.Cache.GetAllWithPurchaseOrder(request.ProjectId);
 

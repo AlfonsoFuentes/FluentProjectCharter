@@ -35,6 +35,7 @@ namespace Shared.Models.GanttTasks.Mappers
                 Name = responseList.Name,
                 FlatOrderedItems = responseList.FlatOrderedItems,
                 IsExpanded = responseList.IsExpanded,
+                
             };
 
         }
@@ -48,6 +49,7 @@ namespace Shared.Models.GanttTasks.Mappers
                 LabelOrder = responseList.LabelOrder,
                 WBS = responseList.WBS,
                 IsExpanded = responseList.IsExpanded,
+                
             };
 
         }
@@ -57,7 +59,7 @@ namespace Shared.Models.GanttTasks.Mappers
             {
                 ProjectId = response.ProjectId,
                 Deliverables = response.Deliverables.Select(x => x.ToResponse()).ToList(),
-                ProjectName = response.ProjectName,
+                
 
             };
 

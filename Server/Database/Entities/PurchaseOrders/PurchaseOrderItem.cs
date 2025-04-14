@@ -33,11 +33,7 @@ namespace Server.Database.Entities.PurchaseOrders
         }
         public string Name { get; set; } = string.Empty;
 
-        public void ChangeBudgetItem(Guid newbudgetitemid)
-        {
-            BudgetItemId = newbudgetitemid;
-        }
-
+       
         public double UnitaryValueCurrency { get; set; }
         public double Quantity { get; set; }
         public bool IsTaxNoProductive { get; set; } = false;

@@ -10,51 +10,45 @@
 
 	  <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
 	  <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
-	  <PackageReference Include="AutoMapper" Version="13.0.1" />
+	  <PackageReference Include="AutoMapper" Version="14.0.0" />
 	  <PackageReference Include="Azure.Identity" Version="1.13.2" />
 	  <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
-	  <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.0" />
-	  <PackageReference Include="DocumentFormat.OpenXml" Version="3.2.0" />
-	  <PackageReference Include="DocumentFormat.OpenXml.Framework" Version="3.2.0" />
-	  <PackageReference Include="EPPlus" Version="7.5.3" />
+	  <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.1" />
+	  <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
+	  <PackageReference Include="DocumentFormat.OpenXml.Framework" Version="3.3.0" />
+	  <PackageReference Include="EPPlus" Version="8.0.1" />
 	  <PackageReference Include="LazyCache" Version="2.4.0" />
 	  <PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />
 	  <PackageReference Include="MediatR" Version="12.4.1" />
-	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.12" />
-	  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.12" />
-	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.12" />
-	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.12" />
-	  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.12" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.12" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.12">
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />
+	  <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.14" />
+	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.14" />
+	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.14" />
+	  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.14" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.14" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.14">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.12" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.12">
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.14" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.14">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
-	  <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.12" />
+	  <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.14" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	  <PackageReference Include="OfficeOpenXml.Core.ExcelPackage" Version="1.0.0" />
-	  <PackageReference Include="QuestPDF" Version="2024.12.3" />
+	  <PackageReference Include="QuestPDF" Version="2025.1.7" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-	  <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
+	  <PackageReference Include="System.Formats.Asn1" Version="8.0.2" />
 	  <PackageReference Include="System.IO.Packaging" Version="8.0.1" />
 	  <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluentWeb\FluentWeb.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
     <ProjectReference Include="..\UnitSystem\UnitSystem.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="EndPoint\PurchaseOrders\Commands\" />
-    <Folder Include="EndPoint\PurchaseOrders\Queries\" />
-    <Folder Include="EndPoint\StakeHolderInsideProjects\Validators\" />
+    <ProjectReference Include="..\Web\Web.csproj" />
   </ItemGroup>
 
 </Project>

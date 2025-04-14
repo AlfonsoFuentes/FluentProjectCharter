@@ -1,7 +1,5 @@
-﻿using Server.EndPoint.Templates.Equipments.Commands;
-using Server.EndPoint.Templates.Equipments.Queries;
-using Shared.Models.Templates.Equipments.Requests;
-
+﻿using Server.ExtensionsMethods.InstrumentTemplateMapper;
+using Shared.Models.Templates.Equipments.Responses;
 namespace Server.EndPoint.Templates.Equipments.Commands
 {
 
@@ -11,7 +9,7 @@ namespace Server.EndPoint.Templates.Equipments.Commands
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.EquipmentTemplates.EndPoint.Create, async (CreateEquipmentTemplateRequest Data, IRepository Repository) =>
+                app.MapPost(StaticClass.EquipmentTemplates.EndPoint.Create, async (EquipmentTemplateResponse Data, IRepository Repository) =>
                 {
                     var row = Template.AddEquipmentTemplate();
 
@@ -19,19 +17,11 @@ namespace Server.EndPoint.Templates.Equipments.Commands
 
                     Data.Map(row);
 
-                    var response = row.Map();
-                    foreach (var nozzle in Data.Nozzles)
-                    {
-
-                        var nozzleTemplate = NozzleTemplate.Create(row.Id);
-                        nozzleTemplate.NominalDiameter = nozzle.NominalDiameter.Name;
-                        nozzleTemplate.ConnectionType = nozzle.ConnectionType.Name;
-                        nozzleTemplate.NozzleType = nozzle.NozzleType.Name;
-                        await Repository.AddAsync(nozzleTemplate);
-                    }
+                    await NozzleMapper.CreateNozzleTemplates(Repository, row.Id, Data.Nozzles);
+                    
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.EquipmentTemplates.Cache.Key(row.Id));
 
-                    return Result.EndPointResult(response, result,
+                    return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
@@ -43,21 +33,7 @@ namespace Server.EndPoint.Templates.Equipments.Commands
         }
 
 
-        static EquipmentTemplate Map(this CreateEquipmentTemplateRequest request, EquipmentTemplate row)
-        {
-            row.Value = request.Value;
-            row.TagLetter = request.TagLetter;
-            row.Reference = request.Reference;
-            row.InternalMaterial = request.InternalMaterial.Name;
-            row.ExternalMaterial = request.ExternalMaterial.Name;
-            row.Model = request.Model;
-            row.BrandTemplateId = request.BrandResponse!.Id;
-            row.SubType = request.SubType;
-            row.Type = request.Type;
-
-
-            return row;
-        }
+       
 
     }
 

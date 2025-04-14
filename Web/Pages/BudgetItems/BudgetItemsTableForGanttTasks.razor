@@ -1,0 +1,61 @@
+﻿<MudDataGrid T="IBudgetItemResponse"
+             MultiSelection="true"
+             Items="@FilteredItems"
+             Hideable="true"
+             Dense=true
+             Bordered=true
+             Hover=true
+             Outlined=true
+            
+             SelectedItemsChanged="@OnSelectedItemsChanged">
+    <ToolBarContent>
+        <MudStack Row=true Spacing="1" Justify="Justify.FlexStart" AlignItems="AlignItems.Center">
+            <IconButton Size=@Size.Small ToolTip="Delete Selected Items" Icon="@Icons.Material.Filled.PlaylistRemove" Variant=Variant.Outlined
+                        Disabled=@(SelectedItems==null||SelectedItems.Count==0) OnClick="DeleteGroup"></IconButton>
+            <Button Variant=Variant.Text OnClick="@(()=>AddAlterations())" ToolTip="Add Alteration" Text="A"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddFoundations())" ToolTip="Add Foundation" Text="B"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddStructurals())" ToolTip="Add Structural" Text="C"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddEquipments())" ToolTip="Add Equipment" Text="D"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddValves())" ToolTip="Add Valve" Text="V"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddElectricals())" ToolTip="Add Electrical" Text="E"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddPipes())" ToolTip="Add Pipe" Text="F"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddInstruments())" ToolTip="Add Instrument" Text="G"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddEHSs())" ToolTip="Add EHS" Text="H"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddPaintings())" ToolTip="Add Painting" Text="G"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddTaxs())" ToolTip="Add Tax" Text="K"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddTestings())" ToolTip="Add Testing" Text="M"></Button>
+            <Button Variant=Variant.Text OnClick="@(()=>AddEngineeringDesigns())" ToolTip="Add EngineeringDesign" Text="O"></Button>
+         
+        </MudStack>
+        <MudSpacer />
+        <TextField @bind-Value="@nameFilter" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></TextField>
+    </ToolBarContent>
+    <Columns>
+        <SelectColumn T="IBudgetItemResponse" />
+        <PropertyColumn Property="x => x.Nomenclatore" Title="#" T="IBudgetItemResponse" TProperty="string"   />
+        <PropertyColumn Property="x => x.Name" Title="Name" T="IBudgetItemResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.sBudgetUSD" Title="Budget, USD" T="IBudgetItemResponse" TProperty="string" />
+        <TemplateColumn CellClass="d-flex justify-end" T="IBudgetItemResponse">
+            <CellTemplate Context="template">
+                <MudStack Row=true Spacing="2">
+                    <IconButton ToolTip="@($"Edit {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit"  OnClick="@(()=>Edit(template.Item))" />
+                    <IconButton ToolTip="@($"Delete {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete"  OnClick="@(()=>Delete(template.Item))" />
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="IBudgetItemResponse" />
+    </PagerContent>
+</MudDataGrid>
+
+
+@code {
+    void OnSelectedItemsChanged(HashSet<IBudgetItemResponse> items)
+    {
+        SelectedItems = items;
+       
+    }
+}

@@ -15,7 +15,9 @@ namespace Server.EndPoint.Projects.Commands
                     await Repository.UpdateAsync(row);
                     Data.Map(row);
                     var contingency = Contingency.Create(row.Id);
+                    contingency.Order = 1;
                     var engineering = Engineering.Create(row.Id);
+                    engineering.Order = 1;
                     engineering.Percentage = Data.PercentageEngineering;
                     contingency.Percentage = Data.PercentageContingency;
                     engineering.Name = $"Engineering for {Data.Name} {Data.PercentageEngineering}%";

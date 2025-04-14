@@ -39,7 +39,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Testings.Queries
             {
                 Id = row.Id,
                 Name = row.Name,
-
+                GanttTaskId = row.GanttTaskId,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
                 UnitaryCost = row.UnitaryCost,

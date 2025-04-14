@@ -27,26 +27,7 @@ namespace Shared.Models.KnownRisks.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateKnownRiskRequest ToUpdate(this KnownRiskResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateKnownRiskRequest ToCreate(this KnownRiskResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+       
     }
 
 }

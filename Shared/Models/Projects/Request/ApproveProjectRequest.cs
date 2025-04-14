@@ -24,5 +24,7 @@ namespace Shared.Models.Projects.Request
         public FocusEnum Focus { get; set; } = FocusEnum.None;
         public CostCenterEnum CostCenter { get; set; } = CostCenterEnum.None;
         public ProjectStatusEnum Status { get; set; } = ProjectStatusEnum.Approved;
+
+        public int BudgetItems {  get; set; } = 0;
     }
 }

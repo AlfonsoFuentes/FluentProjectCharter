@@ -2,12 +2,12 @@
 
 namespace Shared.Models.BaseResponses
 {
-    public class BaseResponse : IResponse
+    public abstract class BaseResponse : IResponse
     {
         public string Name { get; set; } = string.Empty;
-        public Guid Id { get; set; }
-       
-        public int Order {  get; set; }
+        public Guid Id { get; set; } = Guid.Empty;
+
+        public int Order { get; set; }
         protected static bool EqualOperator(BaseResponse left, BaseResponse right)
         {
             if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
@@ -25,6 +25,7 @@ namespace Shared.Models.BaseResponses
         protected virtual IEnumerable<object> GetEqualityComponents()
         {
             yield return Id;
+            yield return Name;
 
         }
 

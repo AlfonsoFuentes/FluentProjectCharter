@@ -15,9 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\BudgetItems\IndividualItems\Nozzles\Exports\" />
+    <Folder Include="Models\BudgetItems\IndividualItems\Nozzles\Records\" />
+    <Folder Include="Models\BudgetItems\IndividualItems\Nozzles\Requests\" />
+    <Folder Include="Models\BudgetItems\IndividualItems\Nozzles\Validators\" />
     <Folder Include="Models\StakeHolderInsideProjects\Exports\" />
-    <Folder Include="Models\StakeHolderInsideProjects\Validators\" />
     <Folder Include="Models\StakeHolders\Mappers\" />
+    <Folder Include="Models\Suppliers\Mappers\" />
   </ItemGroup>
 
 </Project>

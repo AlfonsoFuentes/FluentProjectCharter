@@ -1,0 +1,108 @@
+﻿@using Web.Pages.ProjectDependant
+<MudCard Style="width:100%">
+    <MudCardContent>
+        <MudStack Spacing="2" Style="width:100%">
+            <IconButton Size=Size.Small ToolTip="Add new Project" Icon="@Icons.Material.Filled.Add" Variant=Variant.Outlined OnClick="AddNew"></IconButton>
+            <MudExpansionPanels >
+                @foreach (var row in FilteredItems)
+                {
+                    <MudExpansionPanel HideIcon=true @bind-Expanded="@open">
+                        <TitleContent>
+                            <div class="d-flex">
+                                <MudGrid>
+                                    <MudItem xs="12" sm="4">
+                                        <MudText Class="mt-1"> @row.Name</MudText>
+                                    </MudItem>
+                                    <MudItem xs="12" sm="2">
+                                        <MudText Class="mt-1"> @row.Focus.Name</MudText>
+                                    </MudItem>
+                                     <MudItem xs="12" sm="2">
+                                        <MudText Class="mt-1"> @row.CostCenter.Name</MudText>
+                                    </MudItem>
+                                    <MudItem xs="12" sm="2">
+                                        <MudText Class="mt-1"> @row.ProjectNeedType.Name</MudText>
+                                    </MudItem>
+                                
+                                </MudGrid>
+                                                                    
+                                <MudSpacer />
+                            
+                                <MudStack Row=true Spacing="2" Class="mt-1">
+                                    <IconButton ToolTip="@($"Expand {row.Name}")" Size="@Size.Small" Icon="@ExpandIcon" OnClick="@(()=>OnExpandedChanged(row))"/>
+                                    <IconButton ToolTip="@($"Export {row.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.PictureAsPdf" Variant=Variant.Outlined OnClick="@(()=>ExportProjectCharter(row))" />
+                                    <IconButton ToolTip="@($"Edit {row.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Variant=Variant.Outlined OnClick="@(()=>Edit(row))" />
+                                    <IconButton ToolTip="@($"Approve {row.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Check" Variant=Variant.Outlined OnClick="@(()=>Approve(row))" />
+                                    <IconButton ToolTip="@($"Delete {row.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Variant=Variant.Outlined OnClick="@(()=>Delete(row))" />
+                                </MudStack>
+                                
+                            </div
+
+                        </TitleContent>
+                        <ChildContent>
+                            <ProjectContainer Project="@row"></ProjectContainer>    
+
+
+                        </ChildContent>
+
+                    </MudExpansionPanel>
+                }
+
+            </MudExpansionPanels>
+        </MudStack>
+    </MudCardContent>
+</MudCard>
+@* <MudCard Style="width:100%">
+    <MudCardContent>
+        <MudStack Spacing="2" Style="width:100%">
+            <MudText Typo="Typo.h6">Project List</MudText>
+            <MudDataGrid T="ProjectResponse"
+                         MultiSelection="false"
+                         Items="@FilteredItems"
+                         Hideable="true"
+                         Dense=true
+                         Bordered=true
+                         Hover=true
+                         Outlined=true
+                         Striped=true
+                         EditMode="@DataGridEditMode.Cell">
+                <ToolBarContent>
+                    <MudStack Row=true Spacing="3">
+
+                        <IconButton Size=Size.Small ToolTip="Add new Item" Icon="@Icons.Material.Filled.Add" Variant=Variant.Outlined OnClick="AddNew"></IconButton>
+                        <IconButton Size=Size.Small ToolTip="Export to excel" Icon="@Icons.Material.Filled.TableView" Variant=Variant.Outlined OnClick="ExportExcel"></IconButton>
+                        <IconButton Size=Size.Small ToolTip="Export to pdf" Icon="@Icons.Material.Filled.PictureAsPdf" Variant=Variant.Outlined OnClick="ExportPDF"></IconButton>
+
+                    </MudStack>
+                    <MudSpacer />
+                    <TextField @bind-Value="NameFilter" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></TextField>
+                </ToolBarContent>
+                <Columns>
+                    <HierarchyColumn T="ProjectResponse" ButtonDisabledFunc="@(x => x.Name == "He")" InitiallyExpandedFunc="@(x => x.Name == "Li")" />
+                    <PropertyColumn Property="x => x.Name" Title="Name" SortBy="@_sortBy" T="ProjectResponse" TProperty="string" />
+                    <TemplateColumn CellClass="d-flex justify-end" T="ProjectResponse">
+                        <CellTemplate Context="template">
+                            <MudStack Row=true Spacing="2">
+                                <IconButton ToolTip="@($"Edit {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Variant=Variant.Outlined OnClick="@(()=>Edit(template.Item))" />
+                                <IconButton ToolTip="@($"Delete {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Variant=Variant.Outlined OnClick="@(()=>Delete(template.Item))" />
+                            </MudStack>
+                        </CellTemplate>
+                    </TemplateColumn>
+
+
+                </Columns>
+                <ChildRowContent>
+                    <ProjectContainer Project="@context.Item"></ProjectContainer>
+
+                </ChildRowContent>
+                <PagerContent>
+                    <MudDataGridPager T="ProjectResponse" />
+                </PagerContent>
+            </MudDataGrid>
+        </MudStack>
+    </MudCardContent>
+</MudCard> *@
+
+@code {
+    string ExpandIcon => _selectedProjectId == Guid.Empty ? Icons.Material.Outlined.ExpandMore : Icons.Material.Outlined.ExpandLess;
+
+}

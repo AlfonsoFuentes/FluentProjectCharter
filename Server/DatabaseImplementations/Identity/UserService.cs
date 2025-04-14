@@ -129,7 +129,20 @@ namespace Server.DatabaseImplementations.Identity
         public async Task<IResult<UserResponse>> GetAsync(string userId)
         {
             var user = await _userManager.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
-            var result = _mapper.Map<UserResponse>(user);
+            if (user == null) return Result<UserResponse>.Fail("User not found!");
+            UserResponse result = new()
+            {
+                Email = user.Email ?? string.Empty,
+                EmailConfirmed = user.EmailConfirmed,
+                FirstName = user.FirstName ?? string.Empty,
+                Id = user.Id,
+                IsActive = user.IsActive,
+                LastName = user.LastName ?? string.Empty,
+                PhoneNumber = user.PhoneNumber ?? string.Empty,
+                UserName = user.UserName ?? string.Empty,
+
+
+            };
             return await Result<UserResponse>.SuccessAsync(result);
         }
 

@@ -37,7 +37,7 @@ namespace Shared.Models.GanttTasks.Responses
         public List<string> textLines = new(); // Líneas de texto divididas
         public Guid ProjectId { get; set; }
         public Guid DeliverableId { get; set; }
-        public string ProjectName { get; set; } = string.Empty;
+        
         public int LabelOrder { get; set; }
         public string WBS { get; set; } = string.Empty;
         public Guid? ParentGanttTaskId { get; set; } // Referencia al padre (opcional)

@@ -27,26 +27,7 @@ namespace Shared.Models.Qualitys.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateQualityRequest ToUpdate(this QualityResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateQualityRequest ToCreate(this QualityResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+        
     }
 
 }

@@ -4,7 +4,7 @@
 <CreateTemplate @ref=Form TItem="CreateMeetingRequest" @bind-Model="@Model"
                 Title="Create Meeting">
     <Content>
-        <TextArea Label="Meeting Name"
+      @*   <TextArea Label="Meeting Name"
                   @bind-Value=@Model.Name
                   Placeholder="Define meeting name"
                   Validate="Form.ValidateAsync"></TextArea>
@@ -33,7 +33,7 @@
 
         <FluentDatePicker Label="Meeting Date" AriaLabel="To" @bind-Value="@Model.DateofMeeting" DoubleClickToDate="@Model.DateofMeeting" />
         <ValidationMessage For="() => Model.DateofMeeting" style="color:red; font-size:x-small;" />
-
+ *@
     </Content>
 
 </CreateTemplate>

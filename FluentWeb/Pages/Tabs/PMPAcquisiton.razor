@@ -1,14 +1,14 @@
 ﻿<MatrixRow RowName="Acquisiton Management">
-    <StartContent>
-        <FluentAnchor Href="@($"Acquisitions/{Project.Id}")" Appearance="Appearance.Hypertext">Acquisitions</FluentAnchor>
+@*     <StartContent>
+        <MudLink Href="@($"Acquisitions/{Project.Id}")" Appearance="Appearance.Hypertext">Acquisitions</MudLink>
     </StartContent>
     <ExecutionContent>
         @if (Project.Status.Id == ProjectStatusEnum.Approved.Id)
         {
-            <FluentAnchor Href="@($"BudgetItemsWithPurchaseOrders/{Project.Id}")" Appearance="Appearance.Hypertext">Purchase Orders</FluentAnchor>
+            <MudLink Href="@($"BudgetItemsWithPurchaseOrders/{Project.Id}")" Appearance="Appearance.Hypertext">Purchase Orders</MudLink>
         }
       
-    </ExecutionContent>
+    </ExecutionContent> *@
   
 </MatrixRow>
 

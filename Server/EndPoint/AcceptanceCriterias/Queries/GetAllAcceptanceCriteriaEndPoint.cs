@@ -23,7 +23,7 @@ namespace Server.EndPoint.AcceptanceCriterias.Queries
 
                     var response = new AcceptanceCriteriaResponseList
                     {
-                        ProjectName = rows.Name,
+                        ProjectId = request.ProjectId,
                         Items = maps
                     };
 

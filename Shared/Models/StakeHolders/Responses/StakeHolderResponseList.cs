@@ -1,6 +1,8 @@
-﻿namespace Shared.Models.StakeHolders.Responses
+﻿using Shared.Models.FileResults.Generics.Reponses;
+
+namespace Shared.Models.StakeHolders.Responses
 {
-    public class StakeHolderResponseList
+    public class StakeHolderResponseList : IResponseAll
     {
         public List<StakeHolderResponse> Items { get; set; } = new();
     }

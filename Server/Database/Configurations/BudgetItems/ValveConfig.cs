@@ -9,8 +9,8 @@ namespace Server.Database.Configurations.BudgetItems
         public void Configure(EntityTypeBuilder<Valve> builder)
         {
             builder.HasOne(x => x.ValveTemplate)
-         .WithMany(t => t.Valves)
-         .HasForeignKey(e => e.ValveTemplateId)
+                 .WithMany(t => t.Valves)
+                 .HasForeignKey(e => e.ValveTemplateId)
 
          .OnDelete(DeleteBehavior.NoAction);
         }

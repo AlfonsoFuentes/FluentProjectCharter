@@ -1,5 +1,5 @@
-﻿<FluentStack Orientation="Orientation.Vertical" Width="100%">
-    <FluentLabel Typo="Typography.Body"><strong>@Label</strong></FluentLabel>
+﻿@* <FluentStack Orientation="Orientation.Vertical" Width="100%">
+    <MudField  Typo="Typo.Body"><strong>@Label</strong></MudField >
     <FluentTextField Value="@Value"
                      ValueChanged="OnValueChanged"
                      Style="width: 100%;"
@@ -11,13 +11,13 @@
 
 
 
-</FluentStack>
+</FluentStack> *@
 
 @code {
-    [Parameter]
-    public TextFieldType TextFieldType { get; set; } = TextFieldType.Text;
-    [Parameter]
-    public InputMode InputMode { get; set; } = InputMode.Text;
+    // [Parameter]
+    // public TextFieldType TextFieldType { get; set; } = TextFieldType.Text;
+    // [Parameter]
+    // public InputMode InputMode { get; set; } = InputMode.Text;
     [Parameter]
     public bool Disable { get; set; } = false;
     [Parameter]

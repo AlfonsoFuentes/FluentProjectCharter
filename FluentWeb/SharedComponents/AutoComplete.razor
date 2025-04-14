@@ -1,7 +1,7 @@
 ﻿@typeparam T
 
-<FluentStack Orientation="Orientation.Vertical" Width="100%">
-    <FluentLabel Typo="Typography.Body"><strong>@Label</strong></FluentLabel>
+@* <FluentStack Orientation="Orientation.Vertical" Width="100%">
+    <MudField  Typo="Typo.Body"><strong>@Label</strong></MudField >
     <FluentAutocomplete TOption="T"
                         AutoComplete="off"
                         Width="250px"
@@ -23,7 +23,7 @@
         </LabelTemplate>
     </FluentAutocomplete>
 
-</FluentStack>
+</FluentStack> *@
 
 
 
@@ -46,11 +46,11 @@
     public List<T> Items { get; set; } = new();
     IEnumerable<T> SelectedItems = Array.Empty<T>();
 
-    private void OnSearchAsync(OptionsSearchEventArgs<T> e)
-    {
-        var all = Items;
-        e.Items = all.Where(Filter);
-    }
+    // private void OnSearchAsync(OptionsSearchEventArgs<T> e)
+    // {
+    //     var all = Items;
+    //     e.Items = all.Where(Filter);
+    // }
     [Parameter]
     public bool Disable { get; set; } = false;
 

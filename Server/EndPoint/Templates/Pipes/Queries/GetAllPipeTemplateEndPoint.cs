@@ -1,6 +1,4 @@
-﻿using Shared.Models.Templates.Pipings.Records;
-using Shared.Models.Templates.Pipings.Responses;
-
+﻿
 namespace Server.EndPoint.Templates.Pipes.Queries
 {
     public static class GetAllPipeTemplateEndPoint
@@ -12,7 +10,7 @@ namespace Server.EndPoint.Templates.Pipes.Queries
                 app.MapPost(StaticClass.PipeTemplates.EndPoint.GetAll, async (PipeTemplateGetAll request, IQueryRepository Repository) =>
                 {
                     Func<IQueryable<PipeTemplate>, IIncludableQueryable<PipeTemplate, object>> Includes = x => x
-                    .Include(x => x.NozzleTemplates)
+                    //Include(x => x.NozzleTemplates)
                     .Include(x => x.BrandTemplate!)
                      ;
 

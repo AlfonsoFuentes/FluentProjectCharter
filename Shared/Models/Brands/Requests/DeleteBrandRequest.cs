@@ -8,7 +8,7 @@ namespace Shared.Models.Brands.Requests
         public override string Legend => Name;
 
         public override string ClassName => StaticClass.Brands.ClassName;
-     
+
         public Guid Id { get; set; }
 
         public string EndPointName => StaticClass.Brands.EndPoint.Delete;

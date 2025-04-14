@@ -1,0 +1,216 @@
+﻿
+
+<EditForm Model="@Model" OnValidSubmit="Submit">
+    <MudCard>
+        <MudCardContent>
+
+            <FluentValidationValidator @ref="_fluentValidationValidator" />
+            @if (loaded)
+            {
+                <MudGrid>
+                    <MudItem xs="12" sm="6">
+                        <MudGrid>
+                            <MudItem xs="12" sm="12">
+                                <TextField @bind-Value="@Model.Name"
+                                           Label="Name"
+                                           Lines="3"
+                                           ValidateAsync="ValidateAsync"
+                                           For="()=>Model.Name">
+                                </TextField>
+                            </MudItem>
+                        </MudGrid>
+                        <MudGrid>
+                            <MudItem xs="12" sm="6">
+                                <CurrencyNumericField Label="Budget, $USD"
+                                                      ValidateAsync="ValidateAsync"
+                                                      @bind-Value="Model.BudgetUSD"
+                                                      For="()=>Model.BudgetUSD" />
+                            </MudItem>
+                            <MudItem xs="12" sm="6">
+                                @if (Model.ShowDetails)
+                                {
+                                    <Field Label="Tag">@Model.Tag</Field>
+                                    <ValidationMessage For="() => Model.Tag" style="color:red; font-size:x-small;" />
+                                }
+                                else if (Model.ShowProvisionalTag)
+                                {
+                                    <TextField @bind-Value="@Model.ProvisionalTag"
+                                               Label="Tag"
+                                               ValidateAsync="ValidateAsync"
+                                               For="()=>Model.ProvisionalTag">
+                                    </TextField>
+                                    <ValidationMessage For="() => Model.Tag" style="color:red; font-size:x-small;" />
+                                }
+                            </MudItem>
+                        </MudGrid>
+                        @if (Model.ShowDetails)
+                        {
+                            <MudGrid>
+                                <MudItem xs="12" sm="12" md="5">
+                                    <Select @bind-Value="@Model.VariableInstrument"
+                                            Items="@VariableInstrumentEnum.List"
+                                            Label="Variable"
+                                            Property="@(p=>p.Name)"
+                                            For="()=>Model.VariableInstrument"
+                                            Change="ChangeVariableInstrument"
+                                            ValidateAsync="@(()=>ValidateAsync())"
+                                            Clearable="false">
+                                    </Select>
+
+
+                                </MudItem>
+                                <MudItem xs="12" sm="12" md="4">
+                                    <Select @bind-Value="@Model.ModifierVariable"
+                                            Items="@ModifierVariableInstrumentEnum.List"
+                                            Label="Modifier"
+                                            Property="@(p=>p.Name)"
+                                            For="()=>Model.ModifierVariable"
+                                            ValidateAsync="@(()=>ValidateAsync())"
+                                            Clearable="false">
+                                    </Select>
+
+
+                                </MudItem>
+                                <MudItem xs="12" sm="12" md="3">
+                                    <TextField @bind-Value="@Model.TagNumber"
+                                               Label="Tag Number"
+                                               ValidateAsync="ValidateAsync"
+                                               For="()=>Model.TagNumber">
+                                    </TextField>
+
+
+                                </MudItem>
+                            </MudGrid>
+                            <MudGrid>
+                                <MudItem xs="12" sm="12" md="5">
+                                    <SelectIconButton @bind-Value="@Model.Brand"
+                                                      TValue="BrandResponse"
+                                                      Label="Brand"
+                                                      ValidateAsync="ValidateAsync"
+                                                      For="()=>Model.Brand"
+                                                      Items="BrandsResponseList.Items"
+                                                      Clearable="true"
+                                                      Icon="@Icons.Material.Filled.Add"
+                                                      ButtonClick="AddBrand"
+                                                      ToolTip="Add new Brand"
+                                                      Property="@(p=>p.Name)">
+
+                                    </SelectIconButton>
+
+
+                                </MudItem>
+
+                                <MudItem xs="12" sm="12" md="4">
+                                    <TextField @bind-Value="@Model.Model"
+                                               Label="Model"
+                                               ValidateAsync="@(()=>ValidateAsync())"
+                                               For="()=>Model.Model">
+                                    </TextField>
+                                </MudItem>
+
+                                <MudItem xs="12" sm="12" md="3">
+
+                                    <TextField @bind-Value="@Model.Reference"
+                                               Label="Reference"
+                                               ValidateAsync="@(()=>ValidateAsync())"
+                                               For="()=>Model.Reference">
+                                    </TextField>
+                                </MudItem>
+                            </MudGrid>
+                            <MudGrid>
+                                <MudItem xs="12" sm="12" md="5">
+                                    <Select @bind-Value="Model.SignalType"
+                                            Items="@SignalTypeEnum.List"
+                                            Label="Signal Type"
+                                            Property="@(p=>p.Name)"
+                                            For="()=>Model.SignalType"
+                                            ValidateAsync="@(()=>ValidateAsync())"
+                                            Clearable="false">
+                                    </Select>
+
+
+
+                                </MudItem>
+                                <MudItem xs="12" sm="12" md="4">
+                                    <Select @bind-Value="Model.ConnectionType"
+                                            Items="@ConnectionTypeEnum.List"
+                                            Label="Connection Type"
+                                            Property="@(p=>p.Name)"
+                                            For="()=>Model.ConnectionType"
+                                            ValidateAsync="@(()=>ValidateAsync())"
+                                            Clearable="false">
+                                    </Select>
+
+                                </MudItem>
+                                <MudItem xs="12" sm="12" md="3">
+                                    <Select @bind-Value="Model.Material"
+                                            Items="@MaterialEnum.List"
+                                            Label="Material"
+                                            Property="@(p=>p.Name)"
+                                            For="()=>Model.Material"
+                                            ValidateAsync="@(()=>ValidateAsync())"
+                                            Clearable="false">
+                                    </Select>
+                                </MudItem>
+                            </MudGrid>
+
+
+
+                            <MudGrid>
+                                <MudItem xs="12" sm="12">
+                                    <NozzleBudgetaryTable @bind-Items=@Model.Nozzles Validate="ValidateAsync"></NozzleBudgetaryTable>
+                                    <ValidationMessage For="() => Model.Nozzles" style="color:red; font-size:x-small;" />
+                                </MudItem>
+                            </MudGrid>
+                        }
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <MudGrid>
+                            <MudItem xs="12" sm="12">
+                                <MudStack>
+                                    <Switch Label="Is Existing?" @bind-Value=Model.IsExisting></Switch>
+                                    @if (!Model.IsExisting)
+                                    {
+                                        <Switch Label="Show Details?" @bind-Value=Model.ShowDetails Change="OnChageDetails"></Switch>
+                                        @if (!Model.ShowDetails)
+                                        {
+                                            <Switch Label="Show Provisional Tag?" @bind-Value=@Model.ShowProvisionalTag></Switch>
+                                        }
+                                    }
+
+                                </MudStack>
+                            </MudItem>
+                        </MudGrid>
+
+                        @if (Model.ShowDetails)
+                        {
+                            <MudGrid>
+                                <MudItem xs="12" sm="12">
+                                    <InstrumentTemplateTable Items="@InstrumentTemplateResponseList.Items" SendToForm="GetFromTamplateList"></InstrumentTemplateTable>
+                                </MudItem>
+                            </MudGrid>
+
+                        }
+                    </MudItem>
+                </MudGrid>
+
+
+            }
+
+          
+
+
+
+
+        </MudCardContent>
+        <MudCardActions>
+
+            <MudIconButton Icon="@Icons.Material.Filled.Cancel" OnClick="Cancel" Color="Color.Transparent" Variant="Variant.Outlined"></MudIconButton>
+            <MudIconButton Icon="@Icons.Material.Filled.Save" Disabled=!Validated ButtonType="ButtonType.Submit" Variant="Variant.Outlined"></MudIconButton>
+
+        </MudCardActions>
+    </MudCard>
+</EditForm>
+@code {
+
+}

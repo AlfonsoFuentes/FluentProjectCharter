@@ -1,0 +1,14 @@
+﻿<MudTooltip Text="@ToolTip">
+    <MudIconButton Icon="@Icon" OnClick="@OnClick" Variant="@Variant" />
+</MudTooltip>
+
+@code {
+    [Parameter]
+    public string ToolTip { get; set; } = string.Empty;
+    [Parameter]
+    public string Icon { get; set; } = string.Empty;
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+    [Parameter]
+    public Variant Variant { get; set; } = Variant.Outlined;
+}

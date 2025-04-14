@@ -22,8 +22,8 @@ namespace Server.EndPoint.Templates.Valves.Queries
                 app.MapPost(StaticClass.ValveTemplates.EndPoint.GetById,
                     async (GetValveTemplateByIdRequest request, IQueryRepository Repository) =>
                 {
-                    Func<IQueryable<ValveTemplate>, IIncludableQueryable<ValveTemplate, object>> Includes = x =>
-                    x.Include(x => x.NozzleTemplates)
+                    Func<IQueryable<ValveTemplate>, IIncludableQueryable<ValveTemplate, object>> Includes = x =>x
+                    .Include(x => x.NozzleTemplates)
                     .Include(x => x.BrandTemplate!);
                     ;
 
@@ -45,40 +45,7 @@ namespace Server.EndPoint.Templates.Valves.Queries
         }
 
 
-        public static ValveTemplateResponse Map(this ValveTemplate row)
-        {
-            return new()
-            {
-                Id = row.Id,
-                BrandResponse = row.BrandTemplate == null ? new() : row.BrandTemplate.Map(),
-                Material = MaterialEnum.GetType(row.Material),
-                Model = row.Model,
-                ActuatorType = ActuatorTypeEnum.GetType(row.ActuatorType),
-                Type = ValveTypesEnum.GetTypeByName(row.Type),
-                Diameter = NominalDiameterEnum.GetType(row.Diameter),
-                FailType = FailTypeEnum.GetType(row.FailType),
-                HasFeedBack = row.HasFeedBack,
-                SignalType = SignalTypeEnum.GetType(row.SignalType),
-                TagLetter = row.TagLetter,
-                PositionerType = PositionerTypeEnum.GetType(row.PositionerType),
-
-
-                Value = row.Value,
-                Nozzles = row.NozzleTemplates.Count == 0 ? new() : row.NozzleTemplates.Select(x => x.Map()).ToList(),
-
-            };
-        }
-        static NozzleTemplateResponse Map(this NozzleTemplate row)
-        {
-
-            return new()
-            {
-                Id = row.Id,
-                ConnectionType = ConnectionTypeEnum.GetType(row.ConnectionType),
-                NominalDiameter = NominalDiameterEnum.GetType(row.NominalDiameter),
-                NozzleType = NozzleTypeEnum.GetType(row.NozzleType),
-
-            };
-        }
+       
+       
     }
 }

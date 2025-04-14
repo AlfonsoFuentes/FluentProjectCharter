@@ -27,26 +27,7 @@ namespace Shared.Models.Bennefits.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateBennefitRequest ToUpdate(this BennefitResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateBennefitRequest ToCreate(this BennefitResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+       
     }
 
 }

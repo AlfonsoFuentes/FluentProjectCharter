@@ -24,7 +24,7 @@ namespace Server.EndPoint.Qualitys.Queries
                     var response = new QualityResponseList
                     {
                         Items = maps,
-                        ProjectName = rows.Name 
+                       ProjectId = request.ProjectId,
                     };
 
                     return Result<QualityResponseList>.Success(response);

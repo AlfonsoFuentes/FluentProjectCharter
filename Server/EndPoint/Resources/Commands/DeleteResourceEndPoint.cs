@@ -1,5 +1,4 @@
-﻿using Server.Database.Entities.ProjectManagements;
-using Shared.Models.Resources.Requests;
+﻿using Shared.Models.Resources.Requests;
 
 namespace Server.EndPoint.Resources.Commands
 {

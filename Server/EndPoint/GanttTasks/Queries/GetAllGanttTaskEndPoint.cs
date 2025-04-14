@@ -31,7 +31,7 @@ namespace Server.EndPoint.GanttTasks.Queries
 
                         DeliverableWithGanttTaskResponseListToUpdate response = new();
                         response.ProjectId = request.ProjectId;
-                        response.ProjectName = project.Name;
+                     
                         foreach (var deliverable in project.Deliverables)
                         {
                             var flatList = await MapFlatInParallelAsync(deliverable.GanttTasks);
@@ -197,7 +197,7 @@ namespace Server.EndPoint.GanttTasks.Queries
                 WBS = row.WBS,
                 LabelOrder = row.LabelOrder,
                 DependantId = row.DependentantId,
-
+                ShowBudgetItems = row.ShowBudgetItems,
                 Alterations = row.BudgetItems?.OfType<Alteration>().Select(x => x.Map()).ToList() ?? new(),
                 Structurals = row.BudgetItems?.OfType<Structural>().Select(x => x.Map()).ToList() ?? new(),
                 Foundations = row.BudgetItems?.OfType<Foundation>().Select(x => x.Map()).ToList() ?? new(),

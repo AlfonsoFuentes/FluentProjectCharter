@@ -1,6 +1,8 @@
 ﻿using Server.EndPoint.Templates.Pipes.Commands;
 using Server.EndPoint.Templates.Pipes.Queries;
+using Server.ExtensionsMethods.Pipings;
 using Shared.Models.Templates.Pipings.Requests;
+using Shared.Models.Templates.Pipings.Responses;
 
 namespace Server.EndPoint.Templates.Pipes.Commands
 {
@@ -11,7 +13,7 @@ namespace Server.EndPoint.Templates.Pipes.Commands
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.PipeTemplates.EndPoint.Create, async (CreatePipeTemplateRequest Data, IRepository Repository) =>
+                app.MapPost(StaticClass.PipeTemplates.EndPoint.Create, async (PipeTemplateResponse Data, IRepository Repository) =>
                 {
                     var row = Template.AddPipeTemplate();
 
@@ -19,11 +21,11 @@ namespace Server.EndPoint.Templates.Pipes.Commands
 
                     Data.Map(row);
 
-                    var response = row.Map();
+                 
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.PipeTemplates.Cache.Key(row.Id));
 
-                    return Result.EndPointResult(response, result,
+                    return Result.EndPointResult(result, 
                         Data.Succesfully,
                         Data.Fail);
 
@@ -35,20 +37,7 @@ namespace Server.EndPoint.Templates.Pipes.Commands
         }
 
 
-        static PipeTemplate Map(this CreatePipeTemplateRequest request, PipeTemplate row)
-        {
-            row.BrandTemplateId = request.BrandResponse!.Id;
-            row.Diameter = request.Diameter.Name;
-            row.Class = request.Class.Name;
-            row.EquivalentLenghPrice = request.EquivalentLenghPrice;
-            row.LaborDayPrice = request.LaborDayPrice;
-            row.Insulation = request.Insulation;
-            row.Material = request.Material.Name;
-
-
-
-            return row;
-        }
+       
 
     }
 

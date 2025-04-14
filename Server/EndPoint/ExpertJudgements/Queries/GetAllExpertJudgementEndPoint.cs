@@ -23,7 +23,7 @@ namespace Server.EndPoint.ExpertJudgements.Queries
                     var response = new ExpertJudgementResponseList
                     {
                         Items = maps,
-                        ProjectName=rows.Name,
+                        ProjectId = request.ProjectId,
                     };
 
                     return Result<ExpertJudgementResponseList>.Success(response);
@@ -32,7 +32,7 @@ namespace Server.EndPoint.ExpertJudgements.Queries
 
             private static async Task<Project?> GetExpertJudgementAsync(ExpertJudgementGetAll request, IQueryRepository repository)
             {
-                Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x.Include(p => p.ExpertJudgements);
+                Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x.Include(p => p.ExpertJudgements).ThenInclude(x=>x.Expert!);
                 Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
                 string cacheKey = StaticClass.ExpertJudgements.Cache.GetAll(request.ProjectId);
 

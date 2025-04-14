@@ -1,22 +1,23 @@
 ﻿@page "/CreateProject"
+@* 
 <CreateTemplate @ref=Form TItem="CreateProjectRequest" @bind-Model="@Model"
                 Title="Create Project">
     <Content>
-        <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
-            <FluentGridItem xs="12" sm="12" md="6">
+       <MudGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
+            <MudItem  xs="12" sm="12" md="6">
                 <TextArea Label="Name"
                           @bind-Value=@Model.Name
                           Rows="3"
                           Placeholder="Define name"
                           Validate="Form.ValidateAsync"></TextArea>
                 <ValidationMessage For="() => Model.Name" style="color:red; font-size:x-small;" />
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="12" md="6">
+            </MudItem >
+            <MudItem  xs="12" sm="12" md="6">
 
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="12" md="4">
-                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
-                    <FluentGridItem xs="12">
+            </MudItem >
+            <MudItem  xs="12" sm="12" md="4">
+                <MudGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
+                    <MudItem  xs="12">
                         <FluentStack Orientation="Orientation.Vertical" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="1" Width="100%">
                             <FluentSelect TOption="ProjectNeedTypeEnum"
                                           Label="Select Project Need"
@@ -34,21 +35,21 @@
 
                             <ValidationMessage For="() => Model.ProjectNeedType" style="color:red; font-size:x-small;" />
                         </FluentStack>
-                    </FluentGridItem>
+                    </MudItem >
                    
-                </FluentGrid>
+                </MudGrid>
 
 
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="12" md="4">
-                <FluentGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
-                    <FluentGridItem xs="12">
+            </MudItem >
+            <MudItem  xs="12" sm="12" md="4">
+                <MudGrid Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style=" padding: 4px; ">
+                    <MudItem  xs="12">
                         <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="3" Width="100%">
                             <FluentDatePicker Label="Project Initial Date" AriaLabel="To" @bind-Value="@Model.InitialProjectDate" DoubleClickToDate="@Model.InitialProjectDate" />
                             <ValidationMessage For="() => Model.InitialProjectDate" style="color:red; font-size:x-small;" />
                         </FluentStack>
-                    </FluentGridItem>
-                    <FluentGridItem xs="12">
+                    </MudItem >
+                    <MudItem  xs="12">
                         <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center" HorizontalGap="3" Width="100%">
                             <FluentSelect TOption="ProjectStatusEnum"
                                           Label="Select Project status"
@@ -67,13 +68,13 @@
 
                             <ValidationMessage For="() => Model.Status" style="color:red; font-size:x-small;" />
                         </FluentStack>
-                    </FluentGridItem>
-                    <FluentGridItem xs="12">
+                    </MudItem >
+                    <MudItem  xs="12">
 
-                    </FluentGridItem>
-                </FluentGrid>
-            </FluentGridItem>
-            <FluentGridItem xs="12" sm="12" md="4">
+                    </MudItem >
+                </MudGrid>
+            </MudItem >
+            <MudItem  xs="12" sm="12" md="4">
                 <NumberField Label="%Engineering" @bind-Value=@Model.PercentageEngineering Validate="Form.ValidateAsync"></NumberField>
                 <ValidationMessage For="() => Model.PercentageEngineering" style="color:red; font-size:x-small;" />
                 <NumberField Label="%Contingency" @bind-Value=@Model.PercentageContingency Validate="Form.ValidateAsync"></NumberField>
@@ -84,30 +85,30 @@
                     <NumberField Label="%Tax (VAT)" @bind-Value=@Model.PercentageTaxProductive Validate="Form.ValidateAsync"></NumberField>
                     <ValidationMessage For="() => Model.PercentageTaxProductive" style="color:red; font-size:x-small;" />
                 }
-            </FluentGridItem>
+            </MudItem >
 
-        </FluentGrid>
+        </MudGrid>
     </Content>
 
-</CreateTemplate>
+</CreateTemplate> *@
 
 @code {
-    CreateTemplate<CreateProjectRequest> Form = null!;
-    int Spacing = 2;
-    JustifyContent Justification = JustifyContent.SpaceBetween;
+    // CreateTemplate<CreateProjectRequest> Form = null!;
+    // int Spacing = 2;
+    // JustifyContent Justification = JustifyContent.SpaceBetween;
 
-    async Task ChangeSelectProjectNeed(ChangeEventArgs args)
-    {
-        if (args == null) return;
-        Model.ProjectNeedType = ProjectNeedTypeEnum.GetType(args!.Value!.ToString()!);
-        await Form.ValidateAsync();
-    }
-    async Task ChangeSelectProjectStatus(ChangeEventArgs args)
-    {
-        if (args == null) return;
-        Model.Status = ProjectStatusEnum.GetType(args!.Value!.ToString()!);
-        await Form.ValidateAsync();
-    }
+    // async Task ChangeSelectProjectNeed(ChangeEventArgs args)
+    // {
+    //     if (args == null) return;
+    //     Model.ProjectNeedType = ProjectNeedTypeEnum.GetType(args!.Value!.ToString()!);
+    //     await Form.ValidateAsync();
+    // }
+    // async Task ChangeSelectProjectStatus(ChangeEventArgs args)
+    // {
+    //     if (args == null) return;
+    //     Model.Status = ProjectStatusEnum.GetType(args!.Value!.ToString()!);
+    //     await Form.ValidateAsync();
+    // }
   
 
 

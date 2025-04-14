@@ -27,26 +27,7 @@ namespace Shared.Models.Resources.Mappers
                 Order = response.Order,
             };
         }
-        public static UpdateResourceRequest ToUpdate(this ResourceResponse response)
-        {
-            return new()
-            {
-                Id = response.Id,
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-            };
-        }
-        public static CreateResourceRequest ToCreate(this ResourceResponse response)
-        {
-            return new()
-            {
-
-                Name = response.Name,
-                ProjectId = response.ProjectId,
-                
-                
-            };
-        }
+       
     }
 
 }

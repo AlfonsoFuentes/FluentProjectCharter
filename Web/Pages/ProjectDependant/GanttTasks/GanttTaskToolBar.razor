@@ -1,0 +1,53 @@
+﻿<MudStack Row=true>
+
+    <IconButton Icon="@Icons.Material.Filled.Add" OnClick="@OnAddNew" ToolTip="Add New Task" Disabled="@DisableAddButton"></IconButton>
+    <IconButton Icon="@Icons.Material.Filled.ArrowUpward" OnClick="@OnMoveUp" ToolTip="Move Up" Disabled="@DisableUpButton"></IconButton>
+    <IconButton Icon="@Icons.Material.Filled.ArrowDownward" OnClick="@OnMoveDown" ToolTip="Move Down" Disabled="@DisableDownButton"></IconButton>
+    <IconButton Icon="@Icons.Material.Filled.ArrowRight" OnClick="@OnMoveRight" ToolTip="Move Right" Disabled="@DisableRightButton"></IconButton>
+    <IconButton Icon="@Icons.Material.Filled.ArrowLeft" OnClick="@OnMoveLeft" ToolTip="Move Left" Disabled="@DisableLeftButton"></IconButton>
+
+    <MudSpacer></MudSpacer>
+    <Field Typo="Typo.body1" Label="Selected Deliverable"><strong>@CurrentDeliverableName</strong></Field>
+    <Field Typo="Typo.body1" Label="Selected Task"><strong>@CurrentRowName</strong></Field>
+</MudStack>
+
+@code {
+    [Parameter]
+    public EventCallback OnNavigateBack { get; set; }
+
+    [Parameter]
+    public EventCallback OnAddNew { get; set; }
+
+    [Parameter]
+    public EventCallback OnMoveUp { get; set; }
+
+    [Parameter]
+    public EventCallback OnMoveDown { get; set; }
+
+    [Parameter]
+    public EventCallback OnMoveRight { get; set; }
+
+    [Parameter]
+    public EventCallback OnMoveLeft { get; set; }
+
+    [Parameter]
+    public bool DisableAddButton { get; set; }
+
+    [Parameter]
+    public bool DisableUpButton { get; set; }
+
+    [Parameter]
+    public bool DisableDownButton { get; set; }
+
+    [Parameter]
+    public bool DisableRightButton { get; set; }
+
+    [Parameter]
+    public bool DisableLeftButton { get; set; }
+
+    [Parameter]
+    public string CurrentRowName { get; set; } = string.Empty;
+    [Parameter]
+    public string CurrentDeliverableName { get; set; } = string.Empty;
+
+}
