@@ -12,9 +12,7 @@ namespace Server.EndPoint.Resources.Queries
             {
                 app.MapPost(StaticClass.Resources.EndPoint.GetById, async (GetResourceByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //Func<IQueryable<Resource>, IIncludableQueryable<Resource, object>> Includes = x => null!
-
-                    //;
+                   
 
                     Expression<Func<Resource, bool>> Criteria = x => x.Id == request.Id;
 

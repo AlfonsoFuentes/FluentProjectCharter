@@ -13,10 +13,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Queries
             {
                 app.MapPost(StaticClass.Alterations.EndPoint.GetById, async (GetAlterationByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //Func<IQueryable<Alteration>, IIncludableQueryable<Alteration, object>> Includes = x => x
-                    //.Include(x => x.Deliverable!);
-
-                    //;
+                   
 
                     Expression<Func<Alteration, bool>> Criteria = x => x.Id == request.Id;
 
@@ -45,10 +42,13 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Queries
                 Nomenclatore = row.Nomenclatore,
                 UnitaryCost = row.UnitaryCost,
                 Quantity = row.Quantity,
+               
+                IsAlteration = row.IsAlteration,
+                IsTaxes = row.IsTaxes,
+                BudgetUSD = row.BudgetUSD,
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
-
 
             };
         }

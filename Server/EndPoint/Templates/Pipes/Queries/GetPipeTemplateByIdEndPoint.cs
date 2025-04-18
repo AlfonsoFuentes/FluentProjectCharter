@@ -21,7 +21,7 @@ namespace Server.EndPoint.Templates.Pipes.Queries
                     async (GetPipeTemplateByIdRequest request, IQueryRepository Repository) =>
                 {
                     Func<IQueryable<PipeTemplate>, IIncludableQueryable<PipeTemplate, object>> Includes = x =>x
-                    //.Include(x => x.NozzleTemplates)
+            
                     .Include(x => x.BrandTemplate!);
 
 

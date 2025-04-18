@@ -35,9 +35,11 @@ namespace Server.Database.Entities.BudgetItems
 
         [NotMapped]
         public string NomenclatoreName => $"{Nomenclatore}-{Name}";
-
+        [NotMapped]
         public double ActualUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.ActualUSD);
+        [NotMapped]
         public double CommitmentUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.CommitmentUSD);
+        [NotMapped]
         public double PotentialUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.PotentialCommitmentUSD);
     }
 

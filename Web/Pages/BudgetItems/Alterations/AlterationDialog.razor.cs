@@ -38,5 +38,7 @@ public partial class AlterationDialog
 
     [Parameter]
     public AlterationResponse Model { get; set; } = new();
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
 
 }

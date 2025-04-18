@@ -38,5 +38,6 @@ public partial class FoundationDialog
 
     [Parameter]
     public FoundationResponse Model { get; set; } = new();
-
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
 }

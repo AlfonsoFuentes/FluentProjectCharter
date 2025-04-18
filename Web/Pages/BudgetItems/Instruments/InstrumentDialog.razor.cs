@@ -91,6 +91,8 @@ public partial class InstrumentDialog
 
     [Parameter]
     public InstrumentResponse Model { get; set; } = new();
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
     async Task AddBrand()
     {
         var parameters = new DialogParameters<BrandDialog>

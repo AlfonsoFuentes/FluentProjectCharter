@@ -13,9 +13,6 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EHSs.Queries
             {
                 app.MapPost(StaticClass.EHSs.EndPoint.GetById, async (GetEHSByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //Func<IQueryable<EHS>, IIncludableQueryable<EHS, object>> Includes = x => x.Include(x => x.Deliverable!);
-
-                    ;
 
                     Expression<Func<EHS, bool>> Criteria = x => x.Id == request.Id;
 
@@ -47,6 +44,8 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EHSs.Queries
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
+                BudgetUSD = row.BudgetUSD,
+                
             };
         }
 

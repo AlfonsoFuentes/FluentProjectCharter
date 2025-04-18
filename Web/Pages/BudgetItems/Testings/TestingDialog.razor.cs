@@ -38,5 +38,6 @@ public partial class TestingDialog
 
     [Parameter]
     public TestingResponse Model { get; set; } = new();
-
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
 }

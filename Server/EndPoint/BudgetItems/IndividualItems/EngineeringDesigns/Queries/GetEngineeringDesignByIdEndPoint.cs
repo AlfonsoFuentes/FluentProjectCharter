@@ -13,9 +13,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Queries
             {
                 app.MapPost(StaticClass.EngineeringDesigns.EndPoint.GetById, async (GetEngineeringDesignByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //Func<IQueryable<EngineeringDesign>, IIncludableQueryable<EngineeringDesign, object>> Includes = x => x.Include(x => x.Deliverable!);
-
-                    //;
+                  
 
                     Expression<Func<EngineeringDesign, bool>> Criteria = x => x.Id == request.Id;
 
@@ -46,6 +44,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Queries
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
+
             };
         }
 

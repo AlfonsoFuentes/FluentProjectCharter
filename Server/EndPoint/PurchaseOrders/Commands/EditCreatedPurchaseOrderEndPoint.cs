@@ -10,13 +10,13 @@ namespace Server.EndPoint.PurchaseOrders.Commands
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.PurchaseOrders.EndPoint.CreatedEdit, async (EditPurchaseOrderCreatedRequest Data, IRepository Repository) =>
+                app.MapPost(StaticClass.PurchaseOrders.EndPoint.EditCreated, async (EditPurchaseOrderCreatedRequest Data, IRepository Repository) =>
                 {
                     Func<IQueryable<PurchaseOrder>, IIncludableQueryable<PurchaseOrder, object>> Includes = x => x
-                     .Include(x => x.PurchaseOrderItems).ThenInclude(x => x.BudgetItem!)
+                     .Include(x => x.PurchaseOrderItems)
                     ;
 
-                    Expression<Func<PurchaseOrder, bool>> Criteria = x => x.Id == Data.PurchaseOrderId;
+                    Expression<Func<PurchaseOrder, bool>> Criteria = x => x.Id == Data.Id;
 
                     var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
                     if (row == null) { return Result.Fail(Data.Fail); }
@@ -25,12 +25,12 @@ namespace Server.EndPoint.PurchaseOrders.Commands
                     Data.Map(row);
                     foreach (var item in row.PurchaseOrderItems)
                     {
-                        if (!Data.PurchaseOrderItems.Any(x => x.Id == item.Id))
+                        if (!Data.SelectedPurchaseOrderItems.Any(x => x.Id == item.Id))
                         {
                             await Repository.RemoveAsync(item);
                         }
                     }
-                    foreach (var item in Data.PurchaseOrderItems)
+                    foreach (var item in Data.SelectedPurchaseOrderItems)
                     {
                         PurchaseOrderItem rowitem = null!;
                         if (row.PurchaseOrderItems.Any(x => x.Id == item.Id))
@@ -48,12 +48,14 @@ namespace Server.EndPoint.PurchaseOrders.Commands
                             rowitem.Name = item.Name;
                             rowitem.UnitaryValueCurrency = item.UnitaryQuoteCurrency;
                             rowitem.Quantity = item.Quantity;
+                            rowitem.BudgetItemId=item.BudgetItemId;
+                            rowitem.Order=item.Order;   
                         }
 
 
                     }
 
-                    List<string> cache = [.. StaticClass.PurchaseOrders.Cache.Key(row.Id, row.ProjectId)];
+                    List<string> cache = [.. StaticClass.PurchaseOrders.Cache.KeyCreated(row.Id, row.ProjectId)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 
@@ -72,14 +74,14 @@ namespace Server.EndPoint.PurchaseOrders.Commands
         static PurchaseOrder Map(this EditPurchaseOrderCreatedRequest request, PurchaseOrder row)
         {
             row.SupplierId = request.SupplierId;
-            row.QuoteCurrency = request.QuoteCurrency.Name;
-            row.PurchaseOrderCurrency = request.PurchaseOrderCurrency.Name;
+            row.QuoteCurrency = request.QuoteCurrency.Id;
+            row.PurchaseOrderCurrency = request.PurchaseOrderCurrency.Id;
             row.PurchaseorderName = request.Name;
-            row.PurchaseOrderStatus = PurchaseOrderStatusEnum.Created.Name;
+            row.PurchaseOrderStatus = PurchaseOrderStatusEnum.Created.Id;
             row.PurchaseRequisition = request.PurchaseRequisition;
             row.QuoteNo = request.QuoteNo;
             row.CurrencyDate = request.CurrencyDate!.Value;
-            row.AccountAssigment = request.ProjectAccount;
+            row.ProjectAccount = request.ProjectAccount;
             row.IsAlteration = request.IsAlteration;
             row.IsCapitalizedSalary = request.IsCapitalizedSalary;
             row.SPL = request.SPL;
@@ -91,5 +93,4 @@ namespace Server.EndPoint.PurchaseOrders.Commands
         }
 
     }
-
 }

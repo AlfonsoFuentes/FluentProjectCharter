@@ -7,8 +7,11 @@ namespace Shared.Models.PurchaseOrders.Requests
 {
     public abstract class PurchaseOrderRequest : CreateMessageResponse
     {
+        public Guid Id { get; set; }
         public Guid MainBudgetItemId { get; set; }
-        public SupplierResponse Supplier { get; set; } = null!;
+        public string PONumber { get; set; } = string.Empty;
+        public DateTime? ExpectedDate { get; set; } = DateTime.UtcNow;
+        public SupplierResponse? Supplier { get; set; }
         public Guid? SupplierId => Supplier == null ? Guid.Empty : Supplier.Id;
         public string VendorCode => Supplier == null ? string.Empty : Supplier.VendorCode;
         public string TaxCodeLD { get; set; } = "751545";
@@ -85,7 +88,21 @@ namespace Shared.Models.PurchaseOrders.Requests
         }
         public string Name { set; get; } = string.Empty;
 
+        public bool IsSameCurrency => PurchaseOrderCurrency.Id == QuoteCurrency.Id;
         public virtual List<PurchaseOrderItemRequest> PurchaseOrderItems { set; get; } = new();
+        public void RemoveItem(PurchaseOrderItemRequest item)
+        {
+            PurchaseOrderItems.Remove(item);
+            int order = 1;
+            PurchaseOrderItems.ForEach(item =>
+            {
+
+                item.Order = order;
+                order++;
+            });
+        }
+        public virtual List<PurchaseOrderItemRequest> SelectedPurchaseOrderItems => PurchaseOrderItems.Where(x => x.BudgetItemId != Guid.Empty).OrderBy(x => x.Order).ToList();
+        int LastOrder => SelectedPurchaseOrderItems.Count == 0 ? 0 : SelectedPurchaseOrderItems.MaxBy(x => x.Order)!.Order;
         public void AddItem(PurchaseOrderItemRequest item)
         {
             PurchaseOrderItems.Add(item);
@@ -93,9 +110,10 @@ namespace Shared.Models.PurchaseOrders.Requests
             item.USDCOP = USDCOP;
             item.USDEUR = USDEUR;
             item.QuoteCurrency = QuoteCurrency;
+            item.Order = LastOrder + 1;
         }
-        public bool IsAnyValueNotDefined => PurchaseOrderItems.Any(x => x.TotalQuoteCurrency <= 0);
-        public bool IsAnyNameEmpty => PurchaseOrderItems.Any(x => string.IsNullOrEmpty(x.Name));
+        public bool IsAnyValueNotDefined => SelectedPurchaseOrderItems.Any(x => x.TotalQuoteCurrency <= 0);
+        public bool IsAnyNameEmpty => SelectedPurchaseOrderItems.Any(x => string.IsNullOrEmpty(x.Name));
         public double TotalQuoteCurrency => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.TotalQuoteCurrency);
         public double TotalPurchaseOrderCurrency => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.TotalPurchaseOrderCurrency);
         public double TotalUSD => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.TotalUSD);

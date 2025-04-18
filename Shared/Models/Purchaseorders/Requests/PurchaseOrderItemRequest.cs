@@ -6,9 +6,19 @@ namespace Shared.Models.PurchaseOrders.Requests
 {
     public class PurchaseOrderItemRequest
     {
-        public Guid Id { get; set; }    
-        public BudgetItemWithPurchaseOrdersResponse BudgetItem { get; set; } = new() { Id = Guid.Empty };
-        public Guid BudgetItemId => BudgetItem == null ? Guid.Empty : BudgetItem.Id;
+        public Guid Id { get; set; } = Guid.Empty;
+        BudgetItemWithPurchaseOrdersResponse? _BudgetItem;
+        public BudgetItemWithPurchaseOrdersResponse? BudgetItem
+        {
+            get { return _BudgetItem; }
+            set
+            {
+                _BudgetItem = value;
+                BudgetItemId = value == null ? Guid.Empty : value.Id;
+            }
+        }
+        public int Order { get; set; }
+        public Guid BudgetItemId { get; set; } = Guid.Empty;
         public CurrencyEnum PurchaseOrderCurrency { get; set; } = CurrencyEnum.None;
         CurrencyEnum _QuoteCurrency = CurrencyEnum.None;
         public CurrencyEnum QuoteCurrency
@@ -44,7 +54,11 @@ namespace Shared.Models.PurchaseOrders.Requests
         public string sBudgetUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", BudgetUSD);
         public string sAssignedUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", AssignedUSD);
         public string sToCommitUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", ToCommitUSD);
-
+        public string sTotalQuoteCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalQuoteCurrency);
+        public string sUnitaryPurchaseOrderCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", UnitaryPurchaseOrderCurrency);
+        public string sTotalPurchaseOrderCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalPurchaseOrderCurrency);
+        public string sUnitaryUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", UnitaryUSD);
+        public string sTotalUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalUSD);
         public void SetQuoteCurrency(CurrencyEnum _quoteCurrency)
         {
             var oldUnitaryValueUSD = UnitaryUSD;
@@ -55,7 +69,7 @@ namespace Shared.Models.PurchaseOrders.Requests
                 oldUnitaryValueUSD * USDEUR;
 
 
-          
+
         }
     }
 }

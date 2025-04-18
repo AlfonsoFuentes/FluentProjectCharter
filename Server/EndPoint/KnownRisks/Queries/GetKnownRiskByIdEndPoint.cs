@@ -12,9 +12,7 @@ namespace Server.EndPoint.KnownRisks.Queries
             {
                 app.MapPost(StaticClass.KnownRisks.EndPoint.GetById, async (GetKnownRiskByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //Func<IQueryable<KnownRisk>, IIncludableQueryable<KnownRisk, object>> Includes = x => null!
-
-                    //;
+                   
 
                     Expression<Func<KnownRisk, bool>> Criteria = x => x.Id == request.Id;
 

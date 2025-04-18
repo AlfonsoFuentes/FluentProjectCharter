@@ -189,8 +189,7 @@
         <MudCardActions>
 
             <MudIconButton Icon="@Icons.Material.Filled.Cancel" OnClick="Cancel" Color="Color.Transparent" Variant="Variant.Outlined"></MudIconButton>
-            <MudIconButton Icon="@Icons.Material.Filled.Save" Disabled=!Validated ButtonType="ButtonType.Submit" Variant="Variant.Outlined"></MudIconButton>
-
+            <MudIconButton Icon="@Icons.Material.Filled.Save" Disabled=@(!Validated||!IsEdit) ButtonType="ButtonType.Submit" Variant="Variant.Outlined"></MudIconButton>
         </MudCardActions>
     </MudCard>
 </EditForm>

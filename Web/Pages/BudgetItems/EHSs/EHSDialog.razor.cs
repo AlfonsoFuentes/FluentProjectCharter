@@ -38,5 +38,6 @@ public partial class EHSDialog
 
     [Parameter]
     public EHSResponse Model { get; set; } = new();
-
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
 }

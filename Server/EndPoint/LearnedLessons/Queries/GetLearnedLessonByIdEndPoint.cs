@@ -12,9 +12,7 @@ namespace Server.EndPoint.LearnedLessons.Queries
             {
                 app.MapPost(StaticClass.LearnedLessons.EndPoint.GetById, async (GetLearnedLessonByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //Func<IQueryable<LearnedLesson>, IIncludableQueryable<LearnedLesson, object>> Includes = x => null!
-
-                    //;
+                   
 
                     Expression<Func<LearnedLesson, bool>> Criteria = x => x.Id == request.Id;
 

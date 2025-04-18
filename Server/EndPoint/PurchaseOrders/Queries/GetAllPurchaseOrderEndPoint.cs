@@ -7,19 +7,23 @@ using Shared.Models.Qualitys.Responses;
 
 namespace Server.EndPoint.PurchaseOrders.Queries
 {
-    public static class GetAllPurchaseOrderCreated
+    public static class GetAllPurchaseOrderEndPoint
     {
         public class EndPoint : IEndPoint
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.PurchaseOrders.EndPoint.GetAllCreated, async (PurchaseOrderCreatedGetAll Data, IQueryRepository Repository) =>
+                app.MapPost(StaticClass.PurchaseOrders.EndPoint.GetAll, async (PurchaseOrderGetAll Data, IQueryRepository Repository) =>
                 {
-                    Expression<Func<PurchaseOrder, bool>> Criteria = x => x.PurchaseOrderStatus == PurchaseOrderStatusEnum.Created.Name;
+                    Expression<Func<PurchaseOrder, bool>> Criteria = x => x.PurchaseOrderStatus == Data.Status.Id;
                     Func<IQueryable<PurchaseOrder>, IIncludableQueryable<PurchaseOrder, object>> Includes = x => x
+                    .Include(x => x.Project)
                     .Include(p => p.PurchaseOrderItems).ThenInclude(x => x.BudgetItem!)
                     .Include(x => x.Supplier!);
-                    var cache = StaticClass.PurchaseOrders.Cache.GetAll;
+                    var cache = Data.Status.Id == PurchaseOrderStatusEnum.Created.Id ?
+                                StaticClass.PurchaseOrders.Cache.GetAllCreated :
+                                Data.Status.Id == PurchaseOrderStatusEnum.Approved.Id ? StaticClass.PurchaseOrders.Cache.GetAllApproved :
+                                StaticClass.PurchaseOrders.Cache.GetAllClosed;
                     var rows = await Repository.GetAllAsync(cache, Criteria: Criteria, Includes: Includes);
                     if (rows == null)
                     {
@@ -40,22 +44,30 @@ namespace Server.EndPoint.PurchaseOrders.Queries
         {
             return new()
             {
-                AccountAssigment = row.AccountAssigment,
+                ProjectAccount = row.ProjectAccount,
                 CurrencyDate = row.CurrencyDate,
                 Id = row.Id,
                 IsAlteration = row.IsAlteration,
                 IsCapitalizedSalary = row.IsCapitalizedSalary,
                 IsTaxEditable = row.IsTaxEditable,
                 Name = row.PurchaseorderName,
-                PurchaseOrderCurrency = CurrencyEnum.GetType(row.PurchaseOrderCurrency),
-                PurchaseOrderStatus = PurchaseOrderStatusEnum.Created.Name,
-                QuoteCurrency = CurrencyEnum.GetType(row.QuoteCurrency),
+                PurchaseOrderCurrency = row.PurchaseOrderCurrencyEnum,
+                PurchaseOrderStatus = row.PurchaseOrderStatusEnum,
+                CostCenter = row.CostCenterEnum,
+                IsProductive = row.Project.IsProductiveAsset,
+                QuoteCurrency = row.QuoteCurrencyEnum,
                 PurchaseRequisition = row.PurchaseRequisition,
                 QuoteNo = row.QuoteNo,
                 SPL = row.SPL,
                 TaxCode = row.TaxCode,
                 USDCOP = row.USDCOP,
                 USDEUR = row.USDEUR,
+                ApprovedDate = row.ApprovedDate,
+                ClosedDate = row.ClosedDate,
+                ExpectedDate = row.ExpectedDate,
+                PONumber = row.PONumber,
+                ProjectId = row.ProjectId,
+                MainBudgetItemId = row.MainBudgetItemId,
                 Supplier = row.Supplier == null ? null! : new()
                 {
                     Id = row.Supplier.Id,
@@ -63,7 +75,7 @@ namespace Server.EndPoint.PurchaseOrders.Queries
                     NickName = row.Supplier.NickName,
                     VendorCode = row.Supplier.VendorCode,
                     TaxCodeLD = row.Supplier.TaxCodeLD,
-                    SupplierCurrency = CurrencyEnum.GetType(row.Supplier.SupplierCurrency),
+                    SupplierCurrency = row.Supplier.SupplierCurrencyEnum,
                 },
 
                 PurchaseOrderItems = row.PurchaseOrderItems.Select(x => x.Map()).ToList(),
@@ -75,15 +87,17 @@ namespace Server.EndPoint.PurchaseOrders.Queries
             {
                 Id = row.Id,
                 Name = row.Name,
-                BudgetItemId = row.BudgetItemId,
+                BudgetItemId = row.BudgetItemId!.Value,
                 Quantity = row.Quantity,
                 PurchaseOrderCurrency = row.PurchaseOrderCurrency,
                 QuoteCurrency = row.QuoteCurrency,
-                UnitaryValueCurrency = row.UnitaryValueCurrency,
+                UnitaryQuoteCurrency = row.UnitaryValueCurrency,
                 USDCOP = row.USDCOP,
                 USDEUR = row.USDEUR,
+                Order = row.Order,
 
             };
         }
+
     }
 }

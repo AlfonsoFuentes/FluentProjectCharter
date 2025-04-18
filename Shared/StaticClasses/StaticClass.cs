@@ -358,18 +358,19 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string Approve = $"{ClassName}/{Actions.Approve}";
+                public static string UnApprove = $"{ClassName}/{Actions.Approve}Un";
                 public static string CreateUpdate = $"{ClassName}/{Actions.CreateUpdate}";
                 public static string UpdateState = $"{ClassName}/{Actions.Update}State";
-                
-                
+
+
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
-                
+
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
-       
+
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
                 public static string ProjectCharter = $"{ClassName}/{Actions.Export}Charter";
                 public static string ProjectPlann = $"{ClassName}/{Actions.Export}Plann";
-                
+
                 public static string Validate = $"{ClassName}/{Actions.Validate}";
                 public static string ValidateProjectNumber = $"{ClassName}/{Actions.Validate}ProjectNumber";
                 public static string DeleteGroup = $"{ClassName}/{Actions.DeleteGroup}";
@@ -401,11 +402,11 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string CreateUpdate = $"{ClassName}/{Actions.CreateUpdate}";
-       
+
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
-          
-        
-   
+
+
+
             }
             public static class Cache
             {
@@ -1150,11 +1151,12 @@ namespace Shared.StaticClasses
                 {
                     var deliverablecache = deliverableId.HasValue ? GetAllByDeliverable(deliverableId.Value) : string.Empty;
                     var result = new[] {
-                        GetAll(projectId)
-                        ,GetById(Id),
+                        GetAll(projectId),
+                        GetById(Id),
                         deliverablecache,
                         GetAllWithPurchaseOrder(projectId),
                         GetByIdWithPurchaseOrder(Id),
+                        StaticClass.Projects.Cache.GetById(projectId),
                     };
                     return result;
                 }
@@ -1625,12 +1627,13 @@ namespace Shared.StaticClasses
             public static class EndPoint
             {
                 public static string Create = $"{ClassName}/{Actions.Create}";
-                public static string CreatedEdit = $"{ClassName}/{Actions.Create}Edit";
+                public static string EditCreated = $"{ClassName}/{Actions.Create}Edit";
 
                 public static string Approve = $"{ClassName}/{Actions.Approve}";
+                public static string EditApproved = $"{ClassName}/{Actions.Approve}Edit";
                 public static string Close = $"{ClassName}/{Actions.Close}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
-                public static string GetAllCreated = $"{ClassName}/{Actions.GetAll}Created";
+
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
                 public static string Export = $"{ClassName}/{Actions.Export}";
@@ -1641,11 +1644,22 @@ namespace Shared.StaticClasses
             }
             public static class Cache
             {
-
-                public static string[] Key(Guid Id, Guid ProjectId) => new[] { GetAll, GetById(Id),
+                public static string[] Key(Guid Id, Guid ProjectId) => new[] {GetAllClosed,GetAllApproved, GetAllCreated,GetAll, GetById(Id),
+                    BudgetItems.Cache.GetAllWithPurchaseOrder(ProjectId) };
+                public static string[] KeyCreated(Guid Id, Guid ProjectId) => new[] { GetAllCreated,GetAll, GetById(Id),
+                    BudgetItems.Cache.GetAllWithPurchaseOrder(ProjectId) };
+                public static string[] KeyApproved(Guid Id, Guid ProjectId) => new[] { GetAllApproved,GetAllCreated, GetAll,GetById(Id),
+                    BudgetItems.Cache.GetAllWithPurchaseOrder(ProjectId) };
+                public static string[] KeyEditApproved(Guid Id, Guid ProjectId) => new[] { GetAllApproved,GetAll, GetById(Id),
+                    BudgetItems.Cache.GetAllWithPurchaseOrder(ProjectId) };
+                public static string[] KeyClosed(Guid Id, Guid ProjectId) => new[] { GetAllApproved,GetAllClosed, GetAll,GetById(Id),
                     BudgetItems.Cache.GetAllWithPurchaseOrder(ProjectId) };
 
+                public static string GetAllApproved => $"GetAll-{ClassName}-Approved";
+                public static string GetAllCreated => $"GetAll-{ClassName}-Created";
+                public static string GetAllClosed => $"GetAll-{ClassName}-Closed";
                 public static string GetAll => $"GetAll-{ClassName}";
+
                 public static string GetById(Guid Id) => $"GetById-{ClassName}-{Id}";
             }
             public static class PageName

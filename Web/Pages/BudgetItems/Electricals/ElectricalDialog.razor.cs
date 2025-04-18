@@ -38,5 +38,6 @@ public partial class ElectricalDialog
 
     [Parameter]
     public ElectricalResponse Model { get; set; } = new();
-
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
 }

@@ -19,18 +19,18 @@ namespace Server.EndPoint.PurchaseOrders.Commands
 
                     await Repository.AddAsync(row);
                     Data.Map(row);
-                    foreach (var item in Data.PurchaseOrderItems)
+                    foreach (var item in Data.SelectedPurchaseOrderItems)
                     {
                         var rowitem = PurchaseOrderItem.Create(row.Id, item.BudgetItemId);
                         rowitem.Name = item.Name;
                         rowitem.UnitaryValueCurrency = item.UnitaryQuoteCurrency;
                         rowitem.Quantity = item.Quantity;
-
+                        rowitem.Order = item.Order;
 
                         await Repository.AddAsync(rowitem);
                     }
 
-                    List<string> cache = [.. StaticClass.PurchaseOrders.Cache.Key(row.Id, row.ProjectId)];
+                    List<string> cache = [.. StaticClass.PurchaseOrders.Cache.KeyCreated(row.Id, row.ProjectId)];
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 
@@ -49,21 +49,22 @@ namespace Server.EndPoint.PurchaseOrders.Commands
         static PurchaseOrder Map(this CreatePurchaseOrderRequest request, PurchaseOrder row)
         {
             row.SupplierId = request.SupplierId;
-            row.QuoteCurrency = request.QuoteCurrency.Name;
-            row.PurchaseOrderCurrency = request.PurchaseOrderCurrency.Name;
+            row.QuoteCurrency = request.QuoteCurrency.Id;
+            row.PurchaseOrderCurrency = request.PurchaseOrderCurrency.Id;
             row.PurchaseorderName = request.Name;
-            row.PurchaseOrderStatus = PurchaseOrderStatusEnum.Created.Name;
+            row.PurchaseOrderStatus = PurchaseOrderStatusEnum.Created.Id;
             row.PurchaseRequisition = request.PurchaseRequisition;
             row.QuoteNo = request.QuoteNo;
             row.CurrencyDate = request.CurrencyDate!.Value;
-            row.AccountAssigment = request.ProjectAccount;
+            row.ProjectAccount = request.ProjectAccount;
             row.IsAlteration = request.IsAlteration;
             row.IsCapitalizedSalary = request.IsCapitalizedSalary;
             row.SPL = request.SPL;
             row.USDCOP = request.USDCOP;
             row.USDEUR = request.USDEUR;
             row.TaxCode = request.TaxCode;
-
+            row.CostCenter = request.CostCenter.Id;
+            row.MainBudgetItemId=request.MainBudgetItemId;
             return row;
         }
 

@@ -16,10 +16,12 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Contingencys.Queries
 
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
-           
+
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
+                BudgetUSD = row.BudgetUSD,
+             
             };
         }
 

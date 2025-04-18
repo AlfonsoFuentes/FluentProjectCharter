@@ -38,5 +38,6 @@ public partial class StructuralDialog
 
     [Parameter]
     public StructuralResponse Model { get; set; } = new();
-
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
 }

@@ -38,5 +38,6 @@ public partial class EngineeringDesignDialog
 
     [Parameter]
     public EngineeringDesignResponse Model { get; set; } = new();
-
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
 }

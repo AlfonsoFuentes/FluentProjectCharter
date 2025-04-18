@@ -12,9 +12,7 @@ namespace Server.EndPoint.Qualitys.Queries
             {
                 app.MapPost(StaticClass.Qualitys.EndPoint.GetById, async (GetQualityByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //Func<IQueryable<Quality>, IIncludableQueryable<Quality, object>> Includes = x => null!
-
-                    //;
+                   
 
                     Expression<Func<Quality, bool>> Criteria = x => x.Id == request.Id;
 

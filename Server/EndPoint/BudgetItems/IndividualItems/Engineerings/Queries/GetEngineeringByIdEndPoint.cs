@@ -18,6 +18,8 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Engineerings.Queries
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
+                BudgetUSD = row.BudgetUSD,
+    
             };
         }
 

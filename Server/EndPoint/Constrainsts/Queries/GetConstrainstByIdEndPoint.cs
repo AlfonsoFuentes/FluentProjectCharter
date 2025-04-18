@@ -10,10 +10,7 @@ namespace Server.EndPoint.Constrainsts.Queries
             {
                 app.MapPost(StaticClass.Constrainsts.EndPoint.GetById, async (GetConstrainstByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //Func<IQueryable<Constrainst>, IIncludableQueryable<Constrainst, object>> Includes = x => null!
-               
-                    //;
-
+                   
                     Expression<Func<Constrainst, bool>> Criteria = x => x.Id == request.Id;
 
                     string CacheKey = StaticClass.Constrainsts.Cache.GetById(request.Id);

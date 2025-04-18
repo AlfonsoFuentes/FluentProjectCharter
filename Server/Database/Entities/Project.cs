@@ -15,17 +15,20 @@ namespace Server.Database.Entities
 
 
         public DateTime? StartDate { get; set; }
-        public string ProjectNeedType { get; set; } = string.Empty;
+     
         public static Project Create(int Order)
         {
             return new Project()
             {
                 Id = Guid.NewGuid(),
                 Order = Order,
+                Status = ProjectStatusEnum.Created.Id,
             };
         }
-
-        public string Status { get; set; } = string.Empty;
+        public int ProjectNeedType { get; set; }
+        public int CostCenter { get; set; }
+        public int Focus { get; set; }
+        public int Status { get; set; }
         public string ProjectNumber { get; set; } = string.Empty;
 
         public double PercentageEngineering { get; set; }
@@ -71,8 +74,7 @@ namespace Server.Database.Entities
         public List<StakeHolder> StakeHolders { get; } = [];
        
 
-        public string CostCenter { get; set; } = string.Empty;
-        public string Focus { get; set; } = string.Empty;
+       
 
 
     }

@@ -31,6 +31,7 @@
 @using Web.Pages.BudgetItems.Nozzles
 @using Web.Pages.ItemsTemplates.Equipments
 @using Web.Pages.ItemsTemplates.Instruments
+@using Web.Pages.PurchaseOrders.Tables
 
 @using Shared.Models.Suppliers.Responses
 @using Shared.Models.Brands.Records
@@ -58,6 +59,9 @@
 @using Shared.Enums.CostCenter
 @using Shared.Enums.Focuses
 @using Shared.Enums.ProjectNeedTypes
+@using Shared.Models.PurchaseOrders.Requests
+@using Shared.Models.PurchaseOrders.Responses
+@using Shared.Enums.PurchaseOrderStatusEnums;
 
 @attribute [Authorize]
 @inject IBlazorDownloadFileService blazorDownloadFileService

@@ -6,9 +6,12 @@
                  Margin="Margin.Dense"
                  ValueChanged="OnValueChanged"
                  For="@For"
+                 Disabled="@Disabled"
                  HideSpinButtons=@HideSpinButtons></MudNumericField>
 
 @code {
+    [Parameter]
+    public bool Disabled { get; set; } = false;
     [Parameter]
     public bool HideSpinButtons { get; set; } = true;
     [Parameter]

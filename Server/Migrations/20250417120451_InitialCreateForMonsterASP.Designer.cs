@@ -12,8 +12,8 @@ using Server.DatabaseImplementations.Databases;
 namespace Server.Migrations
 {
     [DbContext(typeof(BlazorHeroContext))]
-    [Migration("20250410014909_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250417120451_InitialCreateForMonsterASP")]
+    partial class InitialCreateForMonsterASP
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -185,7 +185,7 @@ namespace Server.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("CurrentProjectId")
+                    b.Property<Guid>("CurrentProjectId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedOnUtc")
@@ -1012,9 +1012,8 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CostCenter")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CostCenter")
+                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(128)");
@@ -1025,9 +1024,8 @@ namespace Server.Migrations
                     b.Property<DateTime?>("DeletedOnUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Focus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Focus")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -1057,9 +1055,8 @@ namespace Server.Migrations
                     b.Property<double>("PercentageTaxProductive")
                         .HasColumnType("float");
 
-                    b.Property<string>("ProjectNeedType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ProjectNeedType")
+                        .HasColumnType("int");
 
                     b.Property<string>("ProjectNumber")
                         .IsRequired()
@@ -1068,9 +1065,8 @@ namespace Server.Migrations
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("TenantId")
                         .IsRequired()
@@ -2113,13 +2109,11 @@ namespace Server.Migrations
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("PurchaseOrderCurrency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PurchaseOrderCurrency")
+                        .HasColumnType("int");
 
-                    b.Property<string>("PurchaseOrderStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PurchaseOrderStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("PurchaseRequisition")
                         .IsRequired()
@@ -2129,9 +2123,8 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("QuoteCurrency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("QuoteCurrency")
+                        .HasColumnType("int");
 
                     b.Property<string>("QuoteNo")
                         .IsRequired()
@@ -2710,9 +2703,6 @@ namespace Server.Migrations
                     b.Property<int>("ActuatorType")
                         .HasColumnType("int");
 
-                    b.Property<int>("ConnectionType")
-                        .HasColumnType("int");
-
                     b.Property<int>("Diameter")
                         .HasColumnType("int");
 
@@ -2749,9 +2739,6 @@ namespace Server.Migrations
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem");
 
                     b.Property<Guid?>("EquipmentTemplateId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("EquipmentTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SerialNumber")

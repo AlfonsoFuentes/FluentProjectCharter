@@ -38,5 +38,6 @@ public partial class PaintingDialog
 
     [Parameter]
     public PaintingResponse Model { get; set; } = new();
-
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
 }

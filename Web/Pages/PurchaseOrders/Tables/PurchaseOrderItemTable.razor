@@ -1,0 +1,152 @@
+﻿<MudDataGrid T="PurchaseOrderItemRequest" Items="@OrderedItems" ReadOnly="@_readOnly" EditMode="@(_isCellEditMode ? DataGridEditMode.Cell : DataGridEditMode.Form)"
+             EditTrigger="@(_editTriggerRowClick ? DataGridEditTrigger.OnRowClick : DataGridEditTrigger.Manual)"
+             StartedEditingItem="@StartedEditingItem" CanceledEditingItem="@CanceledEditingItem" CommittedItemChanges="@CommittedItemChanges"
+             Bordered="true" Dense="true">
+    <Columns>
+        <PropertyColumn Property="x => x.NomenclatoreName" Title="#" T="PurchaseOrderItemRequest" TProperty="string" Sortable="false" Filterable="false">
+            <EditTemplate Context="Context">
+                @if (EditPurchaseOrderItems || Context.Item.BudgetItem == null)
+                {
+                    <Select @bind-Value="@Context.Item.BudgetItem"
+                            Items="@NonSelectedBudgetItems"
+                            TValue="BudgetItemWithPurchaseOrdersResponse"
+                            Property="@(p=>p.NomenclatoreName)"
+                            ValidateAsync="ValidateAsync"
+                            Change="SelectItemChanged"
+                            Clearable="false">
+                    </Select>
+                }
+                else if (Context.Item.BudgetItem.Id == MainBudgetItemId)
+                {
+                    <Field>@Context.Item.BudgetItem.NomenclatoreName</Field>
+
+                }
+                else
+                {
+                    <Select @bind-Value="@Context.Item.BudgetItem"
+                            Items="@NonSelectedBudgetItems"
+                            TValue="BudgetItemWithPurchaseOrdersResponse"
+                            Property="@(p=>p.NomenclatoreName)"
+                            ValidateAsync="ValidateAsync"
+                            Clearable="false">
+                    </Select>
+                }
+
+            </EditTemplate>
+        </PropertyColumn>
+
+
+        <PropertyColumn Property="x => x.Name" T="PurchaseOrderItemRequest" Title="Name" TProperty="string" Sortable="false" Filterable="false">
+            <EditTemplate Context="Context">
+                <TextField @bind-Value="@Context.Item.Name"
+                           Change="@(()=>OnChangeName(Context.Item.Name))"
+                           For="() => Context.Item.Name"
+                           Disabled=@(Context.Item.BudgetItem==null||!EditPurchaseOrderItems)
+                           ValidateAsync="ValidateAsync"></TextField>
+            </EditTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="x => x.Quantity" T="PurchaseOrderItemRequest" Title="Qty" TProperty="double" Sortable="false" Filterable="false">
+            <EditTemplate Context="Context">
+                <DoubleNumericField Disabled=@(Context.Item.BudgetItem==null||!EditPurchaseOrderItems)
+                                    @bind-Value="@Context.Item.Quantity"
+                                    For="() => Context.Item.Quantity"
+                                    ValidateAsync="ValidateAsync"></DoubleNumericField>
+            </EditTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="x => x.UnitaryQuoteCurrency" T="PurchaseOrderItemRequest"
+                        Title="@($"${QuoteCurrency.Name}/EA")" TProperty="double" Sortable="false" Filterable="false">
+            <EditTemplate Context="Context">
+                <DoubleNumericField Disabled=@(Context.Item.BudgetItem==null||!EditPurchaseOrderItems)
+                                    For="() => Context.Item.UnitaryQuoteCurrency"
+                                    @bind-Value="@Context.Item.UnitaryQuoteCurrency"
+                                    ValidateAsync="ValidateAsync"></DoubleNumericField>
+            </EditTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="x => x.sTotalQuoteCurrency" T="PurchaseOrderItemRequest"
+                        Title="@($"Total, {QuoteCurrency.Name}")" TProperty="string" Editable=false Sortable="false" Filterable="false">
+            <FooterTemplate>
+                <b>   @string.Format(new CultureInfo("en-US"), "{0:C0}", Items.Sum(x => x.TotalQuoteCurrency))</b>
+
+            </FooterTemplate>
+        </PropertyColumn>
+        <PropertyColumn Hidden=IsSameCurrency Property="x => x.sUnitaryPurchaseOrderCurrency" T="PurchaseOrderItemRequest"
+                        Title="@($"${PurchaseOrderCurrency.Name}/EA")" TProperty="string" Editable=false Sortable="false" Filterable="false">
+
+        </PropertyColumn>
+        <PropertyColumn Hidden=IsSameCurrency Property="x => x.sTotalPurchaseOrderCurrency" T="PurchaseOrderItemRequest"
+                        Title="@($"Total, {PurchaseOrderCurrency.Name}")" TProperty="string" Editable=false Sortable="false" Filterable="false">
+            <FooterTemplate>
+                <b> @string.Format(new CultureInfo("en-US"), "{0:C0}", Items.Sum(x => x.TotalPurchaseOrderCurrency))</b>
+
+            </FooterTemplate>
+        </PropertyColumn>
+        <PropertyColumn Hidden=QuoteIsUSD Property="x => x.sUnitaryUSD" T="PurchaseOrderItemRequest"
+                        Title="@($"$USD/EA")" TProperty="string" Editable=false Sortable="false" Filterable="false">
+
+        </PropertyColumn>
+        <PropertyColumn Hidden=QuoteIsUSD Property="x => x.sTotalUSD" T="PurchaseOrderItemRequest"
+                        Title="@($"Total, USD")" TProperty="string" Editable=false Sortable="false" Filterable="false">
+            <FooterTemplate>
+                <b>@string.Format(new CultureInfo("en-US"), "{0:C0}", Items.Sum(x => x.TotalUSD))</b>
+
+            </FooterTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="x => x.sBudgetUSD" T="PurchaseOrderItemRequest" Title="Budget" TProperty="string" Editable=false Sortable="false" Filterable="false" >
+            <FooterTemplate>
+                <b>@string.Format(new CultureInfo("en-US"), "{0:C0}", Items.Sum(x => x.BudgetUSD))</b>
+
+            </FooterTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="x => x.sAssignedUSD" T="PurchaseOrderItemRequest" Title="Assigned" TProperty="string" Editable=false Sortable="false" Filterable="false" >
+            <FooterTemplate>
+                <b>@string.Format(new CultureInfo("en-US"), "{0:C0}", Items.Sum(x => x.AssignedUSD))</b>
+
+            </FooterTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="x => x.sToCommitUSD" T="PurchaseOrderItemRequest" Title="To Commit" TProperty="string" Editable=false Sortable="false" Filterable="false" >
+            <FooterTemplate>
+                <b>@string.Format(new CultureInfo("en-US"), "{0:C0}", Items.Sum(x => x.ToCommitUSD))</b>
+
+            </FooterTemplate>
+        </PropertyColumn>
+        <TemplateColumn CellClass="d-flex justify-end">
+            <EditTemplate Context="Context">
+                <MudIconButton Size="@Size.Medium" Icon="@Icons.Material.Outlined.Delete" OnClick="@(()=>Delete(Context.Item))"
+                               Disabled=@(GetButtonDisabled(Context.Item)) />
+
+
+            </EditTemplate>
+        </TemplateColumn>
+
+    </Columns>
+</MudDataGrid>
+
+
+@code {
+    private bool _readOnly = false;
+    private bool _isCellEditMode = true;
+    private List<string> _events = new();
+    private bool _editTriggerRowClick = false;
+    void StartedEditingItem(PurchaseOrderItemRequest item)
+    {
+        _events.Insert(0, $"Event = StartedEditingItem, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
+    }
+
+    void CanceledEditingItem(PurchaseOrderItemRequest item)
+    {
+        _events.Insert(0, $"Event = CanceledEditingItem, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
+    }
+
+    void CommittedItemChanges(PurchaseOrderItemRequest item)
+    {
+        _events.Insert(0, $"Event = CommittedItemChanges, Data = {System.Text.Json.JsonSerializer.Serialize(item)}");
+    }
+    bool GetButtonDisabled(PurchaseOrderItemRequest cell)
+    {
+        if (!EditPurchaseOrderItems) return true;
+
+        return cell.BudgetItem == null || (cell.BudgetItem != null && cell.BudgetItem.Id == MainBudgetItemId);
+    }
+   
+}
+

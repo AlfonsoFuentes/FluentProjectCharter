@@ -1,5 +1,8 @@
 ﻿using DocumentFormat.OpenXml.Office.CoverPageProps;
 using Server.Database.Entities.ProjectManagements;
+using Shared.Enums.CostCenter;
+using Shared.Enums.CurrencyEnums;
+using Shared.Enums.PurchaseOrderStatusEnums;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Database.Entities.PurchaseOrders
@@ -25,27 +28,36 @@ namespace Server.Database.Entities.PurchaseOrders
 
        
         public string QuoteNo { get; set; } = "";
-        public string QuoteCurrency { get; set; } = string.Empty;
-        public string PurchaseOrderCurrency { get; set; } = string.Empty;
-        public string PurchaseOrderStatus { get; set; }=string.Empty;
-        public string PurchaseRequisition { get; set; } = "";
+      
+        public string PurchaseRequisition { get; set; } = string.Empty;
         public DateTime? ApprovedDate { get; set; }
         public DateTime? ExpectedDate { get; set; }
         public DateTime? ClosedDate { get; set; }
-        public string PONumber { get; set; } = "";
-        public string SPL { get; set; } = "";
-        public string TaxCode { get; set; } = "";
+        public string PONumber { get; set; } = string.Empty;
+        public string SPL { get; set; } = string.Empty;
+        public string TaxCode { get; set; } = string.Empty;
         public double USDCOP { get; set; }
         public double USDEUR { get; set; }
         public DateTime CurrencyDate { get; set; }
-        public string AccountAssigment { get; set; } = "";
-
+        public string ProjectAccount { get; set; } = string.Empty;
         public string PurchaseorderName { get; set; } = string.Empty;
-
         public bool IsAlteration { get; set; } = false;
         public bool IsCapitalizedSalary { get; set; } = false;
-
         public bool IsTaxEditable { get; set; } = false;
+        public int QuoteCurrency { get; set; }
+        public int PurchaseOrderCurrency { get; set; }
+        public int PurchaseOrderStatus { get; set; }
+        public int CostCenter { get; set; }
+        public Guid MainBudgetItemId { get; set; } = Guid.Empty;
+        [NotMapped]
+        public CostCenterEnum CostCenterEnum => CostCenterEnum.GetType(CostCenter);
+        [NotMapped]
+        public PurchaseOrderStatusEnum PurchaseOrderStatusEnum => PurchaseOrderStatusEnum.GetType(PurchaseOrderStatus);
+        [NotMapped]
+        public CurrencyEnum PurchaseOrderCurrencyEnum => CurrencyEnum.GetType(PurchaseOrderCurrency);
+        [NotMapped]
+        public CurrencyEnum QuoteCurrencyEnum => CurrencyEnum.GetType(QuoteCurrency);
+
         [NotMapped]
         public double ActualCurrency => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
             PurchaseOrderItems.Sum(x => x.POItemActualCurrency);

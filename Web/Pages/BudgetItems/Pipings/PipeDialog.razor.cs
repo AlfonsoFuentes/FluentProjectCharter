@@ -59,6 +59,8 @@ public partial class PipeDialog
 
     [Parameter]
     public PipeResponse Model { get; set; } = new();
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
     async Task GetPipeResponse()
     {
         if (Model.Id != Guid.Empty)

@@ -66,12 +66,13 @@ public partial class BudgetItemsTable
     public List<IBudgetItemResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items :
         Items.Where(Criteria).ToList();
 
-    public async Task EditAlterations(AlterationResponse model)
+    public async Task EditAlterations(AlterationResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<AlterationDialog>
         {
              { x => x.Model, model },
+            { x => x.IsEdit, IsEdit   }
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
@@ -85,12 +86,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditFoundations(FoundationResponse model)
+    public async Task EditFoundations(FoundationResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<FoundationDialog>
         {
              { x => x.Model, model },
+             { x => x.IsEdit, IsEdit   }
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
@@ -104,12 +106,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditStructurals(StructuralResponse model)
+    public async Task EditStructurals(StructuralResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<StructuralDialog>
         {
            { x => x.Model, model },
+           { x => x.IsEdit, IsEdit }
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
@@ -123,12 +126,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditEquipments(EquipmentResponse model)
+    public async Task EditEquipments(EquipmentResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<EquipmentDialog>
         {
            { x => x.Model, model },
+           { x => x.IsEdit, IsEdit }
         };
         MaxWidth width = model.ShowDetails ? MaxWidth.Large : MaxWidth.Medium;
 
@@ -143,12 +147,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditValves(ValveResponse model)
+    public async Task EditValves(ValveResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<ValveDialog>
         {
              { x => x.Model, model },
+                { x => x.IsEdit, IsEdit }
         };
 
         MaxWidth width = model.ShowDetails ? MaxWidth.Large : MaxWidth.Medium;
@@ -164,12 +169,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditElectricals(ElectricalResponse model)
+    public async Task EditElectricals(ElectricalResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<ElectricalDialog>
         {
             { x => x.Model, model },
+            { x => x.IsEdit, IsEdit }
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
@@ -183,12 +189,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditPipes(PipeResponse model)
+    public async Task EditPipes(PipeResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<PipeDialog>
         {
           { x => x.Model, model },
+          { x => x.IsEdit, IsEdit }
         };
 
         MaxWidth width = model.ShowDetails ? MaxWidth.Large : MaxWidth.Medium;
@@ -204,12 +211,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditInstruments(InstrumentResponse model)
+    public async Task EditInstruments(InstrumentResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<InstrumentDialog>
         {
             { x => x.Model, model },
+            { x => x.IsEdit, IsEdit }
         };
 
         MaxWidth width = model.ShowDetails ? MaxWidth.Large : MaxWidth.Medium;
@@ -225,12 +233,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditEHSs(EHSResponse model)
+    public async Task EditEHSs(EHSResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<EHSDialog>
         {
-           { x => x.Model, model },
+           { x => x.Model, model }, 
+            { x => x.IsEdit, IsEdit }
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
@@ -244,12 +253,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditPaintings(PaintingResponse model)
+    public async Task EditPaintings(PaintingResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<PaintingDialog>
         {
            { x => x.Model, model },
+           { x => x.IsEdit, IsEdit }
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
@@ -263,12 +273,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditTaxs(TaxResponse model)
+    public async Task EditTaxs(TaxResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<TaxDialog>
         {
           { x => x.Model, model },
+          { x => x.IsEdit, IsEdit }
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
@@ -282,12 +293,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditTestings(TestingResponse model)
+    public async Task EditTestings(TestingResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<TestingDialog>
         {
           { x => x.Model, model },
+            { x => x.IsEdit, IsEdit   }
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
@@ -301,12 +313,13 @@ public partial class BudgetItemsTable
         }
 
     }
-    public async Task EditEngineeringDesigns(EngineeringDesignResponse model)
+    public async Task EditEngineeringDesigns(EngineeringDesignResponse model, bool IsEdit = true)
     {
 
         var parameters = new DialogParameters<EngineeringDesignDialog>
         {
              { x => x.Model, model },
+                { x => x.IsEdit, IsEdit }
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
@@ -320,48 +333,48 @@ public partial class BudgetItemsTable
         }
 
     }
-    async Task Edit(IBudgetItemResponse response)
+    async Task Edit(IBudgetItemResponse response, bool IsEdit = true)
     {
         switch (response)
         {
             case AlterationResponse alteration:
-                await EditAlterations(alteration);
+                await EditAlterations(alteration,IsEdit);
                 break;
             case FoundationResponse foundation:
-                await EditFoundations(foundation);
+                await EditFoundations(foundation, IsEdit);
                 break;
             case StructuralResponse structural:
-                await EditStructurals(structural);
+                await EditStructurals(structural, IsEdit);
                 break;
             case EquipmentResponse equipment:
-                await EditEquipments(equipment);
+                await EditEquipments(equipment, IsEdit);
                 break;
             case ValveResponse valve:
-                await EditValves(valve);
+                await EditValves(valve, IsEdit);
                 break;
             case ElectricalResponse electrical:
-                await EditElectricals(electrical);
+                await EditElectricals(electrical, IsEdit);
                 break;
             case PipeResponse pipe:
-                await EditPipes(pipe);
+                await EditPipes(pipe, IsEdit);
                 break;
             case InstrumentResponse instrument:
-                await EditInstruments(instrument);
+                await EditInstruments(instrument, IsEdit);
                 break;
             case EHSResponse ehs:
-                await EditEHSs(ehs);
+                await EditEHSs(ehs, IsEdit);
                 break;
             case PaintingResponse painting:
-                await EditPaintings(painting);
+                await EditPaintings(painting, IsEdit);
                 break;
             case TaxResponse tax:
-                await EditTaxs(tax);
+                await EditTaxs(tax, IsEdit);
                 break;
             case TestingResponse testing:
-                await EditTestings(testing);
+                await EditTestings(testing, IsEdit);
                 break;
             case EngineeringDesignResponse engineeringDesign:
-                await EditEngineeringDesigns(engineeringDesign);
+                await EditEngineeringDesigns(engineeringDesign, IsEdit);
                 break;
         }
 

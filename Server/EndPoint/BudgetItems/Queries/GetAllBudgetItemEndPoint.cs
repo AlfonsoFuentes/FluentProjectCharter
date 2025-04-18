@@ -58,8 +58,10 @@ namespace Server.EndPoint.BudgetItems.Queries
                         PercentageContingency = row.PercentageContingency,
                         PercentageEngineering = row.PercentageEngineering,
                         PercentageTaxes = row.PercentageTaxProductive,
-                        CostCenter = CostCenterEnum.GetTypeByName(row.CostCenter),
+                        CostCenter = CostCenterEnum.GetType(row.CostCenter),
                         ProjectNumber = $"CEC0000{row.ProjectNumber}",
+                        Status =ProjectStatusEnum.GetType(row.Status),
+
                     };
 
 

@@ -10,10 +10,7 @@ namespace Server.Database.Configurations
         {
             builder.HasKey(ci => ci.Id);
 
-          //  builder.HasOne(x => x.Scope)
-          //.WithMany(t => t.Constraints)
-          //.HasForeignKey(e => e.ScopeId)
-          //.OnDelete(DeleteBehavior.NoAction);
+        
 
         }
 

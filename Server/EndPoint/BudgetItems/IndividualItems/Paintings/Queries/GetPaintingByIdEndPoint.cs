@@ -45,6 +45,8 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Paintings.Queries
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
+                BudgetUSD = row.BudgetUSD,
+               
             };
         }
 

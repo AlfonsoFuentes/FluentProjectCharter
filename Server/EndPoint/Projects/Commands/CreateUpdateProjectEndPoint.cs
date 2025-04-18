@@ -46,7 +46,7 @@
         static Project Map(this ProjectResponse request, Project row)
         {
             row.Name = request.Name;
-            row.ProjectNeedType = request.ProjectNeedType.Name;
+      
 
             row.StartDate = request.InitialProjectDate == null ? null : request.InitialProjectDate.Value;
 
@@ -55,8 +55,10 @@
             row.PercentageContingency = request.PercentageContingency;
             row.PercentageTaxProductive = request.PercentageTaxProductive;
             row.IsProductiveAsset = request.IsProductiveAsset;
-            row.CostCenter = request.CostCenter.Name;
-            row.Focus = request.Focus.Name;
+            row.ProjectNeedType = request.ProjectNeedType.Id;
+            row.CostCenter = request.CostCenter.Id;
+            row.Focus = request.Focus.Id;
+       
             return row;
         }
 

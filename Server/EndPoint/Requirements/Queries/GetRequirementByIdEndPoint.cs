@@ -10,11 +10,7 @@ namespace Server.EndPoint.Requirements.Queries
             {
                 app.MapPost(StaticClass.Requirements.EndPoint.GetById, async (GetRequirementByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //TODO::
-                    //Func<IQueryable<Requirement>, IIncludableQueryable<Requirement, object>> Includes = x => 
-                    //x.Include(x => x.Deliverable!);
-
-                    //;
+                    
 
                     Expression<Func<Requirement, bool>> Criteria = x => x.Id == request.Id;
 

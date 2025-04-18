@@ -47,6 +47,8 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Electricals.Queries
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
+                BudgetUSD = row.BudgetUSD,
+          
             };
         }
 

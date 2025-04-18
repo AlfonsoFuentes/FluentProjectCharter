@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialCreateForMonsterASP : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace Server.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TenantId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CurrentProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CurrentProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -206,15 +206,15 @@ namespace Server.Migrations
                     TenantId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ProjectNeedType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProjectNeedType = table.Column<int>(type: "int", nullable: false),
+                    CostCenter = table.Column<int>(type: "int", nullable: false),
+                    Focus = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     ProjectNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PercentageEngineering = table.Column<double>(type: "float", nullable: false),
                     PercentageContingency = table.Column<double>(type: "float", nullable: false),
                     PercentageTaxProductive = table.Column<double>(type: "float", nullable: false),
                     IsProductiveAsset = table.Column<bool>(type: "bit", nullable: false),
-                    CostCenter = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Focus = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -494,7 +494,6 @@ namespace Server.Migrations
                     Diameter = table.Column<int>(type: "int", nullable: false),
                     FailType = table.Column<int>(type: "int", nullable: false),
                     SignalType = table.Column<int>(type: "int", nullable: false),
-                    ConnectionType = table.Column<int>(type: "int", nullable: false),
                     Value = table.Column<double>(type: "float", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
@@ -986,9 +985,6 @@ namespace Server.Migrations
                     ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     QuoteNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    QuoteCurrency = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PurchaseOrderCurrency = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PurchaseOrderStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PurchaseRequisition = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ApprovedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ExpectedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -1004,6 +1000,9 @@ namespace Server.Migrations
                     IsAlteration = table.Column<bool>(type: "bit", nullable: false),
                     IsCapitalizedSalary = table.Column<bool>(type: "bit", nullable: false),
                     IsTaxEditable = table.Column<bool>(type: "bit", nullable: false),
+                    QuoteCurrency = table.Column<int>(type: "int", nullable: false),
+                    PurchaseOrderCurrency = table.Column<int>(type: "int", nullable: false),
+                    PurchaseOrderStatus = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -1638,7 +1637,6 @@ namespace Server.Migrations
                     IsExisting = table.Column<bool>(type: "bit", nullable: false),
                     SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EquipmentTemplateId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    EquipmentTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     LastModifiedBy = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),

@@ -15,7 +15,7 @@ namespace Server.ExtensionsMethods.EquipmentTemplateMapper
                 GanttTaskId = row.GanttTaskId,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
-                BudgetUSD = row.BudgetUSD,
+           
                 TagLetter = row.TagLetter,
                 TagNumber = row.TagNumber,
                 Brand = row.EquipmentTemplate == null || row.EquipmentTemplate!.BrandTemplate == null ? new() : row.EquipmentTemplate!.BrandTemplate!.Map(),
@@ -30,6 +30,10 @@ namespace Server.ExtensionsMethods.EquipmentTemplateMapper
                 IsExisting = row.IsExisting,
                 ProvisionalTag = row.ProvisionalTag,
                 ShowProvisionalTag = !string.IsNullOrWhiteSpace(row.ProvisionalTag),
+                BudgetUSD = row.BudgetUSD,
+                ActualUSD = row.ActualUSD,
+                CommitmentUSD = row.CommitmentUSD,
+                PotentialUSD = row.PotentialUSD,
 
             };
 

@@ -11,9 +11,9 @@ namespace Server.Database.Entities.PurchaseOrders
         public Guid PurchaseOrderId { get; private set; }
         public PurchaseOrder PurchaseOrder { get; set; } = null!;
 
-        public Guid? BudgetItemId { get; private set; }
+        public Guid? BudgetItemId { get; set; }
         public BudgetItem? BudgetItem { get; set; } = null!;
-
+        
         public ICollection<PurchaseOrderItemReceived> PurchaseOrderReceiveds { get; set; } = new List<PurchaseOrderItemReceived>();
         public static PurchaseOrderItem Create(Guid purchasorderid, Guid mwobudgetitemid)
         {
@@ -41,9 +41,9 @@ namespace Server.Database.Entities.PurchaseOrders
         [NotMapped]
         public string NomenclatoreName => BudgetItem == null ? string.Empty : BudgetItem.NomenclatoreName;
         [NotMapped]
-        public CurrencyEnum PurchaseOrderCurrency => PurchaseOrder == null ? CurrencyEnum.None : CurrencyEnum.GetType(PurchaseOrder.PurchaseOrderCurrency);
+        public CurrencyEnum PurchaseOrderCurrency => PurchaseOrder == null ? CurrencyEnum.None : PurchaseOrder.PurchaseOrderCurrencyEnum;
         [NotMapped]
-        public CurrencyEnum QuoteCurrency => PurchaseOrder == null ? CurrencyEnum.None : CurrencyEnum.GetType(PurchaseOrder.QuoteCurrency);
+        public CurrencyEnum QuoteCurrency => PurchaseOrder == null ? CurrencyEnum.None : PurchaseOrder.QuoteCurrencyEnum;
         [NotMapped]
         public double UnitaryValuePurchaseOrderCurrency => UnitaryValueCurrency;
         [NotMapped]
@@ -82,7 +82,7 @@ namespace Server.Database.Entities.PurchaseOrders
         public string Supplier => PurchaseOrder == null ? string.Empty : PurchaseOrder.Supplier == null ? string.Empty : PurchaseOrder.Supplier.NickName;
         [NotMapped]
         public PurchaseOrderStatusEnum PurchaseOrderStatus => PurchaseOrder == null ? PurchaseOrderStatusEnum.None :
-            PurchaseOrderStatusEnum.GetType(PurchaseOrder.PurchaseOrderStatus);
+            PurchaseOrder.PurchaseOrderStatusEnum;
         [NotMapped]
         public double USDCOP => PurchaseOrder == null ? 0 : PurchaseOrder.USDCOP;
         [NotMapped]

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Shared.Enums.CurrencyEnums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Database.Entities.PurchaseOrders
 {
@@ -16,6 +17,8 @@ namespace Server.Database.Entities.PurchaseOrders
         public string? Address { get; set; } = string.Empty;
         public string? ContactEmail { get; set; } = string.Empty;
         public int SupplierCurrency { get; set; } = 0;
+        [NotMapped]
+        public CurrencyEnum SupplierCurrencyEnum => CurrencyEnum.GetType(SupplierCurrency);
         public static Supplier Create(string Name, string VendorCode, string TaxCodeLD, string TaxCodeLP, int SupplierCurrency)
         {
             return new Supplier()

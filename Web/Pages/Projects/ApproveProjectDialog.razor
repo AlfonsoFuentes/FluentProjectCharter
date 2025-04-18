@@ -87,16 +87,16 @@
                     }
 
                 </MudItem>
+                <MudItem xs="12" sm="6">
+                    <TextField @bind-Value="@Model.ProjectNumber"
+                               Label="Project Number"
+                               ValidateAsync="ValidateAsync"
+                               For="()=>Model.ProjectNumber">
+                    </TextField>
 
+                </MudItem>
             </MudGrid>
-            <MudItem xs="12" sm="6">
-                <TextField @bind-Value="@Model.ProjectNumber"
-                           Label="Project Number"
-                           ValidateAsync="ValidateAsync"
-                           For="()=>Model.ProjectNumber">
-                </TextField>
-
-            </MudItem>
+          
 
 
         </MudCardContent>

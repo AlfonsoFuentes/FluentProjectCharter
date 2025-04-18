@@ -1,4 +1,5 @@
 ﻿using Shared.Enums.CostCenter;
+using Shared.Enums.ProjectNeedTypes;
 using Shared.Models.BudgetItems.IndividualItems.Alterations.Responses;
 using Shared.Models.BudgetItems.IndividualItems.EHSs.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Electricals.Responses;
@@ -49,6 +50,7 @@ namespace Shared.Models.BudgetItems.Responses
         public double PercentageTaxes { get; set; }
         public bool IsProductive { get; set; } = true;
         public CostCenterEnum CostCenter { get; set; }= CostCenterEnum.None;
+        public ProjectStatusEnum Status { get; set; } = ProjectStatusEnum.None;
         public string ProjectNumber { get; set; } = string.Empty;
         public double EngineeringBudget => TotalCapital * PercentageEngineering / 100;
         public double ContingenyBudget => TotalCapital * PercentageContingency / 100;

@@ -104,6 +104,8 @@ public partial class EquipmentDialog
 
     [Parameter]
     public EquipmentResponse Model { get; set; } = new();
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
     async Task AddBrand()
     {
         var parameters = new DialogParameters<BrandDialog>

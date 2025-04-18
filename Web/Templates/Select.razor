@@ -33,6 +33,8 @@
     [Parameter]
     public EventCallback Change { get; set; }
     [Parameter]
+    public EventCallback<TValue> ChangeItem { get; set; }
+    [Parameter]
     public Expression<Func<TValue>>? For { get; set; }
     [Parameter]
     public Func<TValue, string>? Property { get; set; }
@@ -43,6 +45,8 @@
             await ValueChanged.InvokeAsync(Value);
         if (Change.HasDelegate)
             await Change.InvokeAsync();
+        if (ChangeItem.HasDelegate)
+            await ChangeItem.InvokeAsync(Value);
         if (ValidateAsync.HasDelegate)
             await ValidateAsync.InvokeAsync();
     }

@@ -49,7 +49,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Instruments.Queries
                 GanttTaskId = row.GanttTaskId,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
-                BudgetUSD = row.BudgetUSD,
+         
 
                 TagNumber = row.TagNumber,
                 Brand = row.InstrumentTemplate == null || row.InstrumentTemplate!.BrandTemplate == null ? new() : row.InstrumentTemplate!.BrandTemplate!.Map(),
@@ -67,6 +67,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Instruments.Queries
                 IsExisting = row.IsExisting,
                 ProvisionalTag = row.ProvisionalTag,
                 ShowProvisionalTag = !string.IsNullOrWhiteSpace(row.ProvisionalTag),
+                BudgetUSD = row.BudgetUSD,
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,

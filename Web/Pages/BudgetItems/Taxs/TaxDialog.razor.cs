@@ -38,5 +38,6 @@ public partial class TaxDialog
 
     [Parameter]
     public TaxResponse Model { get; set; } = new();
-
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
 }

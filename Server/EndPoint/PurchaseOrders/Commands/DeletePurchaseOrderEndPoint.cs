@@ -3,7 +3,7 @@ using Shared.Models.PurchaseOrders.Requests;
 
 namespace Server.EndPoint.PurchaseOrders.Commands
 {
-    public static class DeletePurcahseOrderEndPoint
+    public static class DeletePurchaseOrderEndPoint
     {
         public class EndPoint : IEndPoint
         {

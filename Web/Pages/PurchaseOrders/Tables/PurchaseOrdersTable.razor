@@ -1,0 +1,45 @@
+﻿
+
+
+<TableTemplate TValue="PurchaseOrderResponse"
+               ShowAdd=false
+               @bind-NameFilter=@nameFilter
+               Items="FilteredItems">
+    <ColumnsTemplate>
+
+        <PropertyColumn Property="x => x.PurchaseRequisition" Title="PR#" T="PurchaseOrderResponse" TProperty="string" />
+        <PropertyColumn Hidden=@(Status.Id==PurchaseOrderStatusEnum.Created.Id) Property="x => x.PONumber" Title="Name" T="PurchaseOrderResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.Name" Title="Name" T="PurchaseOrderResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.ProjectAccount" Title="Account" T="PurchaseOrderResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.SupplierName" Title="Supplier" T="PurchaseOrderResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.sTotalUSD" Title="USD" T="PurchaseOrderResponse" TProperty="string" />
+
+        <TemplateColumn CellClass="d-flex justify-end" T="PurchaseOrderResponse">
+            <CellTemplate Context="template">
+                <MudStack Row=true Spacing="2">
+                    @if (template.Item.PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id)
+                    {
+                        <IconButton ToolTip="@($"Edit {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Variant=Variant.Outlined OnClick="@(()=>EditPurchaseOrderCreated(template.Item))" />
+                        <IconButton ToolTip="@($"Approve {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Approval" Variant=Variant.Outlined Color="Color.Surface" OnClick="@(()=>ApprovePurchaseOrder(template.Item))" />
+                    }
+                    else if (template.Item.PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Approved.Id || template.Item.PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Receiving.Id)
+                    {
+                        <IconButton ToolTip="@($"Edit {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Variant=Variant.Outlined OnClick="@(()=>EditPurchaseOrderApproved(template.Item))" />
+                        <IconButton ToolTip="@($"Receive {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Check" Variant=Variant.Outlined Color="Color.Surface" OnClick="@(()=>ReceivePurchaseOrder(template.Item))" />
+                    }
+                    else if (template.Item.PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Closed.Id)
+                    {
+                        <IconButton ToolTip="@($"Edit {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Variant=Variant.Outlined OnClick="@(()=>EditPurchaseOrderClosed(template.Item))" />
+                    }
+                    <IconButton ToolTip="@($"Delete {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Variant=Variant.Outlined Color="Color.Surface" OnClick="@(()=>Delete(template.Item))" />
+                    
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+
+    </ColumnsTemplate>
+</TableTemplate>
+
+@code {
+
+}

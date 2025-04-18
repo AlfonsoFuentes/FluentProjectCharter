@@ -139,7 +139,7 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
                 GanttTaskId = row.GanttTaskId,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
-                BudgetUSD = row.BudgetUSD,
+               
 
                 TagNumber = row.TagNumber,
                 Brand = row.ValveTemplate == null || row.ValveTemplate.BrandTemplate == null ? new() : row.ValveTemplate.BrandTemplate!.Map(),
@@ -158,12 +158,13 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
                 IsExisting = row.IsExisting,
                 ProvisionalTag = row.ProvisionalTag,
                 ShowProvisionalTag = !string.IsNullOrWhiteSpace(row.ProvisionalTag),
+            
+                BudgetUSD = row.BudgetUSD,
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
-            
-                
-                
+
+
 
             };
 

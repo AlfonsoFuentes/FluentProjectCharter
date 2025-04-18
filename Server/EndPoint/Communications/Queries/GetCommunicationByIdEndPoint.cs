@@ -12,9 +12,7 @@ namespace Server.EndPoint.Communications.Queries
             {
                 app.MapPost(StaticClass.Communications.EndPoint.GetById, async (GetCommunicationByIdRequest request, IQueryRepository Repository) =>
                 {
-                    //Func<IQueryable<Communication>, IIncludableQueryable<Communication, object>> Includes = x => null!
-
-                    //;
+                   
 
                     Expression<Func<Communication, bool>> Criteria = x => x.Id == request.Id;
 

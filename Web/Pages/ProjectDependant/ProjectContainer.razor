@@ -162,8 +162,8 @@
             </MudExpansionPanel>
         </MudExpansionPanels>
     </MudTabPanel>
-    <MudTabPanel Text="Execution" Disabled="true">
-        <MudText>Content Two</MudText>
+    <MudTabPanel Text="Execution" Disabled="@(Project.Status.Id!=ProjectStatusEnum.Approved.Id)">
+        <BudgetItemsWithPurchaseOrders Project=@Project></BudgetItemsWithPurchaseOrders>
     </MudTabPanel>
     <MudTabPanel Text="Monitoring" Disabled="true">
         <MudText>Content Three</MudText>

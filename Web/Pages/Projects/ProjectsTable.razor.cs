@@ -2,7 +2,6 @@ using MudBlazor;
 using Shared.Models.Apps.Records;
 using Shared.Models.Apps.Requests;
 using Shared.Models.Apps.Responses;
-using Shared.Models.FileResults.Generics.Reponses;
 using Shared.Models.Projects.Mappers;
 using Shared.Models.Projects.Records;
 using Shared.Models.Projects.Reponses;
@@ -95,6 +94,41 @@ public partial class ProjectsTable
         if (result != null)
         {
             await GetAll();
+        }
+    }
+    async Task UnApprove(ProjectResponse response)
+    {
+        var parameters = new DialogParameters<DialogTemplate>
+        {
+            { x => x.ContentText, $"Do you really want to Un Approve {response.Name}? ." },
+            { x => x.ButtonText, "Un Approve" },
+            { x => x.Color, Color.Warning }
+        };
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<DialogTemplate>("Un Approve", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result!.Canceled)
+        {
+            UnApproveProjectRequest request = new()
+            {
+                Id = response.Id,
+                Name = response.Name,
+
+            };
+            var resultUnApprove = await GenericService.Post(request);
+            if (resultUnApprove.Succeeded)
+            {
+                await GetAll();
+                _snackBar.ShowSuccess(resultUnApprove.Messages);
+
+
+            }
+            else
+            {
+                _snackBar.ShowError(resultUnApprove.Messages);
+            }
         }
     }
     public async Task Delete(ProjectResponse response)

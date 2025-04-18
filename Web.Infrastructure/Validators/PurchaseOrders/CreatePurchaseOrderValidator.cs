@@ -1,12 +1,7 @@
-﻿using Shared.Enums.CurrencyEnums;
-using Shared.Models.Projects.Validators;
+﻿using FluentValidation;
+using Shared.Enums.CurrencyEnums;
 using Shared.Models.PurchaseOrders.Requests;
 using Shared.Models.PurchaseOrders.Validators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.PurchaseOrders
@@ -53,13 +48,13 @@ namespace Web.Infrastructure.Validators.PurchaseOrders
                 .When(x => !string.IsNullOrEmpty(x.PurchaseRequisition)).WithMessage(x => $"{x.PurchaseRequisition} already exist");
 
 
-            RuleForEach(x => x.PurchaseOrderItems).ChildRules(order =>
+            RuleForEach(x => x.SelectedPurchaseOrderItems).ChildRules(order =>
             {
-                order.RuleFor(x => x.Quantity).GreaterThan(0).WithMessage("Quantity must be defined");
-                order.RuleFor(x => x.UnitaryQuoteCurrency).GreaterThan(0).WithMessage("Unitary value must be defined");
-                order.RuleFor(x => x.BudgetItemId).NotEqual(Guid.Empty).WithMessage("Budget Item must be defined");
-                order.RuleFor(x => x.Name).NotEmpty().WithMessage("Item Name must be defined");
-                order.RuleFor(x => x.Name).NotNull().WithMessage("Item Name must be defined");
+                order.RuleFor(x => x.Quantity).GreaterThan(0).WithMessage("Required");
+                order.RuleFor(x => x.UnitaryQuoteCurrency).GreaterThan(0).WithMessage("Required");
+                order.RuleFor(x => x.BudgetItemId).NotEqual(Guid.Empty).WithMessage("Required");
+                order.RuleFor(x => x.Name).NotEmpty().WithMessage("Required");
+                order.RuleFor(x => x.Name).NotNull().WithMessage("Required");
             });
 
 
@@ -69,7 +64,7 @@ namespace Web.Infrastructure.Validators.PurchaseOrders
             ValidatePurchaseOrderNameRequest validate = new()
             {
                 Name = request.Name,
-
+                ProjectId = request.ProjectId,
             };
             var result = await Service.Validate(validate);
 

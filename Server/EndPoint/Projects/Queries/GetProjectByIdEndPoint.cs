@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
-using Shared.Enums.CostCenter;
+﻿using Shared.Enums.CostCenter;
 using Shared.Enums.Focuses;
 
 namespace Server.EndPoint.Projects.Queries
@@ -43,15 +42,16 @@ namespace Server.EndPoint.Projects.Queries
 
                 PercentageEngineering = row.PercentageEngineering,
                 PercentageContingency = row.PercentageContingency,
-                ProjectNeedType = ProjectNeedTypeEnum.GetType(row.ProjectNeedType),
+          
 
                 ProjectNumber = row.ProjectNumber,
 
-                Status = ProjectStatusEnum.GetType(row.Status),
+               
                 IsProductiveAsset= row.IsProductiveAsset,
                 PercentageTaxProductive = row.PercentageTaxProductive,
-                
-                CostCenter = CostCenterEnum.GetTypeByName(row.CostCenter),
+                Status = ProjectStatusEnum.GetType(row.Status),
+                ProjectNeedType = ProjectNeedTypeEnum.GetType(row.ProjectNeedType),
+                CostCenter = CostCenterEnum.GetType(row.CostCenter),
                 Focus = FocusEnum.GetType(row.Focus),
                 InitialProjectDate = row.StartDate,
 

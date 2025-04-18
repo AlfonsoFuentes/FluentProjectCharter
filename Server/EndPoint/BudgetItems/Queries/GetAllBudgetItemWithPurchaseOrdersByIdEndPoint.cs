@@ -30,17 +30,19 @@ namespace Server.EndPoint.BudgetItems.Queries
                     BudgetItemWithPurchaseOrdersResponse response = new()
                     {
                         Id = row.Id,
-                        ActualUSD = row.ActualUSD,
-                        BudgetUSD = row.BudgetUSD,
-                        CommitmentUSD = row.CommitmentUSD,
+                       
+                       
                         Name = row.Name,
                         Nomenclatore = row.Nomenclatore,
-                        PotentialUSD = row.PotentialUSD,
+            
                         ProjectId = row.ProjectId,
                         IsAlteration = row.IsAlteration,
                         IsTaxes = row.IsTaxes,
 
-
+                        BudgetUSD = row.BudgetUSD,
+                        ActualUSD = row.ActualUSD,
+                        CommitmentUSD = row.CommitmentUSD,
+                        PotentialUSD = row.PotentialUSD,
 
                     };
 

@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shared.Enums.PurchaseOrderStatusEnums
+﻿namespace Shared.Enums.PurchaseOrderStatusEnums
 {
-    public class PurchaseOrderStatusEnum
+    public class PurchaseOrderStatusEnum:ValueObject
     {
         public override string ToString()
         {
             return Name;
         }
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+     
         public static PurchaseOrderStatusEnum Create(int id, string name) => new PurchaseOrderStatusEnum() { Id = id, Name = name };
 
         public static PurchaseOrderStatusEnum None = Create(-1, "NONE");
@@ -21,9 +14,10 @@ namespace Shared.Enums.PurchaseOrderStatusEnums
         public static PurchaseOrderStatusEnum Approved = Create(1, "Approved");
         public static PurchaseOrderStatusEnum Receiving = Create(2, "Receiving");
         public static PurchaseOrderStatusEnum Closed = Create(3, "Closed");
+        public static PurchaseOrderStatusEnum All = Create(4, "All");
         public static List<PurchaseOrderStatusEnum> List = new List<PurchaseOrderStatusEnum>()
             {
-                None,Created, Approved, Receiving, Closed
+                None,Created, Approved, Receiving, Closed,All
             };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;
 

@@ -11,7 +11,7 @@ namespace Server.EndPoint.PurchaseOrders.Validators
             {
                 app.MapPost(StaticClass.PurchaseOrders.EndPoint.ValidateName, async (ValidatePurchaseOrderNameRequest Data, IQueryRepository Repository) =>
                 {
-                    Expression<Func<PurchaseOrder, bool>> CriteriaId = null!;
+                    Expression<Func<PurchaseOrder, bool>> CriteriaId = x => x.Id == Data.ProjectId;
                     Func<PurchaseOrder, bool> CriteriaExist = x => Data.Id == null ?
                     x.PurchaseorderName.Equals(Data.Name) : x.Id != Data.Id.Value && x.PurchaseorderName.Equals(Data.Name);
                     string CacheKey = StaticClass.PurchaseOrders.Cache.GetAll;

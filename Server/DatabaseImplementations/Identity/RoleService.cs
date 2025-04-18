@@ -185,14 +185,7 @@ namespace Server.DatabaseImplementations.Identity
                 var selectedClaims = request.RoleClaims.Where(a => a.Selected).ToList();
                 if (role.Name == RoleConstants.AdministratorRole)
                 {
-                    //    if (!selectedClaims.Any(x => x.Value == Permissions.Roles.View)
-                    //       || !selectedClaims.Any(x => x.Value == Permissions.RoleClaims.View)
-                    //       || !selectedClaims.Any(x => x.Value == Permissions.RoleClaims.Edit))
-                    //    {
-                    //        return await Result<string>.FailAsync(string.Format(
-                    //            "Not allowed to deselect {0} or {1} or {2} for this Role.",
-                    //            Permissions.Roles.View, Permissions.RoleClaims.View, Permissions.RoleClaims.Edit));
-                    //    }
+                   
                 }
 
                 var claims = await _roleManager.GetClaimsAsync(role);
@@ -200,14 +193,7 @@ namespace Server.DatabaseImplementations.Identity
                 {
                     await _roleManager.RemoveClaimAsync(role, claim);
                 }
-                //foreach (var claim in selectedClaims)
-                //{
-                //    var addResult = await _roleManager.AddPermissionClaim(role, claim.Value!);
-                //    if (!addResult.Succeeded)
-                //    {
-                //        errors.AddRange(addResult.Errors.Select(e => e.Description));
-                //    }
-                //}
+               
 
                 var addedClaims = await _roleClaimService.GetAllByRoleIdAsync(role.Id);
                 if (addedClaims.Succeeded)

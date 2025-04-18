@@ -5,23 +5,23 @@ namespace Shared.Models.PurchaseOrders.Responses
 {
     public class PurchaseOrderItemResponse : BaseResponse
     {
-        public Guid? BudgetItemId { get; set; }
+        public Guid BudgetItemId { get; set; }=Guid.Empty;
 
 
-        public double UnitaryValueCurrency { get; set; }
+        public double UnitaryQuoteCurrency { get; set; }
         public double Quantity { get; set; }
 
         public CurrencyEnum PurchaseOrderCurrency { get; set; } = CurrencyEnum.None;
         public CurrencyEnum QuoteCurrency { get; set; } = CurrencyEnum.None;
-        public double UnitaryValueUSD => PurchaseOrderCurrency.Id == CurrencyEnum.USD.Id ? UnitaryValueCurrency :
-            PurchaseOrderCurrency.Id == CurrencyEnum.COP.Id ? USDCOP == 0 ? 0 : UnitaryValueCurrency / USDCOP :
-        PurchaseOrderCurrency.Id == CurrencyEnum.EUR.Id ? USDEUR == 0 ? 0 : UnitaryValueCurrency / USDEUR :
+        public double UnitaryValueUSD => PurchaseOrderCurrency.Id == CurrencyEnum.USD.Id ? UnitaryQuoteCurrency :
+            PurchaseOrderCurrency.Id == CurrencyEnum.COP.Id ? USDCOP == 0 ? 0 : UnitaryQuoteCurrency / USDCOP :
+        PurchaseOrderCurrency.Id == CurrencyEnum.EUR.Id ? USDEUR == 0 ? 0 : UnitaryQuoteCurrency / USDEUR :
             0;
         public double USDCOP { get; set; }
         public double USDEUR { get; set; }
         public double BudgetUSD { get; set; } = 0;
         public double TotalUSD => UnitaryValueUSD * Quantity;
-        public double TotalCurrency => UnitaryValueCurrency * Quantity;
+        public double TotalCurrency => UnitaryQuoteCurrency * Quantity;
         public double ActualCurrency { get; set; } = 0;
         public double ActualUSD { get; set; }
         public double CommitmentCurrency { get; set; } = 0;

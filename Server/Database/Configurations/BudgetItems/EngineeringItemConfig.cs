@@ -14,12 +14,7 @@ namespace Server.Database.Configurations.BudgetItems
                  .IsRequired()
                  .OnDelete(DeleteBehavior.Cascade);
 
-        //    builder.HasOne(x => x.ProcessFlowDiagram)
-        //.WithMany(t => t.EngineeringItems)
-        //.HasForeignKey(e => e.ProcessFlowDiagramId)
-
-        //.OnDelete(DeleteBehavior.NoAction);
-
+     
 
         }
     }

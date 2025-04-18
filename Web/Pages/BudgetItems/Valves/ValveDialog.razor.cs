@@ -91,7 +91,8 @@ public partial class ValveDialog
 
     [Parameter]
     public ValveResponse Model { get; set; } = new();
-
+    [Parameter]
+    public bool IsEdit { get; set; } = true;
     async Task AddBrand()
     {
         var parameters = new DialogParameters<BrandDialog>

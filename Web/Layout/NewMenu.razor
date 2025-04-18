@@ -5,9 +5,9 @@
 
         <MudNavLink Href="/" Icon="@Icons.Material.Outlined.Home">Projects</MudNavLink>
         <MudNavGroup Title="Purchase Orders" Icon="@Icons.Material.Outlined.Business" Expanded="true">
-            <MudNavLink Href="/PurchaseOrderCreated" Icon="@Icons.Material.Outlined.CreditScore" IconColor="Color.Info">Created</MudNavLink>
-            <MudNavLink Href="/PurchaseOrderApproved" Icon="@Icons.Material.Outlined.CreditCard" IconColor="Color.Info">Approved</MudNavLink>
-            <MudNavLink Href="/PurchaseOrderClosed" Icon="@Icons.Material.Outlined.CreditCardOff" IconColor="Color.Info">Closed</MudNavLink>
+            <MudNavLink Href="@($"/PurchaseOrderCreated")" Icon="@Icons.Material.Outlined.CreditCard" IconColor="Color.Info">Created</MudNavLink>
+            <MudNavLink Href="@($"/PurchaseOrderApproved")" Icon="@Icons.Material.Outlined.CreditScore" IconColor="Color.Info">Approved</MudNavLink>
+            <MudNavLink Href="@($"/PurchaseOrderClosed")" Icon="@Icons.Material.Outlined.CreditCardOff" IconColor="Color.Info">Closed</MudNavLink>
         </MudNavGroup>
         <MudNavLink Href="/StakeHolders" Icon="@Icons.Material.Outlined.People">StakeHolders</MudNavLink>
         <MudNavLink Href="/Suppliers" Icon="@Icons.Material.Outlined.Store">Suppliers</MudNavLink>

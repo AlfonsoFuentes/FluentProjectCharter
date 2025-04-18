@@ -109,10 +109,7 @@ namespace Server.ExtensionsMethods.Pipings
         }
         public static async Task<PipeTemplate> GetPipeTemplate(IRepository Repository, PipeResponse Data)
         {
-            //Func<IQueryable<PipeTemplate>, IIncludableQueryable<PipeTemplate, object>> Includes = x => x
-         
-
-            //;
+           
             Expression<Func<PipeTemplate, bool>> Criteria = x =>
            
            x.Insulation == Data.Insulation &&

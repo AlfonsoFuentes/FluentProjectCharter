@@ -1,0 +1,32 @@
+﻿<TableTemplate TValue="BudgetItemWithPurchaseOrdersResponse"
+               DisableAdd=false
+              
+             
+               Items="Items"
+               ShowAdd=false
+               >
+    
+    <ColumnsTemplate>
+    
+        <PropertyColumn Property="x => x.Nomenclatore" Title="#" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.Tag" Title="Tag" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.Name" Title="Name" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.sBudgetUSD" Title="Budget, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.sActualUSD" Title="Actual, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.sCommitmentUSD" Title="Commitment, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.sPotentialUSD" Title="Potential, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+        <TemplateColumn CellClass="d-flex justify-end" T="BudgetItemWithPurchaseOrdersResponse">
+            <CellTemplate Context="template">
+                <MudStack Row=true Spacing="2">
+                    <IconButton ToolTip="@($"Add Purchaseorder in {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.AddBox" Variant=Variant.Outlined OnClick="@(()=>AddPurchaseorder(template.Item))" />
+                    
+                </MudStack>
+            </CellTemplate>
+        </TemplateColumn>
+
+    </ColumnsTemplate>
+</TableTemplate>
+
+@code {
+
+}
