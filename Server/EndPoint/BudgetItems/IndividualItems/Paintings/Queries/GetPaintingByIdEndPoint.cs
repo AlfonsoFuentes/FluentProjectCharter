@@ -1,4 +1,5 @@
-﻿using Shared.Models.BudgetItems.IndividualItems.Paintings.Records;
+﻿using Server.EndPoint.PurchaseOrders.Queries;
+using Shared.Models.BudgetItems.IndividualItems.Paintings.Records;
 using Shared.Models.BudgetItems.IndividualItems.Paintings.Responses;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Paintings.Queries
@@ -46,7 +47,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Paintings.Queries
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
                 BudgetUSD = row.BudgetUSD,
-               
+                PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
             };
         }
 

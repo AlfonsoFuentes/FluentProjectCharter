@@ -17,7 +17,7 @@ namespace Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.14")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -429,8 +429,7 @@ namespace Server.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("TemplateId")
-                        .IsRequired()
+                    b.Property<Guid>("TemplateId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -2086,6 +2085,9 @@ namespace Server.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsProductiveAsset")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsTaxEditable")
                         .HasColumnType("bit");
 
@@ -2213,7 +2215,7 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("UnitaryValueCurrency")
+                    b.Property<double>("UnitaryValueQuoteCurrency")
                         .HasColumnType("float");
 
                     b.HasKey("Id");

@@ -1,6 +1,8 @@
 ﻿@page "/PurchaseOrderApproved"
 
-<PurchaseOrdersTable Status="PurchaseOrderStatusEnum.Approved"></PurchaseOrdersTable>
+<PurchaseOrdersTable Items="@Items" GetAll="GetAll"
+                     HideStatus=true
+                     TableTitle="Purchase Orders Approved"></PurchaseOrdersTable>
 
 @code {
 

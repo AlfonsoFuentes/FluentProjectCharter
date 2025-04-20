@@ -3,11 +3,11 @@
         <MudCardContent>
 
             <FluentValidationValidator @ref="_fluentValidationValidator" />
-            <ValidationSummary></ValidationSummary>
+         
             <PurchaseOrderDialog Model="@Model"
                                  ValidateAsync="ValidateAsync"
                                  Suppliers="@Suppliers" AddSupplier=AddSupplier
-                                 EditPurchaseOrderItems=true
+                              
                                  NonSelectedBudgetItems="@NonSelectedBudgetItems">
                 <ChildContent>
                     <MudGrid>

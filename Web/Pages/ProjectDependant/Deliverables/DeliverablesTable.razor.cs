@@ -5,6 +5,9 @@ using Shared.Models.Deliverables.Mappers;
 using Shared.Models.Deliverables.Records;
 using Shared.Models.Deliverables.Requests;
 using Shared.Models.Deliverables.Responses;
+using Shared.Models.GanttTasks.Mappers;
+using Shared.Models.GanttTasks.Records;
+using Shared.Models.GanttTasks.Responses;
 using Shared.Models.Projects.Reponses;
 using Shared.StaticClasses;
 using Web.Templates;
@@ -12,6 +15,33 @@ using Web.Templates;
 namespace Web.Pages.ProjectDependant.Deliverables;
 public partial class DeliverablesTable
 {
+    [Parameter]
+    public DeliverableWithGanttTaskResponseList Response { get; set; } = new();
+
+    async Task GetAll()
+    {
+
+        var result = await GenericService.GetAll<DeliverableWithGanttTaskResponseListToUpdate, GanttTaskGetAll>(new GanttTaskGetAll
+        {
+            ProjectId = Project.Id,
+        });
+
+        if (result.Succeeded)
+        {
+
+            Response = result.Data.ToReponse();
+            Items = Response.Deliverables.Select(x => new DeliverableResponse()
+            {
+                Id = x.DeliverableId,
+                Name = x.Name,
+                ProjectId = x.ProjectId,
+
+            }).ToList();
+            StateHasChanged();
+
+        }
+
+    }
 
     [Parameter]
     public ProjectResponse Project { get; set; } = null!;
@@ -24,18 +54,7 @@ public partial class DeliverablesTable
     {
         await GetAll();
     }
-    async Task GetAll()
-    {
-        if (Project == null) return;
-        var result = await GenericService.GetAll<DeliverableResponseList, DeliverableGetAll>(new DeliverableGetAll()
-        {
-            ProjectId = Project.Id, 
-        });
-        if (result.Succeeded)
-        {
-            Items = result.Data.Items;
-        }
-    }
+
     public async Task AddNew()
     {
 
@@ -76,7 +95,7 @@ public partial class DeliverablesTable
             await GetAll();
         }
     }
-    public async Task Delete(DeliverableResponse response)
+    async Task Delete(DeliverableResponse response)
     {
         var parameters = new DialogParameters<DialogTemplate>
         {

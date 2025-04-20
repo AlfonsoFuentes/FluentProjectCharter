@@ -12,7 +12,21 @@ public partial class BudgetItemsWithPurchaseOrders
 
     BudgetItemWithPurchaseOrderResponseList ResponseList = new();
     public List<BudgetItemWithPurchaseOrdersResponse> Items => ResponseList.Items;
-    protected override async Task OnParametersSetAsync()
+    public string NameFilter { get; set; } = string.Empty;
+    public Func<BudgetItemWithPurchaseOrdersResponse, bool> Criteria => x =>
+    x.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
+    x.Tag.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
+    x.Nomenclatore.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
+    x.PurchaseOrders.Any(x => x.SupplierName.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
+    x.PurchaseOrders.Any(x => x.SupplierNickName.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
+    x.PurchaseOrders.Any(x => x.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
+    x.PurchaseOrders.Any(x => x.PONumber.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
+    x.PurchaseOrders.Any(x => x.PurchaseRequisition.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
+    x.PurchaseOrders.Any(x => x.CostCenter.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
+    x.PurchaseOrders.Any(x => x.PurchaseOrderStatus.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase));
+    public List<BudgetItemWithPurchaseOrdersResponse> FilteredItems => string.IsNullOrEmpty(NameFilter) ? Items :
+        Items.Where(Criteria).ToList();
+    protected override async Task OnInitializedAsync()
     {
         await GetAll();
     }
@@ -63,4 +77,8 @@ public partial class BudgetItemsWithPurchaseOrders
             StateHasChanged();
         }
     }
+    [Parameter]
+    public EventCallback ExportExcel { get; set; }
+    [Parameter]
+    public EventCallback ExportPDF { get; set; }
 }

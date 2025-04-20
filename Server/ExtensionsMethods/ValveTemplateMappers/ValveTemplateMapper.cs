@@ -1,4 +1,5 @@
 ﻿using Server.EndPoint.Brands.Queries;
+using Server.EndPoint.PurchaseOrders.Queries;
 using Shared.Enums.ConnectionTypes;
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
@@ -164,7 +165,7 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
 
-
+                PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
 
             };
 

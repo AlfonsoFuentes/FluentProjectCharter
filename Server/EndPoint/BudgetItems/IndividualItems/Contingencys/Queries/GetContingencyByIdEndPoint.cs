@@ -1,4 +1,5 @@
-﻿using Shared.Models.BudgetItems.IndividualItems.Contingencys.Responses;
+﻿using Server.EndPoint.PurchaseOrders.Queries;
+using Shared.Models.BudgetItems.IndividualItems.Contingencys.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Foundations.Records;
 using Shared.Models.BudgetItems.IndividualItems.Foundations.Responses;
 
@@ -21,7 +22,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Contingencys.Queries
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
                 BudgetUSD = row.BudgetUSD,
-             
+                PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
             };
         }
 

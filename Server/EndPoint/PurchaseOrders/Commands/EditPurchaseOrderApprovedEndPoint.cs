@@ -46,7 +46,7 @@ namespace Server.EndPoint.PurchaseOrders.Commands
                         if (rowitem != null)
                         {
                             rowitem.Name = item.Name;
-                            rowitem.UnitaryValueCurrency = item.UnitaryQuoteCurrency;
+                            rowitem.UnitaryValueQuoteCurrency = item.UnitaryQuoteCurrency;
                             rowitem.Quantity = item.Quantity;
                             rowitem.BudgetItemId = item.BudgetItemId;
                             rowitem.Order = item.Order;
@@ -73,7 +73,7 @@ namespace Server.EndPoint.PurchaseOrders.Commands
 
         static PurchaseOrder Map(this EditPurchaseApprovedOrderRequest request, PurchaseOrder row)
         {
-            row.SupplierId = request.SupplierId;
+            row.SupplierId = request.Supplier!.Id;
             row.QuoteCurrency = request.QuoteCurrency.Id;
             row.PurchaseOrderCurrency = request.PurchaseOrderCurrency.Id;
             row.PurchaseorderName = request.Name;

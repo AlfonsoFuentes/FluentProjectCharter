@@ -22,18 +22,19 @@ namespace Server.Database.Entities.PurchaseOrders
         public double ValueReceivedCurrency { get; set; }
         public double USDCOP { get; set; }
         public double USDEUR { get; set; }
-
         public DateTime? CurrencyDate { get; set; }
         [NotMapped]
-        public string BudgetItemNomenclatoreName => PurchaseOrderItem == null ? string.Empty : PurchaseOrderItem.NomenclatoreName;
+        public string NomenclatoreName => PurchaseOrderItem == null ? string.Empty : PurchaseOrderItem.NomenclatoreName;
+        [NotMapped]
+        public string ItemName => PurchaseOrderItem == null ? string.Empty : PurchaseOrderItem.ItemName;
         [NotMapped]
         public CurrencyEnum PurchaseOrderCurrency => PurchaseOrderItem == null ? CurrencyEnum.None : PurchaseOrderItem.PurchaseOrderCurrency;
 
         [NotMapped]
-        public double ValueReceivedUSD =>
+        public double ReceivedUSD =>
            PurchaseOrderCurrency.Id == CurrencyEnum.USD.Id ? ValueReceivedCurrency :
-           PurchaseOrderCurrency.Id == CurrencyEnum.COP.Id ? ValueReceivedCurrency / USDCOP :
-           PurchaseOrderCurrency.Id == CurrencyEnum.EUR.Id ? ValueReceivedCurrency / USDEUR :
+           PurchaseOrderCurrency.Id == CurrencyEnum.COP.Id ? USDCOP==0?0: ValueReceivedCurrency / USDCOP :
+           PurchaseOrderCurrency.Id == CurrencyEnum.EUR.Id ? USDEUR == 0 ? 0 : ValueReceivedCurrency / USDEUR :
              0;
     }
 }

@@ -1,11 +1,12 @@
-﻿@page "/DeliverableGanttChart/{ProjectId:guid}"
-@inject IJSRuntime JSRuntime 
+﻿@inject IJSRuntime JSRuntime
 <MudCard Style="width:100%">
     <MudCardContent>
         <div style="width: 100%; max-height: 1000px; overflow-y: auto; position: relative;">
 
             <!-- Barra de Herramientas -->
-            <GanttTaskToolBar OnAddNew="AddNew"
+            <GanttTaskToolBar ShowAdd=false
+                              OnAddNewdeliverable=AddNewDeliverable
+                              OnAddNew="AddNew"
                               OnMoveUp="Up"
                               OnMoveDown="Down"
                               OnMoveRight="Right"
@@ -62,5 +63,5 @@
 
 
 @code {
-   
+
 }

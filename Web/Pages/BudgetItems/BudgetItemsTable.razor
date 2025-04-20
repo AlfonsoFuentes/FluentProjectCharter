@@ -29,7 +29,7 @@
         <PropertyColumn Property="x => x.Nomenclatore" Title="#" T="IBudgetItemResponse" TProperty="string" />
         <PropertyColumn Property="x => x.Tag" Title="Tag" T="IBudgetItemResponse" TProperty="string" />
         <PropertyColumn Property="x => x.Name" Title="Name" T="IBudgetItemResponse" TProperty="string" />
-        <PropertyColumn Property="x => x.sBudgetUSD" Title="Budget, USD" T="IBudgetItemResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.BudgetUSD.ToCurrencyCulture()" Title="Budget, USD" T="IBudgetItemResponse" TProperty="string" />
         <TemplateColumn CellClass="d-flex justify-end" T="IBudgetItemResponse">
             <CellTemplate Context="template">
                 <MudStack Row=true Spacing="2">

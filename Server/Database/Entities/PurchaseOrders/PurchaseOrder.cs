@@ -15,20 +15,7 @@ namespace Server.Database.Entities.PurchaseOrders
         public Guid? SupplierId { get; set; }
         public Supplier? Supplier { get; set; } = null!;
         public ICollection<PurchaseOrderItem> PurchaseOrderItems { get; set; } = new List<PurchaseOrderItem>();
-        public static PurchaseOrder Create(Guid projectid)
-        {
-            return new()
-            {
-                ProjectId = projectid,
-                Id = Guid.NewGuid(),
-
-            };
-            
-        }
-
-       
-        public string QuoteNo { get; set; } = "";
-      
+        public string QuoteNo { get; set; } = string.Empty;
         public string PurchaseRequisition { get; set; } = string.Empty;
         public DateTime? ApprovedDate { get; set; }
         public DateTime? ExpectedDate { get; set; }
@@ -44,6 +31,7 @@ namespace Server.Database.Entities.PurchaseOrders
         public bool IsAlteration { get; set; } = false;
         public bool IsCapitalizedSalary { get; set; } = false;
         public bool IsTaxEditable { get; set; } = false;
+        public bool IsProductiveAsset { get; set; } = false;
         public int QuoteCurrency { get; set; }
         public int PurchaseOrderCurrency { get; set; }
         public int PurchaseOrderStatus { get; set; }
@@ -57,36 +45,45 @@ namespace Server.Database.Entities.PurchaseOrders
         public CurrencyEnum PurchaseOrderCurrencyEnum => CurrencyEnum.GetType(PurchaseOrderCurrency);
         [NotMapped]
         public CurrencyEnum QuoteCurrencyEnum => CurrencyEnum.GetType(QuoteCurrency);
+        public static PurchaseOrder Create(Guid projectid)
+        {
+            return new()
+            {
+                ProjectId = projectid,
+                Id = Guid.NewGuid(),
 
-        [NotMapped]
-        public double ActualCurrency => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
-            PurchaseOrderItems.Sum(x => x.POItemActualCurrency);
-        [NotMapped]
-        public double ActualUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
-            PurchaseOrderItems.Sum(x => x.ActualUSD);
-
-        [NotMapped]
-        public double AssignedUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
-            PurchaseOrderItems.Sum(x => x.POItemValueUSD);
-        [NotMapped]
-        public double ApprovedUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
-            PurchaseOrderItems.Sum(x => x.ApprovedUSD);
-        [NotMapped]
-        public double PotentialCommitmentUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
-            PurchaseOrderItems.Sum(x => x.PotentialCommitmentUSD);
-
-        [NotMapped]
-        public double CommitmentUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
-            PurchaseOrderItems.Sum(x => x.CommitmentUSD);
-        [NotMapped]
-        public double CommitmentCurrency => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
-            PurchaseOrderItems.Sum(x => x.CommitmentCurrency);
-        [NotMapped]
-        public double QuoteValueCurrency => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
-            PurchaseOrderItems.Sum(x => x.POItemQuoteValueCurrency);
+            };
+            
+        }
         [NotMapped]
         public string SupplierName => Supplier == null ? string.Empty : Supplier.Name;
         [NotMapped]
         public string SupplierNickName => Supplier == null ? string.Empty : Supplier.NickName;
+        [NotMapped]
+        public double TotalPurchaseOrderCurrency => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
+            PurchaseOrderItems.Sum(x => x.TotalItemPurchaseOrderCurrency);
+        [NotMapped]
+        public double TotalQuoteCurrency => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
+            PurchaseOrderItems.Sum(x => x.TotalItemQuoteCurrency);
+        [NotMapped]
+        public double TotalUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
+           PurchaseOrderItems.Sum(x => x.TotalItemValueUSD);
+        [NotMapped]
+        public double ActualCurrency => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
+            PurchaseOrderItems.Sum(x => x.ActualItemPurchaseOrderCurrency);
+        [NotMapped]
+        public double ActualUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
+            PurchaseOrderItems.Sum(x => x.ActualItemUSD);
+
+        [NotMapped]
+        public double PotentialCommitmentUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
+            PurchaseOrderItems.Sum(x => x.PotentialItemUSD);
+
+        [NotMapped]
+        public double CommitmentUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 :
+            PurchaseOrderItems.Sum(x => x.CommitmentItemUSD);
+        
+        
+       
     }
 }

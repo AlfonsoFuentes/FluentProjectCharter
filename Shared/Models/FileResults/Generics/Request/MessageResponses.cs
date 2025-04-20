@@ -21,10 +21,10 @@ namespace Shared.Models.FileResults.Generics.Request
     }
     public interface ICreateMessageResponse
     {
-         string Legend { get; }
+        string Legend { get; }
         string ClassName { get; }
-        string Succesfully => StaticClass.ResponseMessages.ReponseSuccesfullyMessageCreated(Legend, ClassName);
-        string Fail => StaticClass.ResponseMessages.ReponseFailMessageCreated(Legend, ClassName);
+        string Succesfully { get; }
+        string Fail { get; }
     }
     public abstract class CreateMessageResponse: ICreateMessageResponse
     {

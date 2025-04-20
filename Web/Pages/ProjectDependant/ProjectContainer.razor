@@ -17,9 +17,11 @@
 @using Web.Pages.ProjectDependant.Resources
 @using Web.Pages.ProjectDependant.Scopes
 @using Web.Pages.ProjectDependant.StakeHolderInsideProjects
+@using Web.Pages.ProjectDependant.WBS
+@using Web.Pages.ProjectDependant.WBSTableGraphics
 @using Web.Pages.ProjectDependant.WorkBreakownStructures
 <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-1">
-    <MudTabPanel Text="Start/Planning">
+    <MudTabPanel Text="Start">
         <MudExpansionPanels>
             <MudExpansionPanel Text="Stake Holders" ExpandedChanged="@(()=>StakeHolderInside=!StakeHolderInside)">
                 @if (StakeHolderInside)
@@ -100,14 +102,15 @@
             <MudExpansionPanel Text="Deliverables" ExpandedChanged="@(()=>Deliverables=!Deliverables)">
                 @if (Deliverables)
                 {
-                    <DeliverablesTable Project="@Project"></DeliverablesTable>
+                    <WBSTableGraphic Project="@Project"></WBSTableGraphic>
+                    @* <DeliverablesTable Project="@Project"></DeliverablesTable> *@
                 }
 
             </MudExpansionPanel>
-            <MudExpansionPanel Text="Gantt" ExpandedChanged="@(()=>Gantt=!Gantt)">
+            @*  <MudExpansionPanel Text="Gantt" ExpandedChanged="@(()=>Gantt=!Gantt)">
                 @if (Gantt)
                 {
-                    <GanttTaskTable Project="@Project"></GanttTaskTable>
+                    <WBSTable Project="@Project"></WBSTable>
                 }
 
             </MudExpansionPanel>
@@ -117,7 +120,7 @@
                     <WbsChartSvg Project="@Project"></WbsChartSvg>
                 }
 
-            </MudExpansionPanel>
+            </MudExpansionPanel> *@
             <MudExpansionPanel Text="Budget" ExpandedChanged="@(()=>Budget=!Budget)">
                 @if (Budget)
                 {
@@ -162,8 +165,22 @@
             </MudExpansionPanel>
         </MudExpansionPanels>
     </MudTabPanel>
+    <MudTabPanel Text="Planning" Disabled="@(Project.Status.Id!=ProjectStatusEnum.Approved.Id)">
+        
+        <MudExpansionPanels>
+            <MudExpansionPanel Text="Planning Gantt Task">
+                <GanttTaskTable Project=@Project></GanttTaskTable>
+
+            </MudExpansionPanel>
+        </MudExpansionPanels>
+    </MudTabPanel>
     <MudTabPanel Text="Execution" Disabled="@(Project.Status.Id!=ProjectStatusEnum.Approved.Id)">
-        <BudgetItemsWithPurchaseOrders Project=@Project></BudgetItemsWithPurchaseOrders>
+        <MudExpansionPanels>
+            <MudExpansionPanel Text="Manage Purchase Orders" ExpandedChanged="@(()=>BudgetItemsPurchaseOrders=!BudgetItemsPurchaseOrders)">
+                <BudgetItemsWithPurchaseOrders Project=@Project></BudgetItemsWithPurchaseOrders>
+                
+            </MudExpansionPanel>
+        </MudExpansionPanels>
     </MudTabPanel>
     <MudTabPanel Text="Monitoring" Disabled="true">
         <MudText>Content Three</MudText>
@@ -195,12 +212,13 @@
     bool ExpertJudgement = false;
     bool Deliverables = false;
     bool Gantt = false;
-    bool Wbs = false;
+    // bool Wbs = false;
     bool Budget = false;
     bool Quality = false;
     bool KnownRisk = false;
     bool Resources = false;
     bool Communications = false;
     bool Acquisitions = false;
-
+    bool BudgetItemsPurchaseOrders = false;
+    bool CompleteGantt = false;
 }

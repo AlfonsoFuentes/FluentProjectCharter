@@ -2,12 +2,14 @@
 using Shared.Models.Brands.Responses;
 using Shared.Models.Templates.Equipments.Responses;
 using Server.EndPoint.Brands.Queries;
+using Server.EndPoint.PurchaseOrders.Queries;
 namespace Server.ExtensionsMethods.EquipmentTemplateMapper
 {
     public static class EquipmentTemplateMapper
     {
         public static EquipmentResponse Map(this Equipment row)
         {
+           
             return new()
             {
                 Id = row.Id,
@@ -15,7 +17,7 @@ namespace Server.ExtensionsMethods.EquipmentTemplateMapper
                 GanttTaskId = row.GanttTaskId,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
-           
+
                 TagLetter = row.TagLetter,
                 TagNumber = row.TagNumber,
                 Brand = row.EquipmentTemplate == null || row.EquipmentTemplate!.BrandTemplate == null ? new() : row.EquipmentTemplate!.BrandTemplate!.Map(),
@@ -34,7 +36,7 @@ namespace Server.ExtensionsMethods.EquipmentTemplateMapper
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
-
+                PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
             };
 
 
@@ -88,7 +90,7 @@ namespace Server.ExtensionsMethods.EquipmentTemplateMapper
 
 
         }
-       
+
         public static EquipmentTemplate Map(this EquipmentResponse request, EquipmentTemplate row, double Value)
         {
 
@@ -105,7 +107,7 @@ namespace Server.ExtensionsMethods.EquipmentTemplateMapper
             return row;
         }
 
-       public static async Task<EquipmentTemplate> GetEquipmentTemplate(IRepository Repository, EquipmentResponse Data)
+        public static async Task<EquipmentTemplate> GetEquipmentTemplate(IRepository Repository, EquipmentResponse Data)
         {
             Func<IQueryable<EquipmentTemplate>, IIncludableQueryable<EquipmentTemplate, object>> Includes = x => x
 

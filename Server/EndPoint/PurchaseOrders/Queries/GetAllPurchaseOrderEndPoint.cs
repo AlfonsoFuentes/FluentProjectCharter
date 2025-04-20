@@ -16,9 +16,16 @@ namespace Server.EndPoint.PurchaseOrders.Queries
                 app.MapPost(StaticClass.PurchaseOrders.EndPoint.GetAll, async (PurchaseOrderGetAll Data, IQueryRepository Repository) =>
                 {
                     Expression<Func<PurchaseOrder, bool>> Criteria = x => x.PurchaseOrderStatus == Data.Status.Id;
+                    if (Data.Status.Id == PurchaseOrderStatusEnum.Approved.Id)
+                    {
+                        Criteria = x => x.PurchaseOrderStatus == PurchaseOrderStatusEnum.Approved.Id || x.PurchaseOrderStatus == PurchaseOrderStatusEnum.Receiving.Id;
+
+                    }
+
                     Func<IQueryable<PurchaseOrder>, IIncludableQueryable<PurchaseOrder, object>> Includes = x => x
                     .Include(x => x.Project)
                     .Include(p => p.PurchaseOrderItems).ThenInclude(x => x.BudgetItem!)
+                    .Include(p => p.PurchaseOrderItems).ThenInclude(x => x.PurchaseOrderReceiveds)
                     .Include(x => x.Supplier!);
                     var cache = Data.Status.Id == PurchaseOrderStatusEnum.Created.Id ?
                                 StaticClass.PurchaseOrders.Cache.GetAllCreated :
@@ -54,12 +61,11 @@ namespace Server.EndPoint.PurchaseOrders.Queries
                 PurchaseOrderCurrency = row.PurchaseOrderCurrencyEnum,
                 PurchaseOrderStatus = row.PurchaseOrderStatusEnum,
                 CostCenter = row.CostCenterEnum,
-                IsProductive = row.Project.IsProductiveAsset,
+                IsProductiveAsset = row.IsProductiveAsset,
                 QuoteCurrency = row.QuoteCurrencyEnum,
                 PurchaseRequisition = row.PurchaseRequisition,
                 QuoteNo = row.QuoteNo,
-                SPL = row.SPL,
-                TaxCode = row.TaxCode,
+
                 USDCOP = row.USDCOP,
                 USDEUR = row.USDEUR,
                 ApprovedDate = row.ApprovedDate,
@@ -75,12 +81,15 @@ namespace Server.EndPoint.PurchaseOrders.Queries
                     NickName = row.Supplier.NickName,
                     VendorCode = row.Supplier.VendorCode,
                     TaxCodeLD = row.Supplier.TaxCodeLD,
+                    TaxCodeLP = row.Supplier.TaxCodeLP,
                     SupplierCurrency = row.Supplier.SupplierCurrencyEnum,
                 },
 
                 PurchaseOrderItems = row.PurchaseOrderItems.Select(x => x.Map()).ToList(),
+              
             };
         }
+
         public static PurchaseOrderItemResponse Map(this PurchaseOrderItem row)
         {
             return new()
@@ -88,14 +97,41 @@ namespace Server.EndPoint.PurchaseOrders.Queries
                 Id = row.Id,
                 Name = row.Name,
                 BudgetItemId = row.BudgetItemId!.Value,
+                BudgetItem = row.BudgetItem == null ? null! : new()
+                {
+                    Id = row.BudgetItem.Id,
+                    Name = row.BudgetItem.Name,
+                    Nomenclatore = row.BudgetItem.Nomenclatore,
+                    BudgetUSD = row.BudgetItem.BudgetUSD,
+
+
+                },
                 Quantity = row.Quantity,
                 PurchaseOrderCurrency = row.PurchaseOrderCurrency,
                 QuoteCurrency = row.QuoteCurrency,
-                UnitaryQuoteCurrency = row.UnitaryValueCurrency,
+                UnitaryQuoteCurrency = row.UnitaryValueQuoteCurrency,
+                PurchaseOrderStatus=row.PurchaseOrderStatus,
                 USDCOP = row.USDCOP,
                 USDEUR = row.USDEUR,
                 Order = row.Order,
+                PurchaseOrderItemReceiveds = row.PurchaseOrderReceiveds.Select(x => x.Map()).ToList(),
+                 
 
+            };
+        }
+        public static PurchaseOrderItemReceivedResponse Map(this PurchaseOrderItemReceived row)
+        {
+            return new()
+            {
+                ItemName = row.ItemName,
+                NomenclatoreName = row.NomenclatoreName,
+                Id = row.Id,
+                USDEUR = row.USDEUR,
+                USDCOP = row.USDCOP,
+                CurrencyDate = row.CurrencyDate,
+                ValueReceivedCurrency = row.ValueReceivedCurrency,
+                PurchaseOrderCurrency = row.PurchaseOrderCurrency,
+                Order = row.Order,
             };
         }
 

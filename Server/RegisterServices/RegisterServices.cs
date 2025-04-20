@@ -44,7 +44,7 @@ namespace Server.RegisterServices
 
             builder.Services.AddJwtAuthentication(builder.Services.GetApplicationSettings(builder.Configuration));
 
-            builder.Services.AddApplicationLayer();
+           
             builder.Services.AddApplicationServices(builder.Configuration);
             builder.Services.AddRepositories();
        
@@ -253,13 +253,13 @@ namespace Server.RegisterServices
             });
             return services;
         }
-        public static void AddApplicationLayer(this IServiceCollection services)
-        {
+        //public static void AddApplicationLayer(this IServiceCollection services)
+        //{
 
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+        //    services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        //    services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
-        }
+        //}
         internal static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<MailConfiguration>(configuration.GetSection("MailConfiguration"));

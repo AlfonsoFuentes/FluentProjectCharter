@@ -1,34 +1,38 @@
-﻿
-@using Shared.Models.Deliverables.Responses
+﻿@using Shared.Models.Deliverables.Responses
+@using Web.Pages.ProjectDependant.WBSTableGraphics
 
+<MudStack>
+   @*  <TableTemplate TValue="DeliverableResponse"
+                   AddNew="AddNew"
+                   @bind-NameFilter=@nameFilter
+                   DeleteGroup="DeleteGroup"
+                   Items="FilteredItems"
+                   ShowOrderUpDown="true"
+                   OnRowClicked="RowClicked"
+                   OrderUp="Up"
+                   OrderDown="Down"
+                   DisableDownButton="@DisableDownButton"
+                   DisableUpButton="@DisableUpButton"
+                   @bind-SelectedItems=@SelecteItems>
+        <ColumnsTemplate>
+            <SelectColumn T="DeliverableResponse" />
+            <PropertyColumn Property="x => x.Name" Title="Name" SortBy="@_sortBy" />
+            <TemplateColumn CellClass="d-flex justify-end" T="DeliverableResponse">
+                <CellTemplate Context="template">
+                    <MudStack Row=true Spacing="2">
+                        <IconButton ToolTip="@($"Edit {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Variant=Variant.Outlined OnClick="@(()=>Edit(template.Item))" />
+                        <IconButton ToolTip="@($"Delete {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Variant=Variant.Outlined Color="Color.Surface" OnClick="@(()=>Delete(template.Item))" />
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
 
-<TableTemplate TValue="DeliverableResponse"
-               AddNew="AddNew"
-               @bind-NameFilter=@nameFilter
-               DeleteGroup="DeleteGroup"
-               Items="FilteredItems"
-               ShowOrderUpDown="true"
-               OnRowClicked="RowClicked"
-               OrderUp="Up"
-               OrderDown="Down"
-               DisableDownButton="@DisableDownButton"
-               DisableUpButton="@DisableUpButton"
-               @bind-SelectedItems=@SelecteItems
-               >
-    <ColumnsTemplate>
-        <SelectColumn T="DeliverableResponse" />
-        <PropertyColumn Property="x => x.Name" Title="Name" SortBy="@_sortBy"/>
-        <TemplateColumn CellClass="d-flex justify-end" T="DeliverableResponse">
-            <CellTemplate Context="template">
-                <MudStack Row=true Spacing="2">
-                    <IconButton ToolTip="@($"Edit {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Variant=Variant.Outlined  OnClick="@(()=>Edit(template.Item))" />
-                    <IconButton ToolTip="@($"Delete {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Variant=Variant.Outlined Color="Color.Surface" OnClick="@(()=>Delete(template.Item))" />
-                </MudStack>
-            </CellTemplate>
-        </TemplateColumn>
+        </ColumnsTemplate>
+    </TableTemplate> *@
+    <WBSTableGraphic Response="@Response" GetAll="GetAll">
 
-    </ColumnsTemplate>
-</TableTemplate>
+    </WBSTableGraphic>
+</MudStack>
+
 
 
 @code {
@@ -42,5 +46,5 @@
                return x.Name;
        };
 
-    
+
 }

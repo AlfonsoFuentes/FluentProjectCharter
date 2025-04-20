@@ -1,4 +1,5 @@
-﻿using Shared.Models.BudgetItems.Records;
+﻿using Server.EndPoint.PurchaseOrders.Queries;
+using Shared.Models.BudgetItems.Records;
 using Shared.Models.BudgetItems.Responses;
 
 namespace Server.EndPoint.BudgetItems.Queries
@@ -43,6 +44,8 @@ namespace Server.EndPoint.BudgetItems.Queries
                         ActualUSD = row.ActualUSD,
                         CommitmentUSD = row.CommitmentUSD,
                         PotentialUSD = row.PotentialUSD,
+                        PurchaseOrders=row.PurchaseOrderItems.Select(x=>x.PurchaseOrder.Map()).ToList(),
+
 
                     };
 

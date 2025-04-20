@@ -1,5 +1,6 @@
 ﻿using Server.Database.Entities.BudgetItems.Commons;
 using Server.EndPoint.Projects.Queries;
+using Server.EndPoint.PurchaseOrders.Queries;
 using Shared.Models.BudgetItems.IndividualItems.Taxs.Records;
 using Shared.Models.BudgetItems.IndividualItems.Taxs.Responses;
 
@@ -49,7 +50,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Queries
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
-
+                PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
             };
         }
         public static TaxItemResponse Map(this TaxesItem row)

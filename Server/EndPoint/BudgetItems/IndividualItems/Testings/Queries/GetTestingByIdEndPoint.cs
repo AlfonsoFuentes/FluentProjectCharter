@@ -1,5 +1,6 @@
 ﻿using Server.Database.Entities.BudgetItems.Commons;
 using Server.EndPoint.Projects.Queries;
+using Server.EndPoint.PurchaseOrders.Queries;
 using Shared.Models.BudgetItems.IndividualItems.Testings.Records;
 using Shared.Models.BudgetItems.IndividualItems.Testings.Responses;
 
@@ -48,7 +49,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Testings.Queries
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
                 BudgetUSD = row.BudgetUSD,
-               
+                PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
             };
         }
 

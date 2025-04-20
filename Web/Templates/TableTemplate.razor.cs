@@ -49,6 +49,8 @@ public partial class TableTemplate<TValue>
     [Parameter]
     public RenderFragment Buttons { get; set; } = null!;
     [Parameter]
+    public RenderFragment<CellContext<TValue>> ChildRowContent { get; set; } = null!;
+    [Parameter]
     public EventCallback<TValue> OnRowClicked { get; set; }
     [Parameter]
     public EventCallback<TValue> OnRowRightClicked { get; set; }
@@ -73,6 +75,12 @@ public partial class TableTemplate<TValue>
     public bool DisableDownButton { get; set; }
     [Parameter]
     public bool ShowAdd { get; set; } = true;
+    [Parameter]
+    public bool ShowToolbar { get; set; } = true;
+    [Parameter]
+    public bool ShowDelete { get; set; } = true;
+    [Parameter]
+    public bool ShowSearch { get; set; } = true;
     [Parameter]
     public bool ShowPrint { get; set; } = false;
 }

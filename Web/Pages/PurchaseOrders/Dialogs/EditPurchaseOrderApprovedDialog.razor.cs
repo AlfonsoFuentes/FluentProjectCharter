@@ -9,6 +9,7 @@ using Shared.Models.Suppliers.Records;
 using Shared.Models.Suppliers.Responses;
 using Web.Infrastructure.Managers.Generic;
 using Web.Pages.Suppliers;
+using static Shared.StaticClasses.StaticClass;
 
 namespace Web.Pages.PurchaseOrders.Dialogs;
 public partial class EditPurchaseOrderApprovedDialog
@@ -21,24 +22,25 @@ public partial class EditPurchaseOrderApprovedDialog
     {
         Validated = _fluentValidationValidator == null ? false : await _fluentValidationValidator.ValidateAsync(options => { options.IncludeAllRuleSets(); });
     }
-    [Parameter]
-    public PurchaseOrderResponse Response { get; set; } = new();
-    [Parameter]
+  
+   
     public List<SupplierResponse> Suppliers { get; set; } = new();
-
+    [Parameter]
+    public PurchaseOrderResponse PurchaseOrder { get; set; } = new();
+    public EditPurchaseApprovedOrderRequest Model { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
 
         await GetSuppliers();
         await GetBudgetItems();
-        Model = Response.ToEditApproved();
+        Model = PurchaseOrder.ToEditApproved();
         Model.PurchaseOrderItems.ForEach(x =>
         {
             x.BudgetItem = OriginalBudgetItems.Single(y => y.Id == x.BudgetItemId);
 
 
         });
-        NonSelectedBudgetItems.Remove(OriginalBudgetItems.Single(y => y.Id == Response.MainBudgetItemId));
+        NonSelectedBudgetItems.Remove(OriginalBudgetItems.Single(y => y.Id == Model.MainBudgetItemId));
         Model.AddItem(new());
         StateHasChanged();
 
@@ -47,11 +49,11 @@ public partial class EditPurchaseOrderApprovedDialog
     {
         var resultProjectt = await GenericService.GetAll<BudgetItemWithPurchaseOrderResponseList, BudgetItemWithPurchaseOrderGetAll>(new BudgetItemWithPurchaseOrderGetAll()
         {
-            ProjectId = Response.ProjectId,
+            ProjectId = PurchaseOrder.ProjectId,
         });
         if (resultProjectt.Succeeded)
         {
-            if (Response.IsAlteration)
+            if (Model.IsAlteration)
             {
                 OriginalBudgetItems = resultProjectt.Data.Expenses;
             }
@@ -64,9 +66,7 @@ public partial class EditPurchaseOrderApprovedDialog
     }
     List<BudgetItemWithPurchaseOrdersResponse> OriginalBudgetItems = new();
     List<BudgetItemWithPurchaseOrdersResponse> NonSelectedBudgetItems = new();
-    [CascadingParameter]
 
-    public EditPurchaseApprovedOrderRequest Model { get; set; } = new();
 
 
     private async Task Submit()

@@ -324,7 +324,82 @@ namespace Shared.Models.GanttTasks.Responses
 
             return null!;
         }
+        public GanttTaskResponse AddGanttTaskResponse(GanttTaskResponse newGanttTask, GanttTaskResponse? selectedRow)
+        {
+            // Crear un nuevo GanttTaskResponse
+            
+            if (selectedRow == null)
+            {
+                // Si selectedRow es null, lo ponemos de ultimo en Items
+                var lastOrder = OrderedItems.Count == 0 ? 1 : OrderedItems.Last().Order + 1;
+                var lastLabelOrder = FlatOrderedItems.Count == 0 ? 1 : FlatOrderedItems.Last().LabelOrder + 1;
+                newGanttTask.Name = $"New GanttTask-{lastOrder}";
+                newGanttTask.Order = lastOrder;
+                newGanttTask.LabelOrder = lastLabelOrder;
+                Items.Add(newGanttTask);
+                Calculate();
+                return newGanttTask;
+            }
+            else
+            {
+                //Nos aseguramos que el item este dentro de los objetos
+                var item = FlatOrderedItems.FirstOrDefault(x => x.Id == selectedRow.Id);
+                if (item != null)
+                {
+                    if (item.SubGanttTasks.Any())
+                    {
+                        // Si selectedRow tiene subdeliverables lo pnemos de primero 
+                        newGanttTask.Order = 1;
+                        newGanttTask.ParentGanttTaskId = item.Id;
+                        newGanttTask.Name = $"SubGanttTask-1";
+                        item.OrderedSubGanttTasks.ForEach(x => { x.Order += 1; });
+                        item.SubGanttTasks.Add(newGanttTask);
+                        Calculate();
 
+                        return newGanttTask;
+                    }
+                    else
+                    {
+                        // Si selectedRow es un subdeliverable lo ponemos despues del selectedRow
+                        var parentedItem = FindParent(item);
+                        if (parentedItem != null)
+                        {
+                            newGanttTask.Order = item.Order + 1;
+                            newGanttTask.ParentGanttTaskId = parentedItem.Id;
+                            newGanttTask.Name = $"SubGanttTask-{item.Order + 1}";
+
+                            var subdeliverablesparent = parentedItem.OrderedSubGanttTasks.Where(x => x.Order > item.Order).ToList();
+                            subdeliverablesparent.ForEach(x => { x.Order += 1; });
+                            parentedItem.SubGanttTasks.Add(newGanttTask);
+                            Calculate();
+                            return newGanttTask;
+                        }
+                        else
+                        {
+                            // Si selectedRow no tiene subdeliverables y no tiene parent lo pnemos de primero 
+                            var lastOrder = OrderedItems.Count == 0 ? 1 : OrderedItems.Last().Order + 1;
+                            var lastLabelOrder = FlatOrderedItems.Count == 0 ? 1 : FlatOrderedItems.Last().LabelOrder + 1;
+                            newGanttTask.Name = $"New GanttTask-{lastOrder}";
+                            newGanttTask.Order = lastOrder;
+                            newGanttTask.LabelOrder = lastLabelOrder;
+                            Items.Add(newGanttTask);
+                            Calculate();
+                            return newGanttTask;
+                        }
+
+
+                    }
+                }
+
+
+            }
+
+
+
+
+
+            return null!;
+        }
         public void RemoveGanttTaskResponse(GanttTaskResponse deliverable)
         {
             var parent = FindParent(deliverable);

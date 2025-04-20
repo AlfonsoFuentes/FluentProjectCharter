@@ -11,12 +11,12 @@ namespace Server.EndPoint.PurchaseOrders.Validators
             {
                 app.MapPost(StaticClass.PurchaseOrders.EndPoint.ValidateNumber, async (ValidatePurchaseOrderNumberRequest Data, IQueryRepository Repository) =>
                 {
-                    Expression<Func<PurchaseOrder, bool>> CriteriaId = null!;
+                 
                     Func<PurchaseOrder, bool> CriteriaExist = x => Data.Id == null ?
                     x.PONumber.Equals(Data.Number) : x.Id != Data.Id.Value && x.PONumber.Equals(Data.Number);
                     string CacheKey = StaticClass.PurchaseOrders.Cache.GetAll;
 
-                    return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId);
+                    return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist);
                 });
 
 

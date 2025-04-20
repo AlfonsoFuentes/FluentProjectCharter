@@ -1,33 +1,27 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
-using Org.BouncyCastle.Crypto;
-using Server.Database.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Server.DatabaseImplementations.Databases;
 using Server.Interfaces.Identity;
-using Server.Interfaces.UserServices;
-using Shared.Commons;
 using Shared.Models.IdentityModels.Requests.Identity;
 using Shared.Models.IdentityModels.Responses.Identity;
+using System.Collections.Generic;
 
 namespace Server.DatabaseImplementations.Identity
 {
     public class RoleClaimService : IRoleClaimService
     {
 
-        private readonly IMapper _mapper;
+      
         private readonly ICurrentUserService _currentUserService;
         private readonly BlazorHeroContext _db;
 
         public RoleClaimService(
 
-            IMapper mapper,
+          
             ICurrentUserService currentUserService,
             BlazorHeroContext db)
         {
 
-            _mapper = mapper;
+            
             _currentUserService = currentUserService;
             _db = db;
         }
@@ -35,7 +29,8 @@ namespace Server.DatabaseImplementations.Identity
         public async Task<Result<List<RoleClaimResponse>>> GetAllAsync()
         {
             var roleClaims = await _db.RoleClaims.ToListAsync();
-            var roleClaimsResponse = _mapper.Map<List<RoleClaimResponse>>(roleClaims);
+            //var roleClaimsResponse = _mapper.Map<List<RoleClaimResponse>>(roleClaims);
+             List < RoleClaimResponse > roleClaimsResponse = new();//TODO::
             return await Result<List<RoleClaimResponse>>.SuccessAsync(roleClaimsResponse);
         }
 
@@ -49,7 +44,8 @@ namespace Server.DatabaseImplementations.Identity
         {
             var roleClaim = await _db.RoleClaims
                 .SingleOrDefaultAsync(x => x.Id == id);
-            var roleClaimResponse = _mapper.Map<RoleClaimResponse>(roleClaim);
+            //var roleClaimResponse = _mapper.Map<RoleClaimResponse>(roleClaim);
+            RoleClaimResponse roleClaimResponse = new();//TODO
             return await Result<RoleClaimResponse>.SuccessAsync(roleClaimResponse);
         }
 
@@ -58,7 +54,7 @@ namespace Server.DatabaseImplementations.Identity
             var roleClaims = await _db.RoleClaims
                     .Where(x => x.RoleId == roleId)
                 .ToListAsync();
-            var roleClaimsResponse = _mapper.Map<List<RoleClaimResponse>>(roleClaims);
+            List<RoleClaimResponse> roleClaimsResponse = new();//TODO: _mapper.Map<List<RoleClaimResponse>>(roleClaims);
             return await Result<List<RoleClaimResponse>>.SuccessAsync(roleClaimsResponse);
         }
 
@@ -79,7 +75,7 @@ namespace Server.DatabaseImplementations.Identity
                 {
                     return await Result<string>.FailAsync("Similar Role Claim already exists.");
                 }
-                var roleClaim = _mapper.Map<IdentityRoleClaim<string>>(request);
+                IdentityRoleClaim<string> roleClaim = new();//TODO: _mapper.Map<IdentityRoleClaim<string>>(request);
                 await _db.RoleClaims.AddAsync(roleClaim);
                 await _db.SaveChangesAsync(new CancellationToken());
                 return await Result<string>.SuccessAsync(string.Format("Role Claim {0} created.", request.Value));

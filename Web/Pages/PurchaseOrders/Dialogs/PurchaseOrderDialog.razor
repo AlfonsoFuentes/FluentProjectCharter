@@ -14,6 +14,7 @@
         <MudGrid>
             <MudItem sm="3" xs="12">
                 <TextField Label="Purchase Requisition"
+                    PlaceHolder="Define Purchase Requisition"
                            For="() => Model.PurchaseRequisition"
                            @bind-Value=@Model.PurchaseRequisition
                            ValidateAsync="ValidateAsync"></TextField>
@@ -26,12 +27,19 @@
                 <Field Label="Tax Code:">@Model.TaxCode</Field>
             </MudItem>
             <MudItem sm="3" xs="12">
+                @if (Model.PurchaseOrderCurrency.Id != CurrencyEnum.USD.Id && Model.PurchaseOrderCurrency.Id != CurrencyEnum.None.Id)
+                {
 
-                <DatePicker Label="TRM Date"
-                            @bind-Value=@Model.CurrencyDate
-                            ValidateAsync="ValidateAsync"
-                            For="() => Model.CurrencyDate"
-                            Change="@(()=>ChangedCurrencyDate(Model.CurrencyDate))"></DatePicker>
+                    <DatePicker Label="TRM Date"
+                                @bind-Value=@Model.CurrencyDate
+                                ValidateAsync="ValidateAsync"
+                                For="() => Model.CurrencyDate"
+                                Change="@(()=>ChangedCurrencyDate(Model.CurrencyDate))"></DatePicker>
+
+
+                }
+             
+                
 
             </MudItem>
 
@@ -51,7 +59,7 @@
                 <Field Label="SPL:">@Model.SPL</Field>
             </MudItem>
             <MudItem sm="3" xs="12">
-                @if (Model.PurchaseOrderCurrency.Id == CurrencyEnum.COP.Id)
+                @if (Model.PurchaseOrderCurrency.Id == CurrencyEnum.COP.Id )
                 {
 
                     <DoubleNumericField ValidateAsync="ValidateAsync"
@@ -61,7 +69,7 @@
 
 
                 }
-                else if (Model.PurchaseOrderCurrency.Id == CurrencyEnum.EUR.Id)
+                else if (Model.PurchaseOrderCurrency.Id == CurrencyEnum.EUR.Id )
                 {
                     <DoubleNumericField ValidateAsync="ValidateAsync"
                                         @bind-Value="@Model.USDEUR"
@@ -116,7 +124,7 @@
             </MudItem>
             <MudItem sm="3" xs="12">
 
-                <Field Label="@($"PO Value {Model.PurchaseOrderCurrency.Name}")">@Model.sTotalPurchaseOrderCurrency </Field>
+                <Field Label="@($"PO Value {Model.PurchaseOrderCurrency.Name}")">@Model.TotalPurchaseOrderCurrency.ToCurrencyCulture()</Field>
                 <ValidationMessage For="() => Model.TotalUSD" style="color:red; font-size:x-small;" />
             </MudItem>
 
@@ -131,16 +139,34 @@
 }
 <MudGrid>
     <MudItem xs="12">
-        <PurchaseOrderItemTable @bind-Items="@Model.PurchaseOrderItems"
-                                MainBudgetItemId="Model.MainBudgetItemId"
-                                ChangeName="ChangeBudgetItemName"
-                                NonSelectedBudgetItems="NonSelectedBudgetItems"
-                                QuoteCurrency="Model.QuoteCurrency"
-                                PurchaseOrderCurrency="Model.PurchaseOrderCurrency"
-                                SelectItemChanged="AddBudgetItem"
-                                DeleteItem="DeleteItem"
-                                EditPurchaseOrderItems=EditPurchaseOrderItems
-                                ValidateAsync="ValidateAsync"></PurchaseOrderItemTable>
+        @if (ShowReceive)
+        {
+            <PurchaseOrderReceiveItemTable Items="@Model.PurchaseOrderItems"
+                                           PurchaseOrderCurrency="Model.PurchaseOrderCurrency"
+                                           ValidateAsync="ValidateAsync"></PurchaseOrderReceiveItemTable>
+        
+        }
+        else if (ShowEditReceive)
+        {
+            <PurchaseOrderEditReceiveItemTable Items="@Model.PurchaseOrderItemReceiveds"
+                                           PurchaseOrderCurrency="Model.PurchaseOrderCurrency"
+                                           ValidateAsync="ValidateAsync"></PurchaseOrderEditReceiveItemTable>
+           
+        }
+        else
+        {
+            <PurchaseOrderItemTable @bind-Items="@Model.PurchaseOrderItems"
+                                    MainBudgetItemId="Model.MainBudgetItemId"
+                                    ChangeName="ChangeBudgetItemName"
+                                    NonSelectedBudgetItems="NonSelectedBudgetItems"
+                                    QuoteCurrency="Model.QuoteCurrency"
+                                    PurchaseOrderCurrency="Model.PurchaseOrderCurrency"
+                                    SelectItemChanged="AddBudgetItem"
+                                    DeleteItem="DeleteItem"
+                                 
+                                    ValidateAsync="ValidateAsync"></PurchaseOrderItemTable>
+        }
+
 
 
 

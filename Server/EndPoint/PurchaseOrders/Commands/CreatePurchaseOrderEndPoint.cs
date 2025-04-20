@@ -23,7 +23,7 @@ namespace Server.EndPoint.PurchaseOrders.Commands
                     {
                         var rowitem = PurchaseOrderItem.Create(row.Id, item.BudgetItemId);
                         rowitem.Name = item.Name;
-                        rowitem.UnitaryValueCurrency = item.UnitaryQuoteCurrency;
+                        rowitem.UnitaryValueQuoteCurrency = item.UnitaryQuoteCurrency;
                         rowitem.Quantity = item.Quantity;
                         rowitem.Order = item.Order;
 
@@ -48,7 +48,7 @@ namespace Server.EndPoint.PurchaseOrders.Commands
 
         static PurchaseOrder Map(this CreatePurchaseOrderRequest request, PurchaseOrder row)
         {
-            row.SupplierId = request.SupplierId;
+            row.SupplierId = request.Supplier!.Id;
             row.QuoteCurrency = request.QuoteCurrency.Id;
             row.PurchaseOrderCurrency = request.PurchaseOrderCurrency.Id;
             row.PurchaseorderName = request.Name;
@@ -59,6 +59,7 @@ namespace Server.EndPoint.PurchaseOrders.Commands
             row.ProjectAccount = request.ProjectAccount;
             row.IsAlteration = request.IsAlteration;
             row.IsCapitalizedSalary = request.IsCapitalizedSalary;
+            row.IsProductiveAsset = request.IsProductiveAsset;
             row.SPL = request.SPL;
             row.USDCOP = request.USDCOP;
             row.USDEUR = request.USDEUR;

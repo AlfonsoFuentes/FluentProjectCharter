@@ -1,5 +1,6 @@
 ﻿using Server.EndPoint.Brands.Queries;
 using Server.EndPoint.EngineeringFluidCodes.Queries;
+using Server.EndPoint.PurchaseOrders.Queries;
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Models.BudgetItems.IndividualItems.Pipes.Responses;
@@ -101,7 +102,7 @@ namespace Server.ExtensionsMethods.Pipings
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
-
+                PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
 
             };
             return result;

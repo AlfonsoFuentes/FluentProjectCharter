@@ -1,21 +1,21 @@
 using Shared.Enums.CurrencyEnums;
 using Shared.Models.BudgetItems.Responses;
 using Shared.Models.PurchaseOrders.Requests;
+using Shared.Models.PurchaseOrders.Responses;
 
 namespace Web.Pages.PurchaseOrders.Tables;
 public partial class PurchaseOrderItemTable
 {
-    [Parameter]
-    public bool EditPurchaseOrderItems { get; set; } = true;
+  
     [Parameter, EditorRequired]
     public Guid MainBudgetItemId { get; set; }
     [Parameter, EditorRequired]
     public List<BudgetItemWithPurchaseOrdersResponse> NonSelectedBudgetItems { get; set; } = new();
     [Parameter]
-    public List<PurchaseOrderItemRequest> Items { get; set; } = new();
-    public List<PurchaseOrderItemRequest> OrderedItems => Items.Count==0 ? new() : Items.OrderBy(x => x.Order).ToList();
+    public List<PurchaseOrderItemResponse> Items { get; set; } = new();
+    public List<PurchaseOrderItemResponse> OrderedItems => Items.Count==0 ? new() : Items.OrderBy(x => x.Order).ToList();
     [Parameter]
-    public EventCallback<List<PurchaseOrderItemRequest>> ItemsChanged { get; set; }
+    public EventCallback<List<PurchaseOrderItemResponse>> ItemsChanged { get; set; }
     public bool IsSameCurrency => QuoteCurrency.Id == PurchaseOrderCurrency.Id;
     public bool QuoteIsUSD => QuoteCurrency.Id == CurrencyEnum.USD.Id;
     [Parameter, EditorRequired]
@@ -35,8 +35,8 @@ public partial class PurchaseOrderItemTable
     public EventCallback SelectItemChanged { get; set; }
 
     [Parameter]
-    public EventCallback<PurchaseOrderItemRequest> DeleteItem { get; set; }
-    async Task Delete(PurchaseOrderItemRequest selected)
+    public EventCallback<PurchaseOrderItemResponse> DeleteItem { get; set; }
+    async Task Delete(PurchaseOrderItemResponse selected)
     {
 
         await DeleteItem.InvokeAsync(selected);

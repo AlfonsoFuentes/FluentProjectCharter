@@ -1,4 +1,5 @@
-﻿using Shared.Models.BudgetItems.IndividualItems.Engineerings.Responses;
+﻿using Server.EndPoint.PurchaseOrders.Queries;
+using Shared.Models.BudgetItems.IndividualItems.Engineerings.Responses;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Engineerings.Queries
 {
@@ -19,7 +20,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Engineerings.Queries
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
                 BudgetUSD = row.BudgetUSD,
-    
+                PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
             };
         }
 

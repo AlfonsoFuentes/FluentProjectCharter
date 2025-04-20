@@ -22,11 +22,9 @@ namespace Shared.Models.BudgetItems.Responses
         public double BudgetUSD { get; set; }
         public double AssignedUSD => ActualUSD + CommitmentUSD + PotentialUSD;
         public double ToCommitUSD => BudgetUSD - AssignedUSD;
-        public string sBudgetUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", BudgetUSD);
-        public string sActualUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", ActualUSD);
-        public string sCommitmentUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", CommitmentUSD);
-        public string sPotentialUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", PotentialUSD);
-        public string sAssignedUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", AssignedUSD);
-        public string sToCommitUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", ToCommitUSD);
+
+      
+
+       
     }
 }

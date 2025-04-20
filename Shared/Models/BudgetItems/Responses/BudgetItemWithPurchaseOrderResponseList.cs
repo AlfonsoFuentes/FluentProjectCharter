@@ -50,7 +50,7 @@ namespace Shared.Models.BudgetItems.Responses
         public double PercentageEngineering { get; set; }
         public double PercentageContingency { get; set; }
         public double PercentageTaxes { get; set; }
-        public bool IsProductive { get; set; } = true;
+        public bool IsProductiveAsset { get; set; } = true;
 
         public CostCenterEnum CostCenter {  get; set; }= CostCenterEnum.None;
         public Guid ProjectId {  get; set; }
@@ -58,7 +58,7 @@ namespace Shared.Models.BudgetItems.Responses
 
         public double EngineeringBudget => TotalCapital * PercentageEngineering / 100;
         public double ContingenyBudget => TotalCapital * PercentageContingency / 100;
-        public double TaxesBudget => IsProductive ? 0 : TotalCapitalWithOutVAT * PercentageTaxes / 100;
+        public double TaxesBudget => IsProductiveAsset ? 0 : TotalCapitalWithOutVAT * PercentageTaxes / 100;
         public double TotalBudget => TotalCapital + TotalExpenses + EngineeringBudget + ContingenyBudget;
 
         public string sTotalCapital => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalCapital);

@@ -1,6 +1,8 @@
-﻿<MudField Label="@Label" Variant="Variant.Outlined" Typo="@Typo" Margin="Margin.Dense" >@ChildContent</MudField>
+﻿<MudField Label="@Label" Variant="@Variant" Typo="@Typo" Margin="Margin.Dense">@ChildContent</MudField>
 
 @code {
+    [Parameter]
+    public Variant Variant { get; set; } = Variant.Outlined;
     [Parameter]
     public string Label { get; set; } = string.Empty;
     [Parameter]

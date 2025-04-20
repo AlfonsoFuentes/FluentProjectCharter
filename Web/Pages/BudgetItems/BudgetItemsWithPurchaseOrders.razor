@@ -1,32 +1,61 @@
-﻿<TableTemplate TValue="BudgetItemWithPurchaseOrdersResponse"
-               DisableAdd=false
-              
-             
-               Items="Items"
-               ShowAdd=false
-               >
-    
-    <ColumnsTemplate>
-    
-        <PropertyColumn Property="x => x.Nomenclatore" Title="#" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
-        <PropertyColumn Property="x => x.Tag" Title="Tag" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
-        <PropertyColumn Property="x => x.Name" Title="Name" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
-        <PropertyColumn Property="x => x.sBudgetUSD" Title="Budget, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
-        <PropertyColumn Property="x => x.sActualUSD" Title="Actual, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
-        <PropertyColumn Property="x => x.sCommitmentUSD" Title="Commitment, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
-        <PropertyColumn Property="x => x.sPotentialUSD" Title="Potential, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
-        <TemplateColumn CellClass="d-flex justify-end" T="BudgetItemWithPurchaseOrdersResponse">
-            <CellTemplate Context="template">
+﻿<MudCard Style="width:100%">
+    <MudCardContent>
+        <MudDataGrid T="BudgetItemWithPurchaseOrdersResponse"
+                     MultiSelection="false"
+                     Items="@FilteredItems"
+                     Hideable="true"
+                     Dense=true
+                     Bordered=true
+                     Hover=true
+                     Outlined=true
+                     Striped=true>
+            <ToolBarContent>
                 <MudStack Row=true Spacing="2">
-                    <IconButton ToolTip="@($"Add Purchaseorder in {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.AddBox" Variant=Variant.Outlined OnClick="@(()=>AddPurchaseorder(template.Item))" />
-                    
+
+
+                    <IconButton Size=@Size.Small ToolTip="Export to excel" Icon="@Icons.Material.Filled.TableView" Variant=Variant.Outlined OnClick="ExportExcel"></IconButton>
+                    <IconButton Size=@Size.Small ToolTip="Export to pdf" Icon="@Icons.Material.Filled.PictureAsPdf" Variant=Variant.Outlined OnClick="ExportPDF"></IconButton>
+
+
                 </MudStack>
-            </CellTemplate>
-        </TemplateColumn>
+                <MudSpacer />
+                <TextField @bind-Value="@NameFilter" Placeholder="Search" Adornment="Adornment.Start"
+                           AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="mt-0"></TextField>
+            </ToolBarContent>
+            <Columns>
+                <HierarchyColumn T="BudgetItemWithPurchaseOrdersResponse" />
+                <PropertyColumn Property="x => x.Nomenclatore" Title="#" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+                <PropertyColumn Property="x => x.Tag" Title="Tag" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+                <PropertyColumn Property="x => x.Name" Title="Name" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+                <PropertyColumn Property="x => x.BudgetUSD.ToCurrencyCulture()" Title="Budget, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+                <PropertyColumn Property="x => x.ActualUSD.ToCurrencyCulture()" Title="Actual, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+                <PropertyColumn Property="x => x.CommitmentUSD.ToCurrencyCulture()" Title="Commitment, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+                <PropertyColumn Property="x => x.PotentialUSD.ToCurrencyCulture()" Title="Potential, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+                <PropertyColumn Property="x => x.ToCommitUSD.ToCurrencyCulture()" Title="To Commit, USD" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
+                <TemplateColumn CellClass="d-flex justify-end" T="BudgetItemWithPurchaseOrdersResponse">
+                    <CellTemplate Context="template">
+                        <MudStack Row=true Spacing="2">
+                            <IconButton ToolTip="@($"Add Purchaseorder in {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.AddBox" Variant=Variant.Outlined OnClick="@(()=>AddPurchaseorder(template.Item))" />
 
-    </ColumnsTemplate>
-</TableTemplate>
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+            <ChildRowContent>
+                @if (context.Item.PurchaseOrders.Count > 0)
+                {
 
+                    <PurchaseOrdersTable HideAccount=true ShowPrint=false Items="@context.Item.PurchaseOrders" ShowToolbar=false GetAll="GetAll"></PurchaseOrdersTable>
+                }
+
+            </ChildRowContent>
+
+            <PagerContent>
+                <MudDataGridPager T="BudgetItemWithPurchaseOrdersResponse" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudCardContent>
+</MudCard>
 @code {
 
 }

@@ -14,7 +14,7 @@ namespace Server.EndPoint.PurchaseOrders.Validators
                     Expression<Func<PurchaseOrder, bool>> CriteriaId = x => x.Id == Data.ProjectId;
                     Func<PurchaseOrder, bool> CriteriaExist = x => Data.Id == null ?
                     x.PurchaseorderName.Equals(Data.Name) : x.Id != Data.Id.Value && x.PurchaseorderName.Equals(Data.Name);
-                    string CacheKey = StaticClass.PurchaseOrders.Cache.GetAll;
+                    string CacheKey = StaticClass.PurchaseOrders.Cache.GetAllNames(Data.ProjectId);
 
                     return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId);
                 });

@@ -1,33 +1,32 @@
-﻿
-@inject IJSRuntime JSRuntime
+﻿@inject IJSRuntime JSRuntime
+
 <MudCard>
     <MudCardContent>
+        <Field><strong>@($"Wor break down structure for {Project.Name}")</strong></Field>
         @if (Response != null && Response.Deliverables.Count > 0)
         {
             <CascadingValue Value="this">
                 <!-- Contenedor principal -->
-                <div style="width: 100%; overflow-y: auto; overflow-x: auto; position: relative;border: 1px solid #ccc;">
-                    <div style="width: @(screenWidth > 0 ? $"{screenWidth}px" : "300px"); height: @(GetSvgHeight())px; overflow: auto; border: 1px solid #ccc;">
-                        <svg width="@(800)" height="@(GetSvgHeight())" style="border: 1px solid #eee;">
-                            <g>
-                                @{
-                                    int initialY = 50; // Posición inicial vertical fija para todos los deliverables
-                                    var xPositions = GetXPositions(); // Calcular las posiciones X de los deliverables
+                <div style="width: 100%; overflow-y: auto; overflow-x: auto; position: relative; border: 1px solid #ccc;">
+                    <svg width="@(GetSvgWidtht())" height="@(GetSvgHeight())" style="border: 1px solid #eee;">
+                        <g>
+                            @{
+                                int initialY = 50; // Posición inicial vertical fija para todos los deliverables
+                                var xPositions = GetXPositions(); // Calcular las posiciones X de los deliverables
 
-                                    for (int i = 0; i < Response.Deliverables.Count; i++)
-                                    {
-                                        <DeliverableNode Node="@Response.Deliverables[i]" X="@xPositions[i]" Y="@initialY" />
-                                    }
+                                for (int i = 0; i < Response.Deliverables.Count; i++)
+                                {
+                                    <DeliverableNode Node="@Response.Deliverables[i]" X="@xPositions[i]" Y="@initialY" />
                                 }
-                            </g>
-                        </svg>
-                    </div>
+                            }
+                        </g>
+                    </svg>
                 </div>
             </CascadingValue>
         }
     </MudCardContent>
-
 </MudCard>
+
 <script>
     // Función para obtener el ancho de la pantalla
     window.getScreenWidth = () => {

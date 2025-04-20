@@ -1,5 +1,5 @@
 using Shared.Models.BudgetItems.Responses;
-using Shared.Models.PurchaseOrders.Requests;
+using Shared.Models.PurchaseOrders.Responses;
 using Shared.Models.Suppliers.Responses;
 
 namespace Web.Pages.PurchaseOrders.Dialogs;
@@ -8,29 +8,17 @@ public partial class PurchaseOrderDialog
     [Inject]
     public IRate _CurrencyService { get; set; } = null!;
     [Parameter]
-    public PurchaseOrderRequest Model { get; set; } = null!;
+    public PurchaseOrderResponse Model { get; set; } = null!;
+    [Parameter]
+    public bool ShowReceive { get; set; } = false;
+    [Parameter]
+    public bool ShowEditReceive { get; set; } = false;
     public ConversionRate RateList { get; set; } = null!;
-    protected override Task OnInitializedAsync()
-    {
-        return base.OnInitializedAsync();
-    }
-    protected override async Task OnParametersSetAsync()
-    {
-        RateList = await _CurrencyService.GetRates(DateTime.UtcNow);
-        var USDCOP = RateList == null ? 4000 : Math.Round(RateList.COP, 2);
-        var USDEUR = RateList == null ? 1 : Math.Round(RateList.EUR, 2);
 
-        if (Model != null)
-        {
-            Model.USDCOP = USDCOP;
-            Model.USDEUR = USDEUR;
-        }
-
-    }
+  
     [Parameter]
     public EventCallback ValidateAsync { get; set; }
-    [Parameter]
-    public bool EditPurchaseOrderItems { get; set; } = true;
+   
     void ChangeNamePO()
     {
         if (Model.SelectedPurchaseOrderItems.Count == 1)
@@ -46,9 +34,14 @@ public partial class PurchaseOrderDialog
     void ChangeSupplier()
     {
         if (Model.Supplier != null)
+        {
             Model.PurchaseOrderCurrency = Model.Supplier.SupplierCurrency;
+            Model.QuoteCurrency = Model.Supplier.SupplierCurrency;
+
+        }
+            
     }
-    async Task DeleteItem(PurchaseOrderItemRequest selected)
+    async Task DeleteItem(PurchaseOrderItemResponse selected)
     {
         Model.RemoveItem(selected);
 
@@ -78,7 +71,7 @@ public partial class PurchaseOrderDialog
         {
             Model.USDCOP = result.COP;
             Model.USDEUR = result.EUR;
-
+            StateHasChanged();
         }
 
 

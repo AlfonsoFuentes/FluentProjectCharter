@@ -23,37 +23,7 @@ namespace Server.EndPoint.PurchaseOrders.Commands
 
                     await Repository.UpdateAsync(row);
                     Data.Map(row);
-                    //foreach (var item in row.PurchaseOrderItems)
-                    //{
-                    //    if (!Data.SelectedPurchaseOrderItems.Any(x => x.Id == item.Id))
-                    //    {
-                    //        await Repository.RemoveAsync(item);
-                    //    }
-                    //}
-                    //foreach (var item in Data.SelectedPurchaseOrderItems)
-                    //{
-                    //    PurchaseOrderItem rowitem = null!;
-                    //    if (row.PurchaseOrderItems.Any(x => x.Id == item.Id))
-                    //    {
-                    //        rowitem = row.PurchaseOrderItems.First(x => x.Id == item.Id);
-                    //        await Repository.UpdateAsync(rowitem);
-                    //    }
-                    //    else
-                    //    {
-                    //        rowitem = PurchaseOrderItem.Create(row.Id, item.BudgetItemId);
-                    //        await Repository.AddAsync(rowitem);
-                    //    }
-                    //    if (rowitem != null)
-                    //    {
-                    //        rowitem.Name = item.Name;
-                    //        rowitem.UnitaryValueCurrency = item.UnitaryQuoteCurrency;
-                    //        rowitem.Quantity = item.Quantity;
-                    //        rowitem.BudgetItemId = item.BudgetItemId;
-                    //        rowitem.Order = item.Order;
-                    //    }
-
-
-                    //}
+                    
 
                     List<string> cache = [.. StaticClass.PurchaseOrders.Cache.KeyApproved(row.Id, row.ProjectId)];
 
@@ -73,7 +43,7 @@ namespace Server.EndPoint.PurchaseOrders.Commands
 
         static PurchaseOrder Map(this ApprovePurchaseOrderRequest request, PurchaseOrder row)
         {
-            row.SupplierId = request.SupplierId;
+            row.SupplierId = request.Supplier!.Id;
             row.QuoteCurrency = request.QuoteCurrency.Id;
             row.PurchaseOrderCurrency = request.PurchaseOrderCurrency.Id;
             row.PurchaseorderName = request.Name;
@@ -89,7 +59,8 @@ namespace Server.EndPoint.PurchaseOrders.Commands
             row.USDEUR = request.USDEUR;
             row.TaxCode = request.TaxCode;
             row.PONumber = request.PONumber;
-            row.ExpectedDate=request.ExpectedDate;  
+            row.ExpectedDate=request.ExpectedDate;
+            row.ApprovedDate = DateTime.UtcNow;
             return row;
         }
 

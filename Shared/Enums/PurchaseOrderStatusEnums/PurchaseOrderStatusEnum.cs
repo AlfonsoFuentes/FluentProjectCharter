@@ -1,12 +1,12 @@
 ﻿namespace Shared.Enums.PurchaseOrderStatusEnums
 {
-    public class PurchaseOrderStatusEnum:ValueObject
+    public class PurchaseOrderStatusEnum : ValueObject
     {
         public override string ToString()
         {
             return Name;
         }
-     
+
         public static PurchaseOrderStatusEnum Create(int id, string name) => new PurchaseOrderStatusEnum() { Id = id, Name = name };
 
         public static PurchaseOrderStatusEnum None = Create(-1, "NONE");

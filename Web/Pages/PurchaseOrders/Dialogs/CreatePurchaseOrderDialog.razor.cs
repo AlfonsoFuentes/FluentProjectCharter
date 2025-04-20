@@ -4,6 +4,7 @@ using Shared.Enums.CurrencyEnums;
 using Shared.Models.BudgetItems.Records;
 using Shared.Models.BudgetItems.Responses;
 using Shared.Models.PurchaseOrders.Requests;
+using Shared.Models.PurchaseOrders.Responses;
 using Shared.Models.Suppliers.Records;
 using Shared.Models.Suppliers.Responses;
 using Web.Pages.Suppliers;
@@ -11,6 +12,9 @@ using Web.Pages.Suppliers;
 namespace Web.Pages.PurchaseOrders.Dialogs;
 public partial class CreatePurchaseOrderDialog
 {
+    [Inject]
+    public IRate _CurrencyService { get; set; } = null!;
+    public ConversionRate RateList { get; set; } = null!;
     FluentValidationValidator _fluentValidationValidator = null!;
     [CascadingParameter]
     private IMudDialogInstance MudDialog { get; set; } = null!;
@@ -36,6 +40,11 @@ public partial class CreatePurchaseOrderDialog
     }
     protected override async Task OnInitializedAsync()
     {
+        RateList = await _CurrencyService.GetRates(DateTime.UtcNow);
+        var USDCOP = RateList == null ? 4000 : Math.Round(RateList.COP, 2);
+        var USDEUR = RateList == null ? 1 : Math.Round(RateList.EUR, 2);
+
+        
         await GetSuppliers();
 
         var resultMainBudgetItem = await GenericService.GetById<BudgetItemWithPurchaseOrdersResponse, BudgetItemWithPurchaseOrderGetById>(new BudgetItemWithPurchaseOrderGetById()
@@ -59,13 +68,13 @@ public partial class CreatePurchaseOrderDialog
                     OriginalBudgetItems = resultProjectt.Data.Capital;
                 }
                 NonSelectedBudgetItems = OriginalBudgetItems;
-                Model.IsProductive = resultProjectt.Data.IsProductive;
+                Model.IsProductiveAsset = resultProjectt.Data.IsProductiveAsset;
                 Model.CostCenter = resultProjectt.Data.CostCenter;
                 Model.ProjectId = resultProjectt.Data.ProjectId;
                 Model.ProjectAccount = resultProjectt.Data.ProjectNumber;
-                Model.QuoteCurrency = CurrencyEnum.COP;
+                Model.CurrencyDate = DateTime.UtcNow;
 
-                PurchaseOrderItemRequest item = new();
+                PurchaseOrderItemResponse item = new();
                 if (OriginalBudgetItems.Any(x => x.Id == BudgetItemId))
                 {
                     item.BudgetItem = OriginalBudgetItems.Single(x => x.Id == BudgetItemId);
@@ -74,8 +83,11 @@ public partial class CreatePurchaseOrderDialog
                     Model.MainBudgetItemId = BudgetItemId;
 
                 }
-                Model.PurchaseOrderCurrency = CurrencyEnum.COP;
+     
+
                 Model.AddItem(new());
+                Model.USDCOP = USDCOP;
+                Model.USDEUR = USDEUR;
             }
 
 

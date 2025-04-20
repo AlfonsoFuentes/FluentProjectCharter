@@ -4,6 +4,7 @@ using Shared.Models.GanttTasks.Records;
 using Shared.Models.GanttTasks.Requests;
 using Shared.Models.GanttTasks.Responses;
 using Shared.Models.Projects.Reponses;
+using Web.Pages.ProjectDependant.Deliverables;
 using Web.Services.StringServices;
 using Web.Templates;
 
@@ -43,7 +44,24 @@ public partial class GanttTaskTable
         if (Project == null) return;
         await GetAll();
     }
+    public async Task AddNewDeliverable()
+    {
 
+        var parameters = new DialogParameters<DeliverableDialog>
+        {
+            { x => x.Model, new(){ProjectId=Project.Id } },
+        };
+
+        var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
+
+        var dialog = await DialogService.ShowAsync<DeliverableDialog>("Deliverable", parameters, options);
+        var result = await dialog.Result;
+        if (result != null)
+        {
+            await GetAll();
+            StateHasChanged();
+        }
+    }
 
     GanttTaskResponse CreateRow = null!;
     GanttTaskResponse EditRow = null!;

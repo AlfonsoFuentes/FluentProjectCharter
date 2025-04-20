@@ -9,32 +9,9 @@ namespace Web.Pages.ProjectDependant.WorkBreakownStructures;
 public partial class WbsChartSvg
 {
 
-    async Task GetAll()
-    {
 
-        var result = await GenericService.GetAll<DeliverableWithGanttTaskResponseListToUpdate, GanttTaskGetAll>(new GanttTaskGetAll
-        {
-            ProjectId = ProjectId,
-        });
-
-        if (result.Succeeded)
-        {
-
-            Response = result.Data.ToReponse();
-
-
-
-        }
-
-    }
-    protected override async Task OnParametersSetAsync()
-    {
-        if (ProjectId == Guid.Empty) return;
-        await GetAll();
-    }
     [Parameter]
     public ProjectResponse Project { get; set; } = null!;
-    public Guid ProjectId => Project == null ? Guid.Empty : Project.Id;
 
     [Parameter]
     public DeliverableWithGanttTaskResponseList Response { get; set; } = null!;
@@ -65,19 +42,26 @@ public partial class WbsChartSvg
     [JSInvokable]
     public void UpdateScreenWidth(int newWidth)
     {
-        screenWidth = newWidth - 100;
+        screenWidth = newWidth - 100; // Restar margen lateral
         StateHasChanged(); // Forzar actualización del componente
     }
 
     private List<int> GetXPositions()
     {
         var positions = new List<int>();
-        int currentX = 10; // Posición inicial muy cercana al borde izquierdo
+        int currentX = 10; // Posición inicial cercana al borde izquierdo
 
         foreach (var deliverable in Response.Deliverables)
         {
             positions.Add(currentX);
             currentX += boxWidth + paddingX; // Incrementar la posición horizontal
+
+            // Si el ancho total supera el ancho de la pantalla, ajustar el espaciado
+            if (currentX > screenWidth)
+            {
+                paddingX = Math.Max(paddingX - 10, 20); // Reducir el espaciado mínimo a 20px
+                currentX = positions[^1] + boxWidth + paddingX; // Recalcular la posición
+            }
         }
 
         return positions;
@@ -93,6 +77,21 @@ public partial class WbsChartSvg
         }
 
         return totalHeight + 100;
+    }
+
+    private int GetSvgWidtht()
+    {
+        int totalWidth = 0; // Ancho total inicial
+
+        foreach (var deliverable in Response.Deliverables)
+        {
+            totalWidth += boxWidth + paddingX; // Sumar el ancho del elemento y el espaciado
+        }
+
+        // Restar el último paddingX ya que no es necesario después del último elemento
+        totalWidth = Math.Max(totalWidth - paddingX, 0);
+
+        return totalWidth + 20; // Añadir un margen adicional para evitar recortes
     }
 
     private int GetNodeHeight(DeliverableWithGanttTaskResponse node)
@@ -130,4 +129,5 @@ public partial class WbsChartSvg
         // Limpiar el listener de cambio de tamaño cuando el componente se destruye
         dotNetHelper?.Dispose();
     }
+
 }

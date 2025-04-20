@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Server.Database.Identity;
 using Server.DatabaseImplementations.Identity.Specifications;
@@ -7,7 +6,6 @@ using Server.Exceptions;
 using Server.ExtensionsMethods;
 using Server.Interfaces.Identity;
 using Server.Interfaces.Storage;
-using Server.Interfaces.UserServices;
 using Shared.Constants.Role;
 using Shared.Models.IdentityModels.Requests.Identity;
 using Shared.Models.IdentityModels.Requests.Mail;
@@ -27,11 +25,11 @@ namespace Server.DatabaseImplementations.Identity
 
         private readonly IExcelService _excelService;
         private readonly ICurrentUserService _currentUserService;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
 
         public UserService(
             UserManager<BlazorHeroUser> userManager,
-            IMapper mapper,
+            //IMapper mapper,
             RoleManager<IdentityRole> roleManager,
             //IMailService mailService,
 
@@ -39,7 +37,7 @@ namespace Server.DatabaseImplementations.Identity
             ICurrentUserService currentUserService)
         {
             _userManager = userManager;
-            _mapper = mapper;
+            //_mapper = mapper;
             _roleManager = roleManager;
             //_mailService = mailService;
 
@@ -50,7 +48,7 @@ namespace Server.DatabaseImplementations.Identity
         public async Task<Result<List<UserResponse>>> GetAllAsync()
         {
             var users = await _userManager.Users.ToListAsync();
-            var result = _mapper.Map<List<UserResponse>>(users);
+            List<UserResponse> result = new();//TODO: _mapper.Map<List<UserResponse>>(users);
             return await Result<List<UserResponse>>.SuccessAsync(result);
         }
 

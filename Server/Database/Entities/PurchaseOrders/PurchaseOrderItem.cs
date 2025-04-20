@@ -10,10 +10,22 @@ namespace Server.Database.Entities.PurchaseOrders
 
         public Guid PurchaseOrderId { get; private set; }
         public PurchaseOrder PurchaseOrder { get; set; } = null!;
-
+        public string Name { get; set; } = string.Empty;
         public Guid? BudgetItemId { get; set; }
         public BudgetItem? BudgetItem { get; set; } = null!;
-        
+        public bool IsTaxNoProductive { get; set; } = false;
+        public bool IsTaxAlteration { get; set; } = false;
+        [NotMapped]
+        public string NomenclatoreName => BudgetItem == null ? string.Empty : BudgetItem.NomenclatoreName;
+        [NotMapped]
+        public string ItemName => BudgetItem == null ? string.Empty : BudgetItem.Name;
+        [NotMapped]
+        public double USDCOP => PurchaseOrder == null ? 0 : PurchaseOrder.USDCOP;
+        [NotMapped]
+        public double USDEUR => PurchaseOrder == null ? 0 : PurchaseOrder.USDEUR;
+        [NotMapped]
+        public PurchaseOrderStatusEnum PurchaseOrderStatus => PurchaseOrder == null ? PurchaseOrderStatusEnum.None :
+            PurchaseOrder.PurchaseOrderStatusEnum;
         public ICollection<PurchaseOrderItemReceived> PurchaseOrderReceiveds { get; set; } = new List<PurchaseOrderItemReceived>();
         public static PurchaseOrderItem Create(Guid purchasorderid, Guid mwobudgetitemid)
         {
@@ -27,86 +39,53 @@ namespace Server.Database.Entities.PurchaseOrders
         public PurchaseOrderItemReceived AddPurchaseOrderReceived()
         {
             var row = PurchaseOrderItemReceived.Create(Id);
-    
+
 
             return row;
         }
-        public string Name { get; set; } = string.Empty;
-
-       
-        public double UnitaryValueCurrency { get; set; }
-        public double Quantity { get; set; }
-        public bool IsTaxNoProductive { get; set; } = false;
-        public bool IsTaxAlteration { get; set; } = false;
-        [NotMapped]
-        public string NomenclatoreName => BudgetItem == null ? string.Empty : BudgetItem.NomenclatoreName;
         [NotMapped]
         public CurrencyEnum PurchaseOrderCurrency => PurchaseOrder == null ? CurrencyEnum.None : PurchaseOrder.PurchaseOrderCurrencyEnum;
         [NotMapped]
-        public CurrencyEnum QuoteCurrency => PurchaseOrder == null ? CurrencyEnum.None : PurchaseOrder.QuoteCurrencyEnum;
+        public CurrencyEnum QuoteCurrency => PurchaseOrder == null ? CurrencyEnum.None : PurchaseOrder.QuoteCurrencyEnum;     
+        public double UnitaryValueQuoteCurrency { get; set; }
+        public double Quantity { get; set; }
         [NotMapped]
-        public double UnitaryValuePurchaseOrderCurrency => UnitaryValueCurrency;
+        public double TotalItemQuoteCurrency => UnitaryValueQuoteCurrency * Quantity;
+
         [NotMapped]
-        public double UnitaryValueUSD => PurchaseOrderCurrency.Id == CurrencyEnum.USD.Id ? UnitaryValuePurchaseOrderCurrency :
-            PurchaseOrderCurrency.Id == CurrencyEnum.COP.Id ? USDCOP == 0 ? 0 : UnitaryValuePurchaseOrderCurrency / USDCOP :
-            PurchaseOrderCurrency.Id == CurrencyEnum.EUR.Id ? USDEUR == 0 ? 0 : UnitaryValuePurchaseOrderCurrency / USDEUR :
+        public double UnitaryValueUSD => QuoteCurrency.Id == CurrencyEnum.USD.Id ? UnitaryValueQuoteCurrency :
+            QuoteCurrency.Id == CurrencyEnum.COP.Id ? USDCOP == 0 ? 0 : UnitaryValueQuoteCurrency / USDCOP :
+            QuoteCurrency.Id == CurrencyEnum.EUR.Id ? USDEUR == 0 ? 0 : UnitaryValueQuoteCurrency / USDEUR :
             0;
-        [NotMapped]
-        public double UnitaryValueQuoteCurrency => QuoteCurrency.Id == CurrencyEnum.USD.Id ? UnitaryValueUSD :
-            QuoteCurrency.Id == CurrencyEnum.COP.Id ? UnitaryValueUSD * USDCOP :
-            QuoteCurrency.Id == CurrencyEnum.EUR.Id ? UnitaryValueUSD * USDEUR : 0;
 
         [NotMapped]
-        public double POItemQuoteValueCurrency => UnitaryValueQuoteCurrency * Quantity;
-        [NotMapped]
-        public double POItemValueUSD => UnitaryValueUSD * Quantity;
+        public double TotalItemValueUSD => UnitaryValueUSD * Quantity;
 
         [NotMapped]
-        public double POItemActualCurrency => PurchaseOrderReceiveds == null || PurchaseOrderReceiveds.Count == 0 ? 0 : PurchaseOrderReceiveds.Sum(x => x.ValueReceivedCurrency);
+        public double UnitaryValuePurchaseOrderCurrency => PurchaseOrderCurrency.Id == CurrencyEnum.USD.Id ? UnitaryValueUSD :
+            PurchaseOrderCurrency.Id == CurrencyEnum.COP.Id ? USDCOP == 0 ? 0 : UnitaryValueUSD * USDCOP :
+            PurchaseOrderCurrency.Id == CurrencyEnum.EUR.Id ? USDEUR == 0 ? 0 : UnitaryValueUSD * USDEUR :
+            0;
+        
         [NotMapped]
-        public DateTime? CurrencyDate => PurchaseOrder == null ? null! : PurchaseOrder.CurrencyDate;
+        public double TotalItemPurchaseOrderCurrency => UnitaryValuePurchaseOrderCurrency * Quantity;        
         [NotMapped]
-        public DateTime? ExpectedDate => PurchaseOrder == null ? null! : PurchaseOrder.ExpectedDate;
+        public double ActualItemPurchaseOrderCurrency => PurchaseOrderReceiveds == null || PurchaseOrderReceiveds.Count == 0 ? 0 : PurchaseOrderReceiveds.Sum(x => x.ValueReceivedCurrency);
         [NotMapped]
-        public string sExpectedDate => ExpectedDate == null ? string.Empty : ExpectedDate!.Value.ToString("d");
+        public double CommitmentItemPurchaseOrderCurrency => TotalItemPurchaseOrderCurrency - ActualItemPurchaseOrderCurrency;
         [NotMapped]
-        public bool IsTaxEditable => PurchaseOrder == null ? false : PurchaseOrder.IsTaxEditable;
+        public double ActualItemUSD => PurchaseOrderReceiveds == null || PurchaseOrderReceiveds.Count == 0 ? 0 :PurchaseOrderReceiveds.Sum(x => x.ReceivedUSD);
+        
         [NotMapped]
-        public bool IsCapitalizedSalary => PurchaseOrder == null ? false : PurchaseOrder.IsCapitalizedSalary;
+        public double PotentialItemUSD =>
+            PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? TotalItemValueUSD : 0;       
+        [NotMapped]
+        public double CommitmentItemUSD =>
+            PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? 0 : TotalItemValueUSD - ActualItemUSD;
 
-        [NotMapped]
-        public string PurchaseRequisition => PurchaseOrder == null ? string.Empty : PurchaseOrder.PurchaseRequisition;
-        [NotMapped]
-        public string PurchaseOrderNumber => PurchaseOrder == null ? string.Empty : PurchaseOrder.PONumber;
-        [NotMapped]
-        public string Supplier => PurchaseOrder == null ? string.Empty : PurchaseOrder.Supplier == null ? string.Empty : PurchaseOrder.Supplier.NickName;
-        [NotMapped]
-        public PurchaseOrderStatusEnum PurchaseOrderStatus => PurchaseOrder == null ? PurchaseOrderStatusEnum.None :
-            PurchaseOrder.PurchaseOrderStatusEnum;
-        [NotMapped]
-        public double USDCOP => PurchaseOrder == null ? 0 : PurchaseOrder.USDCOP;
-        [NotMapped]
-        public double USDEUR => PurchaseOrder == null ? 0 : PurchaseOrder.USDEUR;
+       
 
-        [NotMapped]
-        public double ActualUSD => PurchaseOrderReceiveds == null || PurchaseOrderReceiveds.Count == 0 ? 0 :
-            PurchaseOrderReceiveds.Sum(x => x.ValueReceivedUSD);
-        [NotMapped]
-        public double PotentialCommitmentUSD =>
-            PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? POItemValueUSD : 0;
-        [NotMapped]
-        public double ApprovedUSD =>
-            PurchaseOrderStatus.Id != PurchaseOrderStatusEnum.Created.Id ? POItemValueUSD : 0;
-        [NotMapped]
-        public double CommitmentUSD =>
-            PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? 0 : CommitmentCurrency <= 0 ? 0 : ApprovedUSD - ActualUSD;
-
-        [NotMapped]
-        public double CommitmentCurrency =>
-           PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? 0 : POItemQuoteValueCurrency - POItemActualCurrency;
-
-        [NotMapped]
-        public double TotalOrderUSD => CommitmentUSD + ActualUSD;
+       
 
     }
 }

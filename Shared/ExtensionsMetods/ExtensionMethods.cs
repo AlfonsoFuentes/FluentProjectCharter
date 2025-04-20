@@ -142,5 +142,10 @@ namespace Shared.ExtensionsMetods
             ExpContext.Options.ParseCulture = System.Globalization.CultureInfo.InvariantCulture;
             ParserInitialized = true;
         }
+        public static string ToCurrencyCulture(this double str)
+        {
+            return string.Format(new System.Globalization.CultureInfo("en-US"), "{0:C0}", str);
+        }
     }
+   
 }

@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
 using Server.Database.Identity;
 using Server.Interfaces.Identity;
-using Server.Interfaces.UserServices;
-using Shared.Commons;
 using Shared.Constants.Role;
 using Shared.Models.IdentityModels.Requests.Identity;
 using Shared.Models.IdentityModels.Responses.Identity;
@@ -18,18 +14,18 @@ namespace Server.DatabaseImplementations.Identity
         private readonly IRoleClaimService _roleClaimService;
 
         private readonly ICurrentUserService _currentUserService;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
 
         public RoleService(
             RoleManager<IdentityRole> roleManager,
-            IMapper mapper,
+            //IMapper mapper,
             UserManager<BlazorHeroUser> userManager,
             IRoleClaimService roleClaimService,
 
             ICurrentUserService currentUserService)
         {
             _roleManager = roleManager;
-            _mapper = mapper;
+            //_mapper = mapper;
             _userManager = userManager;
             _roleClaimService = roleClaimService;
 
@@ -69,7 +65,7 @@ namespace Server.DatabaseImplementations.Identity
         public async Task<Result<List<RoleResponse>>> GetAllAsync()
         {
             var roles = await _roleManager.Roles.ToListAsync();
-            var rolesResponse = _mapper.Map<List<RoleResponse>>(roles);
+            List<RoleResponse> rolesResponse = new();//TODO: _mapper.Map<List<RoleResponse>>(roles);
             return await Result<List<RoleResponse>>.SuccessAsync(rolesResponse);
         }
 
@@ -132,7 +128,7 @@ namespace Server.DatabaseImplementations.Identity
         public async Task<Result<RoleResponse>> GetByIdAsync(string id)
         {
             var roles = await _roleManager.Roles.SingleOrDefaultAsync(x => x.Id == id);
-            var rolesResponse = _mapper.Map<RoleResponse>(roles);
+            RoleResponse rolesResponse = new();//TODO: _mapper.Map<RoleResponse>(roles);
             return await Result<RoleResponse>.SuccessAsync(rolesResponse);
         }
 

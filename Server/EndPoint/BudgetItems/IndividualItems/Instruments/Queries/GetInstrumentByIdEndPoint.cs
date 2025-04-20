@@ -1,4 +1,5 @@
 ﻿using Server.EndPoint.Brands.Queries;
+using Server.EndPoint.PurchaseOrders.Queries;
 using Shared.Enums.ConnectionTypes;
 using Shared.Enums.Instruments;
 using Shared.Enums.Materials;
@@ -71,6 +72,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Instruments.Queries
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
+                PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
             };
 
 

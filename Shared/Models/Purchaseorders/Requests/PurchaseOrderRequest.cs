@@ -14,17 +14,18 @@ namespace Shared.Models.PurchaseOrders.Requests
         public SupplierResponse? Supplier { get; set; }
         public Guid? SupplierId => Supplier == null ? Guid.Empty : Supplier.Id;
         public string VendorCode => Supplier == null ? string.Empty : Supplier.VendorCode;
+        public string SPL => IsAlteration ? "0735015000" : "151605000";
         public string TaxCodeLD { get; set; } = "751545";
         public string TaxCodeLP { get; set; } = "721031";
         public string QuoteNo { get; set; } = string.Empty;
-        public string SPL => IsAlteration ? "0735015000" : "151605000";
+   
         public bool IsAlteration { get; set; }
         public bool IsProductive { get; set; }
         public bool IsCapitalizedSalary { get; set; }
         public CostCenterEnum CostCenter { get; set; } = CostCenterEnum.None;
         public string TaxCode => IsAlteration || !IsProductive ? TaxCodeLP : TaxCodeLD;
         public DateTime? CurrencyDate { get; set; } = DateTime.UtcNow;
-        public string CurrencyDateString => CurrencyDate == null ? string.Empty : CurrencyDate.Value.ToString("d");
+    
         public string PurchaseRequisition { get; set; } = string.Empty;
         public Guid ProjectId { get; set; } = Guid.Empty;
         public string ProjectAccount { get; set; } = string.Empty;
@@ -88,7 +89,9 @@ namespace Shared.Models.PurchaseOrders.Requests
         }
         public string Name { set; get; } = string.Empty;
 
-        public bool IsSameCurrency => PurchaseOrderCurrency.Id == QuoteCurrency.Id;
+   
+
+        public virtual List<PurchaseOrderItemReceivedRequest> PurchaseOrderItemReceiveds=> PurchaseOrderItems.SelectMany(x => x.PurchaseOrderItemReceiveds).ToList();
         public virtual List<PurchaseOrderItemRequest> PurchaseOrderItems { set; get; } = new();
         public void RemoveItem(PurchaseOrderItemRequest item)
         {
@@ -120,6 +123,45 @@ namespace Shared.Models.PurchaseOrders.Requests
         public string sTotalQuoteCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalQuoteCurrency);
         public string sTotalPurchaseOrderCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalPurchaseOrderCurrency);
         public string sTotalUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalUSD);
+
+        public bool IsAnyPendingToReceiveLessThanZero => PurchaseOrderItems.Any(x => x.PendingToReceiveCurrency < 0);   
+        public double PendingToReceiveCurrency => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.PendingToReceiveCurrency);
+        public DateTime? ReceivingDate { get; set; } = DateTime.UtcNow;
+        double _ReceivingUSDCOP;
+        double _ReceivingUSDEUR;
+        public double ReceivingUSDCOP
+        {
+            get { return _ReceivingUSDCOP; }
+            set
+            {
+                _ReceivingUSDCOP = value;
+                foreach (var item in PurchaseOrderItems)
+                {
+                    item.ReceivingUSDCOP = _ReceivingUSDCOP;
+                }
+            }
+        }
+        public double ReceivingUSDEUR
+        {
+            get { return _ReceivingUSDEUR; }
+            set
+            {
+                _ReceivingUSDEUR = value;
+                foreach (var item in PurchaseOrderItems)
+                {
+                    item.ReceivingUSDEUR = _ReceivingUSDEUR;
+                }
+            }
+        }
+
+        public bool IsCompletedReceived => PurchaseOrderItems.Sum(x => x.PendingToReceiveCurrency) == 0;
+        public double TotalReceivingUSD => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.ReceivingValueUSD);
+        public string sTotalReceivingUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalReceivingUSD);
+        public double ActualUSD => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.ActualUSD);
+        public string sActualUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", ActualUSD);
+
+        public double ActualCurrency => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.ActualCurrency);
+        public string sActualCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", ActualCurrency);
 
     }
 }

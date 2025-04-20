@@ -8,7 +8,7 @@ namespace Shared.Models.BudgetItems.Responses
         bool Selected { get; set; }
         string Nomenclatore { get; set; }
         double BudgetUSD { get; }
-        string sBudgetUSD { get; }
+
         string Tag { get; }
         bool IsAlteration { get; set; }
         bool IsTaxes { get; set; }
@@ -23,10 +23,8 @@ namespace Shared.Models.BudgetItems.Responses
         double PotentialUSD { get; set; }
         double AssignedUSD { get; }
         double ToCommitUSD { get; }
-        string sActualUSD { get; }
-        string sCommitmentUSD { get; }
-        string sPotentialUSD { get; }
-        string sAssignedUSD { get; }
-        string sToCommitUSD { get; }
+    
+        
+        
     }
 }

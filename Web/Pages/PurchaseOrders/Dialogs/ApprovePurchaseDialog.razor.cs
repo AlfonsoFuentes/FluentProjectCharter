@@ -20,8 +20,7 @@ public partial class ApprovePurchaseDialog
     {
         Validated = _fluentValidationValidator == null ? false : await _fluentValidationValidator.ValidateAsync(options => { options.IncludeAllRuleSets(); });
     }
-    [Parameter]
-    public PurchaseOrderResponse Response { get; set; } = new();
+  
     [Parameter]
     public List<SupplierResponse> Suppliers { get; set; } = new();
 
@@ -30,14 +29,15 @@ public partial class ApprovePurchaseDialog
 
         await GetSuppliers();
         await GetBudgetItems();
-        Model = Response.ToApprove();
+        Model= PurchaseOrder.ToApprove();
+        Model.ExpectedDate=DateTime.UtcNow;
         Model.PurchaseOrderItems.ForEach(x =>
         {
             x.BudgetItem = OriginalBudgetItems.Single(y => y.Id == x.BudgetItemId);
 
 
         });
-        NonSelectedBudgetItems.Remove(OriginalBudgetItems.Single(y => y.Id == Response.MainBudgetItemId));
+        NonSelectedBudgetItems.Remove(OriginalBudgetItems.Single(y => y.Id == Model.MainBudgetItemId));
       
         StateHasChanged();
 
@@ -46,11 +46,11 @@ public partial class ApprovePurchaseDialog
     {
         var resultProjectt = await GenericService.GetAll<BudgetItemWithPurchaseOrderResponseList, BudgetItemWithPurchaseOrderGetAll>(new BudgetItemWithPurchaseOrderGetAll()
         {
-            ProjectId = Response.ProjectId,
+            ProjectId = PurchaseOrder.ProjectId,
         });
         if (resultProjectt.Succeeded)
         {
-            if (Response.IsAlteration)
+            if (Model.IsAlteration)
             {
                 OriginalBudgetItems = resultProjectt.Data.Expenses;
             }
@@ -63,8 +63,8 @@ public partial class ApprovePurchaseDialog
     }
     List<BudgetItemWithPurchaseOrdersResponse> OriginalBudgetItems = new();
     List<BudgetItemWithPurchaseOrdersResponse> NonSelectedBudgetItems = new();
-    [CascadingParameter]
-
+    [Parameter]
+    public PurchaseOrderResponse PurchaseOrder{ get; set; } = new();
     public ApprovePurchaseOrderRequest Model { get; set; } = new();
 
 

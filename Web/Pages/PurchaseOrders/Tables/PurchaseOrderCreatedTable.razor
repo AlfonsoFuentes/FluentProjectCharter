@@ -1,6 +1,11 @@
 ﻿@page "/PurchaseOrderCreated"
 
-<PurchaseOrdersTable Status="PurchaseOrderStatusEnum.Created"></PurchaseOrdersTable>
+<PurchaseOrdersTable Items="@Items"
+                     GetAll="GetAll"
+                     HideStatus=true
+                     HidePONumber=true
+                     
+                     TableTitle="Purchase Orders Created"></PurchaseOrdersTable>
 
 @code {
 
