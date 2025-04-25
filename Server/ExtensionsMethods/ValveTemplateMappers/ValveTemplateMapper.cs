@@ -27,7 +27,7 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
             row.Material = request.Material.Id;
             row.PositionerType = request.PositionerType.Id;
             row.SignalType = request.SignalType.Id;
-  
+            row.ConnectionType = request.ConnectionType.Id; 
 
             return row;
         }
@@ -47,8 +47,8 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
                 SignalType = SignalTypeEnum.GetType(row.SignalType),
                 TagLetter = row.TagLetter,
                 PositionerType = PositionerTypeEnum.GetType(row.PositionerType),
-              
 
+                ConnectionType = ConnectionTypeEnum.GetType(row.ConnectionType),
                 Value = row.Value,
                 Nozzles = row.NozzleTemplates.Count == 0 ? new() : row.NozzleTemplates.Select(x => x.Map()).ToList(),
 
@@ -61,18 +61,18 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
             row.Value = Value;
             row.TagLetter = request.TagLetter;
 
-            row.Model = request.Model;
-            row.BrandTemplateId = request.Brand!.Id;
+            row.Model = request.Template.Model;
+            row.BrandTemplateId = request.Template.Brand!.Id;
 
-            row.Type = request.Type.Id;
-            row.HasFeedBack = request.HasFeedBack;
-            row.Diameter = request.Diameter.Id;
-            row.ActuatorType = request.ActuatorType.Id;
-            row.FailType = request.FailType.Id;
-            row.Material = request.Material.Id;
-            row.PositionerType = request.PositionerType.Id;
-            row.SignalType = request.SignalType.Id;
-   
+            row.Type = request.Template.Type.Id;
+            row.HasFeedBack = request.Template.HasFeedBack;
+            row.Diameter = request.Template.Diameter.Id;
+            row.ActuatorType = request.Template.ActuatorType.Id;
+            row.FailType = request.Template.FailType.Id;
+            row.Material = request.Template.Material.Id;
+            row.PositionerType = request.Template.PositionerType.Id;
+            row.SignalType = request.Template.SignalType.Id;
+            row.ConnectionType = request.Template.ConnectionType.Id;
 
             return row;
         }
@@ -86,38 +86,9 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
             row.ProvisionalTag = request.ProvisionalTag;
             return row;
         }
-       public static async Task<ValveTemplate> GetValveTemplate(IRepository Repository, ValveResponse Data)
+        public static async Task<ValveTemplate> AddValveTemplate(IRepository Repository, ValveResponse Data)
         {
-            Func<IQueryable<ValveTemplate>, IIncludableQueryable<ValveTemplate, object>> Includes = x => x
-           .Include(x => x.BrandTemplate!)
-           .Include(x => x.NozzleTemplates)
-           ;
-            Expression<Func<ValveTemplate, bool>> Criteria = x =>
-            x.BrandTemplateId == Data.BrandId &&
-            x.Model.Equals(Data.Model) &&
-            
-            x.Type == Data.Type.Id &&
-            x.Material == Data.Material.Id &&
-            x.Diameter == Data.Diameter.Id &&
-            x.ActuatorType == Data.ActuatorType.Id &&
-            x.PositionerType == Data.PositionerType.Id &&
-            x.HasFeedBack == Data.HasFeedBack &&
-            x.FailType == Data.FailType.Id &&
-       
-            x.SignalType == Data.SignalType.Id;
-            var valveTemplates = await Repository.GetAllAsync(Includes: Includes, Criteria: Criteria);
-            if (valveTemplates != null && valveTemplates.Any())
-            {
-                foreach (var item in valveTemplates)
-                {
 
-                    if (item.NozzleTemplates.ValidateNozzles(Data.Nozzles))
-                    {
-                        return item; // Si todas las boquillas coinciden, retornar true
-                    }
-                }
-
-            }
 
             var valveTemplate = Template.AddValveTemplate();
             Data.Map(valveTemplate, Data.BudgetUSD);
@@ -127,7 +98,7 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
                 nozzle.Map(nozzleTemplate);
                 await Repository.AddAsync(nozzleTemplate);
             }
-            await Repository.AddAsync(valveTemplate);   
+            await Repository.AddAsync(valveTemplate);
             return valveTemplate;
 
         }
@@ -140,26 +111,18 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
                 GanttTaskId = row.GanttTaskId,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
-               
+
 
                 TagNumber = row.TagNumber,
-                Brand = row.ValveTemplate == null || row.ValveTemplate.BrandTemplate == null ? new() : row.ValveTemplate.BrandTemplate!.Map(),
-                Model = row.ValveTemplate == null ? string.Empty : row.ValveTemplate.Model,
-                Type = row.ValveTemplate == null ? ValveTypesEnum.None : ValveTypesEnum.GetType(row.ValveTemplate.Type),
-                Material = row.ValveTemplate == null ? MaterialEnum.None : MaterialEnum.GetType(row.ValveTemplate.Material),
-                ActuatorType = row.ValveTemplate == null ? ActuatorTypeEnum.None : ActuatorTypeEnum.GetType(row.ValveTemplate.ActuatorType),
-                PositionerType = row.ValveTemplate == null ? PositionerTypeEnum.None : PositionerTypeEnum.GetType(row.ValveTemplate.PositionerType),
-                HasFeedBack = row.ValveTemplate == null ? false : row.ValveTemplate.HasFeedBack,
-                Diameter = row.ValveTemplate == null ? NominalDiameterEnum.None : NominalDiameterEnum.GetType(row.ValveTemplate.Diameter),
-                FailType = row.ValveTemplate == null ? FailTypeEnum.None : FailTypeEnum.GetType(row.ValveTemplate.FailType),
-                SignalType = row.ValveTemplate == null ? SignalTypeEnum.None : SignalTypeEnum.GetType(row.ValveTemplate.SignalType),
+                Template = row.ValveTemplate == null ? new() : row.ValveTemplate.Map(),
+
                 TagLetter = row.TagLetter,
                 ShowDetails = row.ValveTemplate != null,
                 Nozzles = row.Nozzles == null || row.Nozzles.Count == 0 ? new() : row.Nozzles.Select(x => x.Map()).ToList(),
                 IsExisting = row.IsExisting,
                 ProvisionalTag = row.ProvisionalTag,
                 ShowProvisionalTag = !string.IsNullOrWhiteSpace(row.ProvisionalTag),
-            
+
                 BudgetUSD = row.BudgetUSD,
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,

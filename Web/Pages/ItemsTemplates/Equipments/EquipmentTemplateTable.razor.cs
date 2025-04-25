@@ -21,14 +21,15 @@ public partial class EquipmentTemplateTable
     ;
     public List<EquipmentTemplateResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items :
         Items.Where(Criteria).ToList();
+     
     protected override async Task OnInitializedAsync()
     {
 
-        if (Items.Count == 0)
+        if (!ByParameter)
             await GetAll();
-        else ByParameter = true;
     }
-    bool ByParameter { get; set; } = false;
+    [Parameter]
+    public bool ByParameter { get; set; } = false;
     async Task GetAll()
     {
         var result = await GenericService.GetAll<EquipmentTemplateResponseList, EquipmentTemplateGetAll>(new EquipmentTemplateGetAll());
@@ -36,7 +37,13 @@ public partial class EquipmentTemplateTable
         {
             Items = result.Data.Items;
         }
+        if (ByParameter && UpdateForm.HasDelegate)
+        {
+            await UpdateForm.InvokeAsync();
+        }
     }
+    [Parameter]
+    public EventCallback UpdateForm { get; set; }
     [Parameter]
     public EventCallback<EquipmentTemplateResponse> SendToForm { get; set; } 
     public async Task AddNew()

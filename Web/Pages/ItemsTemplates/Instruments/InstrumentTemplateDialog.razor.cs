@@ -135,4 +135,16 @@ public partial class InstrumentTemplateDialog
         }
 
     }
+    void ChangeDiameter()
+    {
+
+        if (Model.Nozzles.Count > 0)
+        {
+            foreach (var nozzle in Model.Nozzles)
+            {
+                nozzle.NominalDiameter = Model.Diameter;
+            }
+        }
+
+    }
 }

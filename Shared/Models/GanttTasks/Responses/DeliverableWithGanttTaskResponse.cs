@@ -37,7 +37,7 @@ namespace Shared.Models.GanttTasks.Responses
         public List<GanttTaskResponse> FlatOrderedItems => GanttTaskHelper.FlattenCompletedOrderedItems(Items);
 
         public double TotalBudget => OrderedItems.Count == 0 ? 0 : OrderedItems.Sum(x => x.TotalBudget);
-        public string sTotalBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalBudget);
+     
         public void Calculate()
         {
             UpdateSOrder();
@@ -242,7 +242,7 @@ namespace Shared.Models.GanttTasks.Responses
             var newGanttTask = new GanttTaskResponse
             {
                 Id = Guid.NewGuid(), // Generar un nuevo Id único
-
+                Name="New Task",
                 DeliverableId = deliverableId,
                 StartDate = DateTime.Now,
                 Duration = "1d",
@@ -257,7 +257,7 @@ namespace Shared.Models.GanttTasks.Responses
                 // Si selectedRow es null, lo ponemos de ultimo en Items
                 var lastOrder = OrderedItems.Count == 0 ? 1 : OrderedItems.Last().Order + 1;
                 var lastLabelOrder = FlatOrderedItems.Count == 0 ? 1 : FlatOrderedItems.Last().LabelOrder + 1;
-                newGanttTask.Name = $"New GanttTask-{lastOrder}";
+ 
                 newGanttTask.Order = lastOrder;
                 newGanttTask.LabelOrder = lastLabelOrder;
                 Items.Add(newGanttTask);
@@ -275,7 +275,7 @@ namespace Shared.Models.GanttTasks.Responses
                         // Si selectedRow tiene subdeliverables lo pnemos de primero 
                         newGanttTask.Order = 1;
                         newGanttTask.ParentGanttTaskId = item.Id;
-                        newGanttTask.Name = $"SubGanttTask-1";
+          
                         item.OrderedSubGanttTasks.ForEach(x => { x.Order += 1; });
                         item.SubGanttTasks.Add(newGanttTask);
                         Calculate();

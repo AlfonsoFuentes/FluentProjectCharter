@@ -15,16 +15,16 @@ public partial class InstrumentTemplateTable
     x.VariableInstrument.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase) ||
     x.BrandName.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase) ||
     x.Model.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase) ||
-    x.Material.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase) 
+    x.Material.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase)
     ;
     public List<InstrumentTemplateResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items :
         Items.Where(Criteria).ToList();
     protected override async Task OnInitializedAsync()
     {
 
-        if (Items.Count == 0)
+        if (!ByParameter)
             await GetAll();
-        else ByParameter = true;
+
     }
     async Task GetAll()
     {
@@ -32,9 +32,19 @@ public partial class InstrumentTemplateTable
         if (result.Succeeded)
         {
             Items = result.Data.Items;
+           
+
+
+        }
+        if (ByParameter && UpdateForm.HasDelegate)
+        {
+            await UpdateForm.InvokeAsync();
         }
     }
-    bool ByParameter { get; set; } = false;
+    [Parameter]
+    public EventCallback UpdateForm { get; set; }
+    [Parameter]
+    public bool ByParameter { get; set; } = false;
     public async Task AddNew()
     {
 
@@ -163,13 +173,13 @@ public partial class InstrumentTemplateTable
             Model = response.Model,
             Name = response.Name,
             Nozzles = response.Nozzles,
-   
+
             SignalType = response.SignalType,
             Reference = response.Reference,
             ModifierVariable = response.ModifierVariable,
             VariableInstrument = response.VariableInstrument,
             Value = response.Value,
-            ConnectionType=response.ConnectionType, 
+            ConnectionType = response.ConnectionType,
 
 
 

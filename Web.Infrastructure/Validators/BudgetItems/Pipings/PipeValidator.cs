@@ -31,13 +31,13 @@ namespace Web.Infrastructure.Validators.BudgetItems.Pipings
             RuleFor(x => x.FluidCode).NotNull().When(x => x.ShowDetails)
           .WithMessage("Fluid must be defined!");
 
-            RuleFor(x => x.Material).NotEqual(MaterialEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.Material).NotEqual(MaterialEnum.None).When(x => x.ShowDetails)
           .WithMessage("Internal Material must be defined!");
 
-            RuleFor(x => x.Diameter).NotEqual(NominalDiameterEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.Diameter).NotEqual(NominalDiameterEnum.None).When(x => x.ShowDetails)
           .WithMessage("Internal Material must be defined!");
 
-            RuleFor(x => x.PipeClass).NotEqual(PipeClassEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.Class).NotEqual(PipeClassEnum.None).When(x => x.ShowDetails)
           .WithMessage("Pipe Class must be defined!");
 
 

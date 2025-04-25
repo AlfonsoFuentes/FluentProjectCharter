@@ -7,7 +7,7 @@ using Shared.Models.Brands.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Valves.Records;
 using Shared.Models.BudgetItems.IndividualItems.Valves.Responses;
-using Shared.Models.Templates.NozzleTemplates;
+using Shared.Models.Templates.Equipments.Responses;
 using Shared.Models.Templates.Valves.Records;
 using Shared.Models.Templates.Valves.Responses;
 using Web.Pages.Brands;
@@ -112,18 +112,23 @@ public partial class ValveDialog
     }
     async Task GetFromTamplateList(ValveTemplateResponse response)
     {
-        Model.Brand = response.Brand!;
+        Model.Template = new()
+        {
+            Diameter = response.Diameter,
+            Brand = response.Brand,
+            ActuatorType = response.ActuatorType,
+            FailType = response.FailType,
+            HasFeedBack = response.HasFeedBack,
+            Material = response.Material,
+            Model = response.Model,
+            PositionerType = response.PositionerType,
+            SignalType = response.SignalType,
+            Type = response.Type,
+            Id = response.Id,
+            Value = response.Value,
+        };
 
-        Model.ActuatorType = response.ActuatorType;
-        Model.Diameter = response.Diameter;
-        Model.FailType = response.FailType;
-        Model.HasFeedBack = response.HasFeedBack;
-        Model.SignalType = response.SignalType;
-        Model.PositionerType = response.PositionerType;
-        Model.Model = response.Model;
-        Model.Material = response.Material;
-        Model.Type = response.Type;
-        Model.HasFeedBack = response.HasFeedBack;
+       
         Model.Nozzles = response.Nozzles.Select((row, index) => new NozzleResponse
         {
             Order = index + 1,
@@ -141,7 +146,7 @@ public partial class ValveDialog
 
         // Actualizar las boquillas según el tipo de válvula
         UpdateNozzlesBasedOnValveType();
-
+        OnChangeTemplate();
 
     }
 
@@ -159,39 +164,39 @@ public partial class ValveDialog
 
     void AddInitialNozzles()
     {
-        Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Inlet, NominalDiameter = Model.Diameter,  });
-        Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter, });
+        Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Inlet, NominalDiameter = Model.Template.Diameter,  });
+        Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Template.Diameter, });
 
-        if (Model.Type == ValveTypesEnum.Ball_Three_Way_L || Model.Type == ValveTypesEnum.Ball_Three_Way_T)
+        if (Model.Template.Type == ValveTypesEnum.Ball_Three_Way_L || Model.Template.Type == ValveTypesEnum.Ball_Three_Way_T)
         {
-            Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter,  });
+            Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Template.Diameter,  });
         }
-        else if (Model.Type == ValveTypesEnum.Diaphragm_Zero_deadLeg || Model.Type == ValveTypesEnum.Ball_Zero_deadLeg)
+        else if (Model.Template.Type == ValveTypesEnum.Diaphragm_Zero_deadLeg || Model.Template.Type == ValveTypesEnum.Ball_Zero_deadLeg)
         {
             Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet,  });
         }
-        else if (Model.Type == ValveTypesEnum.Ball_Four_Way)
+        else if (Model.Template.Type == ValveTypesEnum.Ball_Four_Way)
         {
-            Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter, });
-            Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter,  });
+            Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Template.Diameter, });
+            Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Template.Diameter,  });
         }
     }
 
     void AdjustNozzlesForValveType()
     {
-        if (Model.Type == ValveTypesEnum.Ball_Three_Way_L || Model.Type == ValveTypesEnum.Ball_Three_Way_T)
+        if (Model.Template.Type == ValveTypesEnum.Ball_Three_Way_L || Model.Template.Type == ValveTypesEnum.Ball_Three_Way_T)
         {
 
             if (Model.Nozzles.Count == 2)
             {
-                Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+                Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Template.Diameter });
             }
             else if (Model.Nozzles.Count == 4)
             {
                 Model.Nozzles.Remove(Model.Nozzles.Last());
             }
         }
-        else if (Model.Type == ValveTypesEnum.Diaphragm_Zero_deadLeg || Model.Type == ValveTypesEnum.Ball_Zero_deadLeg)
+        else if (Model.Template.Type == ValveTypesEnum.Diaphragm_Zero_deadLeg || Model.Template.Type == ValveTypesEnum.Ball_Zero_deadLeg)
         {
             if (Model.Nozzles.Count == 2)
             {
@@ -202,16 +207,16 @@ public partial class ValveDialog
                 Model.Nozzles.Remove(Model.Nozzles.Last());
             }
         }
-        else if (Model.Type == ValveTypesEnum.Ball_Four_Way)
+        else if (Model.Template.Type == ValveTypesEnum.Ball_Four_Way)
         {
             if (Model.Nozzles.Count == 2)
             {
-                Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
-                Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+                Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Template.Diameter });
+                Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Template.Diameter });
             }
             else if (Model.Nozzles.Count == 3)
             {
-                Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
+                Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Template.Diameter });
             }
 
         }
@@ -234,38 +239,39 @@ public partial class ValveDialog
         {
             foreach (var nozzle in Model.Nozzles)
             {
-                nozzle.NominalDiameter = Model.Diameter;
+                nozzle.NominalDiameter = Model.Template.Diameter;
             }
         }
-
+        OnChangeTemplate();
     }
    
     void ChangeActuator()
     {
 
-        if (Model.ActuatorType.Id == ActuatorTypeEnum.Hand.Id)
+        if (Model.Template.ActuatorType.Id == ActuatorTypeEnum.Hand.Id)
         {
-            Model.SignalType = SignalTypeEnum.NotApplicable;
-            Model.FailType = FailTypeEnum.Not_Applicable;
+            Model.Template.SignalType = SignalTypeEnum.NotApplicable;
+            Model.Template.FailType = FailTypeEnum.Not_Applicable;
         }
-        if (Model.ActuatorType.Id == ActuatorTypeEnum.Double_effect.Id)
+        if (Model.Template.ActuatorType.Id == ActuatorTypeEnum.Double_effect.Id)
         {
 
-            Model.FailType = FailTypeEnum.Not_Applicable;
+            Model.Template.FailType = FailTypeEnum.Not_Applicable;
         }
+        OnChangeTemplate(); 
     }
     void ChangePositioner()
     {
 
-        if (Model.PositionerType == PositionerTypeEnum.Proportional)
+        if (Model.Template.PositionerType == PositionerTypeEnum.Proportional)
         {
-            Model.SignalType = SignalTypeEnum.mA_4_20;
+            Model.Template.SignalType = SignalTypeEnum.mA_4_20;
         }
         else
         {
-            Model.SignalType = SignalTypeEnum.None;
+            Model.Template.SignalType = SignalTypeEnum.None;
         }
-
+        OnChangeTemplate(); 
     }
     async Task OnChageDetails()
     {
@@ -277,5 +283,68 @@ public partial class ValveDialog
         {
             await this.MudDialog.SetOptionsAsync(new DialogOptions() { MaxWidth = MaxWidth.Medium });
         }
+    }
+    void ChangeConnectionType()
+    {
+        foreach (var nozzle in Model.Nozzles)
+        {
+            nozzle.ConnectionType = Model.Template.ConnectionType;
+        }
+        OnChangeTemplate();
+    }
+    void OnChangeTemplate()
+    {
+
+        if (Model.Template == null || ValveTemplateResponseList.Items.Count == 0)
+        {
+            return;
+        }
+
+        // Filtrar las plantillas que coinciden con las propiedades básicas del modelo
+        var matchingTemplates = ValveTemplateResponseList.Items.Where(template =>
+            string.Equals(template.BrandName, Model.Template.BrandName, StringComparison.InvariantCultureIgnoreCase) &&
+            template.Material.Id == Model.Template.Material.Id &&
+            template.ActuatorType.Id == Model.Template.ActuatorType.Id &&
+            template.FailType.Id == Model.Template.FailType.Id &&
+            template.SignalType.Id == Model.Template.SignalType.Id &&
+            template.PositionerType.Id == Model.Template.PositionerType.Id &&
+            template.Type.Id == Model.Template.Type.Id &&
+            template.Diameter.Id == Model.Template.Diameter.Id &&
+             string.Equals(template.Model, Model.Template.Model, StringComparison.InvariantCultureIgnoreCase)
+            
+        ).ToList();
+
+        // Si no hay coincidencias, establecer Id a Guid.Empty
+        if (matchingTemplates.Count == 0)
+        {
+            Model.Template.Id = Guid.Empty;
+            return;
+        }
+
+        // Buscar una coincidencia exacta en las boquillas (nozzles)
+        foreach (var template in matchingTemplates)
+        {
+            // Verificar si todas las boquillas del template coinciden con las del modelo
+            bool allNozzlesMatch = template.Nozzles.All(nozzle =>
+                Model.Nozzles.Any(modelNozzle =>
+                    modelNozzle.ConnectionType.Id == nozzle.ConnectionType.Id &&
+                    modelNozzle.NominalDiameter.Id == nozzle.NominalDiameter.Id &&
+                    modelNozzle.NozzleType.Id == nozzle.NozzleType.Id
+                )
+            );
+
+            if (allNozzlesMatch)
+            {
+                // Asignar el Id del template coincidente y el valor del presupuesto
+                Model.Template.Id = template.Id;
+                Model.BudgetUSD = template.Value;
+                return; // Salir del bucle una vez que se encuentra una coincidencia
+            }
+        }
+
+        // Si no se encuentra ninguna coincidencia, establecer Id a Guid.Empty
+        Model.Template.Id = Guid.Empty;
+
+
     }
 }

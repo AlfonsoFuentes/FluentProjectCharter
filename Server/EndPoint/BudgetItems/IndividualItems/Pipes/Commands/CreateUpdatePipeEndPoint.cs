@@ -30,20 +30,19 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Pipes.Commands
                         await repository.UpdateAsync(row);
 
                     }
-                    if (data.ShowDetails)
+                    if (data.ShowDetails && data.Template != null)
                     {
-                        var pipeTemplate = await PipingMapper.GetPipeTemplate(repository, data);
-
-                        if (row.PipeTemplateId == null && pipeTemplate != null)
+                        if (data.Template.Id == Guid.Empty)
                         {
-                            row.PipeTemplateId = pipeTemplate.Id;
-
-
-                        }
-                        else if (row.PipeTemplateId != null && pipeTemplate != null && pipeTemplate.Id != row.PipeTemplateId.Value)
-                        {
+                            var pipeTemplate = await PipingMapper.AddPipeTemplate(repository, data);
                             row.PipeTemplateId = pipeTemplate.Id;
                         }
+                        else
+                        {
+                           row.PipeTemplateId = data.Template.Id;
+                        }
+
+                        
 
 
                     }
@@ -61,7 +60,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Pipes.Commands
                 var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
                 var budgetitems = StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.GanttTaskId);
                 var items = StaticClass.Pipes.Cache.Key(row.Id, row.ProjectId);
-                var templates = row.PipeTemplateId == null ? new[] { string.Empty } : StaticClass.ValveTemplates.Cache.Key(row.PipeTemplateId!.Value);
+                var templates = row.PipeTemplateId == null ? new[] { string.Empty } : StaticClass.PipeTemplates.Cache.Key(row.PipeTemplateId!.Value);
                 List<string> cacheKeys = [
                      ..budgetitems,
                      ..items,

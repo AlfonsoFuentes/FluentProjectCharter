@@ -45,6 +45,7 @@ namespace Web.Infrastructure.Validators.Templates.EquipmentTemplates
         {
             ValidateEquipmentTemplateRequest validate = new()
             {
+                 
                
                 Brand = request.BrandName,
                 Model = request.Model,

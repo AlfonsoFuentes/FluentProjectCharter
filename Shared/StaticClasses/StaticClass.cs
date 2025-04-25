@@ -197,9 +197,7 @@ namespace Shared.StaticClasses
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
-                public static string Create = $"{ClassName}/{Actions.Create}";
-
-                public static string Update = $"{ClassName}/{Actions.Update}";
+                public static string CreateUpdate = $"{ClassName}/{Actions.CreateUpdate}";
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
@@ -262,9 +260,9 @@ namespace Shared.StaticClasses
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
-                public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string CreateUpdate = $"{ClassName}/{Actions.CreateUpdate}";
                 public static string DeleteGroup = $"{ClassName}/{Actions.DeleteGroup}";
-                public static string Update = $"{ClassName}/{Actions.Update}";
+         
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
@@ -294,9 +292,9 @@ namespace Shared.StaticClasses
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
-                public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string CreateUpdate = $"{ClassName}/{Actions.CreateUpdate}";
                 public static string DeleteGroup = $"{ClassName}/{Actions.DeleteGroup}";
-                public static string Update = $"{ClassName}/{Actions.Update}";
+    
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
                 public static string Delete = $"{ClassName}/{Actions.Delete}";
@@ -326,9 +324,9 @@ namespace Shared.StaticClasses
             public static string ClassName => MethodBase.GetCurrentMethod()!.DeclaringType!.Name;
             public static class EndPoint
             {
-                public static string Create = $"{ClassName}/{Actions.Create}";
+                public static string CreateUpdate = $"{ClassName}/{Actions.CreateUpdate}";
                 public static string DeleteGroup = $"{ClassName}/{Actions.DeleteGroup}";
-                public static string Update = $"{ClassName}/{Actions.Update}";
+           
                 public static string GetAll = $"{ClassName}/{Actions.GetAll}";
                 public static string GetById = $"{ClassName}/{Actions.GetById}";
                 public static string Delete = $"{ClassName}/{Actions.Delete}";

@@ -29,17 +29,23 @@ public partial class WBSTable
     }
 
 
+    GanttTaskResponse CreateRow = null!;
+    GanttTaskResponse EditRow = null!;
     GanttTaskResponse SelectedRow = null!;
     // Propiedad para deshabilitar el botón "Up"
-    private bool DisableUpButton => SelectedDeliverable == null ? true : SelectedRow == null || !SelectedDeliverable.CanMoveUp(SelectedRow);
+    private bool DisableUpButton => SelectedDeliverable == null ? true : SelectedRow == null || !SelectedDeliverable.CanMoveUp(SelectedRow) || CreateRow != null || EditRow != null;
     DeliverableWithGanttTaskResponse? SelectedDeliverable = null!;
-    private bool DisableAddButton => SelectedDeliverable == null ? true : false;
+    private bool DisableAddButton => SelectedDeliverable == null ? true : CreateRow != null || EditRow != null;
     string CurrentDeliverableName => SelectedDeliverable == null ? string.Empty : SelectedDeliverable.Name;
     string CurrentRowName
     {
         get
         {
-            
+            if (EditRow != null)
+            {
+                return TruncateService.Truncate(EditRow.Name, 30);
+            }
+
             if (SelectedRow != null)
             {
                 return TruncateService.Truncate(SelectedRow.Name, 30);
@@ -50,12 +56,38 @@ public partial class WBSTable
         }
     }
     // Propiedad para deshabilitar el botón "Down"
-    bool DisableDownButton => SelectedDeliverable == null ? true : SelectedRow == null || !SelectedDeliverable.CanMoveDown(SelectedRow) ;
+    bool DisableDownButton => SelectedDeliverable == null ? true : SelectedRow == null || !SelectedDeliverable.CanMoveDown(SelectedRow) || CreateRow != null || EditRow != null;
     // Propiedad para deshabilitar el botón "Left"
-    private bool DisableLeftButton => SelectedDeliverable == null ? true : SelectedRow == null || SelectedDeliverable.FindParent(SelectedRow) == null ;
+    private bool DisableLeftButton => SelectedDeliverable == null ? true : SelectedRow == null || SelectedDeliverable.FindParent(SelectedRow) == null || CreateRow != null || EditRow != null;
     // Propiedad para deshabilitar el botón "Right"
-    private bool DisableRightButton => SelectedDeliverable == null ? true : SelectedRow == null || !SelectedDeliverable.CanMoveRight(SelectedRow) ;
+    private bool DisableRightButton => SelectedDeliverable == null ? true : SelectedRow == null || !SelectedDeliverable.CanMoveRight(SelectedRow) || CreateRow != null || EditRow != null;
 
+
+
+    public void AddNew()
+    {
+        if (SelectedDeliverable == null) return;
+        SelectedDeliverable.IsExpanded = true;
+
+        var newDeliverable = SelectedDeliverable.AddGanttTaskResponse(SelectedDeliverable.DeliverableId, SelectedRow);
+        CreateRow = newDeliverable;
+        StateHasChanged();
+    }
+
+    void CancelEdit(GanttTaskResponse row)
+    {
+        if (SelectedDeliverable == null) return;
+        if (CreateRow == row)
+        {
+            SelectedDeliverable.RemoveGanttTaskResponse(row);
+
+        }
+        row.IsEditing = false;
+        SelectedRow = CreateRow == row ? null! : EditRow == row ? row : null!;
+        CreateRow = null!;
+        EditRow = null!;
+
+    }
     DeliverableWithGanttTaskResponse? FindSelectedDeliverable(GanttTaskResponse row)
     {
         if (Response?.Deliverables == null)
@@ -82,10 +114,23 @@ public partial class WBSTable
         if (row.IsEditing) return;
         SelectedDeliverable = FindSelectedDeliverable(row)!;
         SelectedRow = SelectedRow == null ? row : SelectedRow == row ? null! : row;
-      
+        CreateRow = null!;
+        EditRow = null!;
 
     }
-   
+    private void RowEdit(GanttTaskResponse row)
+    {
+        if (SelectedDeliverable == null) return;
+        SelectedDeliverable.FlatOrderedItems.ForEach(x => { x.IsEditing = false; });
+
+        EditRow = row;
+        EditRow.IsEditing = true;
+
+        SelectedRow = null!;
+
+        CreateRow = null!;
+
+    }
     public async Task Delete(GanttTaskResponse model)
     {
         if (SelectedDeliverable == null) return;
@@ -179,6 +224,8 @@ public partial class WBSTable
         if (result.Succeeded)
         {
             await GetAll.InvokeAsync();
+
+            EditRow = null!;
             _snackBar.ShowSuccess(result.Messages);
             return true;
         }
@@ -186,69 +233,27 @@ public partial class WBSTable
         _snackBar.ShowError(result.Messages);
         return false;
     }
+    async Task Save(GanttTaskResponse row)
+    {
+        if (row.IsEditing)
+        {
+            row.IsEditing = false;
+            row.IsCreating = false;
+
+            await UpdateResponseAsync();
+        }
+    }
 
     [Parameter]
     public EventCallback GetAll { get; set; }
 
-    public async Task AddNewGanttTask()
-    {
-        if(SelectedDeliverable == null) return; 
-        var newGanttTask = new GanttTaskResponse
-        {
-            Id = Guid.NewGuid(), // Generar un nuevo Id único
-
-            DeliverableId = SelectedDeliverable.DeliverableId,
-            StartDate = DateTime.Now,
-            Duration = "1d",
-            DependencyType = TasksRelationTypeEnum.FinishStart,
-            EndDate = DateTime.Now.AddDays(1),
-            IsEditing = true,
-            IsCreating = true,
-
-        };
-        var parameters = new DialogParameters<GanttTaskDialog>
-        {
-            { x => x.Model, newGanttTask },
-        };
-
-        var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
-
-        var dialog = await DialogService.ShowAsync<GanttTaskDialog>("Add Task", parameters, options);
-        var result = await dialog.Result;
-        if (result != null&&result.Data is GanttTaskResponse gantt)
-        {
-            var newDeliverable = SelectedDeliverable.AddGanttTaskResponse(gantt, SelectedRow);
-            await UpdateResponseAsync();
-         
-            StateHasChanged();
-        }
-    }
-    public async Task EditGanttTask(GanttTaskResponse response)
-    {
-     
-        
-        var parameters = new DialogParameters<GanttTaskDialog>
-        {
-            { x => x.Model, response },
-        };
-
-        var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
-
-        var dialog = await DialogService.ShowAsync<GanttTaskDialog>("Edit Task", parameters, options);
-        var result = await dialog.Result;
-        if (result != null && result.Data is GanttTaskResponse gantt)
-        {
-
-            await UpdateResponseAsync();
-     
-        }
-    }
+   
     public async Task AddNewDeliverable()
     {
 
         var parameters = new DialogParameters<DeliverableDialog>
         {
-            { x => x.Model, new(){ProjectId=Response.ProjectId} },
+            { x => x.Model, new(){ProjectId=Project.Id} },
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
@@ -258,7 +263,7 @@ public partial class WBSTable
         if (result != null)
         {
             await GetAll.InvokeAsync();
-        
+
         }
     }
     async Task EditDeliverable(DeliverableWithGanttTaskResponse response)
@@ -267,7 +272,7 @@ public partial class WBSTable
         {
             Id = response.DeliverableId,
             Name = response.Name,
-            ProjectId = response.ProjectId,
+            ProjectId = Project.Id,
 
         };
 

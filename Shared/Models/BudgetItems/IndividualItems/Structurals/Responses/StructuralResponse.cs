@@ -42,12 +42,6 @@ namespace Shared.Models.BudgetItems.IndividualItems.Structurals.Responses
             }
         }
 
-
-        public string sUnitaryCost => string.Format(new CultureInfo("en-US"), "{0:C0}", UnitaryCost);
-        public string sQuantity => $"{Quantity}";
-       
-        
-
         
     }
 }

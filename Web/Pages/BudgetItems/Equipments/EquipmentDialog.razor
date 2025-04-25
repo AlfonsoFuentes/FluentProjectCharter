@@ -20,7 +20,7 @@
                         </MudGrid>
                         <MudGrid>
                             <MudItem xs="12" sm="6">
-                                <CurrencyNumericField Label="Budget, $USD"
+                               <DoubleNumericField Label="Budget, $USD"
                                                       ValidateAsync="ValidateAsync"
                                                       @bind-Value="Model.BudgetUSD"
                                                       For="()=>Model.BudgetUSD" />
@@ -31,7 +31,7 @@
                                     <Field Label="Tag">@Model.Tag</Field>
                                     <ValidationMessage For="() => Model.Tag" style="color:red; font-size:x-small;" />
                                 }
-                                else if (Model.ShowProvisionalTag)
+                                else if (Model.ShowProvisionalTag || Model.IsExisting)
                                 {
                                     <TextField @bind-Value="@Model.ProvisionalTag"
                                                Label="Tag"
@@ -46,28 +46,31 @@
                         {
                             <MudGrid>
                                 <MudItem xs="12" sm="12" md="3">
-                                    <TextField @bind-Value="@Model.Type"
+                                    <TextField @bind-Value="@Model.Template.Type"
+                                               Change="OnChangeTemplate"
                                                Label="Type"
                                                ValidateAsync="ValidateAsync"
-                                               For="()=>Model.Type">
+                                               For="()=>Model.Template.Type">
                                     </TextField>
 
 
                                 </MudItem>
                                 <MudItem xs="12" sm="12" md="3">
-                                    <TextField @bind-Value="@Model.SubType"
+                                    <TextField @bind-Value="@Model.Template.SubType"
+                                               Change="OnChangeTemplate"
                                                Label="Sub Type"
                                                ValidateAsync="ValidateAsync"
-                                               For="()=>Model.SubType">
+                                               For="()=>Model.Template.SubType">
                                     </TextField>
 
 
                                 </MudItem>
                                 <MudItem xs="12" sm="12" md="3">
-                                    <TextField @bind-Value="@Model.TagLetter"
+                                    <TextField @bind-Value="@Model.Template.TagLetter"
+                                               Change="OnChangeTemplate"
                                                Label="Tag Letter"
                                                ValidateAsync="ValidateAsync"
-                                               For="()=>Model.TagLetter">
+                                               For="()=>Model.Template.TagLetter">
                                     </TextField>
 
                                 </MudItem>
@@ -83,11 +86,12 @@
                             <MudGrid>
 
                                 <MudItem xs="12" sm="12" md="6">
-                                    <SelectIconButton @bind-Value="@Model.Brand"
+                                    <SelectIconButton @bind-Value="@Model.Template.Brand"
+                                                      Change="OnChangeTemplate"
                                                       TValue="BrandResponse"
                                                       Label="Brand"
                                                       ValidateAsync="ValidateAsync"
-                                                      For="()=>Model.Brand"
+                                                      For="()=>Model.Template.Brand"
                                                       Items="BrandsResponseList.Items"
                                                       Clearable="true"
                                                       Icon="@Icons.Material.Filled.Add"
@@ -99,18 +103,20 @@
                                 </MudItem>
 
                                 <MudItem xs="12" sm="12" md="3">
-                                    <TextField @bind-Value="@Model.Model"
+                                    <TextField @bind-Value="@Model.Template.Model"
+                                               Change="OnChangeTemplate"
                                                Label="Model"
                                                ValidateAsync="@(()=>ValidateAsync())"
-                                               For="()=>Model.Model">
+                                               For="()=>Model.Template.Model">
                                     </TextField>
 
                                 </MudItem>
                                 <MudItem xs="12" sm="12" md="3">
-                                    <TextField @bind-Value="@Model.Reference"
+                                    <TextField @bind-Value="@Model.Template.Reference"
+                                               Change="OnChangeTemplate"
                                                Label="Reference"
                                                ValidateAsync="@(()=>ValidateAsync())"
-                                               For="()=>Model.Reference">
+                                               For="()=>Model.Template.Reference">
                                     </TextField>
 
 
@@ -119,22 +125,24 @@
                             <MudGrid>
 
                                 <MudItem xs="12" sm="12" md="6">
-                                    <Select @bind-Value="@Model.InternalMaterial"
+                                    <Select @bind-Value="@Model.Template.InternalMaterial"
+                                            Change="OnChangeTemplate"
                                             Items="@MaterialEnum.List"
                                             Label="Inner Material"
                                             Property="@(p=>p.Name)"
-                                            For="()=>Model.InternalMaterial"
+                                            For="()=>Model.Template.InternalMaterial"
                                             ValidateAsync="@(()=>ValidateAsync())"
                                             Clearable="false">
                                     </Select>
 
                                 </MudItem>
                                 <MudItem xs="12" sm="12" md="6">
-                                    <Select @bind-Value="@Model.ExternalMaterial"
+                                    <Select @bind-Value="@Model.Template.ExternalMaterial"
+                                            Change="OnChangeTemplate"
                                             Items="@MaterialEnum.List"
                                             Label="Outer Material"
                                             Property="@(p=>p.Name)"
-                                            For="()=>Model.ExternalMaterial"
+                                            For="()=>Model.Template.ExternalMaterial"
                                             ValidateAsync="@(()=>ValidateAsync())"
                                             Clearable="false">
                                     </Select>
@@ -142,7 +150,7 @@
                             </MudGrid>
                             <MudGrid>
                                 <MudItem xs="12" sm="12">
-                                    <NozzleBudgetaryTable @bind-Items=@Model.Nozzles Validate="ValidateAsync"></NozzleBudgetaryTable>
+                                    <NozzleBudgetaryTable Change="OnChangeTemplate"  @bind-Items=@Model.Nozzles Validate="ValidateAsync"></NozzleBudgetaryTable>
                                     <ValidationMessage For="() => Model.Nozzles" style="color:red; font-size:x-small;" />
                                 </MudItem>
                             </MudGrid>
@@ -156,6 +164,7 @@
                                     @if (!Model.IsExisting)
                                     {
                                         <Switch Label="Show Details?" @bind-Value=Model.ShowDetails Change="OnChageDetails"></Switch>
+                                    
                                         @if (!Model.ShowDetails)
                                         {
                                             <Switch Label="Show Provisional Tag?" @bind-Value=@Model.ShowProvisionalTag></Switch>
@@ -170,7 +179,7 @@
                         {
                             <MudGrid>
                                 <MudItem xs="12" sm="12">
-                                    <EquipmentTemplateTable Items="@EquipmentTemplateResponseList.Items" SendToForm="GetFromTamplateList"></EquipmentTemplateTable>
+                                    <EquipmentTemplateTable UpdateForm="GetEquipmentResponse" ByParameter=true  Items="@EquipmentTemplateResponseList.Items" SendToForm="GetFromTamplateList"></EquipmentTemplateTable>
                                 </MudItem>
                             </MudGrid>
 
@@ -180,7 +189,7 @@
 
 
             }
-            
+
 
 
 

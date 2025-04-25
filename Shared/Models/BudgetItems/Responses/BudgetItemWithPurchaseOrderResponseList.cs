@@ -61,13 +61,6 @@ namespace Shared.Models.BudgetItems.Responses
         public double TaxesBudget => IsProductiveAsset ? 0 : TotalCapitalWithOutVAT * PercentageTaxes / 100;
         public double TotalBudget => TotalCapital + TotalExpenses + EngineeringBudget + ContingenyBudget;
 
-        public string sTotalCapital => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalCapital);
-        public string sTotalExpenses => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalExpenses);
-        public string sEngineeringBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", EngineeringBudget);
-        public string sContingenyBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", ContingenyBudget);
-        public string sTotalBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalBudget);
-        public string sTaxesBudget => string.Format(new CultureInfo("en-US"), "{0:C0}", TaxesBudget);
-        public string sTotalCapitalWithOutVAT => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalCapitalWithOutVAT);
 
         public double CapitalActualUSD=> Capital.Sum(x=>x.ActualUSD);
         public double CapitalCommitemntUSD => Capital.Sum(x => x.CommitmentUSD);
@@ -81,16 +74,7 @@ namespace Shared.Models.BudgetItems.Responses
         public double ExpensesAssignedUSD => ExpensesActualUSD + ExpensesCommitemntUSD + ExpensesPotentialUSD;
         public double ExpensesToCommitUSD => TotalExpenses - ExpensesAssignedUSD;
 
-        public string sCapitalActualUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", CapitalActualUSD);
-        public string sCapitalCommitemntUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", CapitalCommitemntUSD);
-        public string sCapitalPotentialUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", CapitalPotentialUSD);
-        public string sCapitalAssignedUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", CapitalAssignedUSD);
-        public string sCapitalToCommitUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", CapitalToCommitUSD);
-        public string sExpensesActualUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", ExpensesActualUSD);
-        public string sExpensesCommitemntUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", ExpensesCommitemntUSD);
-        public string sExpensesPotentialUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", ExpensesPotentialUSD);
-        public string sExpensesAssignedUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", ExpensesAssignedUSD);
-        public string sExpensesToCommitUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", ExpensesToCommitUSD);
+     
 
     }
 }

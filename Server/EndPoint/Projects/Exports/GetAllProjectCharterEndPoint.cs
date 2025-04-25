@@ -23,7 +23,7 @@ namespace Server.EndPoint.Projects.Exports
                 if (path == null)
                 {
                     mesajes.Append("path not found");
-
+                    Console.WriteLine(mesajes.ToString());
                     return;
                 }
                 Console.WriteLine(path);
@@ -34,6 +34,7 @@ namespace Server.EndPoint.Projects.Exports
                 rutaImagen = Path.Combine(path, "Assets/PMLogo.PNG");
                 PMLogo = System.IO.File.ReadAllBytes(rutaImagen);
                 mesajes.Append($"PMLogo: created");
+                Console.WriteLine(mesajes.ToString());
             }
             public void MapEndPoint(IEndpointRouteBuilder app)
             {

@@ -23,4 +23,8 @@ public partial class NozzleTemplateDialog
     {
         MudDialog.Close(DialogResult.Ok(Model));
     }
+    [Parameter]
+    public bool EditDiameter { get; set; } = true;
+    [Parameter]
+    public bool EditConnection { get; set; } = true;
 }

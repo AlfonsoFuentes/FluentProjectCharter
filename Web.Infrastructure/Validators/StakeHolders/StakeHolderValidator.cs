@@ -17,7 +17,7 @@ namespace Web.Infrastructure.Validators.StakeHolders
             RuleFor(x => x.Area).NotEmpty().WithMessage("Area must be defined!");
             RuleFor(x => x.Email).EmailAddress().When(x=>!string.IsNullOrEmpty(x.Email)).WithMessage("Email must be valid!");
           
-            RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("Phone Number must be defined!");
+            //RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("Phone Number must be defined!");
 
 
             RuleFor(x => x.Name).MustAsync(ReviewIfNameExist)

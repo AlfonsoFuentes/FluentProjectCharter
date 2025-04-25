@@ -3,10 +3,14 @@ using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
 using Shared.Enums.ValvesEnum;
+using Shared.Models.Brands.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Valves.Requests;
 using Shared.Models.BudgetItems.IndividualItems.Valves.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Valves.Validators;
+using Shared.Models.Templates.NozzleTemplates;
+using Shared.Models.Templates.Valves.Responses;
+using Shared.Models.Templates.Valves.Validators;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.BudgetItems.Valves
@@ -25,48 +29,52 @@ namespace Web.Infrastructure.Validators.BudgetItems.Valves
             RuleFor(x => x.ProvisionalTag).NotEmpty().When(x => x.ShowProvisionalTag && !x.ShowDetails)
             .WithMessage("Tag must be defined!");
 
-            RuleFor(x => x.Model).NotEmpty().When(x => x.ShowDetails)
+            RuleFor(x => x.Template.Model).NotEmpty().When(x => x.ShowDetails)
             .WithMessage("Model must be defined!");
 
-            RuleFor(x => x.Material).NotEqual(MaterialEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.Material).NotEqual(MaterialEnum.None).When(x => x.ShowDetails)
            .WithMessage("Material must be defined!");
 
-            RuleFor(x => x.ActuatorType).NotEqual(ActuatorTypeEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.ActuatorType).NotEqual(ActuatorTypeEnum.None).When(x => x.ShowDetails)
           .WithMessage("Actuator type must be defined!");
 
-            RuleFor(x => x.PositionerType).NotEqual(PositionerTypeEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.PositionerType).NotEqual(PositionerTypeEnum.None).When(x => x.ShowDetails)
           .WithMessage("Actuator type must be defined!");
 
-            RuleFor(x => x.Diameter).NotEqual(NominalDiameterEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.Diameter).NotEqual(NominalDiameterEnum.None).When(x => x.ShowDetails)
+          .WithMessage("Diameter type must be defined!");
+
+            RuleFor(x => x.Template.ConnectionType).NotEqual(ConnectionTypeEnum.None).When(x => x.ShowDetails)
+            .WithMessage("Connection type must be defined!");
+
+            RuleFor(x => x.Template.FailType).NotEqual(FailTypeEnum.None).When(x => x.ShowDetails)
           .WithMessage("Actuator type must be defined!");
 
-            RuleFor(x => x.FailType).NotEqual(FailTypeEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.SignalType).NotEqual(SignalTypeEnum.None).When(x => x.ShowDetails)
           .WithMessage("Actuator type must be defined!");
 
-            RuleFor(x => x.SignalType).NotEqual(SignalTypeEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.Type).NotEqual(ValveTypesEnum.None).When(x => x.ShowDetails)
           .WithMessage("Actuator type must be defined!");
 
-            RuleFor(x => x.Type).NotEqual(ValveTypesEnum.None).When(x => x.ShowDetails)
-          .WithMessage("Actuator type must be defined!");
-
-            RuleFor(x => x.BrandName).NotEmpty().When(x => x.ShowDetails)
-             .WithMessage("Brand must be defined!");
+            RuleFor(x => x.Template.Brand).NotNull().When(x => x.ShowDetails)
+            .WithMessage("Brand must be defined!");
 
             RuleFor(x => x.TagLetter).NotEmpty().When(x => x.ShowDetails)
               .WithMessage("Tag Letter must be defined!");
 
             RuleFor(x => x.Nozzles).Must(ReviewInletOutlet).When(x =>
-         x.Type.Id != ValveTypesEnum.Ball_Three_Way_L.Id || x.Type.Id != ValveTypesEnum.Ball_Three_Way_T.Id || x.Type.Id != ValveTypesEnum.Ball_Four_Way.Id
+         x.Template.Type.Id != ValveTypesEnum.Ball_Three_Way_L.Id || x.Template.Type.Id != ValveTypesEnum.Ball_Three_Way_T.Id || x.Template.Type.Id != ValveTypesEnum.Ball_Four_Way.Id
 
          ).WithMessage("Nozzles must be have one inlet and one outlet");
 
             RuleFor(x => x.Nozzles).Must(ReviewThreeWayInletOutlet).When(x =>
-           x.Type.Id == ValveTypesEnum.Ball_Three_Way_L.Id || x.Type.Id == ValveTypesEnum.Ball_Three_Way_T.Id || x.Type.Id == ValveTypesEnum.Ball_Four_Way.Id
+           x.Template.Type.Id == ValveTypesEnum.Ball_Three_Way_L.Id || x.Template.Type.Id == ValveTypesEnum.Ball_Three_Way_T.Id ||
+           x.Template.Type.Id == ValveTypesEnum.Ball_Four_Way.Id
            ).WithMessage("Nozzles must be have one inlet and one outlet and three nozzles");
 
 
             RuleFor(x => x.Nozzles).Must(ReviewFourWayInletOutlet).When(x =>
-           x.Type.Id == ValveTypesEnum.Ball_Four_Way.Id
+           x.Template.Type.Id == ValveTypesEnum.Ball_Four_Way.Id
            ).WithMessage("Nozzles must be have one inlet and one outlet and four nozzles");
 
 
@@ -158,5 +166,5 @@ namespace Web.Infrastructure.Validators.BudgetItems.Valves
             return true;
         }
     }
-   
+
 }

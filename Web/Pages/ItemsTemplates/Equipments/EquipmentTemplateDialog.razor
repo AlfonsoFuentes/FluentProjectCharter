@@ -82,7 +82,7 @@
                     </TextField>
                 </MudItem>
                 <MudItem xs="12" sm="12" md="4">
-                    <CurrencyNumericField Label="Value, USD"
+                    <DoubleNumericField Label="Value, USD"
                                           @bind-Value="Model.Value"
                                           For="()=>Model.Value"
                                           ValidateAsync="@(()=>ValidateAsync())" />

@@ -1,31 +1,43 @@
-﻿using Server.EndPoint.Templates.Pipes.Commands;
-using Server.EndPoint.Templates.Pipes.Queries;
-using Server.ExtensionsMethods.Pipings;
-using Shared.Models.Templates.Pipings.Requests;
-using Shared.Models.Templates.Pipings.Responses;
-
-namespace Server.EndPoint.Templates.Pipes.Commands
+﻿namespace Server.EndPoint.Templates.Pipes.Commands
 {
 
-    public static class CreatePipeTemplateEndPoint
+    public static class CreateUpdatePipeTemplateEndPoint
     {
         public class EndPoint : IEndPoint
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.PipeTemplates.EndPoint.Create, async (PipeTemplateResponse Data, IRepository Repository) =>
+                app.MapPost(StaticClass.PipeTemplates.EndPoint.CreateUpdate, async (PipeTemplateResponse Data, IRepository Repository) =>
                 {
-                    var row = Template.AddPipeTemplate();
+                    PipeTemplate? row = null;
+                    if (Data.Id == Guid.Empty)
+                    {
+                        row = Template.AddPipeTemplate();
 
-                    await Repository.AddAsync(row);
+                        await Repository.AddAsync(row);
+                    }
+                    else
+                    {
+                        Expression<Func<PipeTemplate, bool>> Criteria = x => x.Id == Data.Id;
+                        Func<IQueryable<PipeTemplate>, IIncludableQueryable<PipeTemplate, object>> Includes = x => x
+
+                        .Include(x => x.Isometrics);
+                        row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
+
+                        if (row == null) { return Result.Fail(Data.NotFound); }
+                        await Repository.UpdateAsync(row);
+
+                        Data.Map(row);
+                    }
+
 
                     Data.Map(row);
 
-                 
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.PipeTemplates.Cache.Key(row.Id));
 
-                    return Result.EndPointResult(result, 
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
+
+                    return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
 
@@ -34,10 +46,24 @@ namespace Server.EndPoint.Templates.Pipes.Commands
 
 
             }
+            private string[] GetCacheKeys(PipeTemplate row)
+            {
+
+
+                var templates = StaticClass.PipeTemplates.Cache.Key(row.Id);
+                var items = row.Isometrics == null ? new[] { string.Empty } : row.Isometrics.Select(x => StaticClass.Valves.Cache.GetById(x.Id)).ToArray();
+                List<string> cacheKeys = [
+                        ..items,
+                        ..templates
+
+                ];
+
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
+            }
         }
 
 
-       
+
 
     }
 

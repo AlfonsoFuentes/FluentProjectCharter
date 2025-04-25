@@ -91,7 +91,7 @@ public partial class WbsChartSvg
         // Restar el último paddingX ya que no es necesario después del último elemento
         totalWidth = Math.Max(totalWidth - paddingX, 0);
 
-        return totalWidth + 20; // Añadir un margen adicional para evitar recortes
+        return totalWidth + 250; // Añadir un margen adicional para evitar recortes
     }
 
     private int GetNodeHeight(DeliverableWithGanttTaskResponse node)

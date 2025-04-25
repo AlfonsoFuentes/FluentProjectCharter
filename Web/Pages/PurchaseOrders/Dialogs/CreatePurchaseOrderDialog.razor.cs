@@ -24,10 +24,11 @@ public partial class CreatePurchaseOrderDialog
         Validated = _fluentValidationValidator == null ? false : await _fluentValidationValidator.ValidateAsync(options => { options.IncludeAllRuleSets(); });
     }
     [Parameter]
-    public Guid BudgetItemId { get; set; }
+    public BudgetItemWithPurchaseOrdersResponse BudgetItem { get; set; } = null!;
     CreatePurchaseOrderRequest Model { get; set; } = new();
-
-    List<BudgetItemWithPurchaseOrdersResponse> OriginalBudgetItems = new();
+    [Parameter]
+    public BudgetItemWithPurchaseOrderResponseList ResponseList { get; set; } = new();
+    public List<BudgetItemWithPurchaseOrdersResponse> OriginalBudgetItems => BudgetItem.IsAlteration ? ResponseList.Expenses : ResponseList.Capital;
     List<BudgetItemWithPurchaseOrdersResponse> NonSelectedBudgetItems = new();
     public List<SupplierResponse> Suppliers { get; set; } = new();
     async Task GetSuppliers()
@@ -43,58 +44,31 @@ public partial class CreatePurchaseOrderDialog
         RateList = await _CurrencyService.GetRates(DateTime.UtcNow);
         var USDCOP = RateList == null ? 4000 : Math.Round(RateList.COP, 2);
         var USDEUR = RateList == null ? 1 : Math.Round(RateList.EUR, 2);
-
-        
         await GetSuppliers();
 
-        var resultMainBudgetItem = await GenericService.GetById<BudgetItemWithPurchaseOrdersResponse, BudgetItemWithPurchaseOrderGetById>(new BudgetItemWithPurchaseOrderGetById()
+        NonSelectedBudgetItems = OriginalBudgetItems;
+        Model.IsProductiveAsset = ResponseList.IsProductiveAsset;
+        Model.CostCenter = ResponseList.CostCenter;
+        Model.ProjectId = ResponseList.ProjectId;
+        Model.ProjectAccount = ResponseList.ProjectNumber;
+        Model.CurrencyDate = DateTime.UtcNow;
+
+        PurchaseOrderItemResponse item = new();
+        if (OriginalBudgetItems.Any(x => x.Id == BudgetItem.Id))
         {
-            Id = BudgetItemId,
-        });
-        if (resultMainBudgetItem.Succeeded)
-        {
-            var resultProjectt = await GenericService.GetAll<BudgetItemWithPurchaseOrderResponseList, BudgetItemWithPurchaseOrderGetAll>(new BudgetItemWithPurchaseOrderGetAll()
-            {
-                ProjectId = resultMainBudgetItem.Data.ProjectId,
-            });
-            if (resultProjectt.Succeeded)
-            {
-                if (resultMainBudgetItem.Data.IsAlteration)
-                {
-                    OriginalBudgetItems = resultProjectt.Data.Expenses;
-                }
-                else
-                {
-                    OriginalBudgetItems = resultProjectt.Data.Capital;
-                }
-                NonSelectedBudgetItems = OriginalBudgetItems;
-                Model.IsProductiveAsset = resultProjectt.Data.IsProductiveAsset;
-                Model.CostCenter = resultProjectt.Data.CostCenter;
-                Model.ProjectId = resultProjectt.Data.ProjectId;
-                Model.ProjectAccount = resultProjectt.Data.ProjectNumber;
-                Model.CurrencyDate = DateTime.UtcNow;
-
-                PurchaseOrderItemResponse item = new();
-                if (OriginalBudgetItems.Any(x => x.Id == BudgetItemId))
-                {
-                    item.BudgetItem = OriginalBudgetItems.Single(x => x.Id == BudgetItemId);
-                    Model.AddItem(item);
-                    NonSelectedBudgetItems.Remove(item.BudgetItem!);
-                    Model.MainBudgetItemId = BudgetItemId;
-
-                }
-     
-
-                Model.AddItem(new());
-                Model.USDCOP = USDCOP;
-                Model.USDEUR = USDEUR;
-            }
-
-
+            item.BudgetItem = OriginalBudgetItems.Single(x => x.Id == BudgetItem.Id);
+            Model.AddItem(item);
+            NonSelectedBudgetItems.Remove(item.BudgetItem!);
+            Model.MainBudgetItemId = BudgetItem.Id;
 
         }
+
+
+        Model.AddItem(new());
+        Model.USDCOP = USDCOP;
+        Model.USDEUR = USDEUR;
     }
-   
+
 
 
     private async Task Submit()

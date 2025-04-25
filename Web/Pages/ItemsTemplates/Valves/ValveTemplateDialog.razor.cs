@@ -25,6 +25,8 @@ public partial class ValveTemplateDialog
             BrandsResponseList = result.Data;
         }
     }
+    [Parameter]
+    public bool EditDiamater { get; set; } = true;
     protected override async Task OnInitializedAsync()
     {
         await GetBrands();
@@ -209,5 +211,12 @@ public partial class ValveTemplateDialog
         }
 
     }
-
+    void ChangeConnectionType()
+    {
+        foreach (var nozzle in Model.Nozzles)
+        {
+            nozzle.ConnectionType = Model.ConnectionType;
+        }
+      
+    }
 }

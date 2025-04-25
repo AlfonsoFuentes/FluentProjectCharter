@@ -8,6 +8,7 @@
             <Select @bind-Value="Model.ConnectionType"
                     Items="@ConnectionTypeEnum.List"
                     Label="Connection Type"
+                    Disable=!EditConnection
                     For="()=>Model.ConnectionType"
                     ValidateAsync="ValidateAsync"
                     Clearable="false">
@@ -16,6 +17,7 @@
                     Items="@NominalDiameterEnum.List"
                     ValidateAsync="ValidateAsync"
                     Label="Diameter"
+                    Disable=!EditDiameter
                     For="()=>Model.NominalDiameter"
                     Clearable="false">
             </Select>

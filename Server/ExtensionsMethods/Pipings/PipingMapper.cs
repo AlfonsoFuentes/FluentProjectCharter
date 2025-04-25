@@ -1,4 +1,5 @@
-﻿using Server.EndPoint.Brands.Queries;
+﻿using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings;
+using Server.EndPoint.Brands.Queries;
 using Server.EndPoint.EngineeringFluidCodes.Queries;
 using Server.EndPoint.PurchaseOrders.Queries;
 using Shared.Enums.DiameterEnum;
@@ -25,13 +26,13 @@ namespace Server.ExtensionsMethods.Pipings
         }
         public static PipeTemplate Map(this PipeResponse request, PipeTemplate row)
         {
-     
-            row.Diameter = request.Diameter.Id;
-            row.Class = request.PipeClass.Id;
+
+            row.Diameter = request.Template.Diameter.Id;
+            row.Class = request.Template.Class.Id;
             row.EquivalentLenghPrice = request.EquivalentLenghPrice;
             row.LaborDayPrice = request.LaborDayPrice;
-            row.Insulation = request.Insulation;
-            row.Material = request.Material.Id;
+            row.Insulation = request.Template.Insulation;
+            row.Material = request.Template.Material.Id;
 
 
             return row;
@@ -41,7 +42,7 @@ namespace Server.ExtensionsMethods.Pipings
             return new()
             {
                 Id = row.Id,
-        
+
                 Material = MaterialEnum.GetType(row.Material),
                 Class = PipeClassEnum.GetType(row.Class),
                 Diameter = NominalDiameterEnum.GetType(row.Diameter),
@@ -63,12 +64,9 @@ namespace Server.ExtensionsMethods.Pipings
             row.LaborQuantity = request.LaborQuantity;
             row.MaterialQuantity = request.MaterialQuantity;
             row.TagNumber = request.TagNumber;
-            row.Material = request.Material.Id;
-            row.Diameter = request.Diameter.Id;
+         
             row.FluidCodeCode = request.FluidCode!.Code;
-            row.Insulation = request.Insulation;
-            row.LaborDayPrice = request.LaborDayPrice;
-            row.EquivalentLenghPrice = request.EquivalentLenghPrice;
+           
             row.IsExisting = request.IsExisting;
 
             return row;
@@ -84,19 +82,16 @@ namespace Server.ExtensionsMethods.Pipings
                 Nomenclatore = row.Nomenclatore,
 
                 TagNumber = row.TagNumber,
-               
-                ShowDetails = row.PipeTemplate != null,
 
-                Diameter = NominalDiameterEnum.GetType(row.Diameter),
-                EquivalentLenghPrice = row.PipeTemplate == null ? row.EquivalentLenghPrice : row.PipeTemplate.EquivalentLenghPrice,
-                Insulation = row.Insulation,
-                LaborDayPrice = row.PipeTemplate == null ? row.LaborDayPrice : row.PipeTemplate.LaborDayPrice,
-                Material = MaterialEnum.GetType(row.Material),
+                ShowDetails = row.PipeTemplate != null,
+                Template = row.PipeTemplate == null ? new() : row.PipeTemplate.Map(),
+
+
                 LaborQuantity = row.LaborQuantity,
                 MaterialQuantity = row.MaterialQuantity,
                 FluidCode = row.FluidCode == null ? null : row.FluidCode.Map(),
-                PipeClass = row.PipeTemplate == null ? PipeClassEnum.None : PipeClassEnum.GetType(row.PipeTemplate.Class),
-         
+
+
                 BudgetUSD = row.BudgetUSD,
                 IsExisting = row.IsExisting,
                 ActualUSD = row.ActualUSD,
@@ -108,23 +103,12 @@ namespace Server.ExtensionsMethods.Pipings
             return result;
 
         }
-        public static async Task<PipeTemplate> GetPipeTemplate(IRepository Repository, PipeResponse Data)
+        public static async Task<PipeTemplate> AddPipeTemplate(IRepository Repository, PipeResponse Data)
         {
-           
-            Expression<Func<PipeTemplate, bool>> Criteria = x =>
-           
-           x.Insulation == Data.Insulation &&
-           x.Material==Data.Material.Id&&
-           x.Diameter==Data.Diameter.Id &&
-           x.Class == Data.PipeClass.Id;
-            var pipeTemplate = await Repository.GetAsync(Criteria: Criteria);
-            if (pipeTemplate == null)
-            {
-                pipeTemplate = Template.AddPipeTemplate();
-                Data.Map(pipeTemplate);
-                await Repository.AddAsync(pipeTemplate);    
 
-            }
+            var pipeTemplate = Template.AddPipeTemplate();
+            Data.Map(pipeTemplate);
+            await Repository.AddAsync(pipeTemplate);
 
 
             return pipeTemplate;

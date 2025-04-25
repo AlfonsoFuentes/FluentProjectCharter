@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves;
 using Server.ExtensionsMethods.Projects;
 using Shared.Models.BudgetItems.IndividualItems.Valves.Responses;
 
@@ -26,26 +27,29 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Valves.Commands
                     }
                     else
                     {
-                        row = await repository.GetByIdAsync<Valve>(data.Id);
+                        Func<IQueryable<Valve>, IIncludableQueryable<Valve, object>> Includes = x => x.Include(x => x.Nozzles);
+
+                        Expression<Func<Valve, bool>> Criteria = x => x.Id == data.Id;
+
+                        row = await repository.GetAsync(Criteria: Criteria, Includes: Includes);
+                      
                         if (row == null) return Result.Fail(data.NotFound);
                         await repository.UpdateAsync(row);
                         await NozzleMapper.UpdateNozzles(repository, row.Nozzles, data.Nozzles, row.Id);
 
                     }
-                    if (data.ShowDetails)
+                    if (data.ShowDetails && data.Template != null)
                     {
-                        var valveTemplate = await ValveTemplateMapper.GetValveTemplate(repository, data);
-
-                        if (row.ValveTemplateId == null && valveTemplate != null)
+                        if(data.Template.Id==Guid.Empty)
                         {
-                            row.ValveTemplateId = valveTemplate.Id;
-
-
-                        }
-                        else if (row.ValveTemplateId != null && valveTemplate != null && valveTemplate.Id != row.ValveTemplateId.Value)
-                        {
+                            var valveTemplate = await ValveTemplateMapper.AddValveTemplate(repository, data);
                             row.ValveTemplateId = valveTemplate.Id;
                         }
+                        else
+                        {
+                            row.ValveTemplateId = data.Template.Id;
+                        }
+
 
                     }
 

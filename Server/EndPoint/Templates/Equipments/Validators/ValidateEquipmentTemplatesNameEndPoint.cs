@@ -1,9 +1,4 @@
-﻿using Server.ExtensionsMethods.EquipmentTemplateMapper;
-using Server.ExtensionsMethods.InstrumentTemplateMapper;
-using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
-using Shared.Models.Templates.Equipments.Validators;
-using Shared.Models.Templates.NozzleTemplates;
-using static Shared.StaticClasses.StaticClass;
+﻿using Shared.Models.Templates.Equipments.Validators;
 
 namespace Server.EndPoint.Templates.Equipments.Validators
 {

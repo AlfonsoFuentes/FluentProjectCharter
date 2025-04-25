@@ -4,8 +4,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings
 {
     public class Pipe : EngineeringItem
     {
-        [NotMapped]
-        public new string Tag => PipeTemplate == null ? string.Empty : $"{Diameter}-{FluidCodeCode}-{TagNumber}-{Material}-{InsulationCode}";
+        
         public override string Letter { get; set; } = "F";
 
        
@@ -14,8 +13,6 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings
         public Guid? FluidCodeId { get; set; }
 
 
-        [NotMapped]
-        public string InsulationCode => Insulation ? "1" : "0";
         public List<IsometricItem> IsometricItems { get; set; } = new List<IsometricItem>();
         public static Pipe Create(Guid ProjectId, Guid? GanttTaskId)
         {
@@ -31,12 +28,9 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings
         public Guid? PipeTemplateId { get; set; }
 
         public string FluidCodeCode { get; set; } = string.Empty;
-        public int Material { get; set; } 
-        public bool Insulation { get; set; }
-        public int Diameter { get; set; } 
+       
         public double MaterialQuantity { get; set; }
-        public double LaborDayPrice { get; set; }
-        public double EquivalentLenghPrice { get; set; }
+ 
         public double LaborQuantity { get; set; }
     }
 

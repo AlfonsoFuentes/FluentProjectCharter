@@ -10,8 +10,7 @@ namespace Shared.Models.Templates.Pipings.Responses
     public class PipeTemplateResponse : BaseResponse, IMessageResponse, IRequest
     {
 
-        public string sEquivalentLenghPrice => string.Format(new CultureInfo("en-US"), "{0:C0}", EquivalentLenghPrice);
-        public string sLaborDayPrice => string.Format(new CultureInfo("en-US"), "{0:C0}", LaborDayPrice);
+     
         public double EquivalentLenghPrice { get; set; }
         public MaterialEnum Material { get; set; } = MaterialEnum.None;
         public double LaborDayPrice { get; set; }
@@ -21,7 +20,7 @@ namespace Shared.Models.Templates.Pipings.Responses
 
        
         public string Legend => $"{Diameter.Name} {Material.Name} {Class.Name}";
-        public string EndPointName => Id == Guid.Empty ? StaticClass.PipeTemplates.EndPoint.Create : StaticClass.PipeTemplates.EndPoint.Update;
+        public string EndPointName => StaticClass.PipeTemplates.EndPoint.CreateUpdate;
         public string ActionType => Id == Guid.Empty ? "created" : "updated";
         public string ClassName => StaticClass.PipeTemplates.ClassName;
         public string Succesfully => StaticClass.ResponseMessages.ReponseSuccesfullyMessage(Legend, ClassName, ActionType);

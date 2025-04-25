@@ -18,9 +18,9 @@ namespace Shared.Models.Templates.Valves.Responses
         public NominalDiameterEnum Diameter { get; set; } = NominalDiameterEnum.None;
         public FailTypeEnum FailType { get; set; } = FailTypeEnum.None;
         public SignalTypeEnum SignalType { get; set; } = SignalTypeEnum.None;
-     
+        public ConnectionTypeEnum ConnectionType { get; set; } = ConnectionTypeEnum.None;
         public double Value { get; set; }
-        public string sValue => string.Format(new CultureInfo("en-US"), "{0:C0}", Value);
+   
         public ValveTypesEnum Type { get; set; } = ValveTypesEnum.None;
      
         public string TagLetter { get; set; } = string.Empty;
@@ -29,7 +29,7 @@ namespace Shared.Models.Templates.Valves.Responses
         public List<NozzleTemplateResponse> Nozzles { get; set; } = new();
 
         public string Legend => $"{Type} {Model}";
-        public string EndPointName => Id == Guid.Empty ? StaticClass.ValveTemplates.EndPoint.Create : StaticClass.ValveTemplates.EndPoint.Update;
+        public string EndPointName => StaticClass.ValveTemplates.EndPoint.CreateUpdate;
         public string ActionType => Id == Guid.Empty ? "created" : "updated";
         public string ClassName => StaticClass.ValveTemplates.ClassName;
         public string Succesfully => StaticClass.ResponseMessages.ReponseSuccesfullyMessage(Legend, ClassName, ActionType);

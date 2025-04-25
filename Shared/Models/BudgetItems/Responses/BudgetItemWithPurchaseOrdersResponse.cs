@@ -4,6 +4,7 @@ namespace Shared.Models.BudgetItems.Responses
 {
     public class BudgetItemWithPurchaseOrdersResponse : IBudgetItemWithPurchaseOrderResponse
     {
+      
         public bool ShowDetails { get; set; } = false;  
         public Guid ProjectId { get; set; }
         public bool Selected { get; set; }
@@ -12,7 +13,7 @@ namespace Shared.Models.BudgetItems.Responses
         public virtual bool IsTaxes { get; set; } = false;
         public string NomenclatoreName => $"{Nomenclatore}-{Name}";
 
-        public virtual string Tag { get; } = string.Empty;
+        public virtual string Tag { get; init; } = string.Empty;
         public Guid Id { get; set; }=Guid.Empty;    
         public string Name { get; set; } = string.Empty;
         public List<PurchaseOrderResponse> PurchaseOrders { get; set; } = new();

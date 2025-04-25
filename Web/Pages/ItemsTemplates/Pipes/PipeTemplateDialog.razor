@@ -61,7 +61,7 @@
 
             <MudGrid Spacing="2" Style="padding: 2px;width:100%; ">
                 <MudItem xs="12" sm="12" md="6">
-                    <CurrencyNumericField Label="Unitary cost $USD/day, USD"
+                    <DoubleNumericField Label="Unitary cost $USD/day, USD"
                                           @bind-Value="Model.LaborDayPrice"
                                           For="()=>Model.LaborDayPrice"
                                           ValidateAsync="@(()=>ValidateAsync())" />
@@ -69,7 +69,7 @@
                 </MudItem>
                 <MudItem xs="12" sm="12" md="6">
 
-                    <CurrencyNumericField Label="Unitary cost $USD/mt equivalent, USD"
+                    <DoubleNumericField Label="Unitary cost $USD/mt equivalent, USD"
                                           @bind-Value="Model.EquivalentLenghPrice"
                                           For="()=>Model.EquivalentLenghPrice"
                                           ValidateAsync="@(()=>ValidateAsync())" />

@@ -3,7 +3,7 @@
                DisableAdd=@DisableAdd
                @bind-NameFilter=@nameFilter
                Items="@Items"
-               TableTitle="Nozzles">
+               ShowSearch=false>
     <ColumnsTemplate>
         <SelectColumn T="NozzleTemplateResponse" />
         <PropertyColumn Property="x => x.NozzleType.Name" Title="Type" Sortable="false" T="NozzleTemplateResponse" TProperty="string" />

@@ -1,14 +1,7 @@
-﻿using Shared.Enums.BudgetItemTypes;
-using Shared.Enums.ConnectionTypes;
-using Shared.Enums.CostCenter;
-using Shared.Enums.DiameterEnum;
-using Shared.Enums.Materials;
-using Shared.Enums.ValvesEnum;
-using Shared.Models.Brands.Responses;
-using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
+﻿using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Shared.Models.BudgetItems.Responses;
 using Shared.Models.FileResults.Generics.Request;
-using System.Globalization;
+using Shared.Models.Templates.Valves.Responses;
 
 namespace Shared.Models.BudgetItems.IndividualItems.Valves.Responses
 {
@@ -27,38 +20,20 @@ namespace Shared.Models.BudgetItems.IndividualItems.Valves.Responses
         public string NotFound => StaticClass.ResponseMessages.ReponseNotFound(ClassName);
 
         public Guid? GanttTaskId { get; set; }
-
-
-        public string Model { get; set; } = string.Empty;
-        public MaterialEnum Material { get; set; } = MaterialEnum.None;
-        public ActuatorTypeEnum ActuatorType { get; set; } = ActuatorTypeEnum.None;
-        public PositionerTypeEnum PositionerType { get; set; } = PositionerTypeEnum.None;
-        public bool HasFeedBack { get; set; }
-        public NominalDiameterEnum Diameter { get; set; } = NominalDiameterEnum.None;
-        public FailTypeEnum FailType { get; set; } = FailTypeEnum.None;
-    
-        public SignalTypeEnum SignalType { get; set; } = SignalTypeEnum.None;
-
-        public ValveTypesEnum Type { get; set; } = ValveTypesEnum.None;
-
+        public ValveTemplateResponse Template { get; set; } = new();
         public string TagNumber { get; set; } = string.Empty;
-        public override string Tag => ShowProvisionalTag ? ProvisionalTag :$"{TagLetter}-{TagNumber}";
-
-
-
+        public override string Tag => ShowProvisionalTag ? ProvisionalTag :
+            string.IsNullOrEmpty(TagLetter) ? string.Empty :
+            string.IsNullOrEmpty(TagNumber) ? TagLetter : $"{TagLetter}-{TagNumber}";
         public string TagLetter { get; set; } = string.Empty;
-        public BrandResponse? Brand { get; set; } 
-        public string BrandName => Brand == null ? string.Empty : Brand.Name;
-        public Guid? BrandId => Brand == null ? null : Brand.Id;
+
         public List<NozzleResponse> Nozzles { get; set; } = new();
- 
+
         public bool IsExisting { get; set; }
-        public string ProvisionalTag {  get; set; } = string.Empty;
+        public string ProvisionalTag { get; set; } = string.Empty;
         public bool ShowProvisionalTag { get; set; } = false;
 
-       
 
 
-    
     }
 }

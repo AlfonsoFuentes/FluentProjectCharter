@@ -31,7 +31,13 @@ public partial class PipeTemplateTable
         {
             Items = result.Data.Items;
         }
+        if (ByParameter && UpdateForm.HasDelegate)
+        {
+            await UpdateForm.InvokeAsync();
+        }
     }
+    [Parameter]
+    public EventCallback UpdateForm { get; set; }
     bool ByParameter { get; set; } = false;
     public async Task AddNew()
     {

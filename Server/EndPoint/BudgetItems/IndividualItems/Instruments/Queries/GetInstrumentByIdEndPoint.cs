@@ -1,5 +1,6 @@
 ﻿using Server.EndPoint.Brands.Queries;
 using Server.EndPoint.PurchaseOrders.Queries;
+using Server.ExtensionsMethods.InstrumentTemplateMapper;
 using Shared.Enums.ConnectionTypes;
 using Shared.Enums.Instruments;
 using Shared.Enums.Materials;
@@ -53,18 +54,11 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Instruments.Queries
          
 
                 TagNumber = row.TagNumber,
-                Brand = row.InstrumentTemplate == null || row.InstrumentTemplate!.BrandTemplate == null ? new() : row.InstrumentTemplate!.BrandTemplate!.Map(),
-                Model = row.InstrumentTemplate == null ? string.Empty : row.InstrumentTemplate.Model,
-                Reference = row.InstrumentTemplate == null ? string.Empty : row.InstrumentTemplate.Reference,
-                Material = row.InstrumentTemplate == null ? MaterialEnum.None : MaterialEnum.GetType(row.InstrumentTemplate.Material),
-                ConnectionType = row.InstrumentTemplate == null ? ConnectionTypeEnum.None : ConnectionTypeEnum.GetType(row.InstrumentTemplate.ConnectionType),
-                 
-                VariableInstrument = row.InstrumentTemplate == null ? VariableInstrumentEnum.None : VariableInstrumentEnum.GetType(row.InstrumentTemplate.Variable),
-                ModifierVariable = row.InstrumentTemplate == null ? ModifierVariableInstrumentEnum.None : ModifierVariableInstrumentEnum.GetType(row.InstrumentTemplate.ModifierVariable),
+                Template = row.InstrumentTemplate == null ? new() : row.InstrumentTemplate.Map(),
+               
                 ShowDetails = row.InstrumentTemplate == null ? false : true,
                 Nozzles = row.Nozzles == null || row.Nozzles.Count == 0 ? new() : row.Nozzles.Select(x => x.Map()).ToList(),
-                SignalType = row.InstrumentTemplate == null ? SignalTypeEnum.None : SignalTypeEnum.GetType(row.InstrumentTemplate.SignalType),
-          
+                         
                 IsExisting = row.IsExisting,
                 ProvisionalTag = row.ProvisionalTag,
                 ShowProvisionalTag = !string.IsNullOrWhiteSpace(row.ProvisionalTag),

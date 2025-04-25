@@ -30,15 +30,39 @@
 
     <!-- Name -->
     <td class="col-name @(Task.OrderedSubGanttTasks.Any() ? "has-subdeliverables" : "")">
-        @Task.Name
+        @if (Task.IsEditing)
+        {
+            <TextField Value="@Task.Name"
+                       ValueChanged="OnChangeName"
+                       Lines=2>
+            </TextField>
+
+
+        }
+        else
+        {
+            @Task.Name
+        }
     </td>
 
    
 
     <!-- Actions -->
     <td class="col-actions">
-        <IconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => OnEdit.InvokeAsync(Task)" ToolTip="Edit" Disabled=@Task.ShowBudgetItems />
-        <IconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => OnDelete.InvokeAsync(Task)" ToolTip="Delete" Disabled=@Task.ShowBudgetItems />
+        @if (Task.IsEditing)
+        {
+            <IconButton Icon="@Icons.Material.Filled.Save" OnClick=" () =>  OnSave.InvokeAsync(Task)" ToolTip="Save" Disabled="@DisableSaveButton(Task)" />
+            <IconButton Icon="@Icons.Material.Filled.Cancel" OnClick=" () =>  OnCancel.InvokeAsync(Task)" ToolTip="Cancel" />
+
+        }
+        else
+        {
+            @* <IconButton Icon="@Icons.Material.Filled.List" OnClick="@(() => Task.ShowBudgetItems = !Task.ShowBudgetItems)" ToolTip="Show BudgetItems" /> *@
+            <IconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => OnEdit.InvokeAsync(Task)" ToolTip="Edit" Disabled=@Task.ShowBudgetItems />
+            <IconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => OnDelete.InvokeAsync(Task)" ToolTip="Delete" Disabled=@Task.ShowBudgetItems />
+
+
+        }
     </td>
 
 </tr>

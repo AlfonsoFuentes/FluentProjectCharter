@@ -1,0 +1,46 @@
+﻿<MudPaper Width="300px" Elevation="0">
+    <MudTreeView T="string" ReadOnly="@ReadOnly" Hover="@Hover" Dense="@Dense" Disabled="@Disabled" ExpandOnClick="@ExpandOnClick" ExpandOnDoubleClick="@ExpandOnDoubleClick">
+        <MudTreeViewItem Text="Start" Expanded>
+            <MudTreeViewItem Text="Stake Holders">
+                <StakeHolderInsideProjectsTable Project=@Project></StakeHolderInsideProjectsTable>
+            </MudTreeViewItem>
+            <MudTreeViewItem Text="Components" />
+            <MudTreeViewItem Text="Features" />
+        </MudTreeViewItem>
+        <MudTreeViewItem Text="Planning" Expanded>
+            <MudTreeViewItem Text="Terminal" />
+        </MudTreeViewItem>
+        <MudTreeViewItem Text="Executions" Expanded>
+            <MudTreeViewItem Text="Terminal" />
+        </MudTreeViewItem>
+        <MudTreeViewItem Text="Monitoring" Expanded>
+            <MudTreeViewItem Text="Terminal" />
+        </MudTreeViewItem>
+        <MudTreeViewItem Text="Closing" Expanded>
+            <MudTreeViewItem Text="Terminal" />
+        </MudTreeViewItem>
+
+        <MudTreeViewItem Text="Applications" Expanded>
+            <MudTreeViewItem Text="Terminal" />
+        </MudTreeViewItem>
+        <MudTreeViewItem Text="Documents" Expanded>
+            <MudTreeViewItem Text="MudBlazor" Expanded>
+                <MudTreeViewItem Text="API" />
+                <MudTreeViewItem Text="Components" />
+                <MudTreeViewItem Text="Features" />
+            </MudTreeViewItem>
+        </MudTreeViewItem>
+    </MudTreeView>
+</MudPaper>
+
+@code {
+    public bool ReadOnly = false;
+    public bool Hover = true;
+    public bool Ripple;
+    public bool Dense=true;
+    public bool Disabled;
+    public bool ExpandOnClick = true;
+    public bool ExpandOnDoubleClick;
+    [Parameter]
+    public ProjectResponse Project { get; set; } = null!;
+}

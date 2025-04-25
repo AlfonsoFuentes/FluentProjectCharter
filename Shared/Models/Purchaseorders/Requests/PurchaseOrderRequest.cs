@@ -120,9 +120,7 @@ namespace Shared.Models.PurchaseOrders.Requests
         public double TotalQuoteCurrency => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.TotalQuoteCurrency);
         public double TotalPurchaseOrderCurrency => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.TotalPurchaseOrderCurrency);
         public double TotalUSD => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.TotalUSD);
-        public string sTotalQuoteCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalQuoteCurrency);
-        public string sTotalPurchaseOrderCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalPurchaseOrderCurrency);
-        public string sTotalUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalUSD);
+      
 
         public bool IsAnyPendingToReceiveLessThanZero => PurchaseOrderItems.Any(x => x.PendingToReceiveCurrency < 0);   
         public double PendingToReceiveCurrency => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.PendingToReceiveCurrency);
@@ -155,13 +153,10 @@ namespace Shared.Models.PurchaseOrders.Requests
         }
 
         public bool IsCompletedReceived => PurchaseOrderItems.Sum(x => x.PendingToReceiveCurrency) == 0;
-        public double TotalReceivingUSD => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.ReceivingValueUSD);
-        public string sTotalReceivingUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", TotalReceivingUSD);
+        public double TotalReceivingUSD => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.ReceivingValueUSD);      
         public double ActualUSD => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.ActualUSD);
-        public string sActualUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", ActualUSD);
-
         public double ActualCurrency => PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.ActualCurrency);
-        public string sActualCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", ActualCurrency);
+      
 
     }
 }

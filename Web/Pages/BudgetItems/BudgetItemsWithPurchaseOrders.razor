@@ -19,11 +19,11 @@
 
                 </MudStack>
                 <MudSpacer />
-                <TextField @bind-Value="@NameFilter" Placeholder="Search" Adornment="Adornment.Start"
+                <TextField @bind-Value="@NameFilter" Change=OnNameFilterChanged Placeholder="Search" Adornment="Adornment.Start"
                            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Small" Class="mt-0"></TextField>
             </ToolBarContent>
             <Columns>
-                <HierarchyColumn T="BudgetItemWithPurchaseOrdersResponse" />
+                <HierarchyColumn T="BudgetItemWithPurchaseOrdersResponse" InitiallyExpandedFunc="x=>x.PurchaseOrders.Count>0" />
                 <PropertyColumn Property="x => x.Nomenclatore" Title="#" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
                 <PropertyColumn Property="x => x.Tag" Title="Tag" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
                 <PropertyColumn Property="x => x.Name" Title="Name" T="BudgetItemWithPurchaseOrdersResponse" TProperty="string" />
@@ -42,11 +42,7 @@
                 </TemplateColumn>
             </Columns>
             <ChildRowContent>
-                @if (context.Item.PurchaseOrders.Count > 0)
-                {
-
-                    <PurchaseOrdersTable HideAccount=true ShowPrint=false Items="@context.Item.PurchaseOrders" ShowToolbar=false GetAll="GetAll"></PurchaseOrdersTable>
-                }
+                <PurchaseOrdersTable HideAccount=true ShowPrint=false Items="@context.Item.PurchaseOrders" ShowToolbar=false GetAll="GetAll"></PurchaseOrdersTable>
 
             </ChildRowContent>
 

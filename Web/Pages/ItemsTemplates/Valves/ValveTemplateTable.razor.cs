@@ -28,9 +28,9 @@ public partial class ValveTemplateTable
     protected override async Task OnInitializedAsync()
     {
 
-        if (Items.Count == 0)
+        if (!ByParameter)
             await GetAll();
-        else ByParameter = true;
+
     }
     async Task GetAll()
     {
@@ -39,8 +39,15 @@ public partial class ValveTemplateTable
         {
             Items = result.Data.Items;
         }
+        if (ByParameter && UpdateForm.HasDelegate)
+        {
+            await UpdateForm.InvokeAsync();
+        }
     }
-    bool ByParameter { get; set; } = false;
+    [Parameter]
+    public EventCallback UpdateForm { get; set; }
+    [Parameter]
+    public bool ByParameter { get; set; } = false;
     public async Task AddNew()
     {
 
@@ -197,7 +204,7 @@ public partial class ValveTemplateTable
         {
             await GetAll();
         }
-       
+
     }
 
 }

@@ -100,12 +100,12 @@
 
                 </MudItem>
                 <MudItem xs="12" sm="12" md="4">
-                    <Select @bind-Value="Model.ConnectionType"
-                            Items="@ConnectionTypeEnum.List"
-                            Label="Connection Type"
+                    <Select @bind-Value="Model.Diameter"
+                            Items="@NominalDiameterEnum.List"
+                            Label="Diameter"
                             Property="@(p=>p.Name)"
-                            Change="ChangeConnectionType"
-                            For="()=>Model.ConnectionType"
+                            Change="ChangeDiameter"
+                            For="()=>Model.Diameter"
                             ValidateAsync="@(()=>ValidateAsync())"
                             Clearable="false">
                     </Select>
@@ -117,7 +117,19 @@
             
             <MudGrid Spacing="2" Style="padding: 2px;width:100%; ">
                 <MudItem xs="12" sm="12" md="4">
-                    <CurrencyNumericField Label="Value, USD"
+                    <Select @bind-Value="Model.ConnectionType"
+                            Items="@ConnectionTypeEnum.List"
+                            Label="Connection Type"
+                            Property="@(p=>p.Name)"
+                            Change="ChangeConnectionType"
+                            For="()=>Model.ConnectionType"
+                            ValidateAsync="@(()=>ValidateAsync())"
+                            Clearable="false">
+                    </Select>
+
+                </MudItem>
+                <MudItem xs="12" sm="12" md="4">
+                    <DoubleNumericField Label="Value, USD"
                                           @bind-Value="Model.Value"
                                           For="()=>Model.Value"
                                           ValidateAsync="@(()=>ValidateAsync())" />
@@ -126,7 +138,7 @@
             </MudGrid>
             <MudGrid>
                 <MudItem xs="12" sm="12" md="12">
-                    <NozzleTemplateTable @bind-Items=@Model.Nozzles Validate="ValidateAsync" DisableAdd=true></NozzleTemplateTable>
+                    <NozzleTemplateTable EditConnection=false EditDiameter=false @bind-Items=@Model.Nozzles Validate="ValidateAsync" DisableAdd=true></NozzleTemplateTable>
 
                     <ValidationMessage For="() => Model.Nozzles" style="color:red; font-size:x-small;" />
                 </MudItem>

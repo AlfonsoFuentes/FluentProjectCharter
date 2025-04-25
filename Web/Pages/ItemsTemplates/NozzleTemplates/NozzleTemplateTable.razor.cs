@@ -17,13 +17,16 @@ public partial class NozzleTemplateTable
     {
         await ItemsChanged.InvokeAsync(Items);
     }
-
-
+    [Parameter]
+    public bool EditDiameter { get; set; } = true;
+    [Parameter]
+    public bool EditConnection { get; set; } = true;
     async Task Add()
     {
         var parameters = new DialogParameters<NozzleTemplateDialog>
         {
-
+             { x => x.EditDiameter, EditDiameter},
+             { x => x.EditConnection, EditConnection},
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Small };
@@ -48,6 +51,8 @@ public partial class NozzleTemplateTable
         var parameters = new DialogParameters<NozzleTemplateDialog>
         {
              { x => x.Model, item},
+              { x => x.EditDiameter, EditDiameter},
+              { x => x.EditConnection, EditConnection},
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Small };

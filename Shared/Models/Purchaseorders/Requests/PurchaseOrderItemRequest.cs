@@ -85,22 +85,7 @@ namespace Shared.Models.PurchaseOrders.Requests
         public double NewCommitmentUSD => TotalUSD - NewActualUSD;
         public double PendingToReceiveCurrency => TotalPurchaseOrderCurrency - ActualCurrency - ReceivingValueCurrency;
         public double PendingToReceiveUSD => TotalUSD - ActualUSD - ReceivingValueUSD;
-        public string sBudgetUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(BudgetUSD, 2));
-        public string sAssignedUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(AssignedUSD, 2));
-        public string sToCommitUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(ToCommitUSD, 2));
-        public string sTotalQuoteCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(TotalQuoteCurrency, 2));
-        public string sUnitaryPurchaseOrderCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(UnitaryPurchaseOrderCurrency, 2));
-        public string sTotalPurchaseOrderCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(TotalPurchaseOrderCurrency, 2));
-        public string sUnitaryUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(UnitaryUSD, 2));
-        public string sTotalUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(TotalUSD, 2));
-        public string sReceivingValueUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(ReceivingValueUSD, 2));
-        public string sReceivingValueCurrency => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(ReceivingValueCurrency, 2));
-        public string sActualUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(ActualUSD, 2));
-        public string sCommitmentUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(CommitmentUSD, 2));
-
-        public string sNewActualUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(NewActualUSD, 2));
-        public string sNewCommitmentUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(NewCommitmentUSD, 2));
-        public string sPendingToReceiveUSD => string.Format(new CultureInfo("en-US"), "{0:C0}", Math.Round(PendingToReceiveUSD, 2));
+       
         public List<PurchaseOrderItemReceivedRequest> PurchaseOrderItemReceiveds { get; set; } = new();
     }
 }

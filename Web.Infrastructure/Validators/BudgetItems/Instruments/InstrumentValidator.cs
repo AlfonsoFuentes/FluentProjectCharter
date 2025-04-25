@@ -4,15 +4,19 @@ using Shared.Enums.DiameterEnum;
 using Shared.Enums.Instruments;
 using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
+using Shared.Models.Brands.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Instruments.Requests;
 using Shared.Models.BudgetItems.IndividualItems.Instruments.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Instruments.Validators;
 using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
+using Shared.Models.Templates.Instruments.Responses;
+using Shared.Models.Templates.Instruments.Validators;
+using Shared.Models.Templates.NozzleTemplates;
 using Web.Infrastructure.Managers.Generic;
 
 namespace Web.Infrastructure.Validators.BudgetItems.Instruments
 {
- 
+
     public class InstrumentValidator : AbstractValidator<InstrumentResponse>
     {
         private readonly IGenericService Service;
@@ -22,42 +26,45 @@ namespace Web.Infrastructure.Validators.BudgetItems.Instruments
             Service = service;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name must be defined!");
             RuleFor(x => x.BudgetUSD).GreaterThan(0).When(x => !x.IsExisting).WithMessage("Budget must be defined!");
-          
+
             RuleFor(x => x.TagLetter).NotEmpty().When(x => x.ShowDetails)
               .WithMessage("Tag Letter must be defined!");
-            
-            RuleFor(x => x.VariableInstrument).NotEqual(VariableInstrumentEnum.None).When(x => x.ShowDetails)
+
+            RuleFor(x => x.Template.VariableInstrument).NotEqual(VariableInstrumentEnum.None).When(x => x.ShowDetails)
              .WithMessage("Variable must be defined!");
 
             RuleFor(x => x.ProvisionalTag).NotEmpty().When(x => x.ShowProvisionalTag && !x.ShowDetails)
             .WithMessage("Tag must be defined!");
 
-            RuleFor(x => x.ModifierVariable).NotEqual(ModifierVariableInstrumentEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.ModifierVariable).NotEqual(ModifierVariableInstrumentEnum.None).When(x => x.ShowDetails)
         .WithMessage("Modifier Variable must be defined!");
 
 
-            RuleFor(x => x.Reference).NotEmpty().When(x => x.ShowDetails)
-.WithMessage("Reference must be defined!");
+            RuleFor(x => x.Template.Reference).NotEmpty().When(x => x.ShowDetails)
+            .WithMessage("Reference must be defined!");
 
-            RuleFor(x => x.ConnectionType).NotEqual(ConnectionTypeEnum.None).When(x => x.ShowDetails)
-      .WithMessage("Diameter must be defined!");
+            RuleFor(x => x.Template.Diameter).NotEqual(NominalDiameterEnum.None).When(x => x.ShowDetails)
+           .WithMessage("Diameter must be defined!");
 
-            RuleFor(x => x.BrandName).NotNull().When(x => x.ShowDetails)
-           .WithMessage("Brand must be defined!");
+            RuleFor(x => x.Template.ConnectionType).NotEqual(ConnectionTypeEnum.None).When(x => x.ShowDetails)
+             .WithMessage("Connection Type must be defined!");
 
-            RuleFor(x => x.Material).NotEqual(MaterialEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.Brand).NotNull().When(x => x.ShowDetails)
+             .WithMessage("Brand must be defined!");
+
+            RuleFor(x => x.Template.Material).NotEqual(MaterialEnum.None).When(x => x.ShowDetails)
           .WithMessage("Internal Material must be defined!");
 
-            RuleFor(x => x.Model).NotEmpty().When(x => x.ShowDetails)
+            RuleFor(x => x.Template.Model).NotEmpty().When(x => x.ShowDetails)
           .WithMessage("Model must be defined!");
 
 
             RuleFor(x => x.Nozzles).Must(ReviewInlet).When(x => x.ShowDetails
-            && (x.VariableInstrument.Id != VariableInstrumentEnum.VolumeFlowMeter.Id || x.VariableInstrument.Id != VariableInstrumentEnum.MassFlowMeter.Id))
+            && (x.Template.VariableInstrument.Id != VariableInstrumentEnum.VolumeFlowMeter.Id || x.Template.VariableInstrument.Id != VariableInstrumentEnum.MassFlowMeter.Id))
                 .WithMessage("Nozzles must be have one inlet");
 
             RuleFor(x => x.Nozzles).Must(ReviewInletOutlet).When(x => x.ShowDetails
-              && (x.VariableInstrument.Id == VariableInstrumentEnum.VolumeFlowMeter.Id || x.VariableInstrument.Id == VariableInstrumentEnum.MassFlowMeter.Id))
+              && (x.Template.VariableInstrument.Id == VariableInstrumentEnum.VolumeFlowMeter.Id || x.Template.VariableInstrument.Id == VariableInstrumentEnum.MassFlowMeter.Id))
                   .WithMessage("Nozzles must be have one inlet and one outlet");
 
             RuleFor(x => x.Nozzles).Must(ReviewConnectionType).When(x => x.ShowDetails)
@@ -83,8 +90,9 @@ namespace Web.Infrastructure.Validators.BudgetItems.Instruments
                 .When(x => !string.IsNullOrEmpty(x.Name))
                 .WithMessage(x => $"{x.Name} already exist");
 
+      
         }
-
+      
         async Task<bool> ReviewIfNameExist(InstrumentResponse request, string name, CancellationToken cancellationToken)
         {
             ValidateInstrumentRequest validate = new()

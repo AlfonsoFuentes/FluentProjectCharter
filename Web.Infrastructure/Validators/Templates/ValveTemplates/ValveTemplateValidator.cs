@@ -29,7 +29,8 @@ namespace Web.Infrastructure.Validators.Templates.ValveTemplates
             RuleFor(x => x.Diameter).NotEqual(NominalDiameterEnum.None).WithMessage("Diameter must be defined!");
             RuleFor(x => x.FailType).NotEqual(FailTypeEnum.None).When(x => x.ActuatorType != ActuatorTypeEnum.Hand).WithMessage("Fail Type must be defined!");
             RuleFor(x => x.SignalType).NotEqual(SignalTypeEnum.None).When(x => x.ActuatorType != ActuatorTypeEnum.Hand).WithMessage("Signal Type must be defined!");
-           
+            RuleFor(x => x.ConnectionType).NotEqual(ConnectionTypeEnum.None).WithMessage("Connection type must be defined!");
+
             RuleFor(x => x.Brand).NotNull().WithMessage("Brand must be defined!");
 
             RuleFor(x => x.Nozzles).Must(ReviewInletOutlet).When(x =>

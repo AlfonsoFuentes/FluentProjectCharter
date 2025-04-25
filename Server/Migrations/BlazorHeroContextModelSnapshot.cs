@@ -2650,6 +2650,9 @@ namespace Server.Migrations
                     b.Property<int>("ConnectionType")
                         .HasColumnType("int");
 
+                    b.Property<int>("Diameter")
+                        .HasColumnType("int");
+
                     b.Property<int>("Material")
                         .HasColumnType("int");
 
@@ -2706,6 +2709,9 @@ namespace Server.Migrations
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Template");
 
                     b.Property<int>("ActuatorType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ConnectionType")
                         .HasColumnType("int");
 
                     b.Property<int>("Diameter")
@@ -2775,12 +2781,6 @@ namespace Server.Migrations
                 {
                     b.HasBaseType("Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.EngineeringItem");
 
-                    b.Property<int>("Diameter")
-                        .HasColumnType("int");
-
-                    b.Property<double>("EquivalentLenghPrice")
-                        .HasColumnType("float");
-
                     b.Property<string>("FluidCodeCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -2788,17 +2788,8 @@ namespace Server.Migrations
                     b.Property<Guid?>("FluidCodeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Insulation")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("LaborDayPrice")
-                        .HasColumnType("float");
-
                     b.Property<double>("LaborQuantity")
                         .HasColumnType("float");
-
-                    b.Property<int>("Material")
-                        .HasColumnType("int");
 
                     b.Property<double>("MaterialQuantity")
                         .HasColumnType("float");

@@ -2,6 +2,7 @@ using MudBlazor;
 using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Shared.Models.Templates.NozzleTemplates;
 using Web.Pages.ItemsTemplates.NozzleTemplates;
+using static MudBlazor.CategoryTypes;
 
 namespace Web.Pages.BudgetItems.Nozzles;
 public partial class NozzleBudgetaryTable
@@ -15,14 +16,21 @@ public partial class NozzleBudgetaryTable
     async Task OnItemsChanged()
     {
         await ItemsChanged.InvokeAsync(Items);
+        if (Change.HasDelegate) await Change.InvokeAsync();
+        if (Validate.HasDelegate) await Validate.InvokeAsync();
     }
- 
-
+    [Parameter]
+    public EventCallback Change { get; set; }
+    [Parameter]
+    public bool EditDiameter { get; set; } = true;
+    [Parameter]
+    public bool EditConnection { get; set; } = true;
     async Task Add()
     {
         var parameters = new DialogParameters<NozzleBudgetaryDialog>
         {
-
+             { x => x.EditDiameter, EditDiameter},
+             { x => x.EditConnection, EditConnection},
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Small };
@@ -34,20 +42,21 @@ public partial class NozzleBudgetaryTable
             var model = result.Data as NozzleResponse;
             Items.Add(model!);
             await OnItemsChanged();
-            await Validate.InvokeAsync();
-            StateHasChanged();
+
         }
 
     }
     [Parameter]
     public EventCallback Validate { get; set; }
 
-    
+
     async Task Edit(NozzleResponse item)
     {
         var parameters = new DialogParameters<NozzleBudgetaryDialog>
         {
              { x => x.Model, item},
+             { x => x.EditDiameter, EditDiameter},
+             { x => x.EditConnection, EditConnection},
         };
 
         var options = new DialogOptions() { MaxWidth = MaxWidth.Small };
@@ -59,15 +68,14 @@ public partial class NozzleBudgetaryTable
             var model = result.Data as NozzleResponse;
             item = model!;
             await OnItemsChanged();
-            await Validate.InvokeAsync();
-            StateHasChanged();
+
         }
     }
-   
+
     async Task Delete(NozzleResponse item)
     {
         Items.Remove(item);
         await OnItemsChanged();
-        await Validate.InvokeAsync();
+
     }
 }

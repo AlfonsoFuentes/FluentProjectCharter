@@ -1,6 +1,7 @@
 ﻿using Server.EndPoint.Brands.Queries;
 using Server.ExtensionsMethods.InstrumentTemplateMapper;
 using Shared.Enums.ConnectionTypes;
+using Shared.Enums.DiameterEnum;
 using Shared.Enums.Instruments;
 using Shared.Enums.Materials;
 using Shared.Enums.ValvesEnum;
@@ -24,7 +25,8 @@ namespace Server.ExtensionsMethods.InstrumentTemplateMapper
             row.Variable = request.VariableInstrument.Id;
             row.SignalType = request.SignalType.Id;
 
-            row.ConnectionType = request.ConnectionType.Id;
+            row.Diameter = request.Diameter.Id;
+            row.ConnectionType = request.ConnectionType.Id; 
 
             return row;
         }
@@ -45,6 +47,7 @@ namespace Server.ExtensionsMethods.InstrumentTemplateMapper
                 SignalType = SignalTypeEnum.GetType(row.SignalType),
                 Nozzles = row.NozzleTemplates.Count == 0 ? new() : row.NozzleTemplates.Select(x => x.Map()).ToList(),
 
+                Diameter = NominalDiameterEnum.GetType(row.Diameter),
                 ConnectionType = ConnectionTypeEnum.GetType(row.ConnectionType),
 
             };
@@ -57,16 +60,17 @@ namespace Server.ExtensionsMethods.InstrumentTemplateMapper
             row.Value = Value;
 
             row.TagLetter = request.TagLetter;
-            row.Reference = request.Reference;
-            row.Material = request.Material.Id;
+            row.Reference = request.Template.Reference;
+            row.Material = request.Template.Material.Id;
 
-            row.Model = request.Model;
-            row.BrandTemplateId = request.Brand!.Id;
-            row.ModifierVariable = request.ModifierVariable.Id;
-            row.Variable = request.VariableInstrument.Id;
-            row.SignalType = request.SignalType.Id;
+            row.Model = request.Template.Model;
+            row.BrandTemplateId = request.Template.Brand!.Id;
+            row.ModifierVariable = request.Template.ModifierVariable.Id;
+            row.Variable = request.Template.VariableInstrument.Id;
+            row.SignalType = request.Template.SignalType.Id;
 
-            row.ConnectionType = request.ConnectionType.Id;
+            row.Diameter = request.Template.Diameter.Id;
+            row.ConnectionType = request.Template.ConnectionType.Id;    
 
             return row;
         }
@@ -80,37 +84,8 @@ namespace Server.ExtensionsMethods.InstrumentTemplateMapper
             row.ProvisionalTag = request.ProvisionalTag;
             return row;
         }
-        public static async Task<InstrumentTemplate> GetInstrumentTemplate(IRepository Repository, InstrumentResponse data)
+        public static async Task<InstrumentTemplate> AddInstrumentTemplate(IRepository Repository, InstrumentResponse data)
         {
-            Func<IQueryable<InstrumentTemplate>, IIncludableQueryable<InstrumentTemplate, object>> Includes = x => x
-
-                .Include(x => x.NozzleTemplates)
-                  ;
-
-            Expression<Func<InstrumentTemplate, bool>> criteria = it =>
-            it.Material == data.Material.Id &&
-            it.ConnectionType == data.ConnectionType.Id &&
-            it.SignalType == data.SignalType.Id &&
-            it.Variable == data.VariableInstrument.Id &&
-            it.ModifierVariable == data.ModifierVariable.Id &&
-            it.BrandTemplateId == data.BrandId &&
-            it.Model.Equals(data.Model) &&
-            it.Reference.Equals(data.Reference) 
-            ;
-            var instrumentTemplates = await Repository.GetAllAsync(Includes: Includes, Criteria: criteria);
-            if (instrumentTemplates != null && instrumentTemplates.Any())
-            {
-                foreach (var item in instrumentTemplates)
-                {
-
-                    if (item.NozzleTemplates.ValidateNozzles(data.Nozzles))
-                    {
-                        return item; // Si todas las boquillas coinciden, retornar true
-                    }
-                }
-
-            }
-
             var instrumentTemplate = Template.AddInstrumentTemplate();
             data.Map(instrumentTemplate, data.BudgetUSD);
             foreach (var nozzle in data.Nozzles)

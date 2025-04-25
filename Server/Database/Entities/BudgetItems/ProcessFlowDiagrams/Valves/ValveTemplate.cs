@@ -13,8 +13,9 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves
         public bool HasFeedBack { get; set; }
         public int Diameter { get; set; }
         public int FailType { get; set; } 
-        public int SignalType { get; set; } 
- 
+        public int SignalType { get; set; }
+
+        public int ConnectionType { get; set; }
         public double Value { get; set; }
 
         [ForeignKey("ValveTemplateId")]

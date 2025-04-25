@@ -6,25 +6,45 @@ using Shared.Models.Templates.Instruments.Responses;
 namespace Server.EndPoint.Templates.Instruments.Commands
 {
 
-    public static class CreateInstrumentTemplateEndPoint
+    public static class CreateUpdateInstrumentTemplateEndPoint
     {
         public class EndPoint : IEndPoint
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.InstrumentTemplates.EndPoint.Create, async (InstrumentTemplateResponse Data, IRepository Repository) =>
+                app.MapPost(StaticClass.InstrumentTemplates.EndPoint.CreateUpdate, async (InstrumentTemplateResponse Data, IRepository Repository) =>
                 {
-                    var row = Template.AddInstrumentTemplate();
+                    InstrumentTemplate? row = null;
+                    if (Data.Id == Guid.Empty)
+                    {
+                        row = Template.AddInstrumentTemplate();
 
-                    await Repository.AddAsync(row);
+                        await Repository.AddAsync(row);
+                        await NozzleMapper.CreateNozzleTemplates(Repository, row.Id, Data.Nozzles);
+                    }
+                    else
+                    {
+                        Expression<Func<InstrumentTemplate, bool>> Criteria = x => x.Id == Data.Id;
+                        Func<IQueryable<InstrumentTemplate>, IIncludableQueryable<InstrumentTemplate, object>> Includes = x => x
+                        .Include(x => x.BrandTemplate!)
+                        .Include(x => x.NozzleTemplates)
+                        .Include(x => x.Instruments);
+                         row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
+
+                        if (row == null) { return Result.Fail(Data.NotFound); }
+
+                        await Repository.UpdateAsync(row);
+                        await NozzleMapper.UpdateNozzlesTemplate(Repository, row.NozzleTemplates, Data.Nozzles, row.Id);
+                    }
+                    
 
                     Data.Map(row);
 
-                    await NozzleMapper.CreateNozzleTemplates(Repository, row.Id, Data.Nozzles);
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.InstrumentTemplates.Cache.Key(row.Id));
 
-                    return Result.EndPointResult(result,Data.Succesfully,
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(GetCacheKeys(row));
+
+                    return Result.EndPointResult(result, Data.Succesfully,
                         Data.Fail);
 
 
@@ -32,10 +52,24 @@ namespace Server.EndPoint.Templates.Instruments.Commands
 
 
             }
+            private string[] GetCacheKeys(InstrumentTemplate row)
+            {
+
+
+                var templates = StaticClass.InstrumentTemplates.Cache.Key(row.Id);
+                var items = row.Instruments == null ? new[] { string.Empty } : row.Instruments.Select(x => StaticClass.Valves.Cache.GetById(x.Id)).ToArray();
+                List<string> cacheKeys = [
+                        ..items,
+                        ..templates
+
+                ];
+
+                return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
+            }
         }
 
 
-       
+
 
     }
 

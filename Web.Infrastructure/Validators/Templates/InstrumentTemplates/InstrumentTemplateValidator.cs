@@ -34,10 +34,12 @@ namespace Web.Infrastructure.Validators.Templates.InstrumentTemplates
             RuleFor(x => x.Material).NotEqual(MaterialEnum.None)
           .WithMessage("Material must be defined!");
 
-         
 
             RuleFor(x => x.ConnectionType).NotEqual(ConnectionTypeEnum.None)
-       .WithMessage("Connection type must be defined!");
+             .WithMessage("Connection Type must be defined!");
+
+            RuleFor(x => x.Diameter).NotEqual(NominalDiameterEnum.None)
+       .WithMessage("Diameter type must be defined!");
 
             RuleFor(x => x.Model).NotEmpty()
           .WithMessage("Model must be defined!");

@@ -1,9 +1,12 @@
 ﻿<TableTemplate TValue="NozzleResponse"
                AddNew="Add"
-            
+               ShowDelete="false"
+               ShowSearch="false"
+               ShowOrderUpDown="false"
+               ShowPrint="false"
+               ShowAdd="true"
                @bind-NameFilter=@nameFilter
-               Items="@Items"
-             >
+               Items="@Items">
     <ColumnsTemplate>
         <SelectColumn T="NozzleResponse" />
         <PropertyColumn Property="x => x.NozzleType.Name" Title="Type" Sortable="false" T="NozzleResponse" TProperty="string" />

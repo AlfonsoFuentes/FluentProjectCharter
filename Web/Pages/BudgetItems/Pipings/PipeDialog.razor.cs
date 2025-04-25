@@ -154,13 +154,20 @@ public partial class PipeDialog
     }
     async Task GetFromTamplateList(PipeTemplateResponse response)
     {
+        Model.Template = new()
+        {
+            Id = response.Id,
+            Name = response.Name,
+            Diameter = response.Diameter,
+            Class = response.Class,
+            Material = response.Material,
+            Insulation = response.Insulation,
+            EquivalentLenghPrice = response.EquivalentLenghPrice,
+            LaborDayPrice = response.LaborDayPrice, 
 
-        Model.Diameter = response.Diameter;
-        Model.PipeClass = response.Class;
-        Model.Material = response.Material;
-        Model.LaborDayPrice = response.LaborDayPrice;
-        Model.Insulation = response.Insulation;
-        Model.EquivalentLenghPrice = response.EquivalentLenghPrice;
+        };
+
+       
 
         await ValidateAsync();
     }

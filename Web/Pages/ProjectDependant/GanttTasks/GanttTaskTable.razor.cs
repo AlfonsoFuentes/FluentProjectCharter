@@ -103,7 +103,7 @@ public partial class GanttTaskTable
         if (SelectedDeliverable == null) return;
         SelectedDeliverable.IsExpanded = true;
 
-        var newDeliverable = SelectedDeliverable.AddGanttTaskResponse(Response.ProjectId, SelectedRow);
+        var newDeliverable = SelectedDeliverable.AddGanttTaskResponse(SelectedDeliverable.DeliverableId, SelectedRow);
         CreateRow = newDeliverable;
         StateHasChanged();
     }
@@ -267,8 +267,6 @@ public partial class GanttTaskTable
         _snackBar.ShowError(result.Messages);
         return false;
     }
-
-
     async Task Save(GanttTaskResponse row)
     {
         if (row.IsEditing)

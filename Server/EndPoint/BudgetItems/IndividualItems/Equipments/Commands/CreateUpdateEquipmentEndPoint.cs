@@ -1,4 +1,5 @@
-﻿using Server.ExtensionsMethods.Projects;
+﻿using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments;
+using Server.ExtensionsMethods.Projects;
 using Shared.Models.BudgetItems.IndividualItems.Equipments.Responses;
 
 namespace Server.EndPoint.BudgetItems.IndividualItems.Equipments.Commands
@@ -25,23 +26,28 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Equipments.Commands
                     }
                     else
                     {
-                        row = await repository.GetByIdAsync<Equipment>(data.Id);
+                        Func<IQueryable<Equipment>, IIncludableQueryable<Equipment, object>> Includes = x => x.Include(x => x.Nozzles);
+
+                        Expression<Func<Equipment, bool>> Criteria = x => x.Id == data.Id;
+
+                        row = await repository.GetAsync(Criteria: Criteria, Includes: Includes);
+            
                         if (row == null) return Result.Fail(data.NotFound);
+                        
                         await repository.UpdateAsync(row);
+                        
                         await NozzleMapper.UpdateNozzles(repository, row.Nozzles, data.Nozzles, row.Id);
                     }
-                    if (data.ShowDetails)
+                    if (data.ShowDetails && data.Template != null)
                     {
-                        var equipmentTemplate = await EquipmentTemplateMapper.GetEquipmentTemplate(repository, data);
-
-                        if (row.EquipmentTemplateId == null && equipmentTemplate != null)
+                        if (data.Template.Id == Guid.Empty)
                         {
+                            var equipmentTemplate = await EquipmentTemplateMapper.AddEquipmentTemplate(repository, data);
                             row.EquipmentTemplateId = equipmentTemplate.Id;
-
                         }
-                        else if (row.EquipmentTemplateId != null && equipmentTemplate != null && equipmentTemplate.Id != row.EquipmentTemplateId.Value)
+                        else
                         {
-                            row.EquipmentTemplateId = equipmentTemplate.Id;
+                            row.EquipmentTemplateId = data.Template.Id;
                         }
 
                     }
