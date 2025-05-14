@@ -27,17 +27,11 @@
                 <Field Label="Tax Code:">@Model.TaxCode</Field>
             </MudItem>
             <MudItem sm="3" xs="12">
-                @if (Model.PurchaseOrderCurrency.Id != CurrencyEnum.USD.Id && Model.PurchaseOrderCurrency.Id != CurrencyEnum.None.Id)
-                {
-
-                    <DatePicker Label="TRM Date"
-                                @bind-Value=@Model.CurrencyDate
-                                ValidateAsync="ValidateAsync"
-                                For="() => Model.CurrencyDate"
-                                Change="@(()=>ChangedCurrencyDate(Model.CurrencyDate))"></DatePicker>
-
-
-                }
+                <DatePicker Label="Created Date"
+                            @bind-Value=@Model.CurrencyDate
+                            ValidateAsync="ValidateAsync"
+                            For="() => Model.CurrencyDate"
+                            Change="@(()=>ChangedCurrencyDate(Model.CurrencyDate))"></DatePicker>
              
                 
 

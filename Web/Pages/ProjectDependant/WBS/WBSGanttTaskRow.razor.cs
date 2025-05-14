@@ -1,97 +1,94 @@
-using Shared.Enums.TasksRelationTypes;
-using Shared.Models.GanttTasks.Mappers;
-using Shared.Models.GanttTasks.Responses;
-
 namespace Web.Pages.ProjectDependant.WBS;
 public partial class WBSGanttTaskRow
 {
-    [Parameter]
-    public DeliverableWithGanttTaskResponse Deliverable { get; set; } = new();
-    [Parameter]
-    public EventCallback<DeliverableWithGanttTaskResponse> DeliverableChanged { get; set; }
-    [Parameter]
-    public GanttTaskResponse Task { get; set; } = new();
+    //[Parameter]
+    //public DeliverableWithGanttTaskResponse Deliverable { get; set; } = new();
+    //[Parameter]
+    //public EventCallback<DeliverableWithGanttTaskResponse> DeliverableChanged { get; set; }
+    //[Parameter]
+    //public GanttTaskResponse Task { get; set; } = new();
 
 
-    [Parameter]
-    public EventCallback<GanttTaskResponse> OnClick { get; set; }
-    [Parameter]
-    public EventCallback<GanttTaskResponse> OnEdit { get; set; }
-    [Parameter]
-    public EventCallback<GanttTaskResponse> OnSave { get; set; }
+    //[Parameter]
+    //public EventCallback<GanttTaskResponse> OnClick { get; set; }
+    //[Parameter]
+    //public EventCallback<GanttTaskResponse> OnEdit { get; set; }
+    //[Parameter]
+    //public EventCallback<GanttTaskResponse> OnSave { get; set; }
 
-    [Parameter]
-    public EventCallback<GanttTaskResponse> OnCancel { get; set; }
-    [Parameter]
-    public EventCallback<GanttTaskResponse> OnDelete { get; set; }
-    [Parameter]
-    public EventCallback GetAll { get; set; } 
-    private bool DisableSaveButton(GanttTaskResponse task)
-    {
-        // Lógica para deshabilitar el botón de guardar si es necesario
-        return string.IsNullOrEmpty(task?.Name);
-    }
+    //[Parameter]
+    //public EventCallback<GanttTaskResponse> OnCancel { get; set; }
+    //[Parameter]
+    //public EventCallback<GanttTaskResponse> OnDelete { get; set; }
+    //[Parameter]
+    //public EventCallback GetAll { get; set; }
 
-    public async Task OnToggleTask(GanttTaskResponse task)
-    {
+    //private bool DisableSaveButton(GanttTaskResponse task)
+    //{
+    //    // Lógica para deshabilitar el botón de guardar si es necesario
+    //    return string.IsNullOrEmpty(task?.Name);
+    //}
 
-        task.IsExpanded = !task.IsExpanded;
-        await DeliverableChanged.InvokeAsync(Deliverable);
+    //public async Task OnToggleTask(GanttTaskResponse task)
+    //{
 
-        var result = await GenericService.Update(task.ToExpand());
-        if (result.Succeeded)
-        {
+    //    task.IsExpanded = !task.IsExpanded;
+    //    await DeliverableChanged.InvokeAsync(Deliverable);
 
-        }
-    }
-    public async Task OnChangeName(string name)
-    {
+    //    var result = await GenericService.Update(task.ToExpand());
+    //    if (result.Succeeded)
+    //    {
 
-        Task.Name = name;
-        await DeliverableChanged.InvokeAsync(Deliverable);
+    //    }
+    //}
+    //public async Task OnChangeName(string name)
+    //{
 
-    }
-    public async Task OnChangeStartDate(DateTime? newdate)
-    {
-        Deliverable.UpdateStartDate(Task, newdate);
+    //    Task.Name = name;
+    //    await DeliverableChanged.InvokeAsync(Deliverable);
 
-        await DeliverableChanged.InvokeAsync(Deliverable);
+    //}
+    //public async Task OnChangeStartDate(DateTime? newdate)
+    //{
+    //    Deliverable.UpdateStartDate(Task, newdate);
 
-    }
-    public async Task OnChangeEndDate(DateTime? newdate)
-    {
-        Deliverable.UpdateEndDate(Task, newdate);
+    //    await DeliverableChanged.InvokeAsync(Deliverable);
 
-        await DeliverableChanged.InvokeAsync(Deliverable);
+    //}
+    //public async Task OnChangeEndDate(DateTime? newdate)
+    //{
+    //    Deliverable.UpdateEndDate(Task, newdate);
 
-    }
-    public async Task OnChangeDuration(string newValue)
-    {
+    //    await DeliverableChanged.InvokeAsync(Deliverable);
 
-        Deliverable.UpdateDuration(Task, newValue);
-        await DeliverableChanged.InvokeAsync(Deliverable);
+    //}
+    //public async Task OnChangeDuration(string newValue)
+    //{
 
-    }
-    public async Task OnChangeLag(string newValue)
-    {
+    //    Deliverable.UpdateDuration(Task, newValue);
+    //    await DeliverableChanged.InvokeAsync(Deliverable);
 
-        Deliverable.UpdateLag(Task, newValue);
-        await DeliverableChanged.InvokeAsync(Deliverable);
+    //}
+    //public async Task OnChangeLag(string newValue)
+    //{
 
-    }
-    async Task OnChangeDependencyType(TasksRelationTypeEnum type)
-    {
-        Deliverable.UpdateRelationType(Task, type);
-        await DeliverableChanged.InvokeAsync(Deliverable);
+    //    Deliverable.UpdateLag(Task, newValue);
+    //    await DeliverableChanged.InvokeAsync(Deliverable);
+
+    //}
+    //async Task OnChangeDependencyType(TasksRelationTypeEnum type)
+    //{
+    //    Deliverable.UpdateRelationType(Task, type);
+    //    await DeliverableChanged.InvokeAsync(Deliverable);
 
 
-    }
-    public async Task OnChangeDependences(string newValue)
-    {
+    //}
+    //public async Task OnChangeDependences(string newValue)
+    //{
 
-        Deliverable.UpdateDependencies(Task, newValue);
-        await DeliverableChanged.InvokeAsync(Deliverable);
+    //    Deliverable.UpdateDependencies(Task, newValue);
+    //    await DeliverableChanged.InvokeAsync(Deliverable);
 
-    }
+    //}
 
 }

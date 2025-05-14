@@ -56,7 +56,7 @@ namespace Server.EndPoint.Templates.Equipments.Commands
 
 
                 var templates = StaticClass.EquipmentTemplates.Cache.Key(row.Id);
-                var items = row.Equipments == null ? new[] { string.Empty } : row.Equipments.Select(x => StaticClass.Valves.Cache.GetById(x.Id)).ToArray();
+                var items = row.Equipments == null ? new[] { string.Empty } : row.Equipments.Select(x => StaticClass.Equipments.Cache.GetById(x.Id)).ToArray();
                 List<string> cacheKeys = [
                         ..items,
                         ..templates

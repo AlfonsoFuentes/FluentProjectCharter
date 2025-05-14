@@ -70,9 +70,12 @@ namespace Server.Database.Entities.PurchaseOrders
         [NotMapped]
         public double TotalItemPurchaseOrderCurrency => UnitaryValuePurchaseOrderCurrency * Quantity;        
         [NotMapped]
-        public double ActualItemPurchaseOrderCurrency => PurchaseOrderReceiveds == null || PurchaseOrderReceiveds.Count == 0 ? 0 : PurchaseOrderReceiveds.Sum(x => x.ValueReceivedCurrency);
+        public double ActualItemPurchaseOrderCurrency => PurchaseOrderReceiveds == null || PurchaseOrderReceiveds.Count == 0 ? 0 :
+            PurchaseOrderReceiveds.Sum(x => x.ValueReceivedCurrency);
         [NotMapped]
-        public double CommitmentItemPurchaseOrderCurrency => TotalItemPurchaseOrderCurrency - ActualItemPurchaseOrderCurrency;
+        public double CommitmentItemPurchaseOrderCurrency => 
+            PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id || PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Closed.Id ? 0 :
+            TotalItemPurchaseOrderCurrency - ActualItemPurchaseOrderCurrency;
         [NotMapped]
         public double ActualItemUSD => PurchaseOrderReceiveds == null || PurchaseOrderReceiveds.Count == 0 ? 0 :PurchaseOrderReceiveds.Sum(x => x.ReceivedUSD);
         
@@ -81,7 +84,7 @@ namespace Server.Database.Entities.PurchaseOrders
             PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? TotalItemValueUSD : 0;       
         [NotMapped]
         public double CommitmentItemUSD =>
-            PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? 0 : TotalItemValueUSD - ActualItemUSD;
+            PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id|| PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Closed.Id ? 0 : TotalItemValueUSD - ActualItemUSD;
 
        
 

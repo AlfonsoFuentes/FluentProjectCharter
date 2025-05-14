@@ -1,4 +1,6 @@
-﻿namespace Shared.Enums.ConnectionTypes
+﻿using Shared.Enums.Materials;
+
+namespace Shared.Enums.ConnectionTypes
 {
     public class ConnectionTypeEnum : ValueObject
     {
@@ -17,9 +19,10 @@
         public static ConnectionTypeEnum Wafer = Create(5, "Wafer");
         public static ConnectionTypeEnum Lug = Create(6, "Lug");
         public static ConnectionTypeEnum Welded = Create(7, "Welded");
+        public static ConnectionTypeEnum NotApplicable = Create(8, "NA");
         public static List<ConnectionTypeEnum> List = new List<ConnectionTypeEnum>()
         {
-            None, Triclamp, Flange, Threaded, BeavelSeat, NPT, Wafer,Lug,Welded
+            None, Triclamp, Flange, Threaded, BeavelSeat, NPT, Wafer,Lug,Welded, NotApplicable
 
         };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;

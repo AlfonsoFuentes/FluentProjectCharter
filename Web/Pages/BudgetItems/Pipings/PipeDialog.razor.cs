@@ -82,7 +82,7 @@ public partial class PipeDialog
     {
         if (Model.ShowDetails)
         {
-            await this.MudDialog.SetOptionsAsync(new DialogOptions() { MaxWidth = MaxWidth.Large });
+            await this.MudDialog.SetOptionsAsync(new DialogOptions() { MaxWidth = MaxWidth.ExtraLarge });
         }
         else
         {

@@ -6,6 +6,9 @@
                ShowAdd=false
                @bind-SelectedItems=@SelecteItems>
     <Buttons>
+        <IconButton Size=@Size.Small ToolTip="Export to excel" Icon="@Icons.Material.Filled.TableView" Variant=Variant.Outlined OnClick="ExportExcel"></IconButton>
+        <IconButton Size=@Size.Small ToolTip="Export to pdf" Icon="@Icons.Material.Filled.PictureAsPdf" Variant=Variant.Outlined OnClick="ExportPdf"></IconButton>
+
         @if (Response.Status.Id == ProjectStatusEnum.Created.Id)
         {
             <Button Variant=Variant.Outlined OnClick="@(()=>AddAlterations())" ToolTip="Add Alteration" Text="A"></Button>
@@ -29,7 +32,11 @@
         <PropertyColumn Property="x => x.Nomenclatore" Title="#" T="IBudgetItemResponse" TProperty="string" />
         <PropertyColumn Property="x => x.Tag" Title="Tag" T="IBudgetItemResponse" TProperty="string" />
         <PropertyColumn Property="x => x.Name" Title="Name" T="IBudgetItemResponse" TProperty="string" />
-        <PropertyColumn Property="x => x.BudgetUSD.ToCurrencyCulture()" Title="Budget, USD" T="IBudgetItemResponse" TProperty="string" />
+        <PropertyColumn Property="x => x.BudgetUSD.ToCurrencyCulture()" Title="Budget, USD" T="IBudgetItemResponse" TProperty="string" >
+            <FooterTemplate>
+                <Field><strong>@FilteredItems.Sum(x=>x.BudgetUSD).ToCurrencyCulture()</strong></Field>
+            </FooterTemplate>
+        </PropertyColumn>
         <TemplateColumn CellClass="d-flex justify-end" T="IBudgetItemResponse">
             <CellTemplate Context="template">
                 <MudStack Row=true Spacing="2">

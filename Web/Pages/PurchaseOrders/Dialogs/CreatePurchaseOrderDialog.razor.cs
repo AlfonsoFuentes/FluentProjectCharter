@@ -39,6 +39,7 @@ public partial class CreatePurchaseOrderDialog
             Suppliers = result.Data.Items;
         }
     }
+    List<BudgetItemWithPurchaseOrdersResponse> NonSelectedBudgetItemsOrdered=> NonSelectedBudgetItems.OrderBy(x=>x.Nomenclatore).ToList();
     protected override async Task OnInitializedAsync()
     {
         RateList = await _CurrencyService.GetRates(DateTime.UtcNow);

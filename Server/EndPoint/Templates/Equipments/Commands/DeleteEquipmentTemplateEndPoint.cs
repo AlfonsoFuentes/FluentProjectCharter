@@ -17,14 +17,16 @@ namespace Server.EndPoint.Templates.Equipments.Commands
                     var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
 
                     if (row == null) { return Result.Fail(Data.NotFound); }
+                    List<string> cache = new List<string>();
                     foreach (var item in row.Equipments)
                     {
                         item.EquipmentTemplateId = null;
                         await Repository.UpdateAsync(item);
+                        cache.AddRange(StaticClass.Equipments.Cache.Key(item.Id, item.ProjectId));
                     }
                     await Repository.RemoveAsync(row);
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.EquipmentTemplates.Cache.Key(row.Id));
+                    cache.Add(StaticClass.EquipmentTemplates.Cache.GetAll);
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 
                     return Result.EndPointResult(result,
                         Data.Succesfully,

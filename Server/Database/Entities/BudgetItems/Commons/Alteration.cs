@@ -16,7 +16,7 @@ namespace Server.Database.Entities.BudgetItems.Commons
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                GanttTaskId = GanttTaskId,
+                //GanttTaskId = GanttTaskId,
 
             };
         }

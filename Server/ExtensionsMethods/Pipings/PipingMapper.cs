@@ -64,9 +64,7 @@ namespace Server.ExtensionsMethods.Pipings
             row.LaborQuantity = request.LaborQuantity;
             row.MaterialQuantity = request.MaterialQuantity;
             row.TagNumber = request.TagNumber;
-         
-            row.FluidCodeCode = request.FluidCode!.Code;
-           
+                 
             row.IsExisting = request.IsExisting;
 
             return row;
@@ -77,7 +75,7 @@ namespace Server.ExtensionsMethods.Pipings
             {
                 Id = row.Id,
                 Name = row.Name,
-                GanttTaskId = row.GanttTaskId,
+                //GanttTaskId = row.GanttTaskId,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
 
@@ -90,8 +88,6 @@ namespace Server.ExtensionsMethods.Pipings
                 LaborQuantity = row.LaborQuantity,
                 MaterialQuantity = row.MaterialQuantity,
                 FluidCode = row.FluidCode == null ? null : row.FluidCode.Map(),
-
-
                 BudgetUSD = row.BudgetUSD,
                 IsExisting = row.IsExisting,
                 ActualUSD = row.ActualUSD,

@@ -19,9 +19,9 @@ namespace Shared.Models.BudgetItems.Responses
 {
     public class BudgetItemResponseList : IResponseAll
     {
-        public Guid ProjectId { get; set; } 
-     
-  
+        public Guid ProjectId { get; set; }
+
+        public string Name { get; set; } = string.Empty;
         public List<AlterationResponse> Alterations { get; set; } = new();
         public List<FoundationResponse> Foundations { get; set; } = new();
         public List<StructuralResponse> Structurals { get; set; } = new();
@@ -49,7 +49,7 @@ namespace Shared.Models.BudgetItems.Responses
         public double PercentageContingency { get; set; }
         public double PercentageTaxes { get; set; }
         public bool IsProductive { get; set; } = true;
-        public CostCenterEnum CostCenter { get; set; }= CostCenterEnum.None;
+        public CostCenterEnum CostCenter { get; set; } = CostCenterEnum.None;
         public ProjectStatusEnum Status { get; set; } = ProjectStatusEnum.None;
         public string ProjectNumber { get; set; } = string.Empty;
         public double EngineeringBudget => TotalCapital * PercentageEngineering / 100;
@@ -57,7 +57,7 @@ namespace Shared.Models.BudgetItems.Responses
         public double TaxesBudget => IsProductive ? 0 : TotalCapitalWithOutVAT * PercentageTaxes / 100;
         public double TotalBudget => TotalCapital + TotalExpenses + EngineeringBudget + ContingenyBudget;
 
-     
+
 
 
     }

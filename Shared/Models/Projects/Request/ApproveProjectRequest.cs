@@ -14,17 +14,24 @@ namespace Shared.Models.Projects.Request
         public string ProjectNumber { get; set; } = string.Empty;
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
- 
+
         public DateTime? InitialProjectDate { get; set; } = DateTime.Today;
         public double PercentageTaxProductive { get; set; }
         public bool IsProductiveAsset { get; set; } = true;
         public ProjectNeedTypeEnum ProjectNeedType { get; set; } = ProjectNeedTypeEnum.None;
         public double PercentageEngineering { get; set; }
         public double PercentageContingency { get; set; }
+        public double TotalPercentage => PercentageEngineering + PercentageContingency;
         public FocusEnum Focus { get; set; } = FocusEnum.None;
         public CostCenterEnum CostCenter { get; set; } = CostCenterEnum.None;
         public ProjectStatusEnum Status { get; set; } = ProjectStatusEnum.Approved;
 
-        public int BudgetItems {  get; set; } = 0;
+        public int BudgetItems { get; set; } = 0;
+        public double ExpensesUSD { get; set; } = 0;
+        public double CapitalUSD { get; set; } = 0;
+        public double CapitalEngineeringUSD => 100 - TotalPercentage == 0 ? 0 : PercentageEngineering / (100 - TotalPercentage) * CapitalUSD;
+        public double CapitalContingencyUSD => 100 - TotalPercentage == 0 ? 0 : PercentageContingency / (100 - TotalPercentage) * CapitalUSD;
+        public double TotalCapitalUSD => CapitalUSD + CapitalEngineeringUSD + CapitalContingencyUSD;
+        public double AppropiationUSD => TotalCapitalUSD + ExpensesUSD;
     }
 }

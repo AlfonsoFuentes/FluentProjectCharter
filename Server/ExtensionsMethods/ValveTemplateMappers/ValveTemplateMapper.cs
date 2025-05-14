@@ -108,7 +108,7 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
             {
                 Id = row.Id,
                 Name = row.Name,
-                GanttTaskId = row.GanttTaskId,
+                //GanttTaskId = row.GanttTaskId,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
 

@@ -1,8 +1,8 @@
 ﻿@using Shared.Models.Deliverables.Responses
 @using Web.Pages.ProjectDependant.WBSTableGraphics
-
+@*
 <MudStack>
-   @*  <TableTemplate TValue="DeliverableResponse"
+    <TableTemplate TValue="DeliverableResponse"
                    AddNew="AddNew"
                    @bind-NameFilter=@nameFilter
                    DeleteGroup="DeleteGroup"
@@ -27,24 +27,24 @@
             </TemplateColumn>
 
         </ColumnsTemplate>
-    </TableTemplate> *@
+    </TableTemplate> 
     <WBSTableGraphic Response="@Response" GetAll="GetAll">
 
     </WBSTableGraphic>
 </MudStack>
 
-
+*@
 
 @code {
-    private bool _sortNameByLength = true;
+    // private bool _sortNameByLength = true;
 
-    private Func<DeliverableResponse, object> _sortBy => x =>
-       {
-           if (_sortNameByLength)
-               return x.Name.Length;
-           else
-               return x.Name;
-       };
+    // private Func<DeliverableResponse, object> _sortBy => x =>
+    //    {
+    //        if (_sortNameByLength)
+    //            return x.Name.Length;
+    //        else
+    //            return x.Name;
+    //    };
 
 
 }

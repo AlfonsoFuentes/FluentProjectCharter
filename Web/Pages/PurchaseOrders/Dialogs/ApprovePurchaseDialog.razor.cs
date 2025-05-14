@@ -23,7 +23,7 @@ public partial class ApprovePurchaseDialog
   
     [Parameter]
     public List<SupplierResponse> Suppliers { get; set; } = new();
-
+    List<BudgetItemWithPurchaseOrdersResponse> NonSelectedBudgetItemsOrdered => NonSelectedBudgetItems.OrderBy(x => x.Nomenclatore).ToList();
     protected override async Task OnInitializedAsync()
     {
 

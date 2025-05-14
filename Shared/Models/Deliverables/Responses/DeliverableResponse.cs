@@ -15,6 +15,7 @@ namespace Shared.Models.Deliverables.Responses
         public string NotFound => StaticClass.ResponseMessages.ReponseNotFound(ClassName);
 
         public Guid ProjectId { get; set; }
+        
 
     }
 }

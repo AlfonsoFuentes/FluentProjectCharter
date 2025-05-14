@@ -47,7 +47,7 @@ public partial class EquipmentDialog
     {
         if (Model.ShowDetails)
         {
-            await this.MudDialog.SetOptionsAsync(new DialogOptions() { MaxWidth = MaxWidth.Large });
+            await this.MudDialog.SetOptionsAsync(new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge });
         }
         else
         {

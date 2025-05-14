@@ -16,10 +16,11 @@
         public static MaterialEnum CS = Create(3, "CS");
         public static MaterialEnum PVC = Create(4, "PVC");
         public static MaterialEnum CPVC = Create(5, "CPVC");
-
+        public static MaterialEnum NotApplicable = Create(6, "NA");
+        public static MaterialEnum PP = Create(7, "Polipropilene");
         public static List<MaterialEnum> List = new List<MaterialEnum>()
             {
-          None, SS316L, SS304, SS205,CS, PVC, CPVC
+          None, SS316L, SS304, SS205,CS, PVC, CPVC,PP,NotApplicable
             };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;
 

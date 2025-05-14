@@ -20,8 +20,6 @@ namespace Shared.Models.BudgetItems.Responses
 {
     public class BudgetItemWithPurchaseOrderResponseList : IResponseAll
     {
-
-  
         public List<AlterationResponse> Alterations { get; set; } = new();
         public List<FoundationResponse> Foundations { get; set; } = new();
         public List<StructuralResponse> Structurals { get; set; } = new();

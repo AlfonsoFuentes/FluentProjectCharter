@@ -20,8 +20,8 @@ public partial class EditPurchaseOrderCreatedDialog
     {
         Validated = _fluentValidationValidator == null ? false : await _fluentValidationValidator.ValidateAsync(options => { options.IncludeAllRuleSets(); });
     }
-    
 
+    List<BudgetItemWithPurchaseOrdersResponse> NonSelectedBudgetItemsOrdered => NonSelectedBudgetItems.OrderBy(x => x.Nomenclatore).ToList();
     public List<SupplierResponse> Suppliers { get; set; } = new();
     [Parameter]
     public PurchaseOrderResponse PurchaseOrder { get; set; } = new();

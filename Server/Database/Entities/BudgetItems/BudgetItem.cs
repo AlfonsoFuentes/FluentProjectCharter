@@ -27,8 +27,8 @@ namespace Server.Database.Entities.BudgetItems
         public string Nomenclatore => $"{Letter}{Order}";
         public string Name { get; set; } = string.Empty;
 
-        public GanttTask? GanttTask { get; set; } = null!;
-        public Guid? GanttTaskId { get; set; }
+        //public GanttTask? GanttTask { get; set; } = null!;
+        //public Guid? GanttTaskId { get; set; }
 
         [ForeignKey("BudgetItemId")]
         public List<PurchaseOrderItem> PurchaseOrderItems { get; set; } = new();
@@ -41,6 +41,23 @@ namespace Server.Database.Entities.BudgetItems
         public double CommitmentUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.CommitmentItemUSD);
         [NotMapped]
         public double PotentialUSD => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? 0 : PurchaseOrderItems.Sum(x => x.PotentialItemUSD);
+        [NotMapped]
+        public double AssignedUSD => ActualUSD + CommitmentUSD + PotentialUSD;
+        [NotMapped]
+        public double ToCommitUSD => BudgetUSD - AssignedUSD;
+
+        [NotMapped]
+        public PurchaseOrder? PurchaseOrder => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? null : PurchaseOrderItems.Select(x => x.PurchaseOrder).First();
+        //[NotMapped]
+        //public DateTime? PlannedDate => GanttTask == null ? null : GanttTask.PlannedEndDate;
+        [NotMapped]
+        public DateTime? ExpectedDate => PurchaseOrder == null ? null : PurchaseOrder.ExpectedDate;
+        [NotMapped]
+        public DateTime? ClosedDate => PurchaseOrder == null ? null : PurchaseOrder.ClosedDate;
+
+        //[NotMapped]
+        //public DateTime? ExpenseToolDate => ClosedDate != null ? ClosedDate : ExpectedDate != null ? ExpectedDate :
+        //    PlannedDate != null ? PlannedDate : null;
     }
 
 }

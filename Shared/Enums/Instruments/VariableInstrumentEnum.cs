@@ -16,9 +16,11 @@
         public static VariableInstrumentEnum Pressure = Create(3, "P", "Pressure");
         public static VariableInstrumentEnum Level = Create(4, "L", "Level");
         public static VariableInstrumentEnum Analitical = Create(5, "A", "Analitical");
+        public static VariableInstrumentEnum Weigth = Create(6, "W", "Weight");
+        public static VariableInstrumentEnum Frequency_Inverter = Create(7, "VS", "Frequency Inverter");
         public static List<VariableInstrumentEnum> List = new List<VariableInstrumentEnum>()
         {
-            None,MassFlowMeter, VolumeFlowMeter, Temperature, Pressure, Level, Analitical
+            None,MassFlowMeter, VolumeFlowMeter, Temperature, Pressure, Level,Weigth, Analitical,Frequency_Inverter
 
         };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;

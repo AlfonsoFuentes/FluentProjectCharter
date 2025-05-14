@@ -10,6 +10,7 @@ namespace Server.EndPoint.Templates.Valves.Commands
             {
                 app.MapPost(StaticClass.ValveTemplates.EndPoint.DeleteGroup, async (DeleteGroupValveTemplatesRequest Data, IRepository Repository) =>
                 {
+                    List<string> cache = new List<string>();
                     Func<IQueryable<ValveTemplate>, IIncludableQueryable<ValveTemplate, object>> Includes = x => x
                     .Include(x => x.Valves);
                     foreach (var rowItem in Data.SelecteItems)
@@ -24,15 +25,17 @@ namespace Server.EndPoint.Templates.Valves.Commands
                             {
                                 item.ValveTemplateId = null;
                                 await Repository.UpdateAsync(item);
+                                cache.AddRange(StaticClass.Valves.Cache.Key(item.Id,item.ProjectId));
                             }
                             await Repository.RemoveAsync(row);
                         }
+                       
                     }
 
 
-                    var cache = StaticClass.ValveTemplates.Cache.GetAll;
+                    cache.Add(StaticClass.ValveTemplates.Cache.GetAll);
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);

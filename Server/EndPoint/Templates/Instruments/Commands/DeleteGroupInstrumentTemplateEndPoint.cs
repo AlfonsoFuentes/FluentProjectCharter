@@ -10,6 +10,7 @@ namespace Server.EndPoint.Templates.Instruments.Commands
             {
                 app.MapPost(StaticClass.InstrumentTemplates.EndPoint.DeleteGroup, async (DeleteGroupInstrumentTemplatesRequest Data, IRepository Repository) =>
                 {
+                    List<string> cache = new List<string>();
                     Func<IQueryable<InstrumentTemplate>, IIncludableQueryable<InstrumentTemplate, object>> Includes = x => x
                     .Include(x => x.Instruments);
                     foreach (var rowItem in Data.SelecteItems)
@@ -24,15 +25,16 @@ namespace Server.EndPoint.Templates.Instruments.Commands
                             {
                                 item.InstrumentTemplateId = null;
                                 await Repository.UpdateAsync(item);
+                                cache.AddRange(StaticClass.Instruments.Cache.Key(item.Id,item.ProjectId));
                             }
                             await Repository.RemoveAsync(row);
                         }
                     }
 
+                    cache.Add(StaticClass.InstrumentTemplates.Cache.GetAll);
+                    
 
-                    var cache = StaticClass.InstrumentTemplates.Cache.GetAll;
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);

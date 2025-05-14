@@ -1,7 +1,9 @@
 using MudBlazor;
+using Shared.Models.BudgetItems.Exports;
 using Shared.Models.BudgetItems.Mappers;
 using Shared.Models.BudgetItems.Records;
 using Shared.Models.BudgetItems.Responses;
+using Shared.Models.FileResults;
 using Shared.Models.Projects.Reponses;
 using Shared.Models.PurchaseOrders.Responses;
 using Web.Pages.PurchaseOrders.Dialogs;
@@ -14,51 +16,7 @@ public partial class BudgetItemsWithPurchaseOrders
 
     BudgetItemWithPurchaseOrderResponseList ResponseList = new();
     public List<BudgetItemWithPurchaseOrdersResponse> Items => ResponseList.Items;
-    //   public string NameFilter { get; set; } = string.Empty;
-
-    //   public Func<PurchaseOrderResponse, bool> CriteriaPurchaseorders => x => x.
-    //  SupplierName.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
-    //x.SupplierNickName.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
-    //x.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
-    //x.PONumber.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
-    //x.PurchaseRequisition.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
-    //x.CostCenter.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
-    //x.PurchaseOrderStatus.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase);
-    //   public Func<BudgetItemWithPurchaseOrdersResponse, bool> Criteria => x =>
-    //   x.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
-    //   x.Tag.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
-    //   x.Nomenclatore.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase) ||
-    //   x.PurchaseOrders.Any(x => x.SupplierName.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
-    //   x.PurchaseOrders.Any(x => x.SupplierNickName.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
-    //   x.PurchaseOrders.Any(x => x.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
-    //   x.PurchaseOrders.Any(x => x.PONumber.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
-    //   x.PurchaseOrders.Any(x => x.PurchaseRequisition.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
-    //   x.PurchaseOrders.Any(x => x.CostCenter.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase)) ||
-    //   x.PurchaseOrders.Any(x => x.PurchaseOrderStatus.Name.Contains(NameFilter, StringComparison.InvariantCultureIgnoreCase));
-    //   public List<BudgetItemWithPurchaseOrdersResponse> FilteredItems => GetFilteredItems();
-
-    //   List<BudgetItemWithPurchaseOrdersResponse> GetFilteredItems()
-    //   {
-
-
-
-    //       if (string.IsNullOrEmpty(NameFilter)) return Items;
-
-    //       var filteredItems = Items.Where(Criteria).ToList();
-    //       List<BudgetItemWithPurchaseOrdersResponse> result = new();
-    //       foreach (var item in filteredItems)
-    //       {
-    //           var pos = item.PurchaseOrders.Where(CriteriaPurchaseorders);
-    //           if (pos.Any())
-    //           {
-    //               item.PurchaseOrders = pos.Select(x => x).ToList();
-    //               result.Add(item);
-    //           }
-
-    //       }
-
-    //       return result;
-    //   }
+   
     public string NameFilter { get; set; } = string.Empty;
 
     // Criterio para filtrar PurchaseOrders
@@ -163,8 +121,49 @@ public partial class BudgetItemsWithPurchaseOrders
         }
     }
 
-    [Parameter]
-    public EventCallback ExportExcel { get; set; }
-    [Parameter]
-    public EventCallback ExportPDF { get; set; }
+    async Task ExportExcel()
+    {
+        BudgetItemWithPurchaseOrdersExportGetAll request = new()
+        {
+
+            Items = ResponseList.Items.Select(x => x.MapToExportPO()).ToList(),
+            Name = Project.Name,
+        };
+        var resultExport = await GenericService.GetAll<FileResult, BudgetItemWithPurchaseOrdersExportGetAll>(request);
+        if (resultExport.Succeeded)
+        {
+            var downloadresult = await blazorDownloadFileService.DownloadFile(resultExport.Data.ExportFileName,
+              resultExport.Data.Data, contentType: resultExport.Data.ContentType);
+            if (downloadresult.Succeeded)
+            {
+
+                _snackBar.ShowSuccess($"{resultExport.Data.ExportFileName} created succesfuly");
+
+
+            }
+        }
+    }
+    async Task ExportPdf()
+    {
+        BudgetItemWithPurchaseOrdersExportGetAll request = new()
+        {
+
+            Items = ResponseList.Items.Select(x => x.MapToExportPO()).ToList(),
+            Name = Project.Name,
+            ExportFile = Shared.Enums.ExportFiles.ExportFileType.pdf
+        };
+        var resultExport = await GenericService.GetAll<FileResult, BudgetItemWithPurchaseOrdersExportGetAll>(request);
+        if (resultExport.Succeeded)
+        {
+            var downloadresult = await blazorDownloadFileService.DownloadFile(resultExport.Data.ExportFileName,
+              resultExport.Data.Data, contentType: resultExport.Data.ContentType);
+            if (downloadresult.Succeeded)
+            {
+
+                _snackBar.ShowSuccess($"{resultExport.Data.ExportFileName} created succesfuly");
+
+
+            }
+        }
+    }
 }

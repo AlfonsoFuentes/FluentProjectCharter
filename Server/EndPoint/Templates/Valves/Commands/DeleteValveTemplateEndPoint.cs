@@ -17,14 +17,18 @@ namespace Server.EndPoint.Templates.Valves.Commands
                     var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
 
                     if (row == null) { return Result.Fail(Data.NotFound); }
+
+                    List<string> cache = new List<string>();
                     foreach (var item in row.Valves)
                     {
                         item.ValveTemplateId = null;
                         await Repository.UpdateAsync(item);
+                        cache.AddRange(StaticClass.Valves.Cache.Key(item.Id, item.ProjectId));
                     }
                     await Repository.RemoveAsync(row);
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.ValveTemplates.Cache.Key(row.Id));
+                    cache.Add(StaticClass.ValveTemplates.Cache.GetById(row.Id));
+                    cache.Add(StaticClass.ValveTemplates.Cache.GetAll);
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 
                     return Result.EndPointResult(result,
                         Data.Succesfully,

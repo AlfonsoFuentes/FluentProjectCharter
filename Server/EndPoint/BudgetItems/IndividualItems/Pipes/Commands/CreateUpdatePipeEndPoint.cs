@@ -57,14 +57,14 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Pipes.Commands
             }
             private string[] GetCacheKeys(Pipe row)
             {
-                var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
-                var budgetitems = StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.GanttTaskId);
+               // var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
+                var budgetitems = StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId/*, row.GanttTaskId*/);
                 var items = StaticClass.Pipes.Cache.Key(row.Id, row.ProjectId);
                 var templates = row.PipeTemplateId == null ? new[] { string.Empty } : StaticClass.PipeTemplates.Cache.Key(row.PipeTemplateId!.Value);
                 List<string> cacheKeys = [
                      ..budgetitems,
                      ..items,
-                     ..deliverable,
+                     //..deliverable,
                      ..templates,
 
                 ];

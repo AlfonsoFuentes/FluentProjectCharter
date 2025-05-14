@@ -24,9 +24,10 @@ namespace Shared.Enums.ValvesEnum
         public static ValveTypesEnum Diaphragm_Zero_deadLeg = Create(10, "DZDL", "Diaphragm Zero dead leag");
         public static ValveTypesEnum Ball_Four_Way = Create(11, "VFV", "Ball Four way");
         public static ValveTypesEnum Other = Create(12, "VOT", "Other");
+        public static ValveTypesEnum Sample_port = Create(13, "SP", "Sample port");
         public static List<ValveTypesEnum> List = new List<ValveTypesEnum>()
         {
-            None,Butterfly, Ball, Diaphragm, Gate,Globe,Knife,Check,Ball_Three_Way_T, Ball_Three_Way_L,Ball_Zero_deadLeg,Diaphragm_Zero_deadLeg,Ball_Four_Way,Other
+            None,Butterfly, Ball, Diaphragm, Gate,Globe,Sample_port,Knife,Check,Ball_Three_Way_T, Ball_Three_Way_L,Ball_Zero_deadLeg,Diaphragm_Zero_deadLeg,Ball_Four_Way,Other
 
         };
         public static List<ValveTypesEnum> ControlledList = new List<ValveTypesEnum>()

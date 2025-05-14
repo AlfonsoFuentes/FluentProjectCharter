@@ -5,6 +5,7 @@ using Shared.Enums.NozzleTypes;
 using Shared.Enums.ValvesEnum;
 using Shared.Models.Brands.Records;
 using Shared.Models.Brands.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Shared.Models.StakeHolders.Responses;
 using Shared.Models.Templates.NozzleTemplates;
 using Shared.Models.Templates.Valves.Responses;
@@ -103,6 +104,11 @@ public partial class ValveTemplateDialog
 
     void AddInitialNozzles()
     {
+        if (Model.Type == ValveTypesEnum.Sample_port)
+        {
+            Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Inlet, NominalDiameter = Model.Diameter, });
+            return;
+        }
         Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Inlet, NominalDiameter = Model.Diameter });
         Model.Nozzles.Add(new NozzleTemplateResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Diameter });
 

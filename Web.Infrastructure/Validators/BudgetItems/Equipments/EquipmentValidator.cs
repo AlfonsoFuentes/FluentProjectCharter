@@ -112,7 +112,7 @@ namespace Web.Infrastructure.Validators.BudgetItems.Equipments
         bool ReviewInletOutlet(List<NozzleResponse> nozzles)
         {
             if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Inlet.Id)) return false;
-            if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Outlet.Id)) return false;
+            
             return true;
         }
         bool ReviewConnectionType(List<NozzleResponse> nozzles)

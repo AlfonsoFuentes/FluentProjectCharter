@@ -14,16 +14,15 @@ namespace Server.EndPoint.PurchaseOrders.Commands
                 app.MapPost(StaticClass.PurchaseOrders.EndPoint.Receive, async (ReceivePurchaseOrderApprovedRequest Data, IRepository Repository) =>
                 {
                     Func<IQueryable<PurchaseOrder>, IIncludableQueryable<PurchaseOrder, object>> Includes = x => x
-                     .Include(x => x.PurchaseOrderItems)
+                     .Include(x => x.PurchaseOrderItems).ThenInclude(x => x.PurchaseOrderReceiveds)
                     ;
 
                     Expression<Func<PurchaseOrder, bool>> Criteria = x => x.Id == Data.Id;
 
                     var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
                     if (row == null) { return Result.Fail(Data.Fail); }
-                 
-                    row.PurchaseOrderStatus = Data.IsCompletedReceived ? PurchaseOrderStatusEnum.Closed.Id : PurchaseOrderStatusEnum.Receiving.Id;
-                    row.ClosedDate = Data.IsCompletedReceived ? DateTime.UtcNow : null;
+                    var currentReceived = row.ActualCurrency;
+                    var POValueCurrency = row.TotalPurchaseOrderCurrency;
                     int order = 1;
                     foreach (var item in Data.PurchaseOrderItems)
                     {
@@ -37,9 +36,19 @@ namespace Server.EndPoint.PurchaseOrders.Commands
                             Received.ValueReceivedCurrency = item.ReceivingValueCurrency;
                             Received.Order = order;
                             await Repository.AddAsync(Received);
+                            currentReceived += item.ReceivingValueCurrency;
                             order++;
                         }
 
+                    }
+                    if (Math.Abs(currentReceived - POValueCurrency) <= 1e-3)
+                    {
+                        row.PurchaseOrderStatus = PurchaseOrderStatusEnum.Closed.Id;
+                        row.ClosedDate = Data.IsCompletedReceived ? DateTime.UtcNow : null;
+                    }
+                    else
+                    {
+                        row.PurchaseOrderStatus = PurchaseOrderStatusEnum.Receiving.Id;
                     }
                     await Repository.UpdateAsync(row);
 

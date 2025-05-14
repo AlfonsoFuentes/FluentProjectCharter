@@ -1,4 +1,4 @@
-﻿<tr class="data-row" @onclick="() => OnClick.InvokeAsync(Task)">
+﻿@* <tr class="data-row" @onclick="() => OnClick.InvokeAsync(Task)">
     <!-- Expand Icon -->
     <td class="col-expand">
         @if (Task.OrderedSubGanttTasks.Any())
@@ -57,7 +57,7 @@
         }
         else
         {
-            @* <IconButton Icon="@Icons.Material.Filled.List" OnClick="@(() => Task.ShowBudgetItems = !Task.ShowBudgetItems)" ToolTip="Show BudgetItems" /> *@
+           
             <IconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => OnEdit.InvokeAsync(Task)" ToolTip="Edit" Disabled=@Task.ShowBudgetItems />
             <IconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => OnDelete.InvokeAsync(Task)" ToolTip="Delete" Disabled=@Task.ShowBudgetItems />
 
@@ -67,16 +67,7 @@
 
 </tr>
 <!-- Mostrar Elementos del Presupuesto -->
-@* @if (Task.ShowBudgetItems)
-{
-    <tr>
-        <td colspan="12" style="padding: 2px;">
-            <div>
-                <BudgetItemsTableForGanttTasks GanttTask="@Task" GetAll="GetAll"></BudgetItemsTableForGanttTasks>
-            </div>
-        </td>
-    </tr>
-} *@
+
 <!-- Subtareas Expandidas -->
 @if (Task.IsExpanded)
 {
@@ -88,11 +79,13 @@
                       OnSave="OnSave"
                       OnCancel="OnCancel"
                       OnDelete="OnDelete"
+                      GetAll="GetAll"
+                    
                       OnClick="OnClick"></WBSGanttTaskRow>
     }
 }
-
+ *@
 
 @code {
-
+   
 }

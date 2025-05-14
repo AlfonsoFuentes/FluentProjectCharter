@@ -27,16 +27,17 @@ namespace Server.EndPoint.Templates.Instruments.Commands
                         {
                             return Result.Fail(Data.NotFound);
                         }
-
+                        List<string> cache = new List<string>();
                         foreach (var item in row.Instruments)
                         {
                             item.InstrumentTemplateId = null;
                             await Repository.UpdateAsync(item);
+                            cache.AddRange(StaticClass.Instruments.Cache.Key(item.Id, item.ProjectId));
                         }
 
                         await Repository.RemoveAsync(row);
-
-                        var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.InstrumentTemplates.Cache.Key(row.Id));
+                        cache.Add(StaticClass.InstrumentTemplates.Cache.GetAll);
+                        var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 
                         return Result.EndPointResult(result, Data.Succesfully, Data.Fail);
                     }

@@ -3,19 +3,36 @@
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using Shared.Models.FileResults;
 using System.Globalization;
 
 namespace Server.ExtensionsMethods.ExportsExcel
 {
     public static class ExportPDFExtension
     {
-        public static Image _colgatePalmoliveLogo { get; } = Image.FromFile("Assets/Colgate-Palmolive-Logo.PNG");
+        //static byte[] CPLogo = null!;
+        //static void GetImageData(IWebHostEnvironment host)
+        //{
+        //    var path = host.WebRootPath;
+
+        //    if (path == null)
+        //    {
+               
+        //        return;
+        //    }
+        //    Console.WriteLine(path);
+        //    var rutaImagen = Path.Combine(path, "Assets/CPLogo.PNG");
+        //    CPLogo = System.IO.File.ReadAllBytes(rutaImagen);
+
+          
+           
+        //}
+        //public static Image _colgatePalmoliveLogo { get; } = Image.FromFile("Assets/Colgate-Palmolive-Logo.PNG");
         public static IQueryable Query = null!;
         public static string FileName = string.Empty;
         public static string ReportName = string.Empty;
         public static FileResult ExportPDF(IQueryable query, string fileName, string reportName)
         {
+            //GetImageData();
             Query = query;
             FileName = fileName;
             ReportName = reportName;
@@ -92,10 +109,10 @@ namespace Server.ExtensionsMethods.ExportsExcel
             {
                 mainContentColumn.Item().Row(row =>
                 {
-                    row.AutoItem().Column(column =>
-                    {
-                        column.Item().Width(1, QuestPDF.Infrastructure.Unit.Inch).Image(_colgatePalmoliveLogo);
-                    });
+                    //row.AutoItem().Column(column =>
+                    //{
+                    //    column.Item().Width(1, QuestPDF.Infrastructure.Unit.Inch).Image(_colgatePalmoliveLogo);
+                    //});
 
                     row.RelativeItem().AlignCenter().Column(column =>
                     {

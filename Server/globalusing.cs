@@ -59,8 +59,6 @@ global using Shared.Models.Constrainsts.Responses;
 global using Shared.Models.Deliverables.Responses;
 global using Shared.Models.ExpertJudgements.Responses;
 global using Shared.Models.FileResults;
-global using Shared.Models.GanttTasks.Records;
-global using Shared.Models.GanttTasks.Responses;
 global using Shared.Models.KnownRisks.Responses;
 global using Shared.Models.Meetings.Records;
 global using Shared.Models.Meetings.Responses;

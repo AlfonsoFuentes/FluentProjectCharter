@@ -61,7 +61,9 @@ namespace Shared.Models.PurchaseOrders.Responses
         public double ActualPurchaseOrderCurrency => PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? 0 : PurchaseOrderItemReceiveds.Sum(x => x.ValueReceivedCurrency);
         public double ActualPurchaseOrderUSD => PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? 0 : PurchaseOrderItemReceiveds.Sum(x => x.ValueReceivedUSD);
         public double CommitmentItemPurchaseOrderCurrency => PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? 0 : TotalPurchaseOrderCurrency - ActualPurchaseOrderCurrency;
-        public double CommitmentItemPurchaseOrderUSD => PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? 0 : TotalPurchaseOrderUSD - ActualPurchaseOrderUSD;
+        public double CommitmentItemPurchaseOrderUSD => 
+            PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id || PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Closed.Id ? 0 : 
+            TotalPurchaseOrderUSD - ActualPurchaseOrderUSD;
         public double PotentialItemPurchaseOrderUSD => PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Created.Id ? TotalPurchaseOrderUSD : 0;
     }
 

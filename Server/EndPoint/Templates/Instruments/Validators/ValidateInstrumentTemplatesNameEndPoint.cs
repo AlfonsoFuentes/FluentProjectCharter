@@ -18,26 +18,27 @@ namespace Server.EndPoint.Templates.Instruments.Validators
                 app.MapPost(StaticClass.InstrumentTemplates.EndPoint.Validate, async (ValidateInstrumentTemplateRequest Data, IQueryRepository Repository) =>
                 {
                     Func<IQueryable<InstrumentTemplate>, IIncludableQueryable<InstrumentTemplate, object>> Includes = x => x
-                     .Where(x => x.Id != Data.Id)
+                   
                     .Include(x => x.BrandTemplate!)
                     .Include(x => x.NozzleTemplates);
 
-                    Expression<Func<InstrumentTemplate, bool>> CriteriaInstrument = x =>
+                    Func<InstrumentTemplate, bool> CriteriaInstrument = x =>
                     x.Material == Data.Material &&
                        x.SignalType == Data.SignalType &&
                        x.Variable == Data.VariableInstrument &&
                        x.ModifierVariable == Data.ModifierVariable &&
-
                         x.BrandName.Equals(Data.Brand, StringComparison.OrdinalIgnoreCase) &&
-                        x.Model.Equals(Data.Model, StringComparison.OrdinalIgnoreCase) 
+                        x.Model.Equals(Data.Model, StringComparison.OrdinalIgnoreCase)
                        ;
 
 
                     string CacheKey = StaticClass.InstrumentTemplates.Cache.GetAll;
-                    var instrumentTemplates = await Repository.GetAllAsync(Cache: CacheKey, Includes: Includes, Criteria: CriteriaInstrument);
+                    var instrumentTemplates = await Repository.GetAllToValidateAsync(Cache: CacheKey, Includes: Includes, Criteria: CriteriaInstrument);
+
+
 
                     instrumentTemplates = Data.Id.HasValue ? instrumentTemplates.Where(x => x.Id != Data.Id.Value).ToList() : instrumentTemplates;
-                    if (instrumentTemplates == null||!instrumentTemplates.Any())
+                    if (instrumentTemplates == null || !instrumentTemplates.Any())
                     {
                         return false;
                     }
@@ -54,7 +55,7 @@ namespace Server.EndPoint.Templates.Instruments.Validators
 
 
             }
-            
+
         }
 
 

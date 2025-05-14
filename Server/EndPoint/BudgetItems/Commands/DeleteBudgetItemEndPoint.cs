@@ -16,18 +16,18 @@ namespace Server.EndPoint.BudgetItems.Commands
 
 
                     List<string> cache = [
-                        .. StaticClass.BudgetItems.Cache.Key(row.Id,row.ProjectId,row.GanttTaskId)];
-                    if (Data.GanttTaskId.HasValue)
-                    {
-                        var deliverable = await Repository.GetByIdAsync<GanttTask>(Data.GanttTaskId.Value);
-                        if (deliverable != null)
-                        {
-                            deliverable.ShowBudgetItems = true;
-                            await Repository.UpdateAsync(deliverable);
-                        }
+                        .. StaticClass.BudgetItems.Cache.Key(row.Id,row.ProjectId/*,row.GanttTaskId*/)];
+                    //if (Data.GanttTaskId.HasValue)
+                    //{
+                    //    var deliverable = await Repository.GetByIdAsync<GanttTask>(Data.GanttTaskId.Value);
+                    //    if (deliverable != null)
+                    //    {
+                    //        deliverable.ShowBudgetItems = true;
+                    //        await Repository.UpdateAsync(deliverable);
+                    //    }
 
-                    }
-                    cache.Add(StaticClass.GanttTasks.Cache.GetAll(row.ProjectId));
+                    //}
+                    //cache.Add(StaticClass.GanttTasks.Cache.GetAll(row.ProjectId));
                     await Repository.RemoveAsync(row);
 
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());

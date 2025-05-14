@@ -1,4 +1,5 @@
-﻿using Shared.Enums.ConnectionTypes;
+﻿using FluentValidation;
+using Shared.Enums.ConnectionTypes;
 using Shared.Enums.DiameterEnum;
 using Shared.Enums.Materials;
 using Shared.Enums.NozzleTypes;
@@ -50,7 +51,7 @@ namespace Web.Infrastructure.Validators.BudgetItems.Valves
             RuleFor(x => x.Template.FailType).NotEqual(FailTypeEnum.None).When(x => x.ShowDetails)
           .WithMessage("Actuator type must be defined!");
 
-            RuleFor(x => x.Template.SignalType).NotEqual(SignalTypeEnum.None).When(x => x.ShowDetails)
+            RuleFor(x => x.Template.SignalType).NotEqual(SignalTypeEnum.None).When(x => x.ShowDetails && x.Template.ActuatorType.Id != ActuatorTypeEnum.Hand.Id)
           .WithMessage("Actuator type must be defined!");
 
             RuleFor(x => x.Template.Type).NotEqual(ValveTypesEnum.None).When(x => x.ShowDetails)
@@ -62,20 +63,10 @@ namespace Web.Infrastructure.Validators.BudgetItems.Valves
             RuleFor(x => x.TagLetter).NotEmpty().When(x => x.ShowDetails)
               .WithMessage("Tag Letter must be defined!");
 
-            RuleFor(x => x.Nozzles).Must(ReviewInletOutlet).When(x =>
-         x.Template.Type.Id != ValveTypesEnum.Ball_Three_Way_L.Id || x.Template.Type.Id != ValveTypesEnum.Ball_Three_Way_T.Id || x.Template.Type.Id != ValveTypesEnum.Ball_Four_Way.Id
-
-         ).WithMessage("Nozzles must be have one inlet and one outlet");
-
-            RuleFor(x => x.Nozzles).Must(ReviewThreeWayInletOutlet).When(x =>
-           x.Template.Type.Id == ValveTypesEnum.Ball_Three_Way_L.Id || x.Template.Type.Id == ValveTypesEnum.Ball_Three_Way_T.Id ||
-           x.Template.Type.Id == ValveTypesEnum.Ball_Four_Way.Id
-           ).WithMessage("Nozzles must be have one inlet and one outlet and three nozzles");
+            RuleFor(x => x.Nozzles).Must(ReviewNozzles).When(x => x.ShowDetails)
+         .WithMessage("Nozzles is not completed defined");
 
 
-            RuleFor(x => x.Nozzles).Must(ReviewFourWayInletOutlet).When(x =>
-           x.Template.Type.Id == ValveTypesEnum.Ball_Four_Way.Id
-           ).WithMessage("Nozzles must be have one inlet and one outlet and four nozzles");
 
 
             RuleFor(x => x.Nozzles).Must(ReviewConnectionType).When(x => x.ShowDetails)
@@ -131,22 +122,55 @@ namespace Web.Infrastructure.Validators.BudgetItems.Valves
             var result = await Service.Validate(validate);
             return !result;
         }
-        bool ReviewInletOutlet(List<NozzleResponse> nozzles)
+        bool ReviewNozzles(ValveResponse request, List<NozzleResponse> nozzles)
         {
+            if (!request.ShowDetails) return true;
+
+            if (request.Template.Type.Id == ValveTypesEnum.Sample_port.Id)
+            {
+                return nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Inlet.Id);
+
+
+            }
+            if (request.Template.Type.Id != ValveTypesEnum.Ball_Three_Way_L.Id || request.Template.Type.Id != ValveTypesEnum.Ball_Three_Way_T.Id
+                || request.Template.Type.Id != ValveTypesEnum.Ball_Four_Way.Id)
+            {
+                if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Inlet.Id)) return false;
+                if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Outlet.Id)) return false;
+
+            }
+            else if (request.Template.Type.Id == ValveTypesEnum.Ball_Four_Way.Id)
+            {
+                if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Inlet.Id)) return false;
+                if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Outlet.Id)) return false;
+                if (nozzles.Count < 4) return false;
+            }
+            else
+            {
+                if (nozzles.Count < 3) return false;
+            }
+
+            return true;
+        }
+        bool ReviewInletOutlet(ValveResponse request, List<NozzleResponse> nozzles)
+        {
+            if (!request.ShowDetails) return true;
             if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Inlet.Id)) return false;
             if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Outlet.Id)) return false;
             return true;
         }
-        bool ReviewThreeWayInletOutlet(List<NozzleResponse> nozzles)
+        bool ReviewThreeWayInletOutlet(ValveResponse request, List<NozzleResponse> nozzles)
         {
+            if (!request.ShowDetails) return true;
             if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Inlet.Id)) return false;
             if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Outlet.Id)) return false;
             if (nozzles.Count < 3) return false;
 
             return true;
         }
-        bool ReviewFourWayInletOutlet(List<NozzleResponse> nozzles)
+        bool ReviewFourWayInletOutlet(ValveResponse request, List<NozzleResponse> nozzles)
         {
+            if (!request.ShowDetails) return true;
             if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Inlet.Id)) return false;
             if (!nozzles.Any(x => x.NozzleType.Id == NozzleTypeEnum.Outlet.Id)) return false;
             if (nozzles.Count < 4) return false;

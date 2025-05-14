@@ -54,7 +54,7 @@ namespace Server.EndPoint.BudgetItems.Queries
 
 
                     };
-                   
+
 
 
                     return Result<BudgetItemWithPurchaseOrderResponseList>.Success(response);
@@ -63,9 +63,17 @@ namespace Server.EndPoint.BudgetItems.Queries
 
             private static async Task<Project?> GetBudgetItemAsync(BudgetItemWithPurchaseOrderGetAll request, IQueryRepository repository)
             {
+
                 Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x
                 .Include(p => p.BudgetItems).ThenInclude(x => x.PurchaseOrderItems).ThenInclude(x => x.PurchaseOrder).ThenInclude(x => x.Supplier)
-                .Include(p => p.BudgetItems).ThenInclude(x => x.PurchaseOrderItems).ThenInclude(x => x.PurchaseOrderReceiveds);
+                .Include(p => p.BudgetItems).ThenInclude(x => x.PurchaseOrderItems).ThenInclude(x => x.PurchaseOrderReceiveds)
+               
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Instrument)!.InstrumentTemplate!)
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Pipe)!.FluidCode!)
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Pipe)!.PipeTemplate!)
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Valve)!.ValveTemplate!)
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Equipment)!.EquipmentTemplate!)
+                ;
                 Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
                 string cacheKey = StaticClass.BudgetItems.Cache.GetAllWithPurchaseOrder(request.ProjectId);
 

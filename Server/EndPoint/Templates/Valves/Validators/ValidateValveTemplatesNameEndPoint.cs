@@ -12,14 +12,14 @@ namespace Server.EndPoint.Templates.Valves.Validators
                 app.MapPost(StaticClass.ValveTemplates.EndPoint.Validate, async (ValidateValveTemplateRequest Data, IQueryRepository Repository) =>
                 {
                     Func<IQueryable<ValveTemplate>, IIncludableQueryable<ValveTemplate, object>> Includes = x => x
-                     .Where(x => x.Id != Data.Id)
+              
                     .Include(x => x.BrandTemplate!)
                     .Include(x=>x.NozzleTemplates)
                      ;
 
 
-                  
-                    Expression<Func<ValveTemplate, bool>> CriteriaValve = x =>
+
+                    Func<ValveTemplate, bool> CriteriaValve = x =>
                     x.Material==Data.Material &&
                     x.SignalType==Data.SignalType &&
                     x.FailType == Data.FailType &&
@@ -37,7 +37,7 @@ namespace Server.EndPoint.Templates.Valves.Validators
 
                     string CacheKey = StaticClass.ValveTemplates.Cache.GetAll;
 
-                    var valveTemplates = await Repository.GetAllAsync(Cache: CacheKey, Includes: Includes, Criteria: CriteriaValve);
+                    var valveTemplates = await Repository.GetAllToValidateAsync(Cache: CacheKey, Includes: Includes, Criteria: CriteriaValve);
 
                     valveTemplates = Data.Id.HasValue ? valveTemplates.Where(x => x.Id != Data.Id.Value).ToList() : valveTemplates;
                     if (valveTemplates == null || !valveTemplates.Any())

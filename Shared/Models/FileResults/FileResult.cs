@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared.Models.FileResults.Generics.Reponses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shared.Models.FileResults
 {
-    public class FileResult
+    public class FileResult: IResponseAll
     {
         public static string OpenxmlExcelContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         public static string ExcelContentType = "application/octet-stream";

@@ -41,14 +41,14 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Commands
             }
             private string[] GetCacheKeys(BudgetItem row)
             {
-                var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
-                var budgetitems = StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.GanttTaskId);
+                //var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
+                var budgetitems = StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId/*, row.GanttTaskId*/);
                 var items = StaticClass.Alterations.Cache.Key(row.Id, row.ProjectId);
 
                 List<string> cacheKeys = [
                      ..budgetitems,
                      ..items,
-                     ..deliverable,
+                     //..deliverable,
 
                 ];
 

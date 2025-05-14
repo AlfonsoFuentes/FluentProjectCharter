@@ -15,6 +15,7 @@
                             Change="SelectItemChanged"
                             Clearable="false">
                     </Select>
+                    
                 }
                 else if (Context.Item.BudgetItem.Id == MainBudgetItemId)
                 {
@@ -66,7 +67,7 @@
                         Title="@($"Total, {QuoteCurrency.Name}")" TProperty="string" Editable=false Sortable="false" Filterable="false">
             <FooterTemplate>
                 <b>@Items.Sum(x => x.TotalItemQuoteCurrency).ToCurrencyCulture()</b>
-               
+
             </FooterTemplate>
         </PropertyColumn>
         <PropertyColumn Hidden=IsSameCurrency Property="x => x.UnitaryValuePurchaseOrderCurrency.ToCurrencyCulture()" T="PurchaseOrderItemResponse"
@@ -77,7 +78,7 @@
                         Title="@($"Total, {PurchaseOrderCurrency.Name}")" TProperty="string" Editable=false Sortable="false" Filterable="false">
             <FooterTemplate>
                 <b>@Items.Sum(x => x.TotalPurchaseOrderCurrency).ToCurrencyCulture()</b>
-               
+
             </FooterTemplate>
         </PropertyColumn>
         <PropertyColumn Hidden=QuoteIsUSD Property="x => x.UnitaryValueUSD.ToCurrencyCulture()" T="PurchaseOrderItemResponse"
@@ -88,24 +89,24 @@
                         Title="@($"Total, USD")" TProperty="string" Editable=false Sortable="false" Filterable="false">
             <FooterTemplate>
                 <b>@Items.Sum(x => x.TotalPurchaseOrderUSD).ToCurrencyCulture()</b>
-             
+
             </FooterTemplate>
         </PropertyColumn>
         <PropertyColumn Property="x => x.BudgetUSD.ToCurrencyCulture()" T="PurchaseOrderItemResponse" Title="Budget" TProperty="string" Editable=false Sortable="false" Filterable="false">
             <FooterTemplate>
-              
+
                 <b>@Items.Sum(x => x.BudgetUSD).ToCurrencyCulture()</b>
 
             </FooterTemplate>
         </PropertyColumn>
         <PropertyColumn Property="x => x.AssignedBudgetItemUSD.ToCurrencyCulture()" T="PurchaseOrderItemResponse" Title="Assigned" TProperty="string" Editable=false Sortable="false" Filterable="false">
             <FooterTemplate>
-       
+
                 <b>@Items.Sum(x => x.AssignedBudgetItemUSD).ToCurrencyCulture()</b>
             </FooterTemplate>
         </PropertyColumn>
         <PropertyColumn Property="x => x.ToCommitItemUSD.ToCurrencyCulture()" T="PurchaseOrderItemResponse" Title="To Commit" TProperty="string" Editable=false Sortable="false" Filterable="false">
-            <FooterTemplate>               
+            <FooterTemplate>
                 <b>@Items.Sum(x => x.ToCommitItemUSD).ToCurrencyCulture()</b>
             </FooterTemplate>
         </PropertyColumn>
@@ -143,10 +144,31 @@
     }
     bool GetButtonDisabled(PurchaseOrderItemResponse cell)
     {
-       
+
 
         return cell.BudgetItem == null || (cell.BudgetItem != null && cell.BudgetItem.Id == MainBudgetItemId);
     }
+    async Task BudgetItemChanged(BudgetItemWithPurchaseOrdersResponse item, CellContext<PurchaseOrderItemResponse> context)
+    {
+        context.Item.BudgetItem = item;
+        await SelectItemChanged.InvokeAsync();
+        await ValidateAsync.InvokeAsync();
 
+    }
+    private async Task<IEnumerable<BudgetItemWithPurchaseOrdersResponse>> Search(string value, CancellationToken token)
+    {
+        // In real life use an asynchronous function for fetching data from an api.
+        await Task.Delay(5, token);
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return NonSelectedBudgetItems;
+
+        return NonSelectedBudgetItems.Where(x =>
+            x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase) ||
+            x.Tag.Contains(value, StringComparison.InvariantCultureIgnoreCase) ||
+            x.Nomenclatore.Contains(value, StringComparison.InvariantCultureIgnoreCase)
+        );
+    }
 }
 

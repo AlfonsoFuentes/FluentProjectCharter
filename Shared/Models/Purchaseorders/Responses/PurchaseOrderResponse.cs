@@ -50,6 +50,7 @@ namespace Shared.Models.PurchaseOrders.Responses
         public string PurchaseRequisition { get; set; } = string.Empty;
         public DateTime? ApprovedDate { get; set; }
         public DateTime? ExpectedDate { get; set; }
+
         public DateTime? ClosedDate { get; set; }
         public DateTime? ReceivingDate { get; set; } = DateTime.UtcNow;
         public string PONumber { get; set; } = string.Empty;

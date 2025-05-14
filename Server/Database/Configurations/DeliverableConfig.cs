@@ -14,11 +14,17 @@ namespace Server.Database.Configurations
             // Configurar la relación padre-hijo
            
 
+          //  builder
+          //.HasMany(m => m.GanttTasks) // Un hito tiene un padre
+          //.WithOne(m => m.Deliverable) // Un padre puede tener muchos subhitos
+          //.HasForeignKey(m => m.DeliverableId) // Clave foránea
+          //.OnDelete(DeleteBehavior.Cascade); // Evita la eliminación en cascada para evitar problemas
+
             builder
-          .HasMany(m => m.GanttTasks) // Un hito tiene un padre
-          .WithOne(m => m.Deliverable) // Un padre puede tener muchos subhitos
-          .HasForeignKey(m => m.DeliverableId) // Clave foránea
-          .OnDelete(DeleteBehavior.Cascade); // Evita la eliminación en cascada para evitar problemas
+         .HasMany(m => m.NewGanttTasks) // Un hito tiene un padre
+         .WithOne(m => m.Deliverable) // Un padre puede tener muchos subhitos
+         .HasForeignKey(m => m.DeliverableId) // Clave foránea
+         .OnDelete(DeleteBehavior.Cascade); // Evita la eliminación en cascada para evitar problemas
         }
 
     }

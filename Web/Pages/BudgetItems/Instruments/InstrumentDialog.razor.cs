@@ -126,6 +126,7 @@ public partial class InstrumentDialog
             ConnectionType = response.ConnectionType,
             Model = response.Model,
             Value = response.Value,
+            Diameter = response.Diameter,
 
         };
 
@@ -260,7 +261,7 @@ public partial class InstrumentDialog
     {
         if (Model.ShowDetails)
         {
-            await this.MudDialog.SetOptionsAsync(new DialogOptions() { MaxWidth = MaxWidth.Large });
+            await this.MudDialog.SetOptionsAsync(new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge });
         }
         else
         {

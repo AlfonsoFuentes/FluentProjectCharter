@@ -126,6 +126,7 @@ public partial class ValveDialog
             Type = response.Type,
             Id = response.Id,
             Value = response.Value,
+            ConnectionType = response.ConnectionType,
         };
 
        
@@ -164,6 +165,11 @@ public partial class ValveDialog
 
     void AddInitialNozzles()
     {
+        if(Model.Template.Type== ValveTypesEnum.Sample_port)
+        {
+            Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Inlet, NominalDiameter = Model.Template.Diameter, });
+            return;
+        }
         Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Inlet, NominalDiameter = Model.Template.Diameter,  });
         Model.Nozzles.Add(new NozzleResponse() { Id = Guid.NewGuid(), NozzleType = NozzleTypeEnum.Outlet, NominalDiameter = Model.Template.Diameter, });
 
@@ -277,7 +283,7 @@ public partial class ValveDialog
     {
         if (Model.ShowDetails)
         {
-            await this.MudDialog.SetOptionsAsync(new DialogOptions() { MaxWidth = MaxWidth.Large });
+            await this.MudDialog.SetOptionsAsync(new DialogOptions() { MaxWidth = MaxWidth.ExtraExtraLarge });
         }
         else
         {

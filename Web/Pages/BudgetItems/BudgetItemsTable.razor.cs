@@ -1,5 +1,7 @@
+using Microsoft.VisualBasic.FileIO;
 using MudBlazor;
 using Shared.Models.Brands.Responses;
+using Shared.Models.BudgetItems.Exports;
 using Shared.Models.BudgetItems.IndividualItems.Alterations.Responses;
 using Shared.Models.BudgetItems.IndividualItems.EHSs.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Electricals.Responses;
@@ -13,9 +15,11 @@ using Shared.Models.BudgetItems.IndividualItems.Structurals.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Taxs.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Testings.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Valves.Responses;
+using Shared.Models.BudgetItems.Mappers;
 using Shared.Models.BudgetItems.Records;
 using Shared.Models.BudgetItems.Requests;
 using Shared.Models.BudgetItems.Responses;
+using Shared.Models.FileResults;
 using Shared.Models.Projects.Reponses;
 using System.Linq;
 using Web.Pages.Brands;
@@ -62,7 +66,10 @@ public partial class BudgetItemsTable
     }
 
     string nameFilter = string.Empty;
-    public Func<IBudgetItemResponse, bool> Criteria => x => x.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase);
+    public Func<IBudgetItemResponse, bool> Criteria => x =>
+    x.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase) ||
+    x.Tag.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase) ||
+    x.Nomenclatore.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase);
     public List<IBudgetItemResponse> FilteredItems => string.IsNullOrEmpty(nameFilter) ? Items :
         Items.Where(Criteria).ToList();
 
@@ -238,7 +245,7 @@ public partial class BudgetItemsTable
 
         var parameters = new DialogParameters<EHSDialog>
         {
-           { x => x.Model, model }, 
+           { x => x.Model, model },
             { x => x.IsEdit, IsEdit }
         };
 
@@ -338,7 +345,7 @@ public partial class BudgetItemsTable
         switch (response)
         {
             case AlterationResponse alteration:
-                await EditAlterations(alteration,IsEdit);
+                await EditAlterations(alteration, IsEdit);
                 break;
             case FoundationResponse foundation:
                 await EditFoundations(foundation, IsEdit);
@@ -691,5 +698,50 @@ public partial class BudgetItemsTable
             StateHasChanged();
         }
 
+    }
+    async Task ExportExcel()
+    {
+        BudgetItemExportGetAll request = new()
+        {
+
+            Items = Response.Items.Select(x => x.MapToExport()).ToList(),
+            Name = Project.Name,
+        };
+        var resultExport = await GenericService.GetAll<FileResult, BudgetItemExportGetAll>(request);
+        if (resultExport.Succeeded)
+        {
+            var downloadresult = await blazorDownloadFileService.DownloadFile(resultExport.Data.ExportFileName,
+              resultExport.Data.Data, contentType: resultExport.Data.ContentType);
+            if (downloadresult.Succeeded)
+            {
+
+                _snackBar.ShowSuccess($"{resultExport.Data.ExportFileName} created succesfuly");
+
+
+            }
+        }
+    }
+    async Task ExportPdf()
+    {
+        BudgetItemExportGetAll request = new()
+        {
+
+            Items = Response.Items.Select(x => x.MapToExport()).ToList(),
+            Name = Project.Name,
+            ExportFile = Shared.Enums.ExportFiles.ExportFileType.pdf
+        };
+        var resultExport = await GenericService.GetAll<FileResult, BudgetItemExportGetAll>(request);
+        if (resultExport.Succeeded)
+        {
+            var downloadresult = await blazorDownloadFileService.DownloadFile(resultExport.Data.ExportFileName,
+              resultExport.Data.Data, contentType: resultExport.Data.ContentType);
+            if (downloadresult.Succeeded)
+            {
+
+                _snackBar.ShowSuccess($"{resultExport.Data.ExportFileName} created succesfuly");
+
+
+            }
+        }
     }
 }

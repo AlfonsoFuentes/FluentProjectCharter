@@ -51,7 +51,7 @@
 
 
                 var templates = StaticClass.PipeTemplates.Cache.Key(row.Id);
-                var items = row.Isometrics == null ? new[] { string.Empty } : row.Isometrics.Select(x => StaticClass.Valves.Cache.GetById(x.Id)).ToArray();
+                var items = row.Isometrics == null ? new[] { string.Empty } : row.Isometrics.Select(x => StaticClass.Pipes.Cache.GetById(x.Id)).ToArray();
                 List<string> cacheKeys = [
                         ..items,
                         ..templates

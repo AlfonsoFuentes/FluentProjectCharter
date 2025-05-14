@@ -1,7 +1,7 @@
 ﻿<MudDatePicker @ref="_picker"
                Label="@Label"
                Margin="Margin.Dense"
-                
+               Disabled=@Disabled
                Date="@Value"
                DateChanged="OnValueChanged"
                AutoClose="@_autoClose"
@@ -18,9 +18,12 @@
     private bool _autoClose = true;
     public CultureInfo _en = CultureInfo.GetCultureInfo("en-US");
     [Parameter]
+    public bool Disabled { get; set; } = false;
+
+    [Parameter]
     public string Label { get; set; } = string.Empty;
     [Parameter]
-    public DateTime? Value { get; set; } 
+    public DateTime? Value { get; set; }
     [Parameter]
     public EventCallback<DateTime?> ValueChanged { get; set; }
     [Parameter]

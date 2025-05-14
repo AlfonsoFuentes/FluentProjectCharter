@@ -14,7 +14,7 @@ namespace Server.ExtensionsMethods.EquipmentTemplateMapper
             {
                 Id = row.Id,
                 Name = row.Name,
-                GanttTaskId = row.GanttTaskId,
+                //GanttTaskId = row.GanttTaskId,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
                 Template = row.EquipmentTemplate == null ? new() : row.EquipmentTemplate.Map(),

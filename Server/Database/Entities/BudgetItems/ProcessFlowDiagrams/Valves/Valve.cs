@@ -4,7 +4,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves
 {
     public class Valve : EngineeringItem
     {
-        public override string Letter { get; set; } = "D";
+        public override string Letter { get; set; } = "V";
         public string SerialNumber { get; set; } = string.Empty;
 
         public ValveTemplate? ValveTemplate { get; set; } = null!;
@@ -15,7 +15,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Valves
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                GanttTaskId = GanttTaskId,
+                //GanttTaskId = GanttTaskId,
 
             };
         }

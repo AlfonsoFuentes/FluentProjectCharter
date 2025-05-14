@@ -12,7 +12,7 @@
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                GanttTaskId = GanttTaskId,
+                //GanttTaskId = GanttTaskId,
 
             };
         }

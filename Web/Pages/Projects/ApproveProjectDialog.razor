@@ -5,8 +5,8 @@
 
             <FluentValidationValidator @ref="_fluentValidationValidator" />
 
-            <MudGrid>
-                <MudItem xs="12" sm="12">
+            <MudGrid >
+                <MudItem xs="12" sm="12" >
                     <TextField @bind-Value="@Model.Name"
                                Label="Name"
                                Lines="2"
@@ -15,7 +15,9 @@
                     </TextField>
                     <ValidationMessage For="() => Model.BudgetItems" style="color:red; font-size:x-small;" />
                 </MudItem>
-                <MudItem xs="12" sm="6">
+            </MudGrid>
+            <MudGrid>
+                <MudItem xs="12" sm="4">
                     <Select @bind-Value="Model.Focus"
                             TValue="FocusEnum"
                             Label="Focus"
@@ -25,7 +27,7 @@
                             Clearable="false">
                     </Select>
                 </MudItem>
-                <MudItem xs="12" sm="6">
+                <MudItem xs="12" sm="4">
                     <Select @bind-Value="Model.CostCenter"
                             TValue="CostCenterEnum"
                             Label="Cost Center"
@@ -35,7 +37,7 @@
                             Clearable="false">
                     </Select>
                 </MudItem>
-                <MudItem xs="12" sm="6">
+                <MudItem xs="12" sm="4">
 
                     <Select @bind-Value="Model.ProjectNeedType"
                             Items="ProjectNeedTypeEnum.List"
@@ -46,7 +48,10 @@
                             Clearable="false">
                     </Select>
                 </MudItem>
-                <MudItem xs="12" sm="6">
+            </MudGrid>
+            <MudGrid>
+                
+                <MudItem xs="12" sm="4">
                     <DatePicker Label="Initial Project Date"
                                 @bind-Value="Model.InitialProjectDate"
                                 ValidateAsync=ValidateAsync
@@ -54,8 +59,7 @@
 
                     </DatePicker>
                 </MudItem>
-
-                <MudItem xs="12" sm="6">
+                <MudItem xs="12" sm="4">
                     <DoubleNumericField Label="%Engineering"
                                         ValidateAsync="ValidateAsync"
                                         @bind-Value="Model.PercentageEngineering"
@@ -63,18 +67,29 @@
 
 
                 </MudItem>
-                <MudItem xs="12" sm="6">
+                <MudItem xs="12" sm="4">
                     <DoubleNumericField Label="%Contingency"
                                         ValidateAsync="ValidateAsync"
                                         @bind-Value="Model.PercentageContingency"
                                         For="()=>Model.PercentageContingency" />
 
                 </MudItem>
+            </MudGrid>
+         
+            <MudGrid>
+                <MudItem xs="12" sm="4">
+                    <TextField @bind-Value="@Model.ProjectNumber"
+                               Label="Project Number"
+                               ValidateAsync="ValidateAsync"
+                               For="()=>Model.ProjectNumber">
+                    </TextField>
 
-                <MudItem xs="12" sm="6">
+                </MudItem>
+
+                <MudItem xs="12" sm="4">
                     <Switch @bind-Value="@Model.IsProductiveAsset" Label="Is Productive Asset?" ValidateAsync="ValidateAsync" />
                 </MudItem>
-                <MudItem xs="12" sm="6">
+                <MudItem xs="12" sm="4">
                     @if (!Model.IsProductiveAsset)
                     {
                         <DoubleNumericField Label="%VAT"
@@ -87,17 +102,32 @@
                     }
 
                 </MudItem>
-                <MudItem xs="12" sm="6">
-                    <TextField @bind-Value="@Model.ProjectNumber"
-                               Label="Project Number"
-                               ValidateAsync="ValidateAsync"
-                               For="()=>Model.ProjectNumber">
-                    </TextField>
 
+            </MudGrid>
+            <MudGrid>
+                <MudItem xs="12" sm="4">
+                    <Field Label="Items, USD">@Model.CapitalUSD.ToCurrencyCulture()</Field>
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <Field Label="@($"%Engineering, {Model.PercentageEngineering}, USD")">@Model.CapitalEngineeringUSD.ToCurrencyCulture()</Field>
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <Field Label="@($"%Contingency, {Model.PercentageContingency}, USD")">@Model.CapitalContingencyUSD.ToCurrencyCulture()</Field>
+                </MudItem>
+
+            </MudGrid>
+            <MudGrid>
+                <MudItem xs="12" sm="4">
+                    <Field Label="Expenses, USD">@Model.ExpensesUSD.ToCurrencyCulture()</Field>
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <Field Label="Capital, USD">@Model.TotalCapitalUSD.ToCurrencyCulture()</Field>
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <Field Label="Appropiation, USD">@Model.AppropiationUSD.ToCurrencyCulture()</Field>
                 </MudItem>
             </MudGrid>
-          
-
+   
 
         </MudCardContent>
         <MudCardActions>
@@ -109,5 +139,5 @@
     </MudCard>
 </EditForm>
 @code {
-   
+
 }

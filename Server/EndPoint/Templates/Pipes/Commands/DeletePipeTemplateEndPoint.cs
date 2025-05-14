@@ -17,14 +17,16 @@ namespace Server.EndPoint.Templates.Pipes.Commands
                     var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
 
                     if (row == null) { return Result.Fail(Data.NotFound); }
+                    List<string> cache = new List<string>();
                     foreach (var item in row.Isometrics)
                     {
                         item.PipeTemplateId = null;
                         await Repository.UpdateAsync(item);
+                        cache.AddRange(StaticClass.Pipes.Cache.Key(item.Id, item.ProjectId));
                     }
                     await Repository.RemoveAsync(row);
-
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.PipeTemplates.Cache.Key(row.Id));
+                    cache.Add(StaticClass.PipeTemplates.Cache.GetAll);
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 
                     return Result.EndPointResult(result,
                         Data.Succesfully,

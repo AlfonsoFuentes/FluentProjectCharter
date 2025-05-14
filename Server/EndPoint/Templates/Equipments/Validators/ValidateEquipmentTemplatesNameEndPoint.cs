@@ -16,7 +16,7 @@ namespace Server.EndPoint.Templates.Equipments.Validators
                     .Include(x => x.NozzleTemplates)
                      ;
 
-                    Expression<Func<EquipmentTemplate, bool>> CriteriaExist = x =>
+                    Func<EquipmentTemplate, bool> CriteriaExist = x =>
                     x.InternalMaterial == Data.InternalMaterial &&
                     x.ExternalMaterial == Data.ExternalMaterial &&
                     x.BrandName.Equals(Data.Brand) &&
@@ -27,7 +27,8 @@ namespace Server.EndPoint.Templates.Equipments.Validators
                     x.Reference.Equals(Data.Reference);
 
                     string CacheKey = StaticClass.EquipmentTemplates.Cache.GetAll;
-                    var equipmentTemplates = await Repository.GetAllAsync(Cache: CacheKey, Includes: Includes, Criteria: CriteriaExist);
+
+                    var equipmentTemplates = await Repository.GetAllToValidateAsync(Cache: CacheKey, Includes: Includes, Criteria: CriteriaExist);
                     if (equipmentTemplates == null || !equipmentTemplates.Any())
                     {
                         return false;

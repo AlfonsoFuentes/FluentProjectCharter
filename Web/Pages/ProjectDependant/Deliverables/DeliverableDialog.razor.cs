@@ -20,6 +20,7 @@ public partial class DeliverableDialog
 
     private async Task Submit()
     {
+        
         var result = await GenericService.Post(Model);
 
 
@@ -40,5 +41,7 @@ public partial class DeliverableDialog
 
     [Parameter]
     public DeliverableResponse Model { get; set; } = new();
+    [Parameter]
+    public DateTime? ProjectStartDate { get; set; }
 
 }

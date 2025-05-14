@@ -57,7 +57,7 @@ namespace Server.EndPoint.Templates.Instruments.Commands
 
 
                 var templates = StaticClass.InstrumentTemplates.Cache.Key(row.Id);
-                var items = row.Instruments == null ? new[] { string.Empty } : row.Instruments.Select(x => StaticClass.Valves.Cache.GetById(x.Id)).ToArray();
+                var items = row.Instruments == null ? new[] { string.Empty } : row.Instruments.Select(x => StaticClass.Instruments.Cache.GetById(x.Id)).ToArray();
                 List<string> cacheKeys = [
                         ..items,
                         ..templates

@@ -43,7 +43,7 @@
                     }
                     else
                     {
-                        <IconButton ToolTip="@($"Send {template.Item.Name}")" Size="@Size.Medium" Icon="@Icons.Material.Outlined.Delete"
+                        <IconButton ToolTip="@($"Send {template.Item.Name}")" Size="@Size.Medium" Icon="@Icons.Material.Outlined.Send"
                                     Variant=Variant.Outlined Color="Color.Surface" OnClick="@(()=>SendToForm.InvokeAsync(template.Item))" />
                     }
 

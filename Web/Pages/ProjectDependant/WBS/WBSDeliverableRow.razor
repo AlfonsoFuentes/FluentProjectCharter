@@ -1,6 +1,5 @@
-﻿@using Shared.Models.GanttTasks.Responses
-@using Web.Pages.ProjectDependant.GanttTasks
-<tr class="data-row" @onclick="() => OnClickDeliverable.InvokeAsync(Deliverable)">
+﻿
+@* <tr class="data-row" @onclick="() => OnClickDeliverable.InvokeAsync(Deliverable)">
     <!-- Expand Icon -->
     <td class="col-expand">
         <span>
@@ -46,30 +45,32 @@
                          OnEdit="OnEdit"
                          OnCancel="OnCancel"
                          OnClick="OnClick"
+                      
                          OnSave="OnSave"></WBSGanttTaskRow>
     }
 
 }
-
+ *@
 
 @code {
-    [Parameter]
-    public EventCallback GetAll { get; set; }
-    [Parameter]
-    public EventCallback<DeliverableWithGanttTaskResponse> OnClickDeliverable { get; set; }
-    [Parameter]
-    public EventCallback<GanttTaskResponse> OnClick { get; set; }
-    [Parameter]
-    public EventCallback<GanttTaskResponse> OnEdit { get; set; }
-    [Parameter]
-    public EventCallback<GanttTaskResponse> OnSave { get; set; }
+    // [Parameter]
+    // public EventCallback GetAll { get; set; }
+    // [Parameter]
+    // public EventCallback<DeliverableWithGanttTaskResponse> OnClickDeliverable { get; set; }
+    // [Parameter]
+    // public EventCallback<GanttTaskResponse> OnClick { get; set; }
+    // [Parameter]
+    // public EventCallback<GanttTaskResponse> OnEdit { get; set; }
+    // [Parameter]
+    // public EventCallback<GanttTaskResponse> OnSave { get; set; }
 
-    [Parameter]
-    public EventCallback<GanttTaskResponse> OnCancel { get; set; }
-    [Parameter]
-    public EventCallback<GanttTaskResponse> OnDelete { get; set; }
-    [Parameter]
-    public EventCallback<DeliverableWithGanttTaskResponse> OnDeleteDeliverable { get; set; }
-    [Parameter]
-    public EventCallback<DeliverableWithGanttTaskResponse> OnEditDeliverable { get; set; }
+    // [Parameter]
+    // public EventCallback<GanttTaskResponse> OnCancel { get; set; }
+    // [Parameter]
+    // public EventCallback<GanttTaskResponse> OnDelete { get; set; }
+    // [Parameter]
+    // public EventCallback<DeliverableWithGanttTaskResponse> OnDeleteDeliverable { get; set; }
+    // [Parameter]
+    // public EventCallback<DeliverableWithGanttTaskResponse> OnEditDeliverable { get; set; }
+
 }

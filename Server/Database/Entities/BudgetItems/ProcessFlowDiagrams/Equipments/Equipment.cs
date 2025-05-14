@@ -18,7 +18,7 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Equipments
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                GanttTaskId = GanttTaskId,
+                //GanttTaskId = GanttTaskId,
 
             };
         }

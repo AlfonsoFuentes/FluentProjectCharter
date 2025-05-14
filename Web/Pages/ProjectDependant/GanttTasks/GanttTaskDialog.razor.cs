@@ -1,31 +1,26 @@
-using Blazored.FluentValidation;
-using MudBlazor;
-using Shared.Models.Deliverables.Responses;
-using Shared.Models.GanttTasks.Responses;
-
 namespace Web.Pages.ProjectDependant.GanttTasks;
 public partial class GanttTaskDialog
 {
-    [CascadingParameter]
-    private IMudDialogInstance MudDialog { get; set; } = null!;
-    private bool Validated { get; set; }
-    // Método asincrónico para realizar la validación
-    public async Task ValidateAsync()
-    {
-        Validated = _fluentValidationValidator == null ? false : await _fluentValidationValidator.ValidateAsync(options => { options.IncludeAllRuleSets(); });
-    }
+    //[CascadingParameter]
+    //private IMudDialogInstance MudDialog { get; set; } = null!;
+    //private bool Validated { get; set; }
+    //// Método asincrónico para realizar la validación
+    //public async Task ValidateAsync()
+    //{
+    //    Validated = _fluentValidationValidator == null ? false : await _fluentValidationValidator.ValidateAsync(options => { options.IncludeAllRuleSets(); });
+    //}
 
-    FluentValidationValidator _fluentValidationValidator = null!;
+    //FluentValidationValidator _fluentValidationValidator = null!;
 
-    private void Submit()
-    {
+    //private void Submit()
+    //{
 
-        MudDialog.Close(DialogResult.Ok(Model));
+    //    MudDialog.Close(DialogResult.Ok(Model));
 
-    }
+    //}
 
-    private void Cancel() => MudDialog.Cancel();
+    //private void Cancel() => MudDialog.Cancel();
 
-    [Parameter]
-    public GanttTaskResponse Model { get; set; } = new();
+    //[Parameter]
+    //public GanttTaskResponse Model { get; set; } = new();
 }

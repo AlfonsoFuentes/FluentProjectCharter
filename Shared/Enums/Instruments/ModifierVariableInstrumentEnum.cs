@@ -10,15 +10,18 @@
         public string Letter { get; set; } = string.Empty;
         public static ModifierVariableInstrumentEnum Create(int id, string letter, string name) => new ModifierVariableInstrumentEnum() { Id = id, Letter = letter, Name = name };
         public static ModifierVariableInstrumentEnum None = Create(-1, string.Empty, "None");
+        public static ModifierVariableInstrumentEnum Sensor = Create(7, "E", "Sensor");
         public static ModifierVariableInstrumentEnum TransmitterIndicator = Create(0, "IT", "Transmitter Indicator");
         public static ModifierVariableInstrumentEnum Local = Create(1, "I", "Local");
         public static ModifierVariableInstrumentEnum Suiche = Create(2, "S", "Suiche");
         public static ModifierVariableInstrumentEnum HiSuiche = Create(3, "SH", "High Switch");
         public static ModifierVariableInstrumentEnum LoSuiche = Create(4, "LH", "Low Switch");
+        public static ModifierVariableInstrumentEnum ForPump = Create(5, "P", "Pump");
+        public static ModifierVariableInstrumentEnum ForMixers = Create(6, "P", "Mixer");
 
         public static List<ModifierVariableInstrumentEnum> List = new List<ModifierVariableInstrumentEnum>()
         {
-            None,TransmitterIndicator,Suiche, LoSuiche,HiSuiche,Local,
+            None,Sensor,TransmitterIndicator,Suiche, LoSuiche,HiSuiche,Local, ForPump, ForMixers
 
         };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;

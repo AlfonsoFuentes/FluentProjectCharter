@@ -17,16 +17,16 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Structurals.Commands
                     var cachekeys = GetCacheKeys(row);
 
                     await Repository.RemoveAsync(row);
-                    if (Data.GanttTaskId.HasValue)
-                    {
-                        var deliverable = await Repository.GetByIdAsync<GanttTask>(Data.GanttTaskId.Value);
-                        if (deliverable != null)
-                        {
-                            deliverable.ShowBudgetItems = true;
-                            await Repository.UpdateAsync(deliverable);
-                        }
+                    //if (Data.GanttTaskId.HasValue)
+                    //{
+                    //    var deliverable = await Repository.GetByIdAsync<GanttTask>(Data.GanttTaskId.Value);
+                    //    if (deliverable != null)
+                    //    {
+                    //        deliverable.ShowBudgetItems = true;
+                    //        await Repository.UpdateAsync(deliverable);
+                    //    }
 
-                    }
+                    //}
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cachekeys);
 
                     return Result.EndPointResult(result,
@@ -38,10 +38,10 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Structurals.Commands
             }
             private string[] GetCacheKeys(BudgetItem row)
             {
-                var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
+               // var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
                 List<string> cacheKeys = [
-                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.GanttTaskId),
-                 ..deliverable
+                 ..StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId/*, row.GanttTaskId*/),
+                 //..deliverable
                 ];
                 return cacheKeys.Where(key => !string.IsNullOrEmpty(key)).ToArray();
             }

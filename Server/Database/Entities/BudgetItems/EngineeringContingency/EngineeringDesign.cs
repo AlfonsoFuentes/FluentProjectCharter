@@ -3,7 +3,7 @@
     public class EngineeringDesign : BudgetItem
     {
 
-        public override string Letter { get; set; } = "O";
+        public override string Letter { get; set; } = "OD";
 
         public static EngineeringDesign Create(Guid ProjectId, Guid? GanttTaskId)
         {
@@ -11,7 +11,7 @@
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                GanttTaskId = GanttTaskId,
+                //GanttTaskId = GanttTaskId,
 
             };
         }

@@ -62,14 +62,14 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Equipments.Commands
             }
             private string[] GetCacheKeys(Equipment row)
             {
-                var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
-                var budgetitems = StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId, row.GanttTaskId);
+               // var deliverable = row.GanttTaskId.HasValue ? StaticClass.GanttTasks.Cache.Key(row.GanttTaskId!.Value, row.ProjectId) : new[] { string.Empty };
+                var budgetitems = StaticClass.BudgetItems.Cache.Key(row.Id, row.ProjectId/*, row.GanttTaskId*/);
                 var items = StaticClass.Equipments.Cache.Key(row.Id, row.ProjectId);
-                var templates = row.EquipmentTemplateId == null ? new[] { string.Empty } : StaticClass.ValveTemplates.Cache.Key(row.EquipmentTemplateId!.Value);
+                var templates = row.EquipmentTemplateId == null ? new[] { string.Empty } : StaticClass.EquipmentTemplates.Cache.Key(row.EquipmentTemplateId!.Value);
                 List<string> cacheKeys = [
                      ..budgetitems,
                      ..items,
-                     ..deliverable,
+                     //..deliverable,
                      ..templates,
 
                 ];

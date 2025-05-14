@@ -1,5 +1,6 @@
 ﻿
 
+using Shared.Models.BudgetItems.IndividualItems.Taxs.Responses;
 using Shared.Models.FileResults.Generics.Records;
 using Shared.Models.FileResults.Generics.Reponses;
 using Shared.Models.FileResults.Generics.Request;
@@ -23,7 +24,11 @@ namespace Web.Infrastructure.Managers.Generic
         Task<IResult<TResponse>> GetAll<TResponse, TRequest>(TRequest request)
            where TResponse : class, IResponseAll
            where TRequest : class, IGetAll;
-
+        Task<IResult<T>> PostResult<T>(T request) where T : class, IRequest;
+        Task<IResult<TResponse>> PostResponse<T, TResponse>(T request)
+            where T : class, IRequest
+            where TResponse : class, IResponse
+            ;
     }
     public class GenericService : IGenericService
     {
@@ -37,6 +42,11 @@ namespace Web.Infrastructure.Managers.Generic
         {
             var result = await http.PostAsJsonAsync(request.EndPointName, request);
             return await result.ToResult();
+        }
+        public async Task<IResult<T>> PostResult<T>(T request) where T : class, IRequest
+        {
+            var result = await http.PostAsJsonAsync(request.EndPointName, request);
+            return await result.ToResult<T>();
         }
         public async Task<IResult> Create<T>(T request) where T : class, IRequest
         {
@@ -87,6 +97,19 @@ namespace Web.Infrastructure.Managers.Generic
         {
             var result = await http.PostAsJsonAsync(request.EndPointName, request);
             return await result.ToResult();
+        }
+
+        public async Task<IResult<TResponse>> PostResponse<T, TResponse>(T request)
+             where T : class, IRequest
+            where TResponse : class, IResponse
+        {
+           
+
+            var response = await http.PostAsJsonAsync(request.EndPointName, request);
+           
+            var result = await response.ToResult<TResponse>();
+           
+            return result;
         }
     }
 }

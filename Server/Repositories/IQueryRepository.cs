@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Query;
 using Server.Database.Contracts;
 using Server.Interfaces.Database;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Server.Repositories
@@ -16,7 +17,8 @@ namespace Server.Repositories
             Func<IQueryable<T>, IIncludableQueryable<T, object>> Includes = null!) where T : class, IAuditableEntity;
         Task<List<T>> GetAllAsync<T>(string Cache, Func<IQueryable<T>, IIncludableQueryable<T, object>> Includes = null!,
             Expression<Func<T, bool>> Criteria = null!, Expression<Func<T, object>> OrderBy = null!) where T : class, IAuditableEntity;
-
+        Task<List<T>> GetAllToValidateAsync<T>(string Cache, Func<IQueryable<T>, IIncludableQueryable<T, object>> Includes = null!, Func<T, bool> Criteria = null!, 
+            Expression<Func<T, object>> OrderBy = null!) where T : class, IAuditableEntity;
         Task<T?> GetAsync<T>(string Cache, Func<IQueryable<T>, IIncludableQueryable<T, object>> Includes = null!,
             Expression<Func<T, bool>> Criteria = null!, Expression<Func<T, object>> OrderBy = null!) where T : class, IAuditableEntity;
     }
@@ -120,7 +122,50 @@ namespace Server.Repositories
 
         }
 
+        public async Task<List<T>> GetAllToValidateAsync<T>(string Cache,
+         Func<IQueryable<T>, IIncludableQueryable<T, object>> Includes = null!,
+         Func<T, bool> Criteria = null!,
+        Expression<Func<T, object>> OrderBy = null!) where T : class, IAuditableEntity
+        {
 
+            var cache = $"{Cache}-{_tenantId}";
+            List<T> rows = await Context.GetOrAddCacheAsync(cache, async () =>
+            {
+                var query = Context.Set<T>()
+
+                     .AsNoTracking()
+                    .AsSplitQuery()
+                    .AsQueryable();
+
+                if (Includes != null)
+                {
+                    query = Includes(query);
+                }
+                
+
+                if (OrderBy != null)
+                {
+                    query = query.OrderBy(OrderBy);
+                }
+                try
+                {
+                    return await query.ToListAsync();
+                }
+                catch (Exception ex)
+                {
+                    string message = ex.Message;
+                }
+                return null!;
+            });
+            if(Criteria != null)
+            {
+                rows = rows.Where(Criteria).ToList();
+            }
+            
+            
+            return rows;
+
+        }
 
         public async Task<bool> AnyAsync<T>(string Cache,
               Func<T, bool> CriteriaExist,

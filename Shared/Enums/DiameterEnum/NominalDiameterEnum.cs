@@ -21,10 +21,10 @@
         public static NominalDiameterEnum Dia_6 = Create(9, "6 ''");
         public static NominalDiameterEnum Dia_8 = Create(10, "8 ''");
         public static NominalDiameterEnum Dia_10 = Create(11, "10 ''");
-
+        public static NominalDiameterEnum NotApplicable = Create(12, "NA");
         public static List<NominalDiameterEnum> List = new List<NominalDiameterEnum>()
         {
-            None, Dia_0_5,Dia_3_4,Dia_1,Dia_1_1_4,Dia_1_5,Dia_2,Dia_2_5,Dia_3,Dia_4,Dia_6,Dia_8,Dia_10,
+            None, Dia_0_5,Dia_3_4,Dia_1,Dia_1_1_4,Dia_1_5,Dia_2,Dia_2_5,Dia_3,Dia_4,Dia_6,Dia_8,Dia_10,NotApplicable
 
         };
         public static string GetName(int id) => List.Exists(x => x.Id == id) ? List.FirstOrDefault(x => x.Id == id)!.Name : string.Empty;

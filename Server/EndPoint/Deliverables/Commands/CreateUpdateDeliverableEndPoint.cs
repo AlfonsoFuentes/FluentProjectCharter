@@ -14,8 +14,10 @@
                     if (Data.Id == Guid.Empty)
                     {
                         var lastorder = await Repository.GetLastOrderAsync<Deliverable, Project>(Data.ProjectId);
+                        var project = await Repository.GetByIdAsync<Project>(Data.ProjectId);
 
                         row = Deliverable.Create(Data.ProjectId, lastorder);
+                        
 
                         await Repository.AddAsync(row);
                     }

@@ -20,7 +20,7 @@ namespace Server.EndPoint.PurchaseOrders.Commands
 
                     var row = await Repository.GetAsync(Criteria: Criteria, Includes: Includes);
                     if (row == null) { return Result.Fail(Data.Fail); }
-
+                    row.PONumber = Data.PONumber;
                     row.PurchaseOrderStatus = Data.IsCompletedReceived ? PurchaseOrderStatusEnum.Closed.Id : PurchaseOrderStatusEnum.Receiving.Id;
                     row.ClosedDate = Data.IsCompletedReceived ? DateTime.UtcNow : null;
                     foreach (var item in Data.PurchaseOrderItemReceiveds)

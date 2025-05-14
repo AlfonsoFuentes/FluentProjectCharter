@@ -1,7 +1,7 @@
 ﻿@using Shared.Enums.TasksRelationTypes
 @using Web.Pages.BudgetItems
 
-
+@* 
 
 <tr class="data-row" @onclick="() => OnClick.InvokeAsync(Task)">
     <!-- Expand Icon -->
@@ -78,7 +78,7 @@
                         ValueChanged="OnChangeEndDate">
 
             </DatePicker>
-       
+
 
 
         }
@@ -152,21 +152,21 @@
     </td>
 
     <!-- Budget -->
-  @*   <td class="col-budget">@Task.TotalBudget.ToCurrencyCulture()</td> *@
+    <td class="col-budget">@Task.TotalBudget.ToCurrencyCulture()</td>
 
     <!-- Actions -->
     <td class="col-actions">
         @if (Task.IsEditing)
         {
-            <IconButton Icon="@Icons.Material.Filled.Save" OnClick=" () =>  OnSave.InvokeAsync(Task)" ToolTip="Save" Disabled="@DisableSaveButton(Task)" />
-            <IconButton Icon="@Icons.Material.Filled.Cancel" OnClick=" () =>  OnCancel.InvokeAsync(Task)" ToolTip="Cancel" />
+            <IconButton Icon="@Icons.Material.Filled.Save" Size=Size.Small OnClick=" () =>  OnSave.InvokeAsync(Task)" ToolTip="Save" Disabled="@DisableSaveButton(Task)" />
+            <IconButton Icon="@Icons.Material.Filled.Cancel" Size=Size.Small OnClick=" () =>  OnCancel.InvokeAsync(Task)" ToolTip="Cancel" />
 
         }
         else
         {
-            @* <IconButton Icon="@Icons.Material.Filled.List" OnClick="@(() => Task.ShowBudgetItems = !Task.ShowBudgetItems)" ToolTip="Show BudgetItems" /> *@
-            <IconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => OnEdit.InvokeAsync(Task)" ToolTip="Edit" Disabled=@Task.ShowBudgetItems />
-            <IconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => OnDelete.InvokeAsync(Task)" ToolTip="Delete" Disabled=@Task.ShowBudgetItems />
+            <IconButton Icon="@Icons.Material.Filled.List" Size=Size.Small OnClick="@(() => Task.ShowBudgetItems = !Task.ShowBudgetItems)" ToolTip="Show BudgetItems" />
+            <IconButton Icon="@Icons.Material.Filled.Edit" Size=Size.Small OnClick="() => OnEdit.InvokeAsync(Task)" ToolTip="Edit" Disabled=@Task.ShowBudgetItems />
+            <IconButton Icon="@Icons.Material.Filled.Delete" Size=Size.Small OnClick="() => OnDelete.InvokeAsync(Task)" ToolTip="Delete" Disabled=@Task.ShowBudgetItems />
 
 
         }
@@ -174,7 +174,7 @@
 
 </tr>
 <!-- Mostrar Elementos del Presupuesto -->
-@* @if (Task.ShowBudgetItems)
+@if (Task.ShowBudgetItems)
 {
     <tr>
         <td colspan="12" style="padding: 2px;">
@@ -183,13 +183,14 @@
             </div>
         </td>
     </tr>
-} *@
+}
 <!-- Subtareas Expandidas -->
 @if (Task.IsExpanded)
 {
     foreach (var subtask in Task.OrderedSubGanttTasks)
     {
         <GanttTaskRow @bind-Deliverable="@Deliverable"
+                  
                       Task="@subtask"
                       OnEdit="OnEdit"
                       OnSave="OnSave"
@@ -197,7 +198,7 @@
                       OnDelete="OnDelete"
                       OnClick="OnClick"></GanttTaskRow>
     }
-}
+} *@
 
 @code {
 

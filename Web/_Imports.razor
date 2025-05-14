@@ -15,6 +15,8 @@
 @using System.Globalization
 @using System.Linq.Expressions
 
+@using Web.Pages.ProjectDependant.NewDeliverableWithGanttTasks
+@using Web.Pages.ProjectDependant.PlannedGantTask
 @using Web
 @using Web.Infrastructure.Managers.Generic
 @using Web.Layout
@@ -55,6 +57,8 @@
 @using Web.Pages.ProjectDependant.WBSTableGraphics
 @using Web.Pages.ProjectDependant.WorkBreakownStructures
 
+@using Shared.Models.Objectives.Responses
+@using Shared.Models.Backgrounds.Responses
 @using Shared.Models.Suppliers.Responses
 @using Shared.Models.Brands.Records
 @using Shared.Models.Brands.Requests
@@ -85,6 +89,8 @@
 @using Shared.Models.PurchaseOrders.Responses
 @using Shared.Enums.PurchaseOrderStatusEnums;
 @using Shared.ExtensionsMetods
+@using Shared.Enums.TasksRelationTypes
+@using Shared.Models.NewDeliverablesGanttTask.NewDeliverables.Responses
 @attribute [Authorize]
 @inject IBlazorDownloadFileService blazorDownloadFileService
 @inject IAuthenticationManager _authenticationManager

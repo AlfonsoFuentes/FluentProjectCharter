@@ -10,6 +10,7 @@ namespace Server.EndPoint.Templates.Pipes.Commands
             {
                 app.MapPost(StaticClass.PipeTemplates.EndPoint.DeleteGroup, async (DeleteGroupPipeTemplatesRequest Data, IRepository Repository) =>
                 {
+                    List<string> cache = new List<string>();
                     Func<IQueryable<PipeTemplate>, IIncludableQueryable<PipeTemplate, object>> Includes = x => x
                     .Include(x => x.Isometrics);
                     foreach (var rowItem in Data.SelecteItems)
@@ -24,15 +25,16 @@ namespace Server.EndPoint.Templates.Pipes.Commands
                             {
                                 item.PipeTemplateId = null;
                                 await Repository.UpdateAsync(item);
+                                cache.AddRange(StaticClass.Pipes.Cache.Key(item.Id, item.ProjectId));
                             }
                             await Repository.RemoveAsync(row);
                         }
                     }
 
 
-                    var cache = StaticClass.PipeTemplates.Cache.GetAll;
+                    cache.Add(StaticClass.PipeTemplates.Cache.GetAll);
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
                     return Result.EndPointResult(result,
                         Data.Succesfully,
                         Data.Fail);
