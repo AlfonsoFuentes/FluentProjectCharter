@@ -18,7 +18,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Alterations.Responses
         public string Fail => StaticClass.ResponseMessages.ReponseFailMessage(Legend, ClassName, ActionType);
         public string NotFound => StaticClass.ResponseMessages.ReponseNotFound(ClassName);
 
-        public Guid? GanttTaskId { get; set; }
+   
 
         public override bool IsAlteration { get; set; } = true;
         public CostCenterEnum CostCenter { get; set; } = CostCenterEnum.None;

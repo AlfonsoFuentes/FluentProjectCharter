@@ -81,15 +81,12 @@ namespace Web.Infrastructure.Managers.Generic
            where TResponse : class, IResponseAll
            where TRequest : class, IGetAll
         {
-            Stopwatch sw = Stopwatch.StartNew();
+          
 
             var response = await http.PostAsJsonAsync(request.EndPointName, request);
-            sw.Stop();
-            Console.WriteLine($"Time POST {sw.ElapsedMilliseconds} ms");
-            sw.Restart();
+           
             var result = await response.ToResult<TResponse>();
-            sw.Stop();
-            Console.WriteLine($"Time ToResult {sw.ElapsedMilliseconds} ms");
+          
             return result;
         }
 

@@ -22,8 +22,8 @@ namespace Shared.Models.BudgetItems.IndividualItems.Pipes.Responses
         public Guid? GanttTaskId { get; set; }
         public double BudgetCalculated => MaterialQuantity * EquivalentLenghPrice + LaborDayPrice * LaborQuantity;
         public string TagNumber { get; set; } = string.Empty;
-        public override string Tag => $"{Template.Diameter.Name}-{FluidCodeCode}-{TagNumber}-{Template.Material.Name}-{InsulationCode}";
-      
+        public override string Tag => !ShowDetails ? string.Empty : $"{Template.Diameter.Name}-{FluidCodeCode}-{TagNumber}-{Template.Material.Name}-{InsulationCode}";
+
 
         double materialQuantity;
 
@@ -71,7 +71,7 @@ namespace Shared.Models.BudgetItems.IndividualItems.Pipes.Responses
                     BudgetUSD = BudgetCalculated;
             }
         }
-       
+
         public EngineeringFluidCodeResponse? FluidCode { get; set; }
         public string FluidCodeCode => FluidCode != null ? FluidCode.Code : string.Empty;
 

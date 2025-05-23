@@ -18,7 +18,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Foundations.Commands
                     if (data.Id == Guid.Empty)
                     {
                         int order = ProjectMapper.GetNextOrder<Foundation>(project);
-                        row = Foundation.Create(project.Id, data.GanttTaskId);
+                        row = Foundation.Create(project.Id);
                         row.Order = order;
                         await repository.AddAsync(row);
                     }

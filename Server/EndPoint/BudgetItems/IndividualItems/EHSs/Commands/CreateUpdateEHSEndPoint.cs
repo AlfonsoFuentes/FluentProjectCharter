@@ -18,7 +18,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EHSs.Commands
                     if (data.Id == Guid.Empty)
                     {
                         int order = ProjectMapper.GetNextOrder<EHS>(project);
-                        row = EHS.Create(project.Id, data.GanttTaskId);
+                        row = EHS.Create(project.Id);
                         row.Order = order;
                         await repository.AddAsync(row);
                     }

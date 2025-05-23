@@ -17,6 +17,20 @@
                         int lastorder = projects == null || projects.Count == 0 ? 1 : projects.MaxBy(x => x.Order)!.Order + 1;
                         row = Project.Create(lastorder);
                         await Repository.AddAsync(row);
+                        var contingency = Contingency.Create(row.Id);
+                        contingency.Order = 1;
+
+                        var engineering = Engineering.Create(row.Id);
+                        engineering.Order = 1;
+
+                        engineering.Percentage = Data.PercentageEngineering;
+                        contingency.Percentage = Data.PercentageContingency;
+
+                        engineering.Name = $"Engineering {Data.PercentageEngineering}%";
+                        contingency.Name = $"Contingency {Data.PercentageContingency}%";
+
+                        await Repository.AddAsync(contingency);
+                        await Repository.AddAsync(engineering);
                     }
                     else
                     {

@@ -3,15 +3,17 @@
     public class EngineeringDesign : BudgetItem
     {
 
-        public override string Letter { get; set; } = "OD";
+        public override string Letter { get; set; } = "O";
 
-        public static EngineeringDesign Create(Guid ProjectId, Guid? GanttTaskId)
+        [NotMapped]
+        public override int OrderList => 14;
+        public static EngineeringDesign Create(Guid ProjectId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                //GanttTaskId = GanttTaskId,
+                
 
             };
         }

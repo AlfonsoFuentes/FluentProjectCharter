@@ -43,10 +43,8 @@ namespace Server.EndPoint.Projects.Queries
                 PercentageEngineering = row.PercentageEngineering,
                 PercentageContingency = row.PercentageContingency,
           
+                ProjectNumber =$"CEC0000{row.ProjectNumber}" ,
 
-                ProjectNumber = row.ProjectNumber,
-
-               
                 IsProductiveAsset= row.IsProductiveAsset,
                 PercentageTaxProductive = row.PercentageTaxProductive,
                 Status = ProjectStatusEnum.GetType(row.Status),

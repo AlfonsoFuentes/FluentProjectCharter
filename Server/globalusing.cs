@@ -1,6 +1,7 @@
 ﻿global using LazyCache;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Query;
+global using System.ComponentModel.DataAnnotations.Schema;
 global using Server.Database.Contracts;
 global using Server.Database.Entities;
 global using Server.Database.Entities.BudgetItems;
@@ -56,7 +57,7 @@ global using Shared.Models.Bennefits.Responses;
 global using Shared.Models.BudgetItems.IndividualItems.Equipments.Responses;
 global using Shared.Models.Constrainsts.Records;
 global using Shared.Models.Constrainsts.Responses;
-global using Shared.Models.Deliverables.Responses;
+global using Server.EndPoint.DeliverableGanttTasks.Queries;
 global using Shared.Models.ExpertJudgements.Responses;
 global using Shared.Models.FileResults;
 global using Shared.Models.KnownRisks.Responses;

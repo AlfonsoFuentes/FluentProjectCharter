@@ -34,12 +34,12 @@ namespace Server.Database.Entities.ProjectManagements
                 Id = Guid.NewGuid(),
 
                 ParentId = ParenTaskId,
-                DeliverableId= DeliverableId,
+                DeliverableId = DeliverableId,
 
             };
         }
 
-        
+
         // Relación padre-hijo
         public Guid? ParentId { get; set; } // Referencia al padre (opcional)
         public NewGanttTask Parent { get; set; } = null!;
@@ -49,18 +49,16 @@ namespace Server.Database.Entities.ProjectManagements
         public string? DurationUnit { get; set; } = string.Empty;
         public double DurationInDays { get; set; } = 0;
         public double DurationInUnit { get; set; } = 0;
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public string? LagUnit { get; set; } = string.Empty;
-        public double LagInDays { get; set; } = 0;
-        public double LagInUnits { get; set; } = 0;
+        public ICollection<BudgetItemNewGanttTask> BudgetItemNewGanttTasks { get; set; } = new List<BudgetItemNewGanttTask>();
+        public double TotalBudgetAssigned => BudgetItemNewGanttTasks == null || BudgetItemNewGanttTasks.Count == 0 ? 0 : BudgetItemNewGanttTasks.Sum(x => x.BudgetAssigned);
 
-       
-        
-
-        public string? DependencyList { get; set; } = string.Empty;
-        public int DependencyType { get; set; }
+        [ForeignKey("MainTaskId")]
+        public ICollection<MainTaskDependency> MainTasks { get; set; } = new List<MainTaskDependency>();
+        [ForeignKey("DependencyTaskId")]
+        public ICollection<MainTaskDependency> DependencyTasks { get; set; } = new List<MainTaskDependency>();
 
     }
 }

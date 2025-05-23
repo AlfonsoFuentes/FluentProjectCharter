@@ -7,17 +7,18 @@ namespace Shared.Models.BudgetItems.Responses
     {
         bool Selected { get; set; }
         string Nomenclatore { get; set; }
+        string NomenclatoreName { get; }
         double BudgetUSD { get; }
-
+        bool ShowDetails { get; set; }
         string Tag { get; }
         bool IsAlteration { get; set; }
         bool IsTaxes { get; set; }
-        bool ShowDetails { get; set; }
+
     }
     public interface IBudgetItemWithPurchaseOrderResponse : IBudgetItemResponse
     {
 
-        string NomenclatoreName { get; }
+       
         double ActualUSD { get; set; }
         double CommitmentUSD { get; set; }
         double PotentialUSD { get; set; }

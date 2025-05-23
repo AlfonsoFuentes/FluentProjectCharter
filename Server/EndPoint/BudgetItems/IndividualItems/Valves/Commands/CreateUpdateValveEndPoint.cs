@@ -20,7 +20,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Valves.Commands
                     if (data.Id == Guid.Empty)
                     {
                         int order = ProjectMapper.GetNextOrder<Valve>(project);
-                        row = Valve.Create(project.Id, data.GanttTaskId);
+                        row = Valve.Create(project.Id);
                         row.Order = order;
                         await repository.AddAsync(row);
                         await NozzleMapper.CreateNozzles(repository, row.Id, data.Nozzles);

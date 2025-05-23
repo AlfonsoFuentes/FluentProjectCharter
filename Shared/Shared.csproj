@@ -19,12 +19,6 @@
     <Folder Include="Models\BudgetItems\IndividualItems\Nozzles\Records\" />
     <Folder Include="Models\BudgetItems\IndividualItems\Nozzles\Requests\" />
     <Folder Include="Models\BudgetItems\IndividualItems\Nozzles\Validators\" />
-    <Folder Include="Models\NewDeliverablesGanttTask\NewDeliverables\Mappers\" />
-    <Folder Include="Models\NewDeliverablesGanttTask\NewDeliverables\Requests\" />
-    <Folder Include="Models\NewDeliverablesGanttTask\NewDeliverables\Validators\" />
-    <Folder Include="Models\NewDeliverablesGanttTask\NewGanttTask\Mappers\" />
-    <Folder Include="Models\NewDeliverablesGanttTask\NewGanttTask\Records\" />
-    <Folder Include="Models\NewDeliverablesGanttTask\NewGanttTask\Requests\" />
     <Folder Include="Models\StakeHolderInsideProjects\Exports\" />
     <Folder Include="Models\StakeHolders\Mappers\" />
     <Folder Include="Models\Suppliers\Mappers\" />

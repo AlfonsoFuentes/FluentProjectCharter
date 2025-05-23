@@ -1,5 +1,7 @@
-﻿using Shared.Models.DeliverableGanttTasks.Records;
+﻿using Shared.Models.BudgetItemNewGanttTasks.Responses;
+using Shared.Models.DeliverableGanttTasks.Records;
 using Shared.Models.DeliverableGanttTasks.Responses;
+using Shared.Models.MainTaskDependencys;
 
 namespace Server.EndPoint.DeliverableGanttTasks.Queries
 {
@@ -10,11 +12,12 @@ namespace Server.EndPoint.DeliverableGanttTasks.Queries
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.DeliverableGanttTasks.EndPoint.GetAll, async (GetAllDeliverableGanttTask request, IQueryRepository repository) =>
+                app.MapPost(StaticClass.DeliverableGanttTasks.EndPoint.GetAll, 
+                    async (GetAllDeliverableGanttTask request, IQueryRepository repository) =>
                 {
                     try
                     {
-                       
+
                         if (!ValidateRequest(request, repository, out var validationError))
                         {
                             return Result<DeliverableGanttTaskResponseList>.Fail(validationError);
@@ -51,7 +54,7 @@ namespace Server.EndPoint.DeliverableGanttTasks.Queries
                             };
                             response.Items.Add(deliverableDto);
                             var flatList = MapFlatInParallelAsync(deliverable.NewGanttTasks);
-                           
+
 
                             response.Items.AddRange(flatList);
 
@@ -59,7 +62,7 @@ namespace Server.EndPoint.DeliverableGanttTasks.Queries
 
                         }
 
-                      
+
 
                         return Result<DeliverableGanttTaskResponseList>.Success(response);
 
@@ -109,8 +112,13 @@ namespace Server.EndPoint.DeliverableGanttTasks.Queries
                     return null!;
                 }
                 Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x
-                .Include(x => x.Deliverables).ThenInclude(x => x.NewGanttTasks)
-                       ;
+                .Include(x => x.Deliverables)
+                .ThenInclude(x => x.NewGanttTasks)
+                .ThenInclude(x => x.BudgetItemNewGanttTasks).ThenInclude(x => x.BudgetItem)
+                .Include(x => x.Deliverables)
+                .ThenInclude(x => x.NewGanttTasks)
+                .ThenInclude(x => x.MainTasks)
+                ;
 
                 Expression<Func<Project, bool>> criteria = x => x.Id == projectId;
                 var project = await repository.GetAsync(Cache: cache, Criteria: criteria, Includes: includes);
@@ -131,11 +139,9 @@ namespace Server.EndPoint.DeliverableGanttTasks.Queries
                 EndDate = row.EndDate,
                 DurationInDays = row.DurationInDays,
                 DurationUnit = row.DurationUnit,
-                LagInDays = row.LagInDays,
-                LagUnit = row.LagUnit,
-                LagInUnits = row.LagInUnits,
+              
                 DurationInUnit = row.DurationInUnit,
-                DependencyType = TasksRelationTypeEnum.GetType(row.DependencyType),
+              
                 Id = row.Id,
                 Name = row.Name,
                 DeliverableId = row.DeliverableId,
@@ -143,31 +149,48 @@ namespace Server.EndPoint.DeliverableGanttTasks.Queries
                 InternalOrder = row.InternalOrder,
                 MainOrder = row.MainOrder,
                 ParentWBS = row.ParentWBS,
-                LoadDependencyList = row.DependencyList,
+              
                 IsParentDeliverable = row.ParentId == null,
-                //LabelOrder = row.LabelOrder,
-                //DependantId = row.DependentantId,
-                ////ShowBudgetItems = row.ShowBudgetItems,
-                //Alterations = row.BudgetItems?.OfType<Alteration>().Select(x => x.Map()).ToList() ?? new(),
-                //Structurals = row.BudgetItems?.OfType<Structural>().Select(x => x.Map()).ToList() ?? new(),
-                //Foundations = row.BudgetItems?.OfType<Foundation>().Select(x => x.Map()).ToList() ?? new(),
-                //Equipments = row.BudgetItems?.OfType<Equipment>().Select(x => x.Map()).ToList() ?? new(),
+                ProjectId = row.ProjectId,
+                BudgetItemGanttTasks = row.BudgetItemNewGanttTasks.Select(x => x.Map()).ToList(),
+                NewDependencies = row.MainTasks.Select(x => x.Map()).ToList(),
 
-                //Valves = row.BudgetItems?.OfType<Valve>().Select(x => x.Map()).ToList() ?? new(),
-                //Electricals = row.BudgetItems?.OfType<Electrical>().Select(x => x.Map()).ToList() ?? new(),
-                //Pipings = row.BudgetItems?.OfType<Pipe>().Select(x => x.Map()).ToList() ?? new(),
-                //Instruments = row.BudgetItems?.OfType<Instrument>().Select(x => x.Map()).ToList() ?? new(),
-
-                //EHSs = row.BudgetItems?.OfType<EHS>().Select(x => x.Map()).ToList() ?? new(),
-                //Paintings = row.BudgetItems?.OfType<Painting>().Select(x => x.Map()).ToList() ?? new(),
-                //Taxes = row.BudgetItems?.OfType<Tax>().Select(x => x.Map()).ToList() ?? new(),
-                //Testings = row.BudgetItems?.OfType<Testing>().Select(x => x.Map()).ToList() ?? new(),
-
-                //EngineeringDesigns = row.BudgetItems?.OfType<EngineeringDesign>().Select(x => x.Map()).ToList() ?? new(),
 
             };
         }
+        public static BudgetItemNewGanttTaskResponse Map(this BudgetItemNewGanttTask row)
+        {
+            return new BudgetItemNewGanttTaskResponse()
+            {
+                BudgetItemId = row.BudgetItemId,
+                GanttTaskId = row.NewGanttTaskId,
+                PercentageBudget = row.PercentageBudget,
+                Order = row.Order,
+                BudgetAssignedUSD = row.BudgetAssigned,
 
+
+            };
+
+        }
+        public static MainTaskDependencyResponse Map(this MainTaskDependency row)
+        {
+            return new MainTaskDependencyResponse()
+            {
+                MainTaskId = row.MainTaskId,
+                DependencyTaskId = row.DependencyTaskId,
+                DependencyType = TasksRelationTypeEnum.GetType(row.DependencyType),
+                LagUnit = row.LagUnit,
+                LagInDays = row.LagInDays,
+                LagInUnits = row.LagInUnits,
+
+
+                Order = row.Order,
+
+
+
+            };
+
+        }
 
     }
 }

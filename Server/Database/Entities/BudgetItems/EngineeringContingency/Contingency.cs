@@ -1,10 +1,12 @@
 ﻿namespace Server.Database.Entities.BudgetItems.EngineeringContingency
 {
-    public class Contingency : BudgetItem
+    public class Contingency : BudgetItem, IEngineeringContingency
     {
 
         public override string Letter { get; set; } = "P";
         public double Percentage { get; set; }
+        [NotMapped]
+        public override int OrderList => 15;
         public static Contingency Create(Guid ProjectId)
         {
             return new()

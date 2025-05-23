@@ -6,14 +6,15 @@
         public override string Letter { get; set; } = "L";
         public double Percentage { get; set; }
         public ICollection<TaxesItem> TaxesItems { get; set; } = new List<TaxesItem>();
-
-        public static Tax Create(Guid ProjectId, Guid? GanttTaskId)
+        [NotMapped]
+        public override int OrderList => 11;
+        public static Tax Create(Guid ProjectId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                //GanttTaskId = GanttTaskId,
+               
 
             };
         }

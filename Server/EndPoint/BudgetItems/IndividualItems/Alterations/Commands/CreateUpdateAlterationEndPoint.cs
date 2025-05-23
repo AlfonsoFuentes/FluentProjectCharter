@@ -18,7 +18,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Alterations.Commands
                     if (data.Id == Guid.Empty)
                     {
                         int order = ProjectMapper.GetNextOrder<Alteration>(project);
-                        row = Alteration.Create(project.Id, data.GanttTaskId);
+                        row = Alteration.Create(project.Id);
                         row.Order = order;
                         await repository.AddAsync(row);
                     }

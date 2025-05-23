@@ -1,4 +1,5 @@
 ﻿using Server.EndPoint.BudgetItems.IndividualItems.Contingencys.Queries;
+using Server.EndPoint.BudgetItems.IndividualItems.Engineerings.Queries;
 using Server.EndPoint.Communications.Queries;
 using Shared.Enums.CostCenter;
 using Shared.Models.BudgetItems.Records;
@@ -41,6 +42,8 @@ namespace Server.EndPoint.BudgetItems.Queries
                         Testings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Testing>().Select(x => x.Map()).ToList(),
 
                         EngineeringDesigns = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<EngineeringDesign>().Select(x => x.Map()).ToList(),
+                        Engineerings = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Engineering>().Select(x => x.Map()).ToList(),
+                        Contingencys = row.BudgetItems == null || row.BudgetItems.Count == 0 ? new() : row.BudgetItems.OfType<Contingency>().Select(x => x.Map()).ToList(),
                         IsProductive = row.IsProductiveAsset,
 
                         PercentageContingency = row.PercentageContingency,
@@ -48,9 +51,30 @@ namespace Server.EndPoint.BudgetItems.Queries
                         PercentageTaxes = row.PercentageTaxProductive,
                         CostCenter = CostCenterEnum.GetType(row.CostCenter),
                         ProjectNumber = $"CEC0000{row.ProjectNumber}",
-                        Status =ProjectStatusEnum.GetType(row.Status),
+                        Status = ProjectStatusEnum.GetType(row.Status),
+
 
                     };
+                    double totalpercentage = response.PercentageContingency + response.PercentageEngineering;
+
+                    if (100 - totalpercentage > 0)
+                    {
+                        var contingency = response.Contingencys.FirstOrDefault();
+                        if (contingency != null)
+                        {
+                            contingency.BudgetUSD =Math.Round( response.Capital.Sum(x => x.BudgetUSD) /
+                            (100 - totalpercentage) * contingency.Percentage, 1);
+                        }
+                        var engineering = response.Engineerings.FirstOrDefault();
+                        if (engineering != null)
+                        {
+                            engineering.BudgetUSD = Math.Round(response.Capital.Sum(x => x.BudgetUSD) /
+                           (100 - totalpercentage) * engineering.Percentage,1);
+                        }
+                    }
+
+
+
 
 
 
@@ -62,11 +86,13 @@ namespace Server.EndPoint.BudgetItems.Queries
             {
                 Func<IQueryable<Project>, IIncludableQueryable<Project, object>> includes = x => x
                 .Include(p => p.BudgetItems)
-                .Include(p => p.BudgetItems).ThenInclude(x => (x as Instrument)!.InstrumentTemplate!)
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Instrument)!.InstrumentTemplate!).ThenInclude(x => x.BrandTemplate)
                 .Include(p => p.BudgetItems).ThenInclude(x => (x as Pipe)!.FluidCode!)
                 .Include(p => p.BudgetItems).ThenInclude(x => (x as Pipe)!.PipeTemplate!)
-                .Include(p => p.BudgetItems).ThenInclude(x => (x as Valve)!.ValveTemplate!)
-                .Include(p => p.BudgetItems).ThenInclude(x => (x as Equipment)!.EquipmentTemplate!);
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Valve)!.ValveTemplate!).ThenInclude(x => x.BrandTemplate)
+                .Include(p => p.BudgetItems).ThenInclude(x => (x as Equipment)!.EquipmentTemplate!).ThenInclude(x => x.BrandTemplate)
+                .Include(x => x.BudgetItems).ThenInclude(x => x.BudgetItemNewGanttTasks)
+                ;
 
                 Expression<Func<Project, bool>> criteria = x => x.Id == request.ProjectId;
                 string cacheKey = StaticClass.BudgetItems.Cache.GetAll(request.ProjectId);

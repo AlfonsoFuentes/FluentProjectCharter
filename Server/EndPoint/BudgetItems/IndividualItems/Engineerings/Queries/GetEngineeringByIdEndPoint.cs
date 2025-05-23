@@ -13,9 +13,11 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Engineerings.Queries
                 Id = row.Id,
                 Name = row.Name,
 
+                OrderList = row.OrderList,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
 
+                Percentage = row.Percentage,
                 ActualUSD = row.ActualUSD,
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,

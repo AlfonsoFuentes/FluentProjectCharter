@@ -1,10 +1,11 @@
 ﻿using Server.Database.Contracts;
 using Server.Database.Entities.BudgetItems;
 using Server.Database.Entities.BudgetItems.ProcessFlowDiagrams;
-using static Shared.StaticClasses.StaticClass;
-using System.ComponentModel.DataAnnotations.Schema;
 using Server.Database.Entities.ProjectManagements;
 using Server.Database.Entities.PurchaseOrders;
+using Shared.Models.BudgetItems.Responses;
+using System.ComponentModel.DataAnnotations.Schema;
+using static Shared.StaticClasses.StaticClass;
 
 namespace Server.Database.Entities
 {
@@ -15,7 +16,7 @@ namespace Server.Database.Entities
 
 
         public DateTime? StartDate { get; set; }
-     
+
         public static Project Create(int Order)
         {
             return new Project()
@@ -72,11 +73,46 @@ namespace Server.Database.Entities
         public List<PurchaseOrder> PurchaseOrders { get; set; } = new();
         public List<Acquisition> Acquisitions { get; set; } = new();
         public List<StakeHolder> StakeHolders { get; } = [];
-       
 
-       
-
-
+        [NotMapped]
+        public List<Alteration> Alterations => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Alteration>().ToList();
+        [NotMapped]
+        public List<Structural> Structurals => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Structural>().ToList();
+        [NotMapped]
+        public List<Foundation> Foundations => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Foundation>().ToList();
+        [NotMapped]
+        public List<Equipment> Equipments => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Equipment>().ToList();
+        [NotMapped]
+        public List<Valve> Valves => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Valve>().ToList();
+        [NotMapped]
+        public List<Electrical> Electricals => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Electrical>().ToList();
+        [NotMapped]
+        public List<Pipe> Pipings => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Pipe>().ToList();
+        [NotMapped]
+        public List<Instrument> Instruments => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Instrument>().ToList();
+        [NotMapped]
+        public List<EHS> EHSs => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<EHS>().ToList();
+        [NotMapped]
+        public List<Painting> Paintings => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Painting>().ToList();
+        [NotMapped]
+        public List<Tax> Taxes => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Tax>().ToList();
+        [NotMapped]
+        public List<Testing> Testings => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Testing>().ToList();
+        [NotMapped]
+        public List<Contingency> Contingencys => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Contingency>().ToList();
+        [NotMapped]
+        public List<Engineering> Engineerings => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<Engineering>().ToList();
+        [NotMapped]
+        public List<EngineeringDesign> EngineeringDesigns => BudgetItems == null || BudgetItems.Count == 0 ? new() : BudgetItems.OfType<EngineeringDesign>().ToList();
+        [NotMapped]
+        public List<BudgetItem> Expenses => [.. Alterations];
+        [NotMapped]
+        public List<BudgetItem> Capital => [..Foundations,..Structurals,..Equipments,..Valves,..Electricals,
+            ..Pipings,..Instruments,..EHSs,..Paintings,..Taxes,..Testings,..EngineeringDesigns];
+        [NotMapped]
+        public List<BudgetItem> EngineeringContingencys => [.. Engineerings, .. Contingencys];
+        [NotMapped]
+        public List<BudgetItem> Appropiation => [.. Expenses, .. Capital, .. EngineeringContingencys];
     }
 
 

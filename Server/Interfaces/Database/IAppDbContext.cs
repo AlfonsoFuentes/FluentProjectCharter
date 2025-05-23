@@ -1,4 +1,5 @@
-﻿using Server.Database.Entities.ProjectManagements;
+﻿using Server.Database.Entities.BudgetItems;
+using Server.Database.Entities.ProjectManagements;
 using Server.Database.Entities.PurchaseOrders;
 using static Shared.StaticClasses.StaticClass;
 
@@ -15,9 +16,9 @@ namespace Server.Interfaces.Database
         DbSet<Scope> Scopes { get; set; }
         DbSet<Objective> Objectives { get; set; }
         DbSet<Deliverable> Deliverables { get; set; }
-        //DbSet<GanttTask> GanttTasks { get; set; }
+        DbSet<MainTaskDependency> MainTaskDependencys { get; set; }
         DbSet<NewGanttTask> NewGanttTasks { get; set; }
-        //DbSet<PublisherObserver> PublisherObservers { get; set; }
+        DbSet<BudgetItemNewGanttTask> BudgetItemNewGantTasks { get; set; }
 
         DbSet<Requirement> Requirements { get; set; }
         DbSet<Assumption> Assumptions { get; set; }

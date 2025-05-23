@@ -1,9 +1,11 @@
 ﻿using Shared.Enums.CostCenter;
 using Shared.Enums.ProjectNeedTypes;
 using Shared.Models.BudgetItems.IndividualItems.Alterations.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Contingencys.Responses;
 using Shared.Models.BudgetItems.IndividualItems.EHSs.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Electricals.Responses;
 using Shared.Models.BudgetItems.IndividualItems.EngineeringDesigns.Responses;
+using Shared.Models.BudgetItems.IndividualItems.Engineerings.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Equipments.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Foundations.Responses;
 using Shared.Models.BudgetItems.IndividualItems.Instruments.Responses;
@@ -35,12 +37,14 @@ namespace Shared.Models.BudgetItems.Responses
         public List<TestingResponse> Testings { get; set; } = new();
         public List<ValveResponse> Valves { get; set; } = new();
         public List<EngineeringDesignResponse> EngineeringDesigns { get; set; } = new();
-        public List<BudgetItemWithPurchaseOrdersResponse> Expenses => [.. Alterations];
-        public List<BudgetItemWithPurchaseOrdersResponse> Capital => [..Foundations,..Structurals,..Equipments,..Valves,..Electricals,
+        public List<EngineeringResponse> Engineerings { get; set; } = new();
+        public List<ContingencyResponse> Contingencys { get; set; } = new();
+        public List<BudgetItemResponse> Expenses => [.. Alterations];
+        public List<BudgetItemResponse> Capital => [..Foundations,..Structurals,..Equipments,..Valves,..Electricals,
             ..Pipings,..Instruments,..EHSs,..Paintings,..Taxes,..Testings,..EngineeringDesigns];
-
-        public List<IBudgetItemResponse> Items => BudgetItems.OrderBy(x => x.Nomenclatore).ToList();
-        public List<IBudgetItemResponse> BudgetItems => [.. Expenses, .. Capital];
+        public List<BudgetItemResponse> CapitalPlusEngineeringContingency => [.. Capital, .. Engineerings, .. Contingencys];
+        public List<BudgetItemResponse> Items => BudgetItems.OrderBy(x => x.OrderList).ThenBy(x => x.Nomenclatore).ToList();
+        public List<BudgetItemResponse> BudgetItems => [.. Expenses, .. CapitalPlusEngineeringContingency];
         public double TotalCapital => Capital.Sum(x => x.BudgetUSD) + TaxesBudget;
 
         public double TotalCapitalWithOutVAT => Capital.Sum(x => x.BudgetUSD);

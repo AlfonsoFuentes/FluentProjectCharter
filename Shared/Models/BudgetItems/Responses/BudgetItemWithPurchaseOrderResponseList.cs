@@ -39,7 +39,7 @@ namespace Shared.Models.BudgetItems.Responses
         public List<BudgetItemWithPurchaseOrdersResponse> Capital => [..Foundations,..Structurals,..Equipments,..Valves,..Electricals,
             ..Pipings,..Instruments,..EHSs,..Paintings,..Taxes,..Testings,..EngineeringDesigns,..Engineerings,..Contingencies];
 
-        public List<BudgetItemWithPurchaseOrdersResponse> Items => BudgetItems.OrderBy(x => x.Nomenclatore).ToList();
+        public List<BudgetItemWithPurchaseOrdersResponse> Items => BudgetItems.OrderBy(x=>x.OrderList).ThenBy(x => x.Nomenclatore).ToList();
         public List<BudgetItemWithPurchaseOrdersResponse> BudgetItems => [.. Expenses, .. Capital];
         public double TotalCapital => Capital.Sum(x => x.BudgetUSD) + TaxesBudget;
 

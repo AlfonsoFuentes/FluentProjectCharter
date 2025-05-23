@@ -1,11 +1,5 @@
-﻿using DocumentFormat.OpenXml.Office.CoverPageProps;
-using Server.Database.Contracts;
-using Server.Database.Entities.BudgetItems.Taxes;
-using Server.Database.Entities.ProjectManagements;
-using Server.Database.Entities.PurchaseOrders;
-using Shared.Models.BudgetItems;
+﻿using Server.Database.Entities.PurchaseOrders;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Shared.StaticClasses.StaticClass;
 
 namespace Server.Database.Entities.BudgetItems
 {
@@ -19,7 +13,8 @@ namespace Server.Database.Entities.BudgetItems
         public bool IsTaxes { get; set; } = false;
         public Project Project { get; set; } = null!;
         public Guid ProjectId { get; set; }
-
+        [NotMapped]
+        public virtual int OrderList => 0;
 
         [ForeignKey("SelectedId")]
         public List<TaxesItem> TaxesSelecteds { get; set; } = new();
@@ -27,8 +22,7 @@ namespace Server.Database.Entities.BudgetItems
         public string Nomenclatore => $"{Letter}{Order}";
         public string Name { get; set; } = string.Empty;
 
-        //public GanttTask? GanttTask { get; set; } = null!;
-        //public Guid? GanttTaskId { get; set; }
+
 
         [ForeignKey("BudgetItemId")]
         public List<PurchaseOrderItem> PurchaseOrderItems { get; set; } = new();
@@ -48,16 +42,16 @@ namespace Server.Database.Entities.BudgetItems
 
         [NotMapped]
         public PurchaseOrder? PurchaseOrder => PurchaseOrderItems == null || PurchaseOrderItems.Count == 0 ? null : PurchaseOrderItems.Select(x => x.PurchaseOrder).First();
-        //[NotMapped]
-        //public DateTime? PlannedDate => GanttTask == null ? null : GanttTask.PlannedEndDate;
+
         [NotMapped]
         public DateTime? ExpectedDate => PurchaseOrder == null ? null : PurchaseOrder.ExpectedDate;
         [NotMapped]
         public DateTime? ClosedDate => PurchaseOrder == null ? null : PurchaseOrder.ClosedDate;
 
-        //[NotMapped]
-        //public DateTime? ExpenseToolDate => ClosedDate != null ? ClosedDate : ExpectedDate != null ? ExpectedDate :
-        //    PlannedDate != null ? PlannedDate : null;
+        public ICollection<BudgetItemNewGanttTask> BudgetItemNewGanttTasks { get; set; } = new List<BudgetItemNewGanttTask>();
+
+        public List<NewGanttTask> NewGanttTasks => BudgetItemNewGanttTasks.Select(x => x.NewGanttTask).ToList() ?? new();
+
     }
 
 }

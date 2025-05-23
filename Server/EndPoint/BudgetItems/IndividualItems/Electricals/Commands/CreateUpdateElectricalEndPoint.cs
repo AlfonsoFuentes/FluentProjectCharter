@@ -18,7 +18,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Electricals.Commands
                     if (data.Id == Guid.Empty)
                     {
                         int order = ProjectMapper.GetNextOrder<Electrical>(project);
-                        row = Electrical.Create(project.Id, data.GanttTaskId);
+                        row = Electrical.Create(project.Id);
                         row.Order = order;
                         await repository.AddAsync(row);
                     }

@@ -14,11 +14,11 @@ namespace Server.ExtensionsMethods.EquipmentTemplateMapper
             {
                 Id = row.Id,
                 Name = row.Name,
-                //GanttTaskId = row.GanttTaskId,
+                OrderList = row.OrderList,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
                 Template = row.EquipmentTemplate == null ? new() : row.EquipmentTemplate.Map(),
-
+                Brand = row.EquipmentTemplate == null ? string.Empty : row.EquipmentTemplate.BrandName,
                 TagNumber = row.TagNumber,
 
                 ShowDetails = row.EquipmentTemplate == null ? false : true,
@@ -31,6 +31,7 @@ namespace Server.ExtensionsMethods.EquipmentTemplateMapper
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
                 PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
+                BudgetItemGanttTasks = row.BudgetItemNewGanttTasks == null ? new() : row.BudgetItemNewGanttTasks.Select(x => x.Map()).ToList(),
             };
 
 
@@ -91,7 +92,7 @@ namespace Server.ExtensionsMethods.EquipmentTemplateMapper
             var equipmentTemplate = Template.AddEquipmentTemplate();
             Data.Template.Map(equipmentTemplate);
             equipmentTemplate.Value = Data.BudgetUSD;
-            
+
 
             foreach (var nozzle in Data.Nozzles)
             {

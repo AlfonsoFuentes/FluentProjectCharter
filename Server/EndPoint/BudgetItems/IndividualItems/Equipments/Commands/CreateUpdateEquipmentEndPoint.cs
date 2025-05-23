@@ -19,7 +19,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Equipments.Commands
                     if (data.Id == Guid.Empty)
                     {
                         int order = ProjectMapper.GetNextOrder<Equipment>(project);
-                        row = Equipment.Create(project.Id, data.GanttTaskId);
+                        row = Equipment.Create(project.Id);
                         row.Order = order;
                         await repository.AddAsync(row);
                         await NozzleMapper.CreateNozzles(repository, row.Id, data.Nozzles);

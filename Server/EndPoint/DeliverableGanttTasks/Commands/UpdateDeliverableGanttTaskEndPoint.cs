@@ -1,4 +1,8 @@
-﻿using Shared.Models.DeliverableGanttTasks.Responses;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Server.Database.Entities.BudgetItems;
+using Shared.Models.BudgetItemNewGanttTasks.Responses;
+using Shared.Models.DeliverableGanttTasks.Responses;
+using Shared.Models.MainTaskDependencys;
 
 namespace Server.EndPoint.DeliverableGanttTasks.Commands
 {
@@ -16,9 +20,12 @@ namespace Server.EndPoint.DeliverableGanttTasks.Commands
 
 
 
-                    var cache = StaticClass.DeliverableGanttTasks.Cache.GetAll(Data.ProjectId);
 
-                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache);
+                    var cacheDeliverable = StaticClass.DeliverableGanttTasks.Cache.Key(Data.ProjectId);
+                    string cacheBudget = StaticClass.BudgetItems.Cache.GetAll(Data.ProjectId);
+                    List<string> cache = [.. cacheDeliverable, cacheBudget];
+                   
+                    var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(cache.ToArray());
 
                     return Result.EndPointResult(result,
                         Data.Succesfully,
@@ -120,6 +127,8 @@ namespace Server.EndPoint.DeliverableGanttTasks.Commands
                     }
                     await Repository.AddAsync(row);
                     data.MapTask(row);
+                    await CreateTaskBudgetItems(row, data, Repository);
+                    await CreateDependency(row, data, Repository);
                 }
 
 
@@ -134,12 +143,123 @@ namespace Server.EndPoint.DeliverableGanttTasks.Commands
             }
             async Task UpdateTask(DeliverableGanttTaskResponse data, IRepository Repository)
             {
-                var task = await Repository.GetByIdAsync<NewGanttTask>(data.Id);
+                Func<IQueryable<NewGanttTask>, IIncludableQueryable<NewGanttTask, object>> includes = x => x
+                .Include(x => x.BudgetItemNewGanttTasks)
+                .Include(x => x.MainTasks);
+
+                Expression<Func<NewGanttTask, bool>> criteria = x => x.Id == data.Id;
+
+                var task = await Repository.GetAsync(Criteria: criteria, Includes: includes);
                 if (task == null) { return; }
                 data.MapTask(task);
+                await UpdateBudgetItems(task, data, Repository);
+                await UpdateDependencys(task, data, Repository);
                 await Repository.UpdateAsync(task);
             }
+            async Task CreateTaskBudgetItems(NewGanttTask? row, DeliverableGanttTaskResponse data, IRepository Repository)
+            {
+                foreach (var budget in data.OrderedBudgetItemGanttTasks)
+                {
+                    if (budget.BudgetItemId != Guid.Empty && row != null)
+                    {
+                        var item = BudgetItemNewGanttTask.Create(budget.BudgetItemId, row.Id);
+                        budget.Map(item);
 
+                        await Repository.AddAsync(item);
+
+                    }
+
+                }
+            }
+            async Task UpdateBudgetItems(NewGanttTask? row, DeliverableGanttTaskResponse data, IRepository Repository)
+            {
+                if (row == null) { return; }
+
+                foreach (var budgetitem in row.BudgetItemNewGanttTasks)
+                {
+                    if (!data.BudgetItemGanttTasks.Any(x => x.BudgetItemId == budgetitem.BudgetItemId
+                    && x.GanttTaskId == budgetitem.NewGanttTaskId))
+                    {
+                        await Repository.RemoveAsync(budgetitem);
+                    }
+                }
+                foreach (var budget in data.OrderedBudgetItemGanttTasks)
+                {
+                    if (row!.BudgetItemNewGanttTasks.Any(x => x.BudgetItemId == budget.BudgetItemId))
+                    {
+                        var budgetItemNewGanttTask = row.BudgetItemNewGanttTasks.FirstOrDefault(x =>
+                        x.BudgetItemId == budget.BudgetItemId);
+                        if (budgetItemNewGanttTask != null)
+                        {
+                            budget.Map(budgetItemNewGanttTask);
+                            await Repository.UpdateAsync(budgetItemNewGanttTask);
+                        }
+                    }
+                    else
+                    {
+                        if (budget.BudgetItemId != Guid.Empty && row != null)
+                        {
+                            var item = BudgetItemNewGanttTask.Create(budget.BudgetItemId, row.Id);
+                            budget.Map(item);
+
+                            await Repository.AddAsync(item);
+                        }
+                    }
+
+                }
+            }
+            async Task CreateDependency(NewGanttTask? row, DeliverableGanttTaskResponse data, IRepository Repository)
+            {
+                foreach (var dependency in data.NewDependencies)
+                {
+                    if (dependency.DependencyTaskId != Guid.Empty && row != null)
+                    {
+                        var item = MainTaskDependency.Create(row.Id, dependency.DependencyTaskId);
+                        dependency.Map(item);
+
+                        await Repository.AddAsync(item);
+
+                    }
+
+                }
+            }
+            async Task UpdateDependencys(NewGanttTask? row, DeliverableGanttTaskResponse data, IRepository Repository)
+            {
+                if (row == null) { return; }
+
+                foreach (var dependency in row.MainTasks)
+                {
+                    if (!data.NewDependencies.Any(x => x.DependencyTaskId == dependency.DependencyTaskId
+                    && x.MainTaskId == dependency.MainTaskId))
+                    {
+                        await Repository.RemoveAsync(dependency);
+                    }
+                }
+                foreach (var dependency in data.NewDependencies)
+                {
+                    if (row!.MainTasks.Any(x => x.DependencyTaskId == dependency.DependencyTaskId))
+                    {
+                        var depencyTask = row.MainTasks.FirstOrDefault(x =>
+                        x.DependencyTaskId == dependency.DependencyTaskId);
+                        if (depencyTask != null)
+                        {
+                            dependency.Map(depencyTask);
+                            await Repository.UpdateAsync(depencyTask);
+                        }
+                    }
+                    else
+                    {
+                        if (dependency.DependencyTaskId != Guid.Empty && row != null)
+                        {
+                            var item = MainTaskDependency.Create(row.Id, dependency.DependencyTaskId);
+                            dependency.Map(item);
+
+                            await Repository.AddAsync(item);
+                        }
+                    }
+
+                }
+            }
         }
 
 
@@ -150,7 +270,7 @@ namespace Server.EndPoint.DeliverableGanttTasks.Commands
             row.MainOrder = request.MainOrder;
             row.Name = request.Name;
             row.EndDate = request.StartDate;
-            row.StartDate= request.EndDate;
+            row.StartDate = request.EndDate;
             row.DurationInUnit = request.DurationInUnit;
             row.DurationInDays = request.DurationInDays;
             row.DurationUnit = request.DurationUnit;
@@ -159,25 +279,47 @@ namespace Server.EndPoint.DeliverableGanttTasks.Commands
         }
         static NewGanttTask MapTask(this DeliverableGanttTaskResponse response, NewGanttTask row)
         {
-            row.DependencyType = response.DependencyType.Id;
+           
             row.Name = response.Name;
             row.InternalOrder = response.InternalOrder;
             row.Name = response.Name;
             row.MainOrder = response.MainOrder;
-            row.StartDate = response.StartDate;
-            row.EndDate= response.EndDate;
-            row.LagInDays = response.LagInDays;
+            row.StartDate = response.StartDate!.Value;
+            row.EndDate = response.EndDate!.Value;
+      
             row.DurationInDays = response.DurationInDays;
-            row.LagUnit = response.LagUnit;
-            row.DurationUnit= response.DurationUnit;
+       
+            row.DurationUnit = response.DurationUnit;
             row.DurationInUnit = response.DurationInUnit;
-            row.LagInUnits = response.LagInUnits;
+ 
             row.ParentWBS = response.ParentWBS;
             row.ParentId = response.IsParentDeliverable ? null : response.TaskParentId;
-            row.DependencyList = response.DependencyList;
+         
             return row;
         }
+        static BudgetItemNewGanttTask Map(this BudgetItemNewGanttTaskResponse response, BudgetItemNewGanttTask budgetItemNewGantt)
+        {
+            budgetItemNewGantt.Order = response.Order;
+            budgetItemNewGantt.PercentageBudget = response.PercentageBudget;
+            budgetItemNewGantt.BudgetAssigned = response.BudgetAssignedUSD;
+         
 
+            return budgetItemNewGantt;
+
+
+        }
+        static MainTaskDependency Map(this MainTaskDependencyResponse response, MainTaskDependency budgetItemNewGantt)
+        {
+            budgetItemNewGantt.Order = response.Order;
+            budgetItemNewGantt.DependencyType = response.DependencyType.Id;
+            budgetItemNewGantt.LagInDays = response.LagInDays;
+            budgetItemNewGantt.LagUnit = response.LagUnit;
+            budgetItemNewGantt.LagInUnits = response.LagInUnits;
+
+            return budgetItemNewGantt;
+
+
+        }
 
     }
 }

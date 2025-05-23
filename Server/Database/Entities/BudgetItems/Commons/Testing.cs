@@ -6,13 +6,15 @@
         public override string Letter { get; set; } = "N";
         public double UnitaryCost { get; set; }
         public double Quantity { get; set; }
-        public static Testing Create(Guid ProjectId, Guid? GanttTaskId)
+        [NotMapped]
+        public override int OrderList => 12;
+        public static Testing Create(Guid ProjectId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                //GanttTaskId = GanttTaskId,
+            
 
             };
         }

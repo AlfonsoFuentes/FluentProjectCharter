@@ -77,6 +77,8 @@ namespace Shared.Models.PurchaseOrders.Mappers
                 ReceivingUSDCOP = response.ReceivingUSDCOP,
                 ReceivingUSDEUR = response.ReceivingUSDEUR,
                 ClosedDate = response.ClosedDate,
+                
+            
 
             };
         }

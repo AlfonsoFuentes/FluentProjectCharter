@@ -22,26 +22,7 @@ namespace Server.EndPoint.Projects.Commands
                     await Repository.UpdateAsync(row);
                     Data.Map(row);
 
-                    var contingency = Contingency.Create(row.Id);
-                    contingency.Order = 1;
-
-                    var engineering = Engineering.Create(row.Id);
-                    engineering.Order = 1;
-
-                    var budgetUSD = row.BudgetItems.Sum(x => x.BudgetUSD);
-                    var totalPercentage = Data.PercentageEngineering + Data.PercentageContingency;
-
-                    engineering.Percentage = Data.PercentageEngineering;
-                    contingency.Percentage = Data.PercentageContingency;
-
-                    engineering.BudgetUSD = budgetUSD * Data.PercentageEngineering / (100 - totalPercentage);
-                    contingency.BudgetUSD = budgetUSD * Data.PercentageContingency / (100 - totalPercentage);
-
-                    engineering.Name = $"Engineering for {Data.Name} {Data.PercentageEngineering}%";
-                    contingency.Name = $"Contingency for {Data.Name} {Data.PercentageContingency}%";
-
-                    await Repository.AddAsync(contingency);
-                    await Repository.AddAsync(engineering);
+                  
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.Projects.Cache.Key(row.Id));
 
 

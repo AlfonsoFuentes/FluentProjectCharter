@@ -18,7 +18,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Testings.Commands
                     if (data.Id == Guid.Empty)
                     {
                         int order = ProjectMapper.GetNextOrder<Testing>(project);
-                        row = Testing.Create(project.Id, data.GanttTaskId);
+                        row = Testing.Create(project.Id);
                         row.Order = order;
                         await repository.AddAsync(row);
                     }

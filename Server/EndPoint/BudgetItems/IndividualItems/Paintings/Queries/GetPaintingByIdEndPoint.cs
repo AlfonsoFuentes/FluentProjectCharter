@@ -38,7 +38,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Paintings.Queries
             {
                 Id = row.Id,
                 Name = row.Name,
-
+                OrderList = row.OrderList,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
                 UnitaryCost = row.UnitaryCost,
@@ -48,6 +48,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Paintings.Queries
                 PotentialUSD = row.PotentialUSD,
                 BudgetUSD = row.BudgetUSD,
                 PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
+                BudgetItemGanttTasks = row.BudgetItemNewGanttTasks == null ? new() : row.BudgetItemNewGanttTasks.Select(x => x.Map()).ToList(),
             };
         }
 

@@ -38,7 +38,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Queries
             {
                 Id = row.Id,
                 Name = row.Name,
-                //GanttTaskId = row.GanttTaskId,
+                OrderList = row.OrderList,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
                 BudgetUSD = row.BudgetUSD,
@@ -46,6 +46,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Queries
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
                 PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
+                BudgetItemGanttTasks = row.BudgetItemNewGanttTasks == null ? new() : row.BudgetItemNewGanttTasks.Select(x => x.Map()).ToList(),
             };
         }
 

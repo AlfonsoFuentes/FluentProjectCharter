@@ -35,7 +35,7 @@ namespace Web.Infrastructure.Validators.Projects
             RuleFor(x => x.PercentageContingency).GreaterThan(0).WithMessage("%Contingency must be defined!");
             RuleFor(x => x.PercentageEngineering).GreaterThan(0).WithMessage("%Engineering must be defined!");
             RuleFor(x => x.BudgetItems)
-                .GreaterThan(0)
+                .NotEqual(0)
                    .When(x => !string.IsNullOrEmpty(x.ProjectNumber))
                    .WithMessage("Budget items must be defined!");
             RuleFor(x => x.PercentageTaxProductive).GreaterThan(0).When(x => x.IsProductiveAsset == false).WithMessage("%Tax (VAT) must be defined!");

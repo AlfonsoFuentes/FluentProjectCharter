@@ -23,7 +23,7 @@ namespace Server.EndPoint.PurchaseOrders.Commands
 
                     await Repository.UpdateAsync(row);
                     Data.Map(row);
-                    
+
 
                     List<string> cache = [.. StaticClass.PurchaseOrders.Cache.KeyApproved(row.Id, row.ProjectId)];
 
@@ -59,8 +59,8 @@ namespace Server.EndPoint.PurchaseOrders.Commands
             row.USDEUR = request.USDEUR;
             row.TaxCode = request.TaxCode;
             row.PONumber = request.PONumber;
-            row.ExpectedDate=request.ExpectedDate;
-            row.ApprovedDate = DateTime.UtcNow;
+            row.ExpectedDate = request.ExpectedDate;
+            row.ApprovedDate = request.ApprovedDate ?? DateTime.UtcNow;
             return row;
         }
 

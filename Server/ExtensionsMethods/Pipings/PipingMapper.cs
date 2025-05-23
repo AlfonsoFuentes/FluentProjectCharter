@@ -75,7 +75,7 @@ namespace Server.ExtensionsMethods.Pipings
             {
                 Id = row.Id,
                 Name = row.Name,
-                //GanttTaskId = row.GanttTaskId,
+                OrderList = row.OrderList,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
 
@@ -94,6 +94,7 @@ namespace Server.ExtensionsMethods.Pipings
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
                 PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
+                BudgetItemGanttTasks = row.BudgetItemNewGanttTasks == null ? new() : row.BudgetItemNewGanttTasks.Select(x => x.Map()).ToList(),
 
             };
             return result;

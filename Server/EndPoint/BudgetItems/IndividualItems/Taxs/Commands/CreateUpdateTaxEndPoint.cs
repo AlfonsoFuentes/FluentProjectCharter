@@ -18,7 +18,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Taxs.Commands
                     if (data.Id == Guid.Empty)
                     {
                         int order = ProjectMapper.GetNextOrder<Tax>(project);
-                        row = Tax.Create(project.Id, data.GanttTaskId);
+                        row = Tax.Create(project.Id);
                         row.Order = order;
                         await repository.AddAsync(row);
                         foreach (var item in data.TaxItems)

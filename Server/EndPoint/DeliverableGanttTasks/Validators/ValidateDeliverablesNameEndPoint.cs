@@ -1,6 +1,4 @@
-﻿using Shared.Models.Backgrounds.Validators;
-using Server.Database.Entities.ProjectManagements;
-using Shared.Models.DeliverableGanttTasks.Validators;
+﻿using Shared.Models.DeliverableGanttTasks.Validators;
 
 namespace Server.EndPoint.NewDeliverablesGanttTasks.NewDeliverables.DeliverableGanttTasks
 {
@@ -10,7 +8,7 @@ namespace Server.EndPoint.NewDeliverablesGanttTasks.NewDeliverables.DeliverableG
         {
             public void MapEndPoint(IEndpointRouteBuilder app)
             {
-                app.MapPost(StaticClass.DeliverableGanttTasks.EndPoint.Validate, async (ValidateDeliverableRequest Data, IQueryRepository Repository) =>
+                app.MapPost(StaticClass.DeliverableGanttTasks.EndPoint.Validate, async (ValidateDeliverableGanttTaskRequest Data, IQueryRepository Repository) =>
                 {
                     if(Data.IsDeliverable)
                     {
@@ -21,7 +19,17 @@ namespace Server.EndPoint.NewDeliverablesGanttTasks.NewDeliverables.DeliverableG
 
                         return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId);
                     }
-                    return false;
+                    else
+                    {
+                        Expression<Func<NewGanttTask, bool>> CriteriaId = x => x.DeliverableId == Data.DeliverableId;
+                        Func<NewGanttTask, bool> CriteriaExist = x => Data.Id == null ?
+                        x.Name.Equals(Data.Name) : x.Id != Data.Id.Value && x.Name.Equals(Data.Name);
+                        string CacheKey = StaticClass.DeliverableGanttTasks.Cache.GetAll(Data.ProjectId);
+
+                        return await Repository.AnyAsync(Cache: CacheKey, CriteriaExist: CriteriaExist, CriteriaId: CriteriaId);
+                    }
+                       
+                
                 });
 
 

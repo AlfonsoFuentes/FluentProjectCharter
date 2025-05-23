@@ -108,14 +108,14 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
             {
                 Id = row.Id,
                 Name = row.Name,
-                //GanttTaskId = row.GanttTaskId,
+                OrderList = row.OrderList,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
 
 
                 TagNumber = row.TagNumber,
                 Template = row.ValveTemplate == null ? new() : row.ValveTemplate.Map(),
-
+                Brand = row.ValveTemplate == null ? string.Empty : row.ValveTemplate.BrandName,
                 TagLetter = row.TagLetter,
                 ShowDetails = row.ValveTemplate != null,
                 Nozzles = row.Nozzles == null || row.Nozzles.Count == 0 ? new() : row.Nozzles.Select(x => x.Map()).ToList(),
@@ -129,7 +129,7 @@ namespace Server.ExtensionsMethods.ValveTemplateMappers
                 PotentialUSD = row.PotentialUSD,
 
                 PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
-
+                BudgetItemGanttTasks = row.BudgetItemNewGanttTasks == null ? new() : row.BudgetItemNewGanttTasks.Select(x => x.Map()).ToList(),
             };
 
             return result;

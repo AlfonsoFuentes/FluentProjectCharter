@@ -10,13 +10,15 @@ namespace Server.Database.Entities.BudgetItems.ProcessFlowDiagrams.Pipings
         public EngineeringFluidCode? FluidCode { get; set; } = null!;
         public Guid? FluidCodeId { get; set; }
         public List<IsometricItem> IsometricItems { get; set; } = new List<IsometricItem>();
-        public static Pipe Create(Guid ProjectId, Guid? GanttTaskId)
+        [NotMapped]
+        public override int OrderList => 7;
+        public static Pipe Create(Guid ProjectId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                //GanttTaskId = GanttTaskId,
+             
 
             };
         }

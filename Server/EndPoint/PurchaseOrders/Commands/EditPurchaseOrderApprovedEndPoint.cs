@@ -90,6 +90,7 @@ namespace Server.EndPoint.PurchaseOrders.Commands
             row.TaxCode = request.TaxCode;
             row.PONumber = request.PONumber;
             row.ExpectedDate = request.ExpectedDate;
+            row.ApprovedDate = request.ApprovedDate;
             return row;
         }
 

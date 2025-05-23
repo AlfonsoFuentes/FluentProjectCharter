@@ -1,12 +1,7 @@
-﻿using Shared.Enums.BudgetItemTypes;
-using Shared.Enums.CostCenter;
-using Shared.Enums.Materials;
-using Shared.Models.Brands.Responses;
-using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
+﻿using Shared.Models.BudgetItems.IndividualItems.Nozzles.Responses;
 using Shared.Models.BudgetItems.Responses;
 using Shared.Models.FileResults.Generics.Request;
 using Shared.Models.Templates.Equipments.Responses;
-using System.Globalization;
 
 namespace Shared.Models.BudgetItems.IndividualItems.Equipments.Responses
 {

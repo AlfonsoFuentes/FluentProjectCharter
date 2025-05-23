@@ -19,7 +19,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Pipes.Commands
                     if (data.Id == Guid.Empty)
                     {
                         int order = ProjectMapper.GetNextOrder<Pipe>(project);
-                        row = Pipe.Create(project.Id, data.GanttTaskId);
+                        row = Pipe.Create(project.Id);
                         row.Order = order;
                         await repository.AddAsync(row);
                     }

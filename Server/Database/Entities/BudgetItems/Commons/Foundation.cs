@@ -6,13 +6,15 @@
         public override string Letter { get; set; } = "B";
         public double UnitaryCost { get; set; }
         public double Quantity { get; set; }
-        public static Foundation Create(Guid ProjectId, Guid? GanttTaskId)
+        [NotMapped]
+        public override int OrderList => 2;
+        public static Foundation Create(Guid ProjectId)
         {
             return new()
             {
                 Id = Guid.NewGuid(),
                 ProjectId = ProjectId,
-                //GanttTaskId = GanttTaskId,
+                
 
             };
         }

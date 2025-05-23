@@ -18,7 +18,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.EngineeringDesigns.Command
                     if (data.Id == Guid.Empty)
                     {
                         int order = ProjectMapper.GetNextOrder<EngineeringDesign>(project);
-                        row = EngineeringDesign.Create(project.Id, data.GanttTaskId);
+                        row = EngineeringDesign.Create(project.Id);
                         row.Order = order;
                         await repository.AddAsync(row);
                     }

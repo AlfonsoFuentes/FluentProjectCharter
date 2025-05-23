@@ -1,4 +1,5 @@
 ﻿using Server.Database.Entities.BudgetItems.Commons;
+using Server.EndPoint.DeliverableGanttTasks.Queries;
 using Server.EndPoint.Projects.Queries;
 using Server.EndPoint.PurchaseOrders.Queries;
 using Shared.Models.BudgetItems.IndividualItems.Structurals.Records;
@@ -40,7 +41,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Structurals.Queries
             {
                 Id = row.Id,
                 Name = row.Name,
-                //GanttTaskId = row.GanttTaskId,
+                OrderList = row.OrderList,
                 ProjectId = row.ProjectId,
                 Nomenclatore = row.Nomenclatore,
                 UnitaryCost = row.UnitaryCost,
@@ -49,6 +50,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Structurals.Queries
                 CommitmentUSD = row.CommitmentUSD,
                 PotentialUSD = row.PotentialUSD,
                 PurchaseOrders = row.PurchaseOrderItems == null ? new() : row.PurchaseOrderItems.Select(x => x.PurchaseOrder).Select(x => x.Map()).ToList(),
+                BudgetItemGanttTasks = row.BudgetItemNewGanttTasks == null ? new() : row.BudgetItemNewGanttTasks.Select(x => x.Map()).ToList(),
             };
         }
 

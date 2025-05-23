@@ -18,7 +18,7 @@ namespace Server.EndPoint.BudgetItems.IndividualItems.Structurals.Commands
                     if (data.Id == Guid.Empty)
                     {
                         int order = ProjectMapper.GetNextOrder<Structural>(project);
-                        row = Structural.Create(project.Id, data.GanttTaskId);
+                        row = Structural.Create(project.Id);
                         row.Order = order;
                         await repository.AddAsync(row);
                     }
