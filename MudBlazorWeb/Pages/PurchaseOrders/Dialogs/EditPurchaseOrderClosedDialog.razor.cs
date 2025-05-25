@@ -1,12 +1,15 @@
 using Blazored.FluentValidation;
 using MudBlazor;
+using MudBlazorWeb.Pages.Suppliers;
 using Newtonsoft.Json.Linq;
+using Shared.Models.BudgetItems.Records;
+using Shared.Models.BudgetItems.Responses;
 using Shared.Models.PurchaseOrders.Mappers;
+using Shared.Models.PurchaseOrders.Records;
 using Shared.Models.PurchaseOrders.Requests;
 using Shared.Models.PurchaseOrders.Responses;
 using Shared.Models.Suppliers.Records;
 using Shared.Models.Suppliers.Responses;
-using MudBlazorWeb.Pages.Suppliers;
 
 namespace MudBlazorWeb.Pages.PurchaseOrders.Dialogs;
 public partial class EditPurchaseOrderClosedDialog
@@ -29,15 +32,54 @@ public partial class EditPurchaseOrderClosedDialog
     public EditPurchaseOrderClosedRequest Model { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
-
+        await GetPurchaseOrder();
         await GetSuppliers();
+        await GetBudgetItems();
         Model = PurchaseOrder.ToEditClosed();
+        Model.PurchaseOrderItems.ForEach(x =>
+        {
+            x.BudgetItem = OriginalBudgetItems.Single(y => y.Id == x.BudgetItemId);
+
+
+        });
+     
         StateHasChanged();
 
     }
 
-
-
+    async Task GetPurchaseOrder()
+    {
+        var result = await GenericService.GetById<PurchaseOrderResponse,
+            GetPurchaseOrderByIdRequest>(new GetPurchaseOrderByIdRequest()
+            {
+                Id = PurchaseOrder.Id,
+            });
+        if (result.Succeeded)
+        {
+            PurchaseOrder = result.Data;
+        }
+    }
+    async Task GetBudgetItems()
+    {
+        var resultProjectt = await GenericService.GetAll<BudgetItemWithPurchaseOrderResponseList, BudgetItemWithPurchaseOrderGetAll>(new BudgetItemWithPurchaseOrderGetAll()
+        {
+            ProjectId = PurchaseOrder.ProjectId,
+        });
+        if (resultProjectt.Succeeded)
+        {
+            if (Model.IsAlteration)
+            {
+                OriginalBudgetItems = resultProjectt.Data.Expenses;
+            }
+            else
+            {
+                OriginalBudgetItems = resultProjectt.Data.Capital;
+            }
+            NonSelectedBudgetItems = OriginalBudgetItems;
+        }
+    }
+    List<BudgetItemWithPurchaseOrdersResponse> OriginalBudgetItems = new();
+    List<BudgetItemWithPurchaseOrdersResponse> NonSelectedBudgetItems = new();
 
 
     private async Task Submit()

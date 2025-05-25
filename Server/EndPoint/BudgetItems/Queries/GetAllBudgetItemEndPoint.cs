@@ -62,13 +62,13 @@ namespace Server.EndPoint.BudgetItems.Queries
                         var contingency = response.Contingencys.FirstOrDefault();
                         if (contingency != null)
                         {
-                            contingency.BudgetUSD =Math.Round( response.Capital.Sum(x => x.BudgetUSD) /
+                            contingency.BudgetUSD =Math.Round( response.TotalCapital /
                             (100 - totalpercentage) * contingency.Percentage, 1);
                         }
                         var engineering = response.Engineerings.FirstOrDefault();
                         if (engineering != null)
                         {
-                            engineering.BudgetUSD = Math.Round(response.Capital.Sum(x => x.BudgetUSD) /
+                            engineering.BudgetUSD = Math.Round(response.TotalCapital /
                            (100 - totalpercentage) * engineering.Percentage,1);
                         }
                     }

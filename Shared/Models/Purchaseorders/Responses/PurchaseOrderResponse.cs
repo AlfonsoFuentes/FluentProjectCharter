@@ -8,6 +8,7 @@ namespace Shared.Models.PurchaseOrders.Responses
 {
     public class PurchaseOrderResponse : BaseResponse
     {
+        public bool IsNotEditable { get; set; } = true;
         public string SupplierName => Supplier == null ? string.Empty : Supplier.Name;
         public string SupplierNickName => Supplier == null ? string.Empty : Supplier.NickName;
         public SupplierResponse? Supplier { get; set; } = null!;

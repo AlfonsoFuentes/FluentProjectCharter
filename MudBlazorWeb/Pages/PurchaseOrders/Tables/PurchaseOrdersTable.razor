@@ -1,4 +1,5 @@
-﻿<TableTemplate TValue="PurchaseOrderResponse"
+﻿
+<TableTemplate TValue="PurchaseOrderResponse"
                ShowAdd=false
                ShowToolbar=@ShowToolbar
                ShowDelete=false
@@ -47,7 +48,11 @@
                     }
                     else if (template.Item.PurchaseOrderStatus.Id == PurchaseOrderStatusEnum.Closed.Id)
                     {
-                        <IconButton ToolTip="@($"Edit {template.Item.Name}")" Size="@Size.Medium" Icon="@Icons.Material.Outlined.Edit" Variant=Variant.Outlined OnClick="@(()=>EditPurchaseOrderClosed(template.Item))" />
+                        if (!template.Item.IsNotEditable)
+                        {
+                            <IconButton ToolTip="@($"Edit {template.Item.Name}")" Size="@Size.Medium" Icon="@Icons.Material.Outlined.Edit" Variant=Variant.Outlined OnClick="@(() => EditPurchaseOrderClosed(template.Item))" />
+                        }
+                        
                     }
                     <IconButton ToolTip="@($"Delete {template.Item.Name}")" Size="@Size.Medium" Icon="@Icons.Material.Outlined.Delete" Variant=Variant.Outlined Color="Color.Surface" OnClick="@(()=>Delete(template.Item))" />
 

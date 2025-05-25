@@ -21,8 +21,26 @@ namespace Server.EndPoint.Projects.Commands
                     if (row == null) { return Result.Fail(Data.NotFound); }
                     await Repository.UpdateAsync(row);
                     Data.Map(row);
+                    double totalpercentage = Data.PercentageContingency + Data.PercentageEngineering;
 
-                  
+                    if (100 - totalpercentage > 0)
+                    {
+                        var contingency = row.Contingencys.FirstOrDefault();
+                        if (contingency != null)
+                        {
+                            contingency.BudgetUSD = Math.Round(row.CapitalBudgetUSD /
+                            (100 - totalpercentage) * contingency.Percentage, 1);
+                            await Repository.UpdateAsync(contingency);
+                        }
+                        var engineering = row.Engineerings.FirstOrDefault();
+                        if (engineering != null)
+                        {
+                            engineering.BudgetUSD = Math.Round(row.CapitalBudgetUSD /
+                           (100 - totalpercentage) * engineering.Percentage, 1);
+                            await Repository.UpdateAsync(engineering);
+                        }
+                    }
+
                     var result = await Repository.Context.SaveChangesAndRemoveCacheAsync(StaticClass.Projects.Cache.Key(row.Id));
 
 

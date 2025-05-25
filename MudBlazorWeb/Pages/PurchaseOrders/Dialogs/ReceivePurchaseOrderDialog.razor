@@ -3,11 +3,10 @@
         <MudCardContent>
 
             <FluentValidationValidator @ref="_fluentValidationValidator" />
-  
+           
             <PurchaseOrderDialog Model="@Model"
                                  ValidateAsync="ValidateAsync"
                                  Suppliers="@Suppliers" AddSupplier=AddSupplier
-                                 
                                  ShowReceive=true>
                 <PurchaseOrderNumber>
                     <TextField Label="PO Number"

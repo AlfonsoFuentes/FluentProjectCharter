@@ -68,7 +68,7 @@ namespace Shared.Models.PurchaseOrders.Mappers
                 TaxCodeLP = response.Supplier!.TaxCodeLP,
                 USDCOP = response.USDCOP,
                 USDEUR = response.USDEUR,
-                ApprovedDate = response.ApprovedDate,
+                ApprovedDate = response.CurrencyDate,
                 PONumber = response.PONumber,
                 ExpectedDate = response.ExpectedDate,
                 IsTaxEditable = response.IsTaxEditable,

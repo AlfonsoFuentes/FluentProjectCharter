@@ -1,14 +1,15 @@
 using Blazored.FluentValidation;
 using MudBlazor;
+using MudBlazorWeb.Pages.Suppliers;
 using Shared.Models.BudgetItems.Records;
 using Shared.Models.BudgetItems.Responses;
 using Shared.Models.PurchaseOrders.Mappers;
+using Shared.Models.PurchaseOrders.Records;
 using Shared.Models.PurchaseOrders.Requests;
 using Shared.Models.PurchaseOrders.Responses;
 using Shared.Models.Suppliers.Records;
 using Shared.Models.Suppliers.Responses;
 using Web.Infrastructure.Managers.Generic;
-using MudBlazorWeb.Pages.Suppliers;
 using static Shared.StaticClasses.StaticClass;
 
 namespace MudBlazorWeb.Pages.PurchaseOrders.Dialogs;
@@ -30,20 +31,30 @@ public partial class EditPurchaseOrderApprovedDialog
     public EditPurchaseApprovedOrderRequest Model { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
-
+        await GetPurchaseOrder();
         await GetSuppliers();
         await GetBudgetItems();
         Model = PurchaseOrder.ToEditApproved();
-        Model.PurchaseOrderItems.ForEach(x =>
+        foreach (var item in Model.PurchaseOrderItems)
         {
-            x.BudgetItem = OriginalBudgetItems.Single(y => y.Id == x.BudgetItemId);
-
-
-        });
+            item.BudgetItem = OriginalBudgetItems.SingleOrDefault(y => y.Id == item.BudgetItemId);
+        }
         NonSelectedBudgetItems.Remove(OriginalBudgetItems.Single(y => y.Id == Model.MainBudgetItemId));
         Model.AddItem(new());
         StateHasChanged();
 
+    }
+    async Task GetPurchaseOrder()
+    {
+        var result = await GenericService.GetById<PurchaseOrderResponse,
+            GetPurchaseOrderByIdRequest>(new GetPurchaseOrderByIdRequest()
+            {
+                Id = PurchaseOrder.Id,
+            });
+        if (result.Succeeded)
+        {
+            PurchaseOrder = result.Data;
+        }
     }
     async Task GetBudgetItems()
     {

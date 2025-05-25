@@ -1,12 +1,14 @@
 using MudBlazor;
+using MudBlazorWeb.Pages.PurchaseOrders.Dialogs;
 using Shared.Models.BudgetItems.Exports;
+using Shared.Models.BudgetItems.IndividualItems.Engineerings.Responses;
 using Shared.Models.BudgetItems.Mappers;
 using Shared.Models.BudgetItems.Records;
 using Shared.Models.BudgetItems.Responses;
 using Shared.Models.FileResults;
+using Shared.Models.FileResults.Generics.Reponses;
 using Shared.Models.Projects.Reponses;
 using Shared.Models.PurchaseOrders.Responses;
-using MudBlazorWeb.Pages.PurchaseOrders.Dialogs;
 
 namespace MudBlazorWeb.Pages.BudgetItems;
 public partial class BudgetItemsWithPurchaseOrders
@@ -102,6 +104,40 @@ public partial class BudgetItemsWithPurchaseOrders
     }
     async Task AddPurchaseorder(BudgetItemWithPurchaseOrdersResponse response)
     {
+        if (response == null) return;
+        if (response is EngineeringResponse)
+        {
+            await AddEngineeringPurchaseorder(response);
+        }
+        else
+        {
+            await AddOthersPurchaseorder(response);
+        }
+       
+    }
+    async Task AddEngineeringPurchaseorder(BudgetItemWithPurchaseOrdersResponse response)
+    {
+        var parameters = new DialogParameters<CreatePurchaseOrderSalaryDialog>
+        {
+            { x => x.BudgetItem, response},
+            { x => x.ResponseList, ResponseList },
+
+
+        };
+
+        var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
+
+        var dialog = await DialogService.ShowAsync<CreatePurchaseOrderSalaryDialog>("Create Purchase Order for Salary", parameters, options);
+        var result = await dialog.Result;
+        if (result != null)
+        {
+            await GetAll();
+            StateHasChanged();
+        }
+
+    }
+    async Task AddOthersPurchaseorder(BudgetItemWithPurchaseOrdersResponse response)
+    {
         var parameters = new DialogParameters<CreatePurchaseOrderDialog>
         {
             { x => x.BudgetItem, response},
@@ -120,7 +156,6 @@ public partial class BudgetItemsWithPurchaseOrders
             StateHasChanged();
         }
     }
-
     async Task ExportExcel()
     {
         BudgetItemWithPurchaseOrdersExportGetAll request = new()

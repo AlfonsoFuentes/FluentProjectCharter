@@ -1,13 +1,14 @@
 using Blazored.FluentValidation;
 using MudBlazor;
+using MudBlazorWeb.Pages.Suppliers;
 using Shared.Models.BudgetItems.Records;
 using Shared.Models.BudgetItems.Responses;
 using Shared.Models.PurchaseOrders.Mappers;
+using Shared.Models.PurchaseOrders.Records;
 using Shared.Models.PurchaseOrders.Requests;
 using Shared.Models.PurchaseOrders.Responses;
 using Shared.Models.Suppliers.Records;
 using Shared.Models.Suppliers.Responses;
-using MudBlazorWeb.Pages.Suppliers;
 
 namespace MudBlazorWeb.Pages.PurchaseOrders.Dialogs;
 public partial class EditPurchaseOrderCreatedDialog
@@ -28,7 +29,7 @@ public partial class EditPurchaseOrderCreatedDialog
     public EditPurchaseOrderCreatedRequest Model { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
-
+        await GetPurchaseOrder();
         await GetSuppliers();
         await GetBudgetItems();
         Model = PurchaseOrder.ToEditCreated();
@@ -42,6 +43,18 @@ public partial class EditPurchaseOrderCreatedDialog
         Model.AddItem(new());
         StateHasChanged();
 
+    }
+    async Task GetPurchaseOrder()
+    {
+        var result= await GenericService.GetById<PurchaseOrderResponse,
+            GetPurchaseOrderByIdRequest>(new GetPurchaseOrderByIdRequest()
+            {
+                Id = PurchaseOrder.Id,
+            });
+        if(result.Succeeded)
+        {
+            PurchaseOrder=result.Data;
+        }
     }
     async Task GetBudgetItems()
     {

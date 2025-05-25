@@ -113,6 +113,16 @@ namespace Server.Database.Entities
         public List<BudgetItem> EngineeringContingencys => [.. Engineerings, .. Contingencys];
         [NotMapped]
         public List<BudgetItem> Appropiation => [.. Expenses, .. Capital, .. EngineeringContingencys];
+        [NotMapped]
+        public double CapitalBudgetUSD => Capital == null || Capital.Count == 0 ? 0 : Capital.Sum(x => x.BudgetUSD);
+        [NotMapped]
+        public double ExpensesBudgetUSD => Expenses == null || Expenses.Count == 0 ? 0 : Expenses.Sum(x => x.BudgetUSD);
+        [NotMapped]
+        public double CompleteCapitalBudgetUSD => CapitalBudgetUSD+ EngineeringContingencysBudgetUSD;
+        [NotMapped]
+        public double EngineeringContingencysBudgetUSD => EngineeringContingencys == null || EngineeringContingencys.Count == 0 ? 0 : EngineeringContingencys.Sum(x => x.BudgetUSD);
+        [NotMapped]
+        public double AppropiationBudgetUSD => CompleteCapitalBudgetUSD + ExpensesBudgetUSD;
     }
 
 

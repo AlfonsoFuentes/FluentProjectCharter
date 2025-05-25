@@ -1,16 +1,11 @@
 using Blazored.FluentValidation;
 using MudBlazor;
-using Shared.Enums.CurrencyEnums;
-using Shared.Models.BudgetItems.Records;
 using Shared.Models.BudgetItems.Responses;
 using Shared.Models.PurchaseOrders.Requests;
 using Shared.Models.PurchaseOrders.Responses;
-using Shared.Models.Suppliers.Records;
-using Shared.Models.Suppliers.Responses;
-using MudBlazorWeb.Pages.Suppliers;
 
 namespace MudBlazorWeb.Pages.PurchaseOrders.Dialogs;
-public partial class CreatePurchaseOrderDialog
+public partial class CreatePurchaseOrderSalaryDialog
 {
     [Inject]
     public IRate _CurrencyService { get; set; } = null!;
@@ -25,29 +20,16 @@ public partial class CreatePurchaseOrderDialog
     }
     [Parameter]
     public BudgetItemWithPurchaseOrdersResponse BudgetItem { get; set; } = null!;
-    CreatePurchaseOrderRequest Model { get; set; } = new();
+    CreateSalaryPurchaseOrderRequest Model { get; set; } = new();
     [Parameter]
     public BudgetItemWithPurchaseOrderResponseList ResponseList { get; set; } = new();
     public List<BudgetItemWithPurchaseOrdersResponse> OriginalBudgetItems => BudgetItem.IsAlteration ? ResponseList.Expenses : ResponseList.Capital;
-    List<BudgetItemWithPurchaseOrdersResponse> NonSelectedBudgetItems = new();
-    public List<SupplierResponse> Suppliers { get; set; } = new();
-    async Task GetSuppliers()
-    {
-        var result = await GenericService.GetAll<SupplierResponseList, SupplierGetAll>(new SupplierGetAll());
-        if (result.Succeeded)
-        {
-            Suppliers = result.Data.Items;
-        }
-    }
-    List<BudgetItemWithPurchaseOrdersResponse> NonSelectedBudgetItemsOrdered => NonSelectedBudgetItems.OrderBy(x => x.Nomenclatore).ToList();
-    protected override async Task OnInitializedAsync()
+   protected override async Task OnInitializedAsync()
     {
         RateList = await _CurrencyService.GetRates(DateTime.UtcNow);
         var USDCOP = RateList == null ? 4000 : Math.Round(RateList.COP, 2);
         var USDEUR = RateList == null ? 1 : Math.Round(RateList.EUR, 2);
-        await GetSuppliers();
-
-        NonSelectedBudgetItems = OriginalBudgetItems;
+       
         Model.IsProductiveAsset = ResponseList.IsProductiveAsset;
         Model.CostCenter = ResponseList.CostCenter;
         Model.ProjectId = ResponseList.ProjectId;
@@ -55,21 +37,21 @@ public partial class CreatePurchaseOrderDialog
         Model.CurrencyDate = DateTime.UtcNow;
         Model.IsAlteration = BudgetItem.IsAlteration;
         Model.IsTaxEditable = BudgetItem.IsTaxes;
-
         PurchaseOrderItemResponse item = new();
+       
         if (OriginalBudgetItems.Any(x => x.Id == BudgetItem.Id))
         {
             item.BudgetItem = OriginalBudgetItems.Single(x => x.Id == BudgetItem.Id);
             Model.AddItem(item);
-            NonSelectedBudgetItems.Remove(item.BudgetItem!);
+          
             Model.MainBudgetItemId = BudgetItem.Id;
             item.Quantity = 1;
         }
-
-
-        Model.AddItem(new());
         Model.USDCOP = USDCOP;
         Model.USDEUR = USDEUR;
+
+
+
     }
 
 
@@ -93,23 +75,5 @@ public partial class CreatePurchaseOrderDialog
 
 
     private void Cancel() => MudDialog.Cancel();
-    public async Task AddSupplier()
-    {
-
-        var parameters = new DialogParameters<SupplierDialog>
-        {
-
-        };
-
-        var options = new DialogOptions() { MaxWidth = MaxWidth.Medium };
-
-        var dialog = await DialogService.ShowAsync<SupplierDialog>("Supplier", parameters, options);
-        var result = await dialog.Result;
-        if (result != null)
-        {
-            await GetSuppliers();
-
-        }
-    }
-
+   
 }

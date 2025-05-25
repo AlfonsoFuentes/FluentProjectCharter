@@ -64,7 +64,8 @@
                 <TemplateColumn CellClass="d-flex justify-end" T="BudgetItemWithPurchaseOrdersResponse">
                     <CellTemplate Context="template">
                         <MudStack Row=true Spacing="2">
-                            <IconButton ToolTip="@($"Add Purchaseorder in {template.Item.Name}")" Size="@Size.Small" Icon="@Icons.Material.Outlined.AddBox" Variant=Variant.Outlined OnClick="@(()=>AddPurchaseorder(template.Item))" />
+                            <IconButton ToolTip="@($"Add Purchaseorder in {template.Item.Name}")" Size="@Size.Small"
+                            Icon="@Icons.Material.Outlined.AddBox" Variant=Variant.Outlined OnClick="@(()=>AddPurchaseorder(template.Item))" />
 
                         </MudStack>
                     </CellTemplate>

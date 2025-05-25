@@ -71,8 +71,8 @@ namespace Web.Infrastructure.Validators.PurchaseOrders
             RuleFor(x => x.PurchaseRequisition).MustAsync(ReviewPRExist)
                 .When(x => !string.IsNullOrEmpty(x.PurchaseRequisition)).WithMessage(x => $"{x.PurchaseRequisition} already exist");
 
-            RuleFor(x => x.IsAnyPendingToReceiveLessThanZero).Equal(false).WithMessage("Must equal or les than purchase order value");
-            RuleFor(x => x.TotalReceivingValueCurrency).GreaterThan(0).WithMessage("Receiving Value Must be greater tna zero");
+            RuleFor(x => x.IsAnyPendingToReceiveLessThanZero).Equal(false).WithMessage("Must equal or less than purchase order value");
+            RuleFor(x => x.TotalReceivingValueCurrency).NotEqual(0).WithMessage("Receiving Value must be greater than zero");
             
 
 

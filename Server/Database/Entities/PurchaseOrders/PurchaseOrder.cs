@@ -31,6 +31,7 @@ namespace Server.Database.Entities.PurchaseOrders
         public bool IsAlteration { get; set; } = false;
         public bool IsCapitalizedSalary { get; set; } = false;
         public bool IsTaxEditable { get; set; } = false;
+        public bool IsNotEditable { get; set; } = false;
         public bool IsProductiveAsset { get; set; } = false;
         public int QuoteCurrency { get; set; }
         public int PurchaseOrderCurrency { get; set; }
